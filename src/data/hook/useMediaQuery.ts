@@ -9,8 +9,10 @@ export function useMediaQuery(query: string) {
       setMatches("matches" in e ? e.matches : (e as MediaQueryList).matches);
     handler(mql);
 
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     mql.addEventListener("change", handler as any);
 
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     return () => mql.removeEventListener("change", handler as any);
   }, [query]);
   

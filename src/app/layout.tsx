@@ -1,7 +1,6 @@
 import "../styles/globals.css";
 import type { Metadata } from "next";
 import { geistMono, geistSans, playfair, space } from "../styles/fonts";
-import { AppProvider } from "../data/context/AppContext";
 import { CustomizationProvider } from "@/data/context/CustomizationContext";
 
 export const metadata: Metadata = {
@@ -19,15 +18,13 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="pt-br">
-      <AppProvider>
-        <CustomizationProvider>
-          <body
-            className={`${playfair.variable} ${space.variable} ${geistMono.variable} ${geistSans.variable} antialiased font-playfair-display`}
-          >
-            {children}
-          </body>
-        </CustomizationProvider>
-      </AppProvider>
+      <CustomizationProvider>
+        <body
+          className={`${playfair.variable} ${space.variable} ${geistMono.variable} ${geistSans.variable} antialiased font-playfair-display`}
+        >
+          {children}
+        </body>
+      </CustomizationProvider>
     </html>
   );
 }

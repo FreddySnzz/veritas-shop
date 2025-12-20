@@ -1,4 +1,4 @@
-interface Cordoes {
+export interface Cordoes {
   id: string;
   name: string;
   color: string;
@@ -7,7 +7,7 @@ interface Cordoes {
   img: string;
 }
 
-interface Contas {
+export interface Contas {
   id: string;
   name: string;
   color: string;
@@ -16,7 +16,7 @@ interface Contas {
   img: string;
 }
 
-interface Letras {
+export interface Letras {
   id: string;
   name: string;
   available: boolean;

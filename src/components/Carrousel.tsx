@@ -1,6 +1,7 @@
+import { useEffect, useState, useRef, TouchEvent } from "react";
+import Image from "next/image";
 import { dataImages } from "@/data/constants/productsImages";
 import { ChevronLeft, ChevronRight } from "lucide-react";
-import { useEffect, useState, useRef, TouchEvent } from "react";
 
 interface ImageCarouselProps {
   autoPlayInterval?: number;
@@ -25,7 +26,7 @@ const ImageCarousel = ({
   
   const [touchStart, setTouchStart] = useState<number | null>(null);
   const [touchEnd, setTouchEnd] = useState<number | null>(null);
-  const [isDragging, setIsDragging] = useState(false);
+  const [, setIsDragging] = useState(false);
   
   const containerRef = useRef<HTMLDivElement>(null);
 
@@ -112,7 +113,7 @@ const ImageCarousel = ({
               }`}
             >
               <div className="absolute inset-0 bg-linear-to-b from-secondary/70 via-transparent to-transparent pointer-events-none" />
-              <img
+              <Image
                 src={image.url}
                 alt={`Slide ${index + 1}`}
                 className={`w-full h-full object-cover lg:object-contain pointer-events-none select-none`}

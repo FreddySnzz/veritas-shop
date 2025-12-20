@@ -7,7 +7,7 @@ export function PhraseSloganAlternative({ className }: PhraseSloganAlternativePr
   return (
     <div className={`flex items-center justify-center h-[10vh] ${className}`}>
       <h1 className="text-center text-secondary text-lg font-bold italic">
-        "Cada terço, uma oração em forma de arte."
+        &quot;Cada terço, uma oração em forma de arte.&quot;
       </h1>
     </div>
   );
@@ -29,7 +29,7 @@ export function PhraseNSFatima({ className }: PhraseSloganAlternativeProps) {
   return (
     <div className={`text-center ${className}`}>
       <span className="font-playfair-display italic">
-        {`"Rezai o Terço todos os dias, rezai, rezai muito! E fazei sacrifícios pelos pecadores, que vão muitas almas para o Inferno, por não haver quem se sacrifique e peça por elas."`}
+        {`&quot;Rezai o Terço todos os dias, rezai, rezai muito! E fazei sacrifícios pelos pecadores, que vão muitas almas para o Inferno, por não haver quem se sacrifique e peça por elas.&quot;`}
       </span>
       <br />
       <br />

@@ -2,7 +2,7 @@
 
 import FlowerIcon from "./icons/FlowerIcon";
 import Link from "next/link";
-import { CartButton } from "./CartButton";
+import { CartButton } from "./buttons/CartButton";
 import { useState } from "react";
 import Sidebar from "./Sidebar";
 

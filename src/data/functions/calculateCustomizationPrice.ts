@@ -1,3 +1,4 @@
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 export function calculateCustomizationPrice(customization: any) {
   const { crucifixo, entremeio, frase } = customization;
   

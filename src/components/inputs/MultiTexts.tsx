@@ -14,10 +14,12 @@ export default function MultiTextInput() {
     }
   };
 
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const handleRemove = (indexToRemove: any) => {
     setTexts(texts.filter((_, index) => index !== indexToRemove));
   };
 
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const handleChange = (indexToUpdate: any, value: any) => {
     const newTexts = [...texts];
     newTexts[indexToUpdate] = value;

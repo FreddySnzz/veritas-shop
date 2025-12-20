@@ -1,6 +1,6 @@
 'use client';
 
-import { ShoppingCart, X } from "lucide-react";
+import { ShoppingCart } from "lucide-react";
 
 interface CartButtonProps extends React.HTMLAttributes<HTMLElement> {
   isOpen: () => void;

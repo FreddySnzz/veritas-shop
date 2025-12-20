@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import * as motion from "motion/react-client"
-import { AlertCircle, PlusCircle } from 'lucide-react';
+import { AlertCircle } from 'lucide-react';
 import { initialData } from '../data/constants/products';
 import { Alert, AlertDescription } from './ui/alert';
 import { CustomizationCatalogButton } from './buttons/CatalogButton';
@@ -24,10 +24,16 @@ const RosarioCatalog = () => {
   useEffect(() => {
     const savedProducts = localStorage.getItem('veritas_products');
     const savedMaintence = localStorage.getItem('veritas_maintence');
-    if (savedProducts) setProducts(JSON.parse(savedProducts));
-    if (savedMaintence) setMaintence(JSON.parse(savedMaintence));
-  }, []);
 
+    if (savedProducts) {
+      setProducts(JSON.parse(savedProducts));
+    }
+    if (savedMaintence) {
+      setMaintence(JSON.parse(savedMaintence));
+    }
+  }, [setProducts, setMaintence]); 
+
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const saveProducts = (newProducts: any) => {
     setProducts(newProducts);
   };
@@ -37,6 +43,7 @@ const RosarioCatalog = () => {
     localStorage.setItem('veritas_maintence', JSON.stringify(status));
   };
 
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const toggleEstoque = (category: keyof typeof products, id: any) => {
     const newProducts = { ...products };
     const item = newProducts[category].find(p => p.id === id);
@@ -46,6 +53,8 @@ const RosarioCatalog = () => {
 
   const crucifixoComponent = () => {
     const availableCrucifixos = products.crucifixos.filter(c => c.available);
+    
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const groupedCrucifixos = availableCrucifixos.reduce((groups: Record<string, any[]>, item: Crucifixos) => {
       if (!groups[item.style]) {
         groups[item.style] = [];
