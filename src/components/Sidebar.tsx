@@ -31,8 +31,7 @@ export default function Sidebar({ open, onClose }: SidebarProps) {
       Aguardo retorno!
     `;
 
-    //numero do CAIO
-    const url = `https://wa.me/5586994319952?text=${encodeURIComponent(mensagem)}`;
+    const url = `https://wa.me/5586994379414?text=${encodeURIComponent(mensagem)}`;
     window.open(url, '_blank');
   };
 
