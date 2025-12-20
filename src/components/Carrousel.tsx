@@ -116,9 +116,11 @@ const ImageCarousel = ({
               <Image
                 src={image.url}
                 alt={`Slide ${index + 1}`}
-                className={`w-full h-full object-cover lg:object-contain pointer-events-none select-none`}
-                loading={index === 0 ? "eager" : "lazy"}
+                fill 
+                className="object-cover lg:object-contain pointer-events-none select-none"
+                priority={index === 0} 
                 draggable={false}
+                sizes="(max-width: 768px) 100vw, (max-width: 1200px) 100vw, 100vw"
               />
               
               {/* <div className="absolute inset-0 bg-linear-to-t from-black/50 via-transparent to-transparent pointer-events-none" /> */}

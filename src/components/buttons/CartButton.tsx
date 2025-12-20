@@ -1,5 +1,3 @@
-'use client';
-
 import { ShoppingCart } from "lucide-react";
 
 interface CartButtonProps extends React.HTMLAttributes<HTMLElement> {
@@ -7,8 +5,6 @@ interface CartButtonProps extends React.HTMLAttributes<HTMLElement> {
 };
 
 export function CartButton({ isOpen }: CartButtonProps) {
-  const cart = localStorage.getItem('custom_rosario');
-  
   return (
     <div className="relative">
       <button
@@ -17,7 +13,6 @@ export function CartButton({ isOpen }: CartButtonProps) {
       >
         <ShoppingCart className="w-6 h-6 text-secondary" />
       </button>
-      {cart && <div className="absolute w-2 h-2 top-2 right-2 rounded-full bg-details animate-ping" />}
     </div>
   );
 }
