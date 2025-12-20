@@ -1,7 +1,8 @@
 export const initialData = {
   cordoes: [
-    { id: '1', name: 'Marrom', color: '#8B4513', available: true, ref: '0030', img: '/public/favicon.png' },
-    { id: '2', name: 'Branco', color: '#ffffff', available: true, ref: '0031', img: '' },
+    { id: '1', name: 'Marrom', color: '#8B4513', available: true, ref: '01', img: '' },
+    { id: '2', name: 'Branco', color: '#ffffff', available: true, ref: '02', img: '' },
+    { id: '28', name: 'Preto', color: '#000000', available: true, ref: '03', img: '' },
   ],
   contas: [
     { id: '3', name: 'Preto', color: '#000000', available: true, ref: '01', img: '' },
