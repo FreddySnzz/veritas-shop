@@ -17,30 +17,42 @@ const RosarioCatalog = () => {
   const [maintence, setMaintence] = useState(false);
   const { customization, updateCustomization } = useCustomization();
   const [expanded, setExpanded] = useState(false);
+
   const toggleExpanded = () => {
     setExpanded((prev) => !prev);
   };
 
+  // --- CORREÇÃO AQUI ---
   useEffect(() => {
-    const savedProducts = localStorage.getItem('veritas_products');
-    const savedMaintence = localStorage.getItem('veritas_maintence');
+    // Verifica se estamos no navegador antes de acessar localStorage
+    if (typeof window !== 'undefined') {
+      const savedProducts = window.localStorage.getItem('veritas_products');
+      const savedMaintence = window.localStorage.getItem('veritas_maintence');
 
-    if (savedProducts) {
-      setProducts(JSON.parse(savedProducts));
-    }
-    if (savedMaintence) {
-      setMaintence(JSON.parse(savedMaintence));
+      if (savedProducts) {
+        setProducts(JSON.parse(savedProducts));
+      }
+      if (savedMaintence) {
+        setMaintence(JSON.parse(savedMaintence));
+      }
     }
   }, [setProducts, setMaintence]); 
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const saveProducts = (newProducts: any) => {
     setProducts(newProducts);
+    // Opcional: Salvar products no localStorage também se desejar persistência
+    if (typeof window !== 'undefined') {
+       window.localStorage.setItem('veritas_products', JSON.stringify(newProducts));
+    }
   };
 
+  // --- CORREÇÃO AQUI ---
   const saveMaintence = (status: boolean) => {
     setMaintence(status);
-    localStorage.setItem('veritas_maintence', JSON.stringify(status));
+    if (typeof window !== 'undefined') {
+      window.localStorage.setItem('veritas_maintence', JSON.stringify(status));
+    }
   };
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -56,11 +68,13 @@ const RosarioCatalog = () => {
     
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const groupedCrucifixos = availableCrucifixos.reduce((groups: Record<string, any[]>, item: Crucifixos) => {
-      if (!groups[item.style]) {
-        groups[item.style] = [];
+      // Agrupamento seguro: usa style ou 'Outros' se style for undefined
+      const groupKey = item.style || 'Outros';
+      if (!groups[groupKey]) {
+        groups[groupKey] = [];
       }
   
-      groups[item.style].push(item);
+      groups[groupKey].push(item);
       return groups;
     }, {});
   
@@ -76,7 +90,7 @@ const RosarioCatalog = () => {
           <div key={categoryName} className="mb-6 last:mb-0">
             <div className="flex items-center mb-3 gap-2">
               <span className="font-medium text-secondary text-sm capitalize">
-                {categoryName}
+                {categoryName}:
               </span>
             </div>
     
@@ -92,10 +106,11 @@ const RosarioCatalog = () => {
                   }`}
                 >
                   <div
-                    className="w-30 h-40 rounded-xl mx-auto mb-2 shadow-md"
-                    style={{ backgroundColor: "#323232" }}
+                    className="w-30 h-40 rounded-xl mx-auto mb-2 shadow-md bg-gray-800"
+                    // style={{ backgroundColor: "#323232" }} // Use classes tailwind sempre que possível
                   />
                   <div className="flex flex-col text-sm font-medium text-center">
+                    <span>{crucifixo.style}</span>
                     <span className='text-muted-foreground font-light text-xs'>
                       Ref: {crucifixo.ref}
                     </span>
@@ -111,12 +126,15 @@ const RosarioCatalog = () => {
 
   const entremeioComponent = () => {
     const availableEntremeios = products.entremeios.filter(e => e.available);
+    
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const groupedEntremeios = availableEntremeios.reduce((groups: Record<string, any[]>, item: Entremeios) => {
-      if (!groups[item.style]) {
-        groups[item.style] = [];
+      const groupKey = item.style || 'Outros';
+      if (!groups[groupKey]) {
+        groups[groupKey] = [];
       }
   
-      groups[item.style].push(item);
+      groups[groupKey].push(item);
       return groups;
     }, {});
   
@@ -132,7 +150,7 @@ const RosarioCatalog = () => {
           <div key={categoryName} className="mb-6 last:mb-0">
             <div className="flex items-center mb-3 gap-2">
               <span className="font-medium text-secondary text-sm capitalize">
-                {categoryName}
+                {categoryName}:
               </span>
             </div>
     
@@ -148,8 +166,8 @@ const RosarioCatalog = () => {
                   }`}
                 >
                   <div
-                    className="w-30 h-30 rounded-xl mx-auto mb-2 shadow-md"
-                    style={{ backgroundColor: "#e1e1e1" }}
+                    className="w-30 h-30 rounded-xl mx-auto mb-2 shadow-md bg-gray-200"
+                    // style={{ backgroundColor: "#e1e1e1" }}
                   />
                   <div className="flex flex-col text-sm font-medium text-center">
                     <span>{entremeio.name}</span>

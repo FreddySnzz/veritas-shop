@@ -1,6 +1,6 @@
 'use client';
 
-import openLinkOnButton from "@/src/utils/openNewWindowButton";
+import openLinkOnButton from "@/data/functions/openNewWindowButton";
 
 interface InstagramButtonProps {
   className?: string;
