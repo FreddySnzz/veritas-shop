@@ -7,7 +7,8 @@ import { LogoHorizontal } from "./Typography";
 import { WhatsAppButton } from "./buttons/WhatsAppButton";
 import { useCustomization } from "@/data/context/CustomizationContext";
 import { calculateCustomizationPrice } from "@/data/functions/calculateCustomizationPrice";
-import { Trash2 } from "lucide-react";
+import { MinusCircle, Trash2 } from "lucide-react";
+import Image from "next/image";
 
 interface SidebarProps {
   open: boolean;
@@ -15,7 +16,7 @@ interface SidebarProps {
 }
 
 export default function Sidebar({ open, onClose }: SidebarProps) {
-  const { customization, updateCustomization } = useCustomization();
+  const { customization, updateCustomization, resetCustomization } = useCustomization();
   const isMdDown = useMediaQuery("(max-width: 768px)");
 
   const gerarMensagemWhatsApp = () => {
@@ -71,11 +72,20 @@ export default function Sidebar({ open, onClose }: SidebarProps) {
               {customization?.conta && 
                 <div className="flex items-center justify-between gap-4 w-full">
                   <div className="flex items-center gap-4">
-                    <div className="bg-black rounded-xl w-12 h-12" />
+                    <div className="bg-black rounded-xl w-12 h-12 object-contain">
+                      {/* TODO: find by ref */}
+                      {/* <Image
+                        src={conta.img}
+                        alt={conta.ref}
+                        width={400}
+                        height={400}
+                        className='rounded-xl'
+                      /> */}
+                    </div>
                     <p className="text-sm text-muted-foreground">Conta: {customization.conta}</p>
                   </div>
                   <button onClick={() => updateCustomization({ conta: undefined })} className="p-2 hover:bg-gray-100 rounded-lg cursor-pointer">
-                    <Trash2 className="w-4 h-4 text-secondary" />
+                    <MinusCircle className="w-4 h-4 text-secondary" />
                   </button>
                 </div>
               }
@@ -86,8 +96,8 @@ export default function Sidebar({ open, onClose }: SidebarProps) {
                     <div className="bg-black rounded-xl w-12 h-12" />
                     <p className="text-sm text-muted-foreground">Cordão: {customization.cordao}</p>
                   </div>
-                  <button onClick={() => updateCustomization({ conta: undefined })} className="p-2 hover:bg-gray-100 rounded-lg cursor-pointer">
-                    <Trash2 className="w-4 h-4 text-secondary" />
+                  <button onClick={() => updateCustomization({ cordao: undefined })} className="p-2 hover:bg-gray-100 rounded-lg cursor-pointer">
+                    <MinusCircle className="w-4 h-4 text-secondary" />
                   </button>
                 </div>
               }
@@ -98,8 +108,8 @@ export default function Sidebar({ open, onClose }: SidebarProps) {
                     <div className="bg-black rounded-xl w-12 h-12" />
                     <p className="text-sm text-muted-foreground">Letra: {customization.styleLetra}</p>
                   </div>
-                  <button onClick={() => updateCustomization({ conta: undefined })} className="p-2 hover:bg-gray-100 rounded-lg cursor-pointer">
-                    <Trash2 className="w-4 h-4 text-secondary" />
+                  <button onClick={() => updateCustomization({ styleLetra: undefined })} className="p-2 hover:bg-gray-100 rounded-lg cursor-pointer">
+                    <MinusCircle className="w-4 h-4 text-secondary" />
                   </button>
                 </div>
               }
@@ -110,8 +120,8 @@ export default function Sidebar({ open, onClose }: SidebarProps) {
                     <div className="bg-black rounded-xl w-12 h-12" />
                     <p className="text-sm text-muted-foreground">Crucifixo: {customization.crucifixo}</p>
                   </div>
-                  <button onClick={() => updateCustomization({ conta: undefined })} className="p-2 hover:bg-gray-100 rounded-lg cursor-pointer">
-                    <Trash2 className="w-4 h-4 text-secondary" />
+                  <button onClick={() => updateCustomization({ crucifixo: undefined })} className="p-2 hover:bg-gray-100 rounded-lg cursor-pointer">
+                    <MinusCircle className="w-4 h-4 text-secondary" />
                   </button>
                 </div>
               }
@@ -122,32 +132,50 @@ export default function Sidebar({ open, onClose }: SidebarProps) {
                     <div className="bg-black rounded-xl w-12 h-12" />
                     <p className="text-sm text-muted-foreground">Entremeio: {customization.entremeio}</p>
                   </div>
-                  <button onClick={() => updateCustomization({ conta: undefined })} className="p-2 hover:bg-gray-100 rounded-lg cursor-pointer">
-                    <Trash2 className="w-4 h-4 text-secondary" />
+                  <button onClick={() => updateCustomization({ entremeio: undefined })} className="p-2 hover:bg-gray-100 rounded-lg cursor-pointer">
+                    <MinusCircle className="w-4 h-4 text-secondary" />
                   </button>
                 </div>
               }
 
-              {customization?.frase && customization?.frase.map((frase: string, index: number) => (
+              {customization?.frase && customization.frase.map((frase: string, index: number) => (
                 <div key={index} className="flex items-center justify-between gap-4 w-full">
                   <p className="text-muted-foreground mt-6">
                     Texto {index + 1}: {frase}
                   </p>
-                  <button onClick={() => updateCustomization({ conta: undefined })} className="p-2 hover:bg-gray-100 rounded-lg cursor-pointer">
-                    <Trash2 className="w-4 h-4 text-secondary" />
+                  
+                  <button 
+                    onClick={() => {
+                      const novaFrase = (customization.frase!).filter((_, i) => i !== index);
+                      updateCustomization({ frase: novaFrase });
+                    }} 
+                    className="p-2 hover:bg-gray-100 rounded-lg cursor-pointer"
+                    title="Remover este item"
+                  >
+                    <MinusCircle className="w-4 h-4 text-secondary" />
                   </button>
                 </div>
               ))}
             </div>
           </div>
 
-          <hr className="my-4 border-muted-foreground/30"/>
+          <div className="flex items-center justify-center">
+            <button 
+              onClick={() => resetCustomization()}
+              className="flex gap-2 font-sans text-red-400"
+            >
+              <Trash2 />
+              Limpar Carrinho
+            </button>
+          </div>
+
+          <hr className="my-4 border-muted-foreground/15"/>
 
           <span className="font-sans font-medium">
-            Valor aproximado: R$ {calculateCustomizationPrice(customization)},00
+            Valor aproximado: R$ {calculateCustomizationPrice(customization).toFixed(2)}
           </span>
 
-          <hr className="my-4 border-muted-foreground/30"/>
+          <hr className="my-4 border-muted-foreground/15"/>
 
           <WhatsAppButton message={gerarMensagemWhatsApp} />
         </nav>

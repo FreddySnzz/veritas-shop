@@ -8,7 +8,7 @@ import { WhatsAppButtonFixed } from "@/components/buttons/WhatsAppButton";
 import openLinkOnButton from "@/data/functions/openNewWindowButton";
 import ImageCarousel from "@/components/Carrousel";
 import About from "@/components/About";
-import { PhraseSloganAlternative } from "@/components/Phrases";
+import { PhraseVerse } from "@/components/Phrases";
 import { CatalogButton } from "@/components/buttons/CatalogButton";
 
 export default function Home() {
@@ -33,7 +33,7 @@ export default function Home() {
             <ButtonScrollDown className="text-secondary" section="carrousel" /> 
           </div>
 
-          <PhraseSloganAlternative className="bg-primary/50" />
+          <PhraseVerse className="bg-primary/50" />
 
           <section id="carrousel">
             <ImageCarousel className="h-screen"/>

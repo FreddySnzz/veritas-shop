@@ -10,6 +10,8 @@ import MultiTextInput from './inputs/MultiTexts';
 import { Crucifixos, Entremeios } from '@/data/types/products.type';
 import Sidebar from './Sidebar';
 import { useCustomization } from '@/data/context/CustomizationContext';
+import Image from 'next/image';
+import { scrollToSection } from '@/data/functions/scrollToSection';
 
 const RosarioCatalog = () => {
   const [view, setView] = useState('catalog'); // catalog ou admin
@@ -22,9 +24,7 @@ const RosarioCatalog = () => {
     setExpanded((prev) => !prev);
   };
 
-  // --- CORREÇÃO AQUI ---
   useEffect(() => {
-    // Verifica se estamos no navegador antes de acessar localStorage
     if (typeof window !== 'undefined') {
       const savedProducts = window.localStorage.getItem('veritas_products');
       const savedMaintence = window.localStorage.getItem('veritas_maintence');
@@ -41,13 +41,11 @@ const RosarioCatalog = () => {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const saveProducts = (newProducts: any) => {
     setProducts(newProducts);
-    // Opcional: Salvar products no localStorage também se desejar persistência
     if (typeof window !== 'undefined') {
        window.localStorage.setItem('veritas_products', JSON.stringify(newProducts));
     }
   };
 
-  // --- CORREÇÃO AQUI ---
   const saveMaintence = (status: boolean) => {
     setMaintence(status);
     if (typeof window !== 'undefined') {
@@ -68,7 +66,6 @@ const RosarioCatalog = () => {
     
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const groupedCrucifixos = availableCrucifixos.reduce((groups: Record<string, any[]>, item: Crucifixos) => {
-      // Agrupamento seguro: usa style ou 'Outros' se style for undefined
       const groupKey = item.style || 'Outros';
       if (!groups[groupKey]) {
         groups[groupKey] = [];
@@ -79,7 +76,7 @@ const RosarioCatalog = () => {
     }, {});
   
     return (
-      <div className="bg-white rounded-2xl p-6">
+      <section id='crucifixos' className="bg-white rounded-2xl p-6">
         <div className="flex items-center mb-4 gap-2">
           <span className="font-bold text-secondary">
             Crucifixo
@@ -98,7 +95,7 @@ const RosarioCatalog = () => {
               {(items as any[]).map((crucifixo: Crucifixos) => (
                 <button
                   key={crucifixo.id}
-                  onClick={() => updateCustomization({ crucifixo: crucifixo.ref })}
+                  onClick={() => (updateCustomization({ crucifixo: crucifixo.ref }), scrollToSection('entremeios'))}
                   className={`p-4 rounded-2xl border lg:border-2 transition-all ${
                     customization?.crucifixo === crucifixo.ref
                       ? 'border-details'
@@ -107,7 +104,6 @@ const RosarioCatalog = () => {
                 >
                   <div
                     className="w-30 h-40 rounded-xl mx-auto mb-2 shadow-md bg-gray-800"
-                    // style={{ backgroundColor: "#323232" }} // Use classes tailwind sempre que possível
                   />
                   <div className="flex flex-col text-sm font-medium text-center">
                     <span>{crucifixo.style}</span>
@@ -120,7 +116,7 @@ const RosarioCatalog = () => {
             </div>
           </div>
         ))}
-      </div>
+      </section>
     );
   }
 
@@ -139,7 +135,7 @@ const RosarioCatalog = () => {
     }, {});
   
     return (
-      <div className="bg-white rounded-2xl p-6">
+      <section id='entremeios' className="bg-white rounded-2xl p-6">
         <div className="flex items-center mb-4 gap-2">
           <span className="font-bold text-secondary">
             Entremeio <span className='text-muted-foreground font-light text-sm'>(Opcional)</span>
@@ -158,7 +154,7 @@ const RosarioCatalog = () => {
               {(items as any[]).map((entremeio: Entremeios) => (
                 <button
                   key={entremeio.id}
-                  onClick={() => updateCustomization({ entremeio: entremeio.ref })}
+                  onClick={() => (updateCustomization({ entremeio: entremeio.ref }), scrollToSection('finish'))}
                   className={`p-4 rounded-2xl border lg:border-2 transition-all ${
                     customization?.entremeio === entremeio.ref
                       ? 'border-details'
@@ -167,7 +163,6 @@ const RosarioCatalog = () => {
                 >
                   <div
                     className="w-30 h-30 rounded-xl mx-auto mb-2 shadow-md bg-gray-200"
-                    // style={{ backgroundColor: "#e1e1e1" }}
                   />
                   <div className="flex flex-col text-sm font-medium text-center">
                     <span>{entremeio.name}</span>
@@ -180,7 +175,7 @@ const RosarioCatalog = () => {
             </div>
           </div>
         ))}
-      </div>
+      </section>
     );
   }
 
@@ -275,7 +270,7 @@ const RosarioCatalog = () => {
     <div className="font-sans w-screen p-4 md:p-8">
       <div className="mx-auto pb-4">
         <div className="space-y-4">
-          <div className="bg-white rounded-2xl p-6">
+          <section id='cordoes' className="bg-white rounded-2xl p-6">
             <h3 className="flex items-center font-bold text-secondary mb-4 gap-2">
               Cor do Cordão
             </h3>
@@ -283,7 +278,7 @@ const RosarioCatalog = () => {
               {products.cordoes.filter(c => c.available).map((cordao) => (
                 <button
                   key={cordao.id}
-                  onClick={() => updateCustomization({ cordao: cordao.ref })}
+                  onClick={() => (updateCustomization({ cordao: cordao.ref }), scrollToSection('contas'))}
                   className={`p-4 rounded-2xl border lg:border-2 transition-all ${
                     customization?.cordao === cordao.ref
                       ? 'border-details'
@@ -301,9 +296,9 @@ const RosarioCatalog = () => {
                 </button>
               ))}
             </div>
-          </div>
+          </section>
 
-          <div className="bg-white rounded-2xl p-6">
+          <section id='contas' className="bg-white rounded-2xl p-6">
             <div className="flex items-center mb-4 gap-2">
               <span className="font-bold text-secondary ">
                 Cor das Contas 
@@ -316,7 +311,7 @@ const RosarioCatalog = () => {
               {products.contas.filter(c => c.available).map((conta) => (
                 <button
                   key={conta.id}
-                  onClick={() => updateCustomization({ conta: conta.ref })}
+                  onClick={() => (updateCustomization({ conta: conta.ref }), scrollToSection('texts'))}
                   className={`p-4 rounded-2xl border lg:border-2 transition-all ${
                     customization?.conta === conta.ref
                       ? 'border-details'
@@ -324,21 +319,28 @@ const RosarioCatalog = () => {
                   }`}
                 >
                   <div
-                    className="w-30 h-30 rounded-xl mx-auto mb-2 shadow-md"
+                    className="w-30 h-30 rounded-xl mx-auto mb-2 object-contain"
                     style={{ backgroundColor: conta.color }}
-                  />
+                  >
+                    <Image
+                      src={conta.img}
+                      alt={conta.ref}
+                      width={400}
+                      height={400}
+                      className='rounded-xl'
+                    />
+                  </div>
                   <div className="flex flex-col text-sm font-medium text-center">
-                    <span>{conta.name}</span>
                     <span className='text-muted-foreground font-light text-xs'>Ref: {conta.ref}</span>
                   </div>
                 </button>
               ))}
             </div>
-          </div>
+          </section>
 
           <MultiTextInput />
 
-          <div className="bg-white rounded-2xl p-6">
+          {customization.frase && <section id='letras' className="bg-white rounded-2xl p-6">
             <div className="flex items-center mb-4 gap-2">
               <span className="font-bold text-secondary ">
                 Estilo das Letras <span className='text-muted-foreground font-light text-sm'>(Opcional)</span>
@@ -348,7 +350,7 @@ const RosarioCatalog = () => {
               {products.letras.filter(l => l.available).map((styleLetra) => (
                 <button
                   key={styleLetra.id}
-                  onClick={() => updateCustomization({ styleLetra: styleLetra.ref })}
+                  onClick={() => (updateCustomization({ styleLetra: styleLetra.ref }), scrollToSection('crucifixos'))}
                   className={`p-4 rounded-2xl border lg:border-2 transition-all ${
                     customization?.styleLetra === styleLetra.ref
                       ? 'border-details'
@@ -366,13 +368,13 @@ const RosarioCatalog = () => {
                 </button>
               ))}
             </div>
-          </div>
+          </section>}
 
           {crucifixoComponent()}
 
           {entremeioComponent()}
           
-          <div className="flex items-center justify-center">
+          <section id='finish' className="flex items-center justify-center">
             <motion.div 
               className="w-full md:w-1/3 lg:w-1/5 xl:w-1/6 mt-12"
               animate={{
@@ -386,7 +388,7 @@ const RosarioCatalog = () => {
             >
               <CustomizationCatalogButton onClick={toggleExpanded} />
             </motion.div>
-          </div>
+          </section>
         </div>
       </div>
       <Sidebar open={expanded} onClose={() => setExpanded(false)} />

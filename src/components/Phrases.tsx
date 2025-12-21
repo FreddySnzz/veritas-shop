@@ -1,19 +1,30 @@
-interface PhraseSloganAlternativeProps {
+interface PhraseSloganProps {
   className?: string;
   divClassName?: string;
 }
 
-export function PhraseSloganAlternative({ className }: PhraseSloganAlternativeProps) {
+export function PhraseVerse({ className }: PhraseSloganProps) {
   return (
     <div className={`flex items-center justify-center h-[10vh] ${className}`}>
       <h1 className="text-center text-secondary text-lg font-bold italic">
-        &quot;Cada terço, uma oração em forma de arte.&quot;
+        &quot;Eu sou o Caminho, a Verdade e a Vida.&quot;<br/>
+        (Jo 14, 6).
       </h1>
     </div>
   );
 }
 
-export function PhraseSloganAlternative2({ className, divClassName }: PhraseSloganAlternativeProps) {
+export function PhraseSloganAlternative({ className, divClassName }: PhraseSloganProps) {
+  return (
+    <div className={`${divClassName}`}>
+      <span className={`font-playfair-display font-medium text-2xl ${className}`}>
+        &quot;Na simplicidade, a verdade florece!&quot;
+      </span>
+    </div>
+  );
+}
+
+export function PhraseSloganAlternative2({ className, divClassName }: PhraseSloganProps) {
   return (
     <div className={`${divClassName}`}>
       <span className={`font-playfair-display font-medium text-2xl ${className}`}>
@@ -25,11 +36,11 @@ export function PhraseSloganAlternative2({ className, divClassName }: PhraseSlog
   );
 }
 
-export function PhraseNSFatima({ className }: PhraseSloganAlternativeProps) {
+export function PhraseNSFatima({ className }: PhraseSloganProps) {
   return (
     <div className={`text-center ${className}`}>
       <span className="font-playfair-display italic">
-        {`&quot;Rezai o Terço todos os dias, rezai, rezai muito! E fazei sacrifícios pelos pecadores, que vão muitas almas para o Inferno, por não haver quem se sacrifique e peça por elas.&quot;`}
+        &quot;{`Rezai o Terço todos os dias, rezai, rezai muito! E fazei sacrifícios pelos pecadores, que vão muitas almas para o Inferno, por não haver quem se sacrifique e peça por elas.`}&quot;
       </span>
       <br />
       <br />

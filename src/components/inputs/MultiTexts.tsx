@@ -14,13 +14,14 @@ export default function MultiTextInput() {
     }
   };
 
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const handleRemove = (indexToRemove: any) => {
-    setTexts(texts.filter((_, index) => index !== indexToRemove));
+  const handleRemove = (indexToRemove: number) => {
+    const newTexts = texts.filter((_, index) => index !== indexToRemove);
+    setTexts(newTexts);
+    updateCustomization({ frase: newTexts });
   };
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const handleChange = (indexToUpdate: any, value: any) => {
+  const handleChange = (indexToUpdate: number, value: any) => {
     const newTexts = [...texts];
     newTexts[indexToUpdate] = value;
     setTexts(newTexts);
@@ -31,7 +32,7 @@ export default function MultiTextInput() {
   };
 
   return (
-    <div className="bg-white rounded-2xl p-6">
+    <section id='texts' className="bg-white rounded-2xl p-6">
       <div className="flex flex-col mb-4 gap-2">
         <span className="font-bold text-secondary">
           Texto <span className='text-muted-foreground font-light text-sm'>(Opcional)</span>
@@ -83,6 +84,6 @@ export default function MultiTextInput() {
           </span>
         )}
       </div>
-    </div>
+    </section>
   );
 }

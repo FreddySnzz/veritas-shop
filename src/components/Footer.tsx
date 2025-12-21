@@ -3,7 +3,7 @@
 import { FaInstagram, FaWhatsapp } from "react-icons/fa6";
 import { SlogganTypography, Typography } from "./Typography";
 import openLinkOnButton from "@/data/functions/openNewWindowButton";
-import { PhraseSloganAlternative2 } from "./Phrases";
+import { PhraseSloganAlternative } from "./Phrases";
 
 interface FooterProps extends React.HTMLAttributes<HTMLDivElement> {
   className?: string;
@@ -22,7 +22,7 @@ export default function Footer({ className }: FooterProps) {
             <span className="text-xs text-center mb-6 font-playfair-display text-primary font-bold">São Gonçalo do Piauí - PI</span>
           </div>
 
-          <PhraseSloganAlternative2 divClassName="text-center" className="text-muted-foreground text-sm" />
+          <PhraseSloganAlternative divClassName="text-center" className="text-muted-foreground text-sm" />
         </div>
 
         <hr className="mt-8 border-muted-foreground/50"/>
