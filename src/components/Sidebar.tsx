@@ -1,6 +1,4 @@
-import { 
-  FaTimes, 
-} from "react-icons/fa";
+import { FaTimes } from "react-icons/fa";
 import { useLockBodyScroll } from "@/data/hook/useBodyLockScroll";
 import { useMediaQuery } from "@/data/hook/useMediaQuery";
 import { LogoHorizontal } from "./Typography";
@@ -8,7 +6,6 @@ import { WhatsAppButton } from "./buttons/WhatsAppButton";
 import { useCustomization } from "@/data/context/CustomizationContext";
 import { calculateCustomizationPrice } from "@/data/functions/calculateCustomizationPrice";
 import { MinusCircle, Trash2 } from "lucide-react";
-import Image from "next/image";
 
 interface SidebarProps {
   open: boolean;

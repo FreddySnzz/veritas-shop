@@ -26,7 +26,6 @@ const ImageCarousel = ({
   
   const [touchStart, setTouchStart] = useState<number | null>(null);
   const [touchEnd, setTouchEnd] = useState<number | null>(null);
-  const [, setIsDragging] = useState(false);
   
   const containerRef = useRef<HTMLDivElement>(null);
 
@@ -67,7 +66,6 @@ const ImageCarousel = ({
   const handleTouchStart = (e: TouchEvent) => {
     setTouchEnd(null);
     setTouchStart(e.targetTouches[0].clientX);
-    setIsDragging(true);
   };
 
   const handleTouchMove = (e: TouchEvent) => {
@@ -76,7 +74,6 @@ const ImageCarousel = ({
 
   const handleTouchEnd = () => {
     if (!touchStart || !touchEnd) {
-      setIsDragging(false);
       return;
     }
     
@@ -90,13 +87,12 @@ const ImageCarousel = ({
       handlePrevious();
     }
 
-    setIsDragging(false);
     setTouchStart(null);
     setTouchEnd(null);
   };
 
   return (
-    <div className={`relative w-full h-full ${className}`}>
+    <div className={`w-full h-[40vh] ${className}`}>
       <div 
         ref={containerRef}
         className={`relative w-full h-full overflow-hidden ${rounded ? 'rounded-2xl' : ''}`}
@@ -112,7 +108,7 @@ const ImageCarousel = ({
                 index === currentIndex ? 'opacity-100 z-10' : 'opacity-0 z-0'
               }`}
             >
-              <div className="absolute inset-0 bg-linear-to-b from-secondary/70 via-transparent to-transparent pointer-events-none" />
+              <div className="absolute inset-0 pointer-events-none" />
               <Image
                 src={image.url}
                 alt={`Slide ${index + 1}`}
@@ -120,10 +116,7 @@ const ImageCarousel = ({
                 className="object-cover lg:object-contain pointer-events-none select-none"
                 priority={index === 0} 
                 draggable={false}
-                sizes="(max-width: 768px) 100vw, (max-width: 1200px) 100vw, 100vw"
               />
-              
-              {/* <div className="absolute inset-0 bg-linear-to-t from-black/50 via-transparent to-transparent pointer-events-none" /> */}
             </div>
           ))}
         </div>

@@ -35,7 +35,7 @@ export default function MultiTextInput() {
     <section id='texts' className="bg-white rounded-2xl p-6">
       <div className="flex flex-col mb-4 gap-2">
         <span className="font-bold text-secondary">
-          Texto <span className='text-muted-foreground font-light text-sm'>(Opcional)</span>
+          Texto
         </span>
         <span className='text-muted-foreground font-light text-sm'>
           (Caso adicione mais de uma palavra, valor adicional será incluso.)

@@ -28,11 +28,11 @@ export const initialData = {
     { id: '44', name: 'Cerejeira', color: '#FFA500', available: true, ref: '21', img: '/imagens/contas/21.png' },
   ],
   letras: [
-    { id: '9', name: 'Branco', available: true, ref: '01', img: '/imagens/letras/01.png' },
+    { id: '9', name: 'Branco', available: true, ref: '01', img: '/imagens/contas/01-alt.png' },
     { id: '10', name: 'Metálico', available: true, ref: '02', img: '/imagens/letras/02.png' },
   ],
   crucifixos: [
-    { id: '11', style: 'Ouro velho', available: true, ref: '01', img: '' },
+    { id: '11', style: 'Ouro velho', available: true, ref: '01', img: '/imagens/crucifixos/ouro-velho/01.png' },
     { id: '12', style: 'Ouro velho', available: true, ref: '02', img: '' },
     { id: '13', style: 'Ouro velho', available: true, ref: '03', img: '' },
     { id: '14', style: 'Ouro velho', available: true, ref: '04', img: '' },

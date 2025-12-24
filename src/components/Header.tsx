@@ -13,7 +13,7 @@ export function Header() {
   };
 
   return (
-    <header className="bg-white sticky top-0 z-10">
+    <header className="bg-white fixed top-0 z-50 w-screen">
       <div className="flex items-center justify-between mx-auto px-4 py-4">
         <Link href="/" className="relative flex gap-2">
           <div className="flex items-center gap-2">

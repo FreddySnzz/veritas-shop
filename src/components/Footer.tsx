@@ -11,11 +11,11 @@ interface FooterProps extends React.HTMLAttributes<HTMLDivElement> {
 
 export default function Footer({ className }: FooterProps) {
   return (
-    <footer className={`w-full bg-secondary font-sans p-6 z-50 ${className}`}>
+    <footer className={`w-full bg-secondary font-sans p-6 z-49 ${className}`}>
       <div>
         <div className="md:flex items-center justify-around mt-2">
           <div className="flex flex-col items-center">
-            <a href={`#home`}>
+            <a href={`/`}>
               <Typography className="text-center font-playfair-display" tittleColor="text-stone-300" size={"sm"} />
             </a>
             <SlogganTypography className="text-center" />
