@@ -2,14 +2,9 @@
 
 import * as motion from "motion/react-client"
 import Footer from "../components/Footer";
-import { SlogganTypography, Typography } from "../components/Typography";
-import ButtonScrollDown from "@/components/buttons/ButtonScrollDown";
 import { WhatsAppButtonFixed } from "@/components/buttons/WhatsAppButton";
 import openLinkOnButton from "@/data/functions/openNewWindowButton";
 import ImageCarousel from "@/components/Carrousel";
-import About from "@/components/About";
-import { PhraseVerse } from "@/components/Phrases";
-import { CatalogButton } from "@/components/buttons/CatalogButton";
 import { Header } from "@/components/Header";
 import Catalog from "@/components/Catalog";
 
