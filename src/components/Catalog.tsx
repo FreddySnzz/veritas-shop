@@ -28,7 +28,6 @@ export default function Catalog({ className }: CatalogProps) {
           title="Dezena Personalizada"
           desc="Personalize seu dezena com entremeios, crucifixo, letras e textos personalizados"
           price={15}
-          img={dataImages[5].url}
           available={false}
           productPage="/personalizar"
           onClick={() => window.alert("O produto não está disponível no momento. Aguarde um pouco e tente novamente.")}
@@ -45,7 +44,6 @@ export default function Catalog({ className }: CatalogProps) {
           desc="Personalize seu chaveiro com crucifixo, entremeio, letras e textos personalizados"
           price={15}
           available={false}
-          img={dataImages[7].url}
           productPage="/personalizar"
         />
       </div>
