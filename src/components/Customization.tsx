@@ -12,7 +12,7 @@ import { useCustomization } from '@/data/context/CustomizationContext';
 import { Crucifixos, Entremeios } from '@/data/types/products.type';
 
 const STEPS = [
-  { id: 'cordao', title: 'Cordão', subtitle: 'Escolha a cor do cordão do seu Terço' },
+  { id: 'cordao', title: 'Cordão', subtitle: 'Escolha a cor do cordão' },
   { id: 'contas', title: 'Contas', subtitle: 'Escolha a cor das contas (bolinhas)' },
   { id: 'texto', title: 'Personalização (Opcional)', subtitle: 'Escreva um nome ou texto' },
   { id: 'letras', title: 'Estilo da Letra', subtitle: 'Escolha o design das letras' },
@@ -155,7 +155,7 @@ const RosarioWizard = () => {
                 }`}
               >
                 <div className="relative w-24 h-24 mx-auto mb-3">
-                  <Image src={conta.img} alt={conta.ref} fill className="object-contain rounded-lg" />
+                  <Image src={conta.img} alt={conta.ref} fill className="object-contain rounded-lg" sizes='' />
                 </div>
                 <span className="text-xs text-gray-400">Ref: {conta.ref}</span>
                 {customization?.conta === conta.ref && (
@@ -168,7 +168,7 @@ const RosarioWizard = () => {
 
       case 'texto':
         return (
-          <div className="flex flex-col gap-6">
+          <div className="flex flex-col gap-4">
             <MultiTextInput />
             <div className="bg-blue-50 p-4 rounded-xl text-sm text-blue-700">
               <p>Dica: O máximo de letras por mistério é 10.</p>
@@ -190,10 +190,16 @@ const RosarioWizard = () => {
                   customization?.styleLetra === letra.ref ? 'border-blue-600 bg-blue-50' : 'border-gray-100 hover:border-blue-200'
                 }`}
               >
-                <div className="w-16 h-16 rounded-full mx-auto mb-3 bg-black flex items-center justify-center text-white font-bold text-xl">
-                    ABC
+                {/* <div className="w-16 h-16 rounded-full mx-auto mb-3 bg-black flex items-center justify-center text-white font-bold text-xl">
+                  ABC
+                </div> */}
+                <div className="relative w-24 h-24 mx-auto mb-3">
+                  <Image src={letra.img} alt={letra.ref} fill className="object-contain rounded-lg" sizes='' />
                 </div>
-                <span className="block font-medium">{letra.name}</span>
+                <span className="text-xs text-gray-400">Ref: {letra.ref}</span>
+                {customization?.styleLetra === letra.ref && (
+                  <div className="absolute top-2 right-2 bg-blue-600 text-white p-1 rounded-full"><Check size={12} /></div>
+                )}
               </button>
             ))}
           </div>
@@ -289,7 +295,7 @@ const RosarioWizard = () => {
     <div className="bg-gray-50 flex flex-col md:flex-row font-sans rounded-xl m-4">
       <main className="flex flex-col flex-1 mx-auto min-h-[87vh] w-full p-4 md:p-8">
         <header className="mb-8">
-          <div className="w-full bg-gray-200 h-2 rounded-full mb-6 overflow-hidden">
+          <div className="w-full bg-gray-200 h-2 rounded-full mb-6">
             <motion.div 
               className="h-full bg-primary"
               initial={{ width: 0 }}
@@ -340,7 +346,7 @@ const RosarioWizard = () => {
           {currentStep < STEPS.length - 1 && (
             <button
               onClick={handleNext}
-              className="flex items-center gap-2 px-6 py-3 bg-gray-900 text-white rounded-xl font-medium hover:bg-gray-800 transition-all shadow-lg hover:shadow-xl"
+              className="flex items-center gap-2 px-6 py-3 bg-secondary text-white rounded-xl font-medium hover:bg-gray-800 transition-all shadow-lg hover:shadow-xl"
             >
               {STEPS[currentStep].id === 'texto' ? 'Pular / Continuar' : 'Próximo'}
               <ChevronRight size={20} />

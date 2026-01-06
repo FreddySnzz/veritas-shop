@@ -6,7 +6,6 @@ import { WhatsAppButtonFixed } from "@/components/buttons/WhatsAppButton";
 import openLinkOnButton from "@/data/functions/openNewWindowButton";
 import ImageCarousel from "@/components/Carrousel";
 import About from "@/components/About";
-import { PhraseVerse } from "@/components/Phrases";
 import { CatalogButton } from "@/components/buttons/CatalogButton";
 import { SlogganTypography, Typography } from "@/components/Typography";
 import Footer from "@/components/Footer";
@@ -33,7 +32,7 @@ export default function Home() {
             <ButtonScrollDown className="text-secondary" section="carrousel" /> 
           </div>
 
-          <div className="w-full md:w-1/2 p-4 mb-8">
+          <div className="w-full md:w-1/2 lg:w-1/3 xl:w-1/4 p-4 mb-8 md:ml-[25.5%] lg:ml-[33.5%] xl:ml-[37.5%]">
             <motion.div 
               animate={{
                 scale: [0.95, 1, 0.95],
@@ -60,7 +59,7 @@ export default function Home() {
 
       <About />
 
-      <div className="w-full md:w-1/2 p-4 mb-8">
+      <div className="w-full md:w-1/2 lg:w-1/3 xl:w-1/4 p-4 mb-8">
         <motion.div 
           animate={{
             scale: [0.95, 1, 0.95],

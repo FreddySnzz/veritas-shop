@@ -29,7 +29,7 @@ export default function Home() {
           </motion.div>
         </main>
         
-        <WhatsAppButtonFixed message={() => openLinkOnButton("https://wa.me/5586994379414?text=Olá, gostaria de fazer um pedido de Terço Personalizado!")} />
+        <WhatsAppButtonFixed message={() => openLinkOnButton("https://wa.me/5586994379414?text=Olá Veritas Ateliê, gostaria de fazer um orçamento 😄!")} />
         <Footer />
       </section>
     </>

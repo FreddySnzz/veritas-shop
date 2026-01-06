@@ -9,12 +9,12 @@ export default function Customization() {
   const isMdDown = useMediaQuery("(min-width: 768px)");
 
   return (
-    <>
+    <div className="flex flex-col min-h-screen max-w-screen">
       <Header />
-      <main className="flex flex-col min-h-[92vh] max-w-screen bg-background-alternative overflow-hidden">
+      <main className="grow mt-16 bg-background-alternative">
         <RosarioWizard />
       </main>
       {isMdDown && <Footer />}
-    </>
+    </div>
   );
 }

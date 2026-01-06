@@ -32,7 +32,7 @@ export default function MultiTextInput() {
   };
 
   return (
-    <section id='texts' className="bg-white rounded-2xl p-6">
+    <section id='texts' className="bg-white rounded-2xl p-4">
       <div className="flex flex-col mb-4 gap-2">
         <span className="font-bold text-secondary">
           Texto

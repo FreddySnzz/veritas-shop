@@ -6,11 +6,11 @@ interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
 
 export function CatalogButton() {
   return (
-    <Link href="/personalizar">
+    <Link href="/">
       <button
         className="flex items-center justify-center w-full bg-secondary hover:bg-secondary/80 text-white py-4 rounded-2xl font-sans font-bold text-lg gap-3 transition-all cursor-pointer"
       >
-        Quero personalizar meu Terço!
+        Ver Catálogo
       </button>
     </Link>
   );

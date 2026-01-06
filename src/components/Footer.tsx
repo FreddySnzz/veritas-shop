@@ -48,7 +48,7 @@ export default function Footer({ className }: FooterProps) {
           <div className="flex items-center justify-around my-2 w-full">
             <div className="flex mt-2 text-primary font-light underline">
               <div className="flex flex-col">
-                <a href={`#about`}>
+                <a href={`/apresentacao`}>
                   <span>Quem somos</span>
                 </a>
                 <span>Sistema de entregas</span>
