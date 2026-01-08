@@ -1,6 +1,12 @@
 'use client';
 
-import { createContext, useContext, ReactNode } from 'react';
+import { 
+  createContext, 
+  useContext, 
+  ReactNode, 
+  useEffect, 
+  useState 
+} from 'react';
 import { useLocalStorage } from '@/data/hook/useLocalStorage';
 import { Customization } from '@/data/types/customization.type';
 
@@ -11,6 +17,7 @@ const INITIAL_CUSTOMIZATION: Customization = {
   crucifixo: undefined,
   entremeio: undefined,
   frase: undefined,
+  product: undefined,
 };
 
 interface CustomizationContextType {
@@ -19,53 +26,65 @@ interface CustomizationContextType {
   updateCustomization: (updates: Partial<Customization>) => void;
   resetCustomization: () => void;
   isComplete: () => boolean;
+  isLoaded: boolean;
 }
 
 const CustomizationContext = createContext<CustomizationContextType | undefined>(undefined);
 
 export function CustomizationProvider({ children }: { children: ReactNode }) {
-  const [customization, setCustomization] = useLocalStorage<Customization>(
-    'custom_rosario',
+  const [isMounted, setIsMounted] = useState(false);
+
+  const [storedCustomization, setStoredCustomization] = useLocalStorage<Customization>(
+    'product_customization',
     INITIAL_CUSTOMIZATION
   );
+
+  useEffect(() => {
+    setIsMounted(true);
+  }, []);
 
   const updateField = <K extends keyof Customization>(
     field: K,
     value: Customization[K]
   ) => {
-    setCustomization(prev => ({
+    setStoredCustomization(prev => ({
       ...prev,
       [field]: value,
     }));
   };
 
   const updateCustomization = (updates: Partial<Customization>) => {
-    setCustomization(prev => ({
+    setStoredCustomization(prev => ({
       ...prev,
       ...updates,
     }));
   };
 
   const resetCustomization = () => {
-    setCustomization(INITIAL_CUSTOMIZATION);
+    setStoredCustomization(INITIAL_CUSTOMIZATION);
   };
+
+  const currentCustomization = isMounted ? storedCustomization : INITIAL_CUSTOMIZATION;
 
   const isComplete = () => {
     return Boolean(
-      customization.cordao &&
-      customization.conta &&
-      customization.crucifixo
+      currentCustomization.cordao &&
+      currentCustomization.conta &&
+      currentCustomization.crucifixo
     );
   };
+
+  if (!isMounted) return null; 
 
   return (
     <CustomizationContext.Provider
       value={{
-        customization,
+        customization: currentCustomization,
         updateField,
         updateCustomization,
         resetCustomization,
         isComplete,
+        isLoaded: isMounted,
       }}
     >
       {children}

@@ -6,10 +6,6 @@ interface CatalogProps {
 }
 
 export default function Catalog({ className }: CatalogProps) {
-  const handleAlert = () => {
-    alert("O produto não está disponível no momento. Aguarde um pouco e tente novamente.");
-  };
-
   return (
     <div className={`font-sans ${className}`}>
       <p className="font-bold text-center mt-4">
@@ -30,7 +26,6 @@ export default function Catalog({ className }: CatalogProps) {
           price={15}
           available={false}
           productPage="/personalizar"
-          onClick={() => window.alert("O produto não está disponível no momento. Aguarde um pouco e tente novamente.")}
         />
         <ProductCatalog
           title="Pulseira Personalizada"

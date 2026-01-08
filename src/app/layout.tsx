@@ -18,13 +18,13 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="pt-br">
-      <CustomizationProvider>
-        <body
-          className={`${playfair.variable} ${space.variable} ${geistMono.variable} ${geistSans.variable} antialiased font-playfair-display`}
-        >
+      <body
+        className={`${playfair.variable} ${space.variable} ${geistMono.variable} ${geistSans.variable} antialiased font-playfair-display`}
+      >
+        <CustomizationProvider>
           {children}
-        </body>
-      </CustomizationProvider>
+        </CustomizationProvider>
+      </body>
     </html>
   );
 }

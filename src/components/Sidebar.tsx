@@ -1,11 +1,12 @@
+import Image from "next/image";
 import { FaTimes } from "react-icons/fa";
 import { useLockBodyScroll } from "@/data/hook/useBodyLockScroll";
-import { useMediaQuery } from "@/data/hook/useMediaQuery";
-import { LogoHorizontal } from "./Typography";
 import { WhatsAppButton } from "./buttons/WhatsAppButton";
 import { useCustomization } from "@/data/context/CustomizationContext";
 import { calculateCustomizationPrice } from "@/data/functions/calculateCustomizationPrice";
 import { MinusCircle, Trash2, ShoppingCart } from "lucide-react";
+import { findItem } from "@/data/functions/findItemOnProductsArray";
+import { useMemo } from "react";
 
 interface SidebarProps {
   open: boolean;
@@ -13,8 +14,22 @@ interface SidebarProps {
 }
 
 export default function Sidebar({ open, onClose }: SidebarProps) {
-  const { customization, updateCustomization, resetCustomization } = useCustomization();
-  const isMdDown = useMediaQuery("(max-width: 768px)");
+  const { customization, updateCustomization, resetCustomization, isComplete } = useCustomization();
+  const items = useMemo(() => {
+    const cordao = findItem('cordoes', customization?.cordao);
+    const conta = findItem('contas', customization?.conta);
+    const letra = findItem('letras', customization?.styleLetra);
+    const crucifixo = findItem('crucifixos', customization?.crucifixo);
+    const entremeio = findItem('entremeios', customization?.entremeio);
+
+    return {
+      cordao,
+      conta,
+      letra,
+      crucifixo,
+      entremeio,
+    };
+  }, [customization]);
 
   const gerarMensagemWhatsApp = () => {
     const mensagem = `Olá! Gostaria de fazer um pedido de Terço Personalizado:
@@ -87,8 +102,14 @@ Aguardo retorno!`;
                   {customization?.cordao && (
                     <div className="flex items-center justify-between gap-3 p-3 bg-gray-50 rounded-lg hover:bg-gray-100 transition-colors">
                       <div className="flex items-center gap-3 flex-1 min-w-0">
-                        <div className="hrink-0 bg-linear-to-br from-gray-200 to-gray-300 rounded-lg w-12 h-12 flex items-center justify-center">
-                          <span className="text-xs text-gray-600">IMG</span>
+                        <div className="shrink-0 relative w-14 h-14 mx-auto bg-primary">
+                          {/* <Image 
+                            src={items.letra?.img!} 
+                            alt={items.letra?.ref!} 
+                            fill 
+                            className="object-contain rounded-lg" 
+                            sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                          /> */}
                         </div>
                         <div className="flex-1 min-w-0">
                           <p className="text-xs text-gray-500 uppercase tracking-wide">Cordão</p>
@@ -108,8 +129,14 @@ Aguardo retorno!`;
                   {customization?.conta && (
                     <div className="flex items-center justify-between gap-3 p-3 bg-gray-50 rounded-lg hover:bg-gray-100 transition-colors">
                       <div className="flex items-center gap-3 flex-1 min-w-0">
-                        <div className="shrink-0 bg-linear-to-br from-gray-200 to-gray-300 rounded-lg w-12 h-12 flex items-center justify-center">
-                          <span className="text-xs text-gray-600">IMG</span>
+                        <div className="shrink-0 relative w-14 h-14 mx-auto">
+                          <Image 
+                            src={items.conta?.img!} 
+                            alt={items.conta?.ref!} 
+                            fill 
+                            className="object-contain rounded-lg" 
+                            sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                          />
                         </div>
                         <div className="flex-1 min-w-0">
                           <p className="text-xs text-gray-500 uppercase tracking-wide">Contas</p>
@@ -129,8 +156,14 @@ Aguardo retorno!`;
                   {customization?.styleLetra && (
                     <div className="flex items-center justify-between gap-3 p-3 bg-gray-50 rounded-lg hover:bg-gray-100 transition-colors">
                       <div className="flex items-center gap-3 flex-1 min-w-0">
-                        <div className="shrink-0 bg-linear-to-br from-gray-200 to-gray-300 rounded-lg w-12 h-12 flex items-center justify-center">
-                          <span className="text-xs text-gray-600">ABC</span>
+                        <div className="shrink-0 relative w-14 h-14 mx-auto">
+                          <Image 
+                            src={items.letra?.img!} 
+                            alt={items.letra?.ref!} 
+                            fill 
+                            className="object-contain rounded-lg" 
+                            sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                          />
                         </div>
                         <div className="flex-1 min-w-0">
                           <p className="text-xs text-gray-500 uppercase tracking-wide">Estilo de Letra</p>
@@ -150,8 +183,14 @@ Aguardo retorno!`;
                   {customization?.crucifixo && (
                     <div className="flex items-center justify-between gap-3 p-3 bg-gray-50 rounded-lg hover:bg-gray-100 transition-colors">
                       <div className="flex items-center gap-3 flex-1 min-w-0">
-                        <div className="shrink-0 bg-linear-to-br from-gray-200 to-gray-300 rounded-lg w-12 h-14 flex items-center justify-center">
-                          <span className="text-xs text-gray-600">✝</span>
+                        <div className="shrink-0 relative w-14 h-18 mx-auto">
+                          <Image 
+                            src={items.crucifixo?.img!} 
+                            alt={items.crucifixo?.ref!} 
+                            fill 
+                            className="object-contain rounded-lg" 
+                            sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                          />
                         </div>
                         <div className="flex-1 min-w-0">
                           <p className="text-xs text-gray-500 uppercase tracking-wide">Crucifixo</p>
@@ -171,8 +210,14 @@ Aguardo retorno!`;
                   {customization?.entremeio && (
                     <div className="flex items-center justify-between gap-3 p-3 bg-gray-50 rounded-lg hover:bg-gray-100 transition-colors">
                       <div className="flex items-center gap-3 flex-1 min-w-0">
-                        <div className="hrink-0 bg-linear-to-br from-gray-200 to-gray-300 rounded-lg w-12 h-12 flex items-center justify-center">
-                          <span className="text-xs text-gray-600">IMG</span>
+                        <div className="shrink-0 relative w-14 h-14 mx-auto">
+                          <Image 
+                            src={items.entremeio?.img!} 
+                            alt={items.entremeio?.ref!} 
+                            fill 
+                            className="object-contain rounded-lg" 
+                            sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                          />
                         </div>
                         <div className="flex-1 min-w-0">
                           <p className="text-xs text-gray-500 uppercase tracking-wide">Entremeio</p>
@@ -201,7 +246,7 @@ Aguardo retorno!`;
                         >
                           <div className="flex-1 min-w-0">
                             <p className="text-xs text-gray-500 mb-1">Texto {index + 1}</p>
-                            <p className="text-sm text-gray-800 wrap-break-word">{frase}</p>
+                            <p className="text-sm text-gray-800 uppercase wrap-break-word">{frase}</p>
                           </div>
                           <button 
                             onClick={() => {
@@ -240,7 +285,9 @@ Aguardo retorno!`;
               </span>
             </div>
 
-            <WhatsAppButton message={gerarMensagemWhatsApp} />
+            {isComplete() && (
+              <WhatsAppButton message={gerarMensagemWhatsApp} />
+            )}
           </div>
         )}
       </aside>

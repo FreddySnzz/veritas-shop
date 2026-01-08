@@ -2,14 +2,14 @@
 
 import { useState, useEffect, useMemo } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { ChevronLeft, ChevronRight, Check } from 'lucide-react';
 import Image from 'next/image';
+import { useCustomization } from '@/data/context/CustomizationContext';
+import { Crucifixos, Entremeios } from '@/data/types/products.type';
+import { ChevronLeft, ChevronRight, Check, X } from 'lucide-react';
 import { initialData } from '../data/constants/products';
 import { CustomizationCatalogButton } from './buttons/CatalogButton';
 import MultiTextInput from './inputs/MultiTexts';
 import Sidebar from './Sidebar';
-import { useCustomization } from '@/data/context/CustomizationContext';
-import { Crucifixos, Entremeios } from '@/data/types/products.type';
 
 const STEPS = [
   { id: 'cordao', title: 'Cordão', subtitle: 'Escolha a cor do cordão' },
@@ -29,7 +29,7 @@ const RosarioWizard = () => {
   const [currentStep, setCurrentStep] = useState(0);
   const [direction, setDirection] = useState(0);
   const [expandedSidebar, setExpandedSidebar] = useState(false);
-  const { customization, updateCustomization } = useCustomization();
+  const { customization, updateCustomization, isComplete } = useCustomization();
 
   useEffect(() => {
     setIsMounted(true);
@@ -74,7 +74,11 @@ const RosarioWizard = () => {
   };
 
   const handleSelectAndAdvance = (key: string, value: any) => {
+    if (customization[key as keyof typeof customization] === value) 
+      return updateCustomization({ [key]: undefined });
+
     updateCustomization({ [key]: value });
+
     setTimeout(() => {
       handleNext();
     }, 250);
@@ -103,6 +107,7 @@ const RosarioWizard = () => {
       const key = item.style || 'Outros';
       if (!groups[key]) groups[key] = [];
       groups[key].push(item);
+      
       return groups;
     }, {});
   }, [products]);
@@ -113,6 +118,7 @@ const RosarioWizard = () => {
       const key = item.style || 'Outros';
       if (!groups[key]) groups[key] = [];
       groups[key].push(item);
+
       return groups;
     }, {});
   }, [products]);
@@ -155,7 +161,13 @@ const RosarioWizard = () => {
                 }`}
               >
                 <div className="relative w-24 h-24 mx-auto mb-3">
-                  <Image src={conta.img} alt={conta.ref} fill className="object-contain rounded-lg" sizes='' />
+                  <Image 
+                    src={conta.img} 
+                    alt={conta.ref} 
+                    fill 
+                    className="object-contain rounded-lg" 
+                    sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                  />
                 </div>
                 <span className="text-xs text-gray-400">Ref: {conta.ref}</span>
                 {customization?.conta === conta.ref && (
@@ -190,11 +202,8 @@ const RosarioWizard = () => {
                   customization?.styleLetra === letra.ref ? 'border-blue-600 bg-blue-50' : 'border-gray-100 hover:border-blue-200'
                 }`}
               >
-                {/* <div className="w-16 h-16 rounded-full mx-auto mb-3 bg-black flex items-center justify-center text-white font-bold text-xl">
-                  ABC
-                </div> */}
                 <div className="relative w-24 h-24 mx-auto mb-3">
-                  <Image src={letra.img} alt={letra.ref} fill className="object-contain rounded-lg" sizes='' />
+                  <Image src={letra.img} alt={letra.ref} fill className="object-contain rounded-lg" sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw" />
                 </div>
                 <span className="text-xs text-gray-400">Ref: {letra.ref}</span>
                 {customization?.styleLetra === letra.ref && (
@@ -220,10 +229,16 @@ const RosarioWizard = () => {
                         customization?.crucifixo === c.ref ? 'border-blue-600 bg-blue-50' : 'border-gray-100'
                       }`}
                     >
-                      <div className="w-full h-32 bg-gray-200 rounded-lg mb-2" /> 
-                      {/* Placeholder Image acima */}
-                      <span className="text-sm font-semibold block">{c.ref}</span>
-                      <span className="text-xs text-gray-500">{c.style}</span>
+                      <div className="relative w-30 h-40 mx-auto mb-3">
+                        <Image 
+                          src={c.img} 
+                          alt={c.ref} 
+                          fill 
+                          className="object-contain rounded-lg" 
+                          sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                        />
+                      </div>
+                      <span className="text-xs text-gray-500">Ref: {c.ref}</span>
                     </button>
                   ))}
                 </div>
@@ -237,7 +252,7 @@ const RosarioWizard = () => {
           <div className="space-y-4">
             <button 
                 onClick={() => handleSelectAndAdvance('entremeio', null)}
-                className="w-full p-4 border-2 border-dashed border-gray-300 rounded-xl text-gray-500 font-medium hover:border-gray-400 hover:bg-gray-50"
+                className="w-full p-3 border-2 border-dashed border-gray-300 rounded-xl text-gray-500 font-medium hover:border-gray-400 hover:bg-gray-50"
             >
                 Prefiro sem Entremeio (Pular)
             </button>
@@ -254,9 +269,17 @@ const RosarioWizard = () => {
                         customization?.entremeio === e.ref ? 'border-blue-600 bg-blue-50' : 'border-gray-100'
                       }`}
                     >
-                       <div className="w-full h-24 bg-gray-200 rounded-lg mb-2" />
-                       <span className="text-sm font-semibold block">{e.name}</span>
-                       <span className="text-xs text-gray-500">{e.ref}</span>
+                      <div className="relative w-30 h-30 mx-auto mb-3">
+                        <Image 
+                          src={e.img} 
+                          alt={e.ref} 
+                          fill 
+                          className="object-contain rounded-lg" 
+                          sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                        />
+                      </div>
+                      <span className="text-sm font-semibold block">{e.name}</span>
+                      <span className="text-xs text-gray-500">Ref: {e.ref}</span>
                     </button>
                   ))}
                 </div>
@@ -266,6 +289,36 @@ const RosarioWizard = () => {
         );
       
       case 'final':
+        if (!isComplete()) {
+          return (
+            <div className="flex flex-col items-center justify-center py-8">
+              <div className="w-20 h-20 bg-red-100 rounded-full flex items-center justify-center mb-6 text-red-600">
+                 <X size={40} />
+              </div>
+              <h3 className="text-2xl font-bold text-gray-800 mb-2">Personalização incompleta</h3>
+              <p className="text-gray-500 mb-8">
+                Sua personalização ainda não foi concluída.
+                <br /><br />
+                <span className="text-red-600 text-start font-bold">
+                  Você precisa selecionar ao menos: <br />
+                  • Cor de cordão <br />
+                  • Cor de conta <br />
+                  • Crucifixo
+                </span>
+                <br /><br />
+                Clique abaixo para voltar ao início do processo
+              </p>
+
+              <div className='w-full'>
+                <CustomizationCatalogButton 
+                  onClick={() => window.location.reload()}
+                  buttonText='Voltar para personalização' 
+                />
+              </div>
+            </div>
+          );
+        }
+
         return (
           <div className="flex flex-col items-center justify-center text-center py-8">
             <div className="w-20 h-20 bg-green-100 rounded-full flex items-center justify-center mb-6 text-green-600">
@@ -348,7 +401,7 @@ const RosarioWizard = () => {
               onClick={handleNext}
               className="flex items-center gap-2 px-6 py-3 bg-secondary text-white rounded-xl font-medium hover:bg-gray-800 transition-all shadow-lg hover:shadow-xl"
             >
-              {STEPS[currentStep].id === 'texto' ? 'Pular / Continuar' : 'Próximo'}
+              {'Próximo'}
               <ChevronRight size={20} />
             </button>
           )}

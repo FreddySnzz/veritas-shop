@@ -5,4 +5,5 @@ export interface Customization {
   styleLetra?: string;
   crucifixo?: string;
   entremeio?: string;
+  product?: string;
 }

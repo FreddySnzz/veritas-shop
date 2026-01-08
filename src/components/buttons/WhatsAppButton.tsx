@@ -24,7 +24,7 @@ export function WhatsAppButtonFixed(props: WhatsAppButtonProps) {
       animate={{ opacity: 1, x: 0 }}
       transition={{ duration: 6 }}
       onClick={props.message}
-      className="fixed z-40 cursor-pointer top-[91%] left-[82%] items-center justify-center bg-linear-to-r from-green-500 to-green-600 text-white rounded-full hover:from-green-600 hover:to-green-700 transition-all shadow-lg p-3"
+      className="fixed z-40 cursor-pointer top-[91%] left-[84%] md:left-[92%] xl:left-[95%] items-center justify-center bg-linear-to-r from-green-500 to-green-600 text-white rounded-full hover:from-green-600 hover:to-green-700 transition-all shadow-lg p-3"
     >
       <FaWhatsapp className="w-6 h-6" />
     </motion.button>
