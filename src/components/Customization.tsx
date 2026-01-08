@@ -138,7 +138,15 @@ const RosarioWizard = () => {
                   customization?.cordao === cordao.ref ? 'border-blue-600 bg-blue-50' : 'border-gray-100 hover:border-blue-200'
                 }`}
               >
-                <div className="w-16 h-16 rounded-full mx-auto mb-3 shadow-sm border-2 border-white" style={{ backgroundColor: cordao.color }} />
+                <div className="relative w-30 h-30 mx-auto mb-3">
+                  <Image 
+                    src={cordao.img} 
+                    alt={cordao.ref} 
+                    fill 
+                    className="object-contain rounded-lg" 
+                    sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                  />
+                </div>
                 <span className="block font-medium text-gray-800">{cordao.name}</span>
                 <span className="text-xs text-gray-400">Ref: {cordao.ref}</span>
                 {customization?.cordao === cordao.ref && (

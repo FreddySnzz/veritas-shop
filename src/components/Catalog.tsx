@@ -16,7 +16,7 @@ export default function Catalog({ className }: CatalogProps) {
           title="Terço Personalizado"
           desc="Personalize seu terço com entremeios, crucifixo, letras e textos personalizados"
           price={20}
-          img={dataImages[2].url}
+          img={dataImages[Math.floor(Math.random() * dataImages.length)].url}
           available
           productPage="/personalizar"
         />

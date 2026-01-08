@@ -10,7 +10,7 @@ import { CatalogButton } from "@/components/buttons/CatalogButton";
 import { SlogganTypography, Typography } from "@/components/Typography";
 import Footer from "@/components/Footer";
 
-export default function Home() {
+export default function Apresentation() {
   return (
     <section id="home" className="flex flex-col justify-center items-center bg-background-alternative">
       <main className="w-full h-auto">

@@ -6,7 +6,11 @@ import { CartButton } from "./buttons/CartButton";
 import { useState } from "react";
 import Sidebar from "./Sidebar";
 
-export function Header() {
+interface HeaderProps {
+  mode: 'admin' | 'user';
+}
+
+export function Header({ mode }: HeaderProps) {
   const [expanded, setExpanded] = useState(false);
   const toggleExpanded = () => {
     setExpanded((prev) => !prev);
@@ -33,7 +37,7 @@ export function Header() {
           </div>
         </Link>
 
-        <CartButton isOpen={toggleExpanded} />
+        { mode === 'user' && <CartButton isOpen={toggleExpanded} /> }
         <Sidebar open={expanded} onClose={() => setExpanded(false)} />
 
       </div>

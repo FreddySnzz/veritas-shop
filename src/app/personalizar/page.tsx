@@ -10,7 +10,7 @@ export default function Customization() {
 
   return (
     <div className="flex flex-col min-h-screen max-w-screen">
-      <Header />
+      <Header mode="user" />
       <main className="grow mt-16 bg-background-alternative">
         <RosarioWizard />
       </main>

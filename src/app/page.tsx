@@ -11,7 +11,7 @@ import Catalog from "@/components/Catalog";
 export default function Home() {
   return (
     <>
-      <Header />
+      <Header mode="user" />
       <section id="home" className="flex flex-col justify-center items-center bg-background-alternative">
         <main className="w-full h-auto">
           <motion.div
@@ -24,7 +24,7 @@ export default function Home() {
             </section>
 
             <section id="products">
-              <Catalog className="" />
+              <Catalog />
             </section>
           </motion.div>
         </main>
