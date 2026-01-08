@@ -102,14 +102,14 @@ Aguardo retorno!`;
                   {customization?.cordao && (
                     <div className="flex items-center justify-between gap-3 p-3 bg-gray-50 rounded-lg hover:bg-gray-100 transition-colors">
                       <div className="flex items-center gap-3 flex-1 min-w-0">
-                        <div className="shrink-0 relative w-14 h-14 mx-auto bg-primary">
-                          {/* <Image 
+                        <div className="shrink-0 relative w-14 h-14 mx-auto">
+                          <Image 
                             src={items.letra?.img!} 
                             alt={items.letra?.ref!} 
                             fill 
                             className="object-contain rounded-lg" 
                             sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-                          /> */}
+                          />
                         </div>
                         <div className="flex-1 min-w-0">
                           <p className="text-xs text-gray-500 uppercase tracking-wide">Cordão</p>
