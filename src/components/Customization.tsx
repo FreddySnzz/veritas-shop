@@ -4,12 +4,12 @@ import { useState, useEffect, useMemo } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import Image from 'next/image';
 import { useCustomization } from '@/data/context/CustomizationContext';
-import { Crucifixos, Entremeios } from '@/data/types/products.type';
 import { ChevronLeft, ChevronRight, Check, X } from 'lucide-react';
 import { initialData } from '../data/constants/products';
 import { CustomizationCatalogButton } from './buttons/CatalogButton';
 import MultiTextInput from './inputs/MultiTexts';
 import Sidebar from './Sidebar';
+import { Crucifixos, Entremeios } from '@/data/types/customization.type';
 
 const STEPS = [
   { id: 'cordao', title: 'Cordão', subtitle: 'Escolha a cor do cordão' },

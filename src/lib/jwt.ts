@@ -24,7 +24,7 @@ export function decodeJWT(token: string): User | null {
 };
 
 export function buildAccessToken(user: Partial<User>): string {
-  const secret = process.env.NEXT_PUBLIC_JWT_SECRET as Secret;
+  const secret = process.env.JWT_SECRET as Secret;
 
   const options: SignOptions = {
     expiresIn: "1d" as SignOptions["expiresIn"]
