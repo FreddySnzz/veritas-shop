@@ -18,7 +18,7 @@ export function Header({ mode }: HeaderProps) {
 
   return (
     <header className="bg-white fixed top-0 z-50 w-screen">
-      <div className="flex items-center justify-between mx-auto px-4 py-4">
+      <div className="flex items-center justify-between mx-auto px-6 md:px-8 py-2">
         <Link href="/" className="relative flex gap-2">
           <div className="flex items-center gap-2">
             <FlowerIcon
