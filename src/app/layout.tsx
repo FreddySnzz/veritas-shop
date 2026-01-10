@@ -2,6 +2,8 @@ import "../styles/globals.css";
 import type { Metadata } from "next";
 import { geistMono, geistSans, playfair, space } from "../styles/fonts";
 import { CustomizationProvider } from "@/data/context/CustomizationContext";
+import { AuthProvider } from "@/data/context/AuthContext";
+import { Toaster } from "sonner";
 
 export const metadata: Metadata = {
   title: "Veritas Ateliê",
@@ -21,9 +23,12 @@ export default function RootLayout({
       <body
         className={`${playfair.variable} ${space.variable} ${geistMono.variable} ${geistSans.variable} antialiased font-playfair-display`}
       >
-        <CustomizationProvider>
-          {children}
-        </CustomizationProvider>
+        <AuthProvider>
+          <CustomizationProvider>
+            {children}
+            <Toaster />
+          </CustomizationProvider>
+        </AuthProvider>
       </body>
     </html>
   );

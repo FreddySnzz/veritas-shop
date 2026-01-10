@@ -41,12 +41,11 @@ export interface Entremeios {
   img: string;
 }
 
-export interface Customization {
-  cordao?: string;
-  conta?: string;
-  frase?: Array<string>;
-  styleLetra?: string;
-  crucifixo?: string;
+export interface Terco {
+  id: string;
+  cordao: string;
+  contas: string;
+  letras?: string;
+  crucifixo: string;
   entremeio?: string;
-  product?: string;
 }

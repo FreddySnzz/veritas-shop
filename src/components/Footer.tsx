@@ -52,6 +52,9 @@ export default function Footer({ className }: FooterProps) {
                   <span>Quem somos</span>
                 </a>
                 <span>Sistema de entregas</span>
+                <a href={`/admin`}>
+                  <span>Painel Administrativo</span>
+                </a>
               </div>
             </div>
           </div>

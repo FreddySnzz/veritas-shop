@@ -1,5 +1,8 @@
-import Link from "next/link"
+'use client'
+
 import Image from "next/image"
+import { useCustomization } from "@/data/context/CustomizationContext"
+import { useRouter } from "next/navigation"
 
 interface ProductCatalogProps extends React.HTMLAttributes<HTMLButtonElement> {
   title: string
@@ -14,6 +17,15 @@ interface ProductCatalogProps extends React.HTMLAttributes<HTMLButtonElement> {
 
 export default function ProductCatalog(props: ProductCatalogProps) {
   const isAvailable = props.available !== false;
+  const { updateCustomization } = useCustomization();
+  const router = useRouter();
+
+  const handleClick = async () => {
+    if (isAvailable) {
+      updateCustomization({ product: props.title });
+      router.push(props.productPage);
+    }
+  };
 
   if (!isAvailable) {
     return (
@@ -55,9 +67,9 @@ export default function ProductCatalog(props: ProductCatalogProps) {
   }
 
   return (
-    <Link 
-      href={props.productPage}
-      className={`relative group block overflow-hidden rounded-xl bg-white shadow-md transition-all duration-300 ${props.className}`}
+    <button 
+      onClick={handleClick}
+      className={`relative group block overflow-hidden rounded-xl bg-white shadow-md transition-all duration-300 text-start ${props.className}`}
     >
       <div className="relative w-full aspect-square overflow-hidden">
         {props.img ? (
@@ -96,6 +108,6 @@ export default function ProductCatalog(props: ProductCatalogProps) {
           </span>
         </div>
       </div>
-    </Link>
+    </button>
   );
 }

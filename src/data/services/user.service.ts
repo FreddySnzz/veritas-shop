@@ -2,19 +2,14 @@ import { db } from "../firebase/config";
 import {
   collection,
   doc,
-  getDocs,
   getDoc,
-  updateDoc,
-  deleteDoc,
-  addDoc,
+  getDocs,
   query,
+  updateDoc,
   where,
 } from "firebase/firestore";
 import UserModel from "../models/User.model";
-
-const USERS_COLLECTION = "users";
-
-// TODO: Fazer logica para encriptar senha
+import { Collections } from "../types/collections.enum";
 
 export class UserServiceError extends Error {
   status: number;
@@ -27,50 +22,20 @@ export class UserServiceError extends Error {
   };
 };
 
-async function userExists(
-  email: string,
-): Promise<boolean> {
-  const usersRef = collection(db, USERS_COLLECTION);
+export async function getUserByEmail(
+  email: string
+): Promise<UserModel[] | null> {
+  const q = query(collection(
+    db, 
+    Collections.USERS_COLLECTION
+  ), where("email", "==", email));
 
-  const emailQuery = query(
-    usersRef, where("email", "==", email)
-  );
-  const emailSnap = await getDocs(emailQuery);
-
-  if (emailSnap.empty) return false;
-
-  return true;
-};
-
-export async function createUser(
-  user: Omit<UserModel, "id">
-): Promise<UserModel | undefined> {
-  const exists = await userExists(
-    user.email
-  );
-
-  if (exists) throw new UserServiceError(
-    "User with same email or tag already exists", 409
-  );
-
-  const userRef = await addDoc(
-    collection(
-      db, USERS_COLLECTION
-    ), user
-  );
-
-  return { id: userRef.id, ...user };
-};
-
-export async function getUsers(): Promise<UserModel[]> {
-  const snapshot = await getDocs(
-    collection(db, USERS_COLLECTION)
-  );
+  const snapshot = await getDocs(q);
 
   return snapshot.docs.map(
-    (d) => ({ 
-      id: d.id, 
-      ...d.data() 
+    (doc) => ({ 
+      id: doc.id, 
+      ...doc.data() 
     } as UserModel)
   );
 };
@@ -79,7 +44,7 @@ export async function getUserById(
   id: string
 ): Promise<UserModel | null> {
   const docSnap = await getDoc(
-    doc(db, USERS_COLLECTION, id)
+    doc(db, Collections.USERS_COLLECTION, id)
   );
   
   const data = docSnap.exists() ? (
@@ -104,20 +69,7 @@ export async function updateUser(
   );
 
   return await updateDoc(
-    doc(db, USERS_COLLECTION, id),
+    doc(db, Collections.USERS_COLLECTION, id),
     data
   );
-};
-
-export async function deleteUser(id: string) {
-  await getUserById(id);
-
-  await deleteDoc(
-    doc(db, USERS_COLLECTION, id)
-  );
-
-  return {
-    success: true, 
-    message: "User deleted successfully!" 
-  };
 };

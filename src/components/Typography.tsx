@@ -88,7 +88,7 @@ export function LogoHorizontal() {
             VERITAS
           </h1>
       </div>
-      <div className="absolute right-[-55] top-[0.8rem] ">
+      <div className="absolute top-[0.8rem] left-40 ">
         <h1 className="font-sans font-medium text-secondary">
           ATELIÊ
         </h1>
