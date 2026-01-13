@@ -17,8 +17,8 @@ interface ProductCatalogProps extends React.HTMLAttributes<HTMLButtonElement> {
 
 export default function ProductCatalog(props: ProductCatalogProps) {
   const isAvailable = props.available !== false;
-  const { updateCustomization } = useCustomization();
   const router = useRouter();
+  const { updateCustomization } = useCustomization();
 
   const handleClick = async () => {
     if (isAvailable) {
@@ -37,6 +37,7 @@ export default function ProductCatalog(props: ProductCatalogProps) {
               src={props.img}
               alt={props.title}
               fill
+              loading="eager"
               className="object-cover"
               sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
             />
@@ -64,12 +65,12 @@ export default function ProductCatalog(props: ProductCatalogProps) {
         </div>
       </div>
     );
-  }
+  };
 
   return (
     <button 
       onClick={handleClick}
-      className={`relative group block overflow-hidden rounded-xl bg-white shadow-md transition-all duration-300 text-start ${props.className}`}
+      className={`relative group block overflow-hidden rounded-xl bg-white shadow-md transition-all duration-300 text-start cursor-pointer ${props.className}`}
     >
       <div className="relative w-full aspect-square overflow-hidden">
         {props.img ? (
@@ -77,6 +78,7 @@ export default function ProductCatalog(props: ProductCatalogProps) {
             src={props.img}
             alt={props.title}
             fill
+            loading="eager"
             className="object-cover group-hover:scale-105 transition-transform duration-300"
             sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
           />

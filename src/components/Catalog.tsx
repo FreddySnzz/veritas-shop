@@ -1,46 +1,30 @@
-import { dataImages } from "@/data/constants/productsImages"
+import { getCachedProducts } from "@/data/services/product.service";
 import ProductCatalog from "./ProductCatalog"
 
 interface CatalogProps {
   className?: string
 }
 
-export default function Catalog({ className }: CatalogProps) {
+export default async function Catalog({ className }: CatalogProps) {
+  const products = await getCachedProducts();
+
   return (
     <div className={`font-sans ${className}`}>
       <p className="font-bold text-center mt-4">
         Nossos Produtos
       </p>
       <div className={`grid grid-cols-2 md:grid-cols-3 xl:grid-cols-5 gap-4 p-4`}>
-        <ProductCatalog
-          title="Terço Personalizado"
-          desc="Personalize seu terço com entremeios, crucifixo, letras e textos personalizados"
-          price={20}
-          img={dataImages[Math.floor(Math.random() * dataImages.length)].url}
-          available
-          productPage="/personalizar"
-        />
-        <ProductCatalog
-          title="Dezena Personalizada"
-          desc="Personalize seu dezena com entremeios, crucifixo, letras e textos personalizados"
-          price={15}
-          available={false}
-          productPage="/personalizar"
-        />
-        <ProductCatalog
-          title="Pulseira Personalizada"
-          desc="Personalize seu pulteira com letras e textos personalizados"
-          price={10}
-          available={false}
-          productPage="/personalizar"
-        />
-        <ProductCatalog
-          title="Chaveiro Personalizado"
-          desc="Personalize seu chaveiro com crucifixo, entremeio, letras e textos personalizados"
-          price={15}
-          available={false}
-          productPage="/personalizar"
-        />
+        {products?.map((product) => (
+          <ProductCatalog
+            key={product.id}
+            title={product.name}
+            desc={product.desc || ""}
+            price={product.initial_price}
+            img={product.image_url}
+            available={product.available}
+            productPage={`/personalizar`}
+          />
+        ))}
       </div>
     </div>
   )

@@ -1,8 +1,8 @@
 import DynamicBreadcrumb from "@/components/DynamicBreadcrumb";
 import { Header } from "@/components/Header";
-import PanelLayout from "@/components/admin/PanelLayout";
+import ManageCatalogInventory from "@/components/admin/CatalogInventory";
 
-export default function AdminPanel() {
+export default function ManageInvertoryCatalogPage() {
   return (
     <>
       <Header mode="admin" />
@@ -11,7 +11,7 @@ export default function AdminPanel() {
           className="mt-12 p-6" 
           listClassName="" 
         />
-        <PanelLayout />
+        <ManageCatalogInventory />
       </main>
     </>
   )

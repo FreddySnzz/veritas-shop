@@ -1,38 +1,55 @@
 'use client';
 
+import { refreshProductsAction } from "@/app/actions/cache-actions";
 import { CustomButton } from "../buttons/CustomButtom"
-import { ClipboardPenLine, Eye, Plus } from "lucide-react";
+import { ClipboardPenLine, Eye, Plus, RefreshCw } from "lucide-react";
 import { useRouter } from "next/navigation";
+import { useState } from "react";
+import { toast } from "sonner";
 
 interface PanelLayoutProps {
   className?: string
-}
+};
 
 export default function PanelLayout({ className }: PanelLayoutProps) {
+  const [loading, setLoading] = useState(false);
   const router = useRouter();
+
+  const handleUpdate = async () => {
+    setLoading(true);
+    try {
+      await refreshProductsAction('products'); 
+      toast.success("Catálogo atualizado com sucesso!");
+    } catch (error) {
+      console.error(error);
+      toast.error("Houve um erro ao atualizar estoques");
+    } finally {
+      setLoading(false);
+    };
+  };
+
   return (
     <div className={`font-sans ${className} overflow-y-hidden`}>
-      <div className={`grid grid-cols-1 md:grid-cols-3 xl:grid-cols-5 gap-4 p-4 mt-20`}>
+      <div className="flex flex-col mx-4 gap-4">
         <CustomButton
-          onClick={() => console.log('Gerenciar Estoques')}
+          onClick={() => router.push('/admin/estoques')}
         >
           <ClipboardPenLine className="w-6 h-6" />
           <span>Gerenciar Estoques</span>
         </CustomButton>
 
-        <CustomButton
-          onClick={() => console.log('Adicionar Produtos')}
+        <button
+          onClick={handleUpdate}
+          disabled={loading}
+          className={`w-full text-white py-4 rounded-2xl font-bold text-lg flex items-center justify-center gap-2 transition-colors
+            ${loading ? 'bg-gray-400 cursor-not-allowed' : 'bg-secondary hover:bg-secondary/90'}
+          `}
         >
-          <Plus className="w-6 h-6" />
-          <span>Adicionar Produtos</span>
-        </CustomButton>
-
-        <CustomButton
-          onClick={() => console.log('Adicionar Itens de Personalização')}
-        >
-          <Plus className="w-6 h-6" />
-          <span>Adicionar Itens de Personalização</span>
-        </CustomButton>
+          <RefreshCw 
+            className={`w-6 h-6 ${loading && 'animate-spin'}`} 
+          />
+          {loading ? 'Atualizando...' : 'Atualizar Catálogo'}
+        </button>
 
         <CustomButton
           onClick={() => console.log('Ver Pedidos')}
@@ -42,5 +59,5 @@ export default function PanelLayout({ className }: PanelLayoutProps) {
         </CustomButton>
       </div>
     </div>
-  )
-}
+  );
+};

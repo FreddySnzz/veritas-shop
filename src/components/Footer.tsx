@@ -32,21 +32,21 @@ export default function Footer({ className }: FooterProps) {
             <div className="flex mt-2 text-primary">
               <div className="flex cursor-pointer hover:text-blue-400">
                 <a href={`https://www.instagram.com/veritas_atelie`} target="_blank" className="cursor-pointer">
-                  <FaInstagram size={30} />
+                  <FaInstagram size={35} />
                 </a>
               </div>
             </div>
             <div className="flex mt-2 text-primary">
               <div className="flex cursor-pointer hover:text-green-500">
                 <a href={`https://wa.me/5586994379414`} target="_blank" className="cursor-pointer">
-                  <FaWhatsapp size={30} />
+                  <FaWhatsapp size={35} />
                 </a>
               </div>
             </div>
           </div>
 
           <div className="flex items-center justify-around my-2 w-full">
-            <div className="flex mt-2 text-primary font-light underline">
+            <div className="flex mt-2 text-primary font-light text-sm">
               <div className="flex flex-col">
                 <a href={`/apresentacao`}>
                   <span>Quem somos</span>

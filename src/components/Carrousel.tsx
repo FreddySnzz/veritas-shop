@@ -1,3 +1,5 @@
+'use client';
+
 import { useEffect, useState, useRef, TouchEvent } from "react";
 import Image from "next/image";
 import { dataImages } from "@/data/constants/productsImages";
@@ -113,9 +115,11 @@ const ImageCarousel = ({
                 src={image.url}
                 alt={`Slide ${index + 1}`}
                 fill 
+                loading="eager"
                 className="object-cover lg:object-contain pointer-events-none select-none"
                 priority={index === 0} 
                 draggable={false}
+                sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
               />
             </div>
           ))}

@@ -44,7 +44,7 @@ export default function Sidebar({ open, onClose }: SidebarProps) {
 Aguardo retorno!`;
 
     const url = `https://wa.me/5586994379414?text=${encodeURIComponent(mensagem)}`;
-    window.open(url, '_blank');
+    return url;
   };
 
   const isCartEmpty = !customization?.cordao && 
@@ -286,7 +286,7 @@ Aguardo retorno!`;
             </div>
 
             {isComplete() && (
-              <WhatsAppButton message={gerarMensagemWhatsApp} />
+              <WhatsAppButton message={gerarMensagemWhatsApp()} />
             )}
           </div>
         )}

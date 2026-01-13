@@ -79,6 +79,7 @@ export default function Login() {
           width={1080} 
           height={1080} 
           draggable="false"
+          loading="eager"
           className="w-auto max-h-screen object-cover" 
         />
       </div>
