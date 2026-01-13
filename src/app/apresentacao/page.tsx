@@ -3,7 +3,6 @@
 import * as motion from "motion/react-client"
 import ButtonScrollDown from "@/components/buttons/ButtonScrollDown";
 import { WhatsAppButtonFixed } from "@/components/buttons/WhatsAppButton";
-import openLinkOnButton from "@/data/functions/openNewWindowButton";
 import ImageCarousel from "@/components/Carrousel";
 import About from "@/components/About";
 import { CatalogButton } from "@/components/buttons/CatalogButton";
@@ -74,7 +73,7 @@ export default function Apresentation() {
         </motion.div>
       </div>
       
-      <WhatsAppButtonFixed message={() => openLinkOnButton("https://wa.me/5586994379414?text=Olá, gostaria de fazer um pedido de Terço Personalizado!")} />
+      <WhatsAppButtonFixed message={"https://wa.me/5586994379414?text=Olá, gostaria de fazer um pedido de Terço Personalizado!"} />
       <Footer />
     </section>
   );
