@@ -115,7 +115,14 @@ export function ProductForm({
         const formData = new FormData();
 
         formData.append("file", selectedFile);
-        finalUrlToSave = await uploadImageAction(formData);
+
+        try {
+          finalUrlToSave = await uploadImageAction(formData);
+        } catch (error) {
+          console.error("Erro no upload de imagem:", error);
+          toast.error("Erro no upload de imagem.");
+          return;
+        };
       };
 
       const productId = isEditMode ? pathname.split('/').pop() : undefined;
@@ -208,7 +215,7 @@ export function ProductForm({
               {isEditMode ? "Alterar Imagem (Opcional)" : "Imagem (Opcional)"}
             </Label>
 
-            <span className="text-xs text-gray-400 mb-2">*.jpg / *.jpeg / *.png</span>
+            <span className="text-xs text-gray-400 mb-2">*.jpg / *.jpeg / *.png - tam. limite de 10MB</span>
 
             <Input
               id="image"
