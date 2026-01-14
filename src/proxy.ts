@@ -31,6 +31,7 @@ export async function proxy(request: NextRequest) {
 
       return NextResponse.next();
     } catch (error) {
+      console.error("Login service error:", error);
       const loginUrl = new URL('/admin/login', request.url);
       loginUrl.searchParams.set('expired', 'true');
       
@@ -52,6 +53,7 @@ export async function proxy(request: NextRequest) {
       
       return NextResponse.redirect(new URL(destination, request.url));
     } catch (error) {
+      console.error("Login service error:", error);
       const response = NextResponse.next();
       response.cookies.delete('veritas_token');
       

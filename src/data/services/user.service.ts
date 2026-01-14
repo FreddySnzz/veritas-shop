@@ -5,7 +5,6 @@ import {
   getDoc,
   getDocs,
   query,
-  updateDoc,
   where,
 } from "firebase/firestore";
 import UserModel from "../models/User.model";
@@ -56,20 +55,4 @@ export async function getUserById(
   );
 
   return data;
-};
-
-export async function updateUser(
-  id: string, 
-  data: Partial<UserModel>
-) {
-  const getUser = await getUserById(id);
-
-  if (!getUser) throw new UserServiceError(
-    "User not exists", 400
-  );
-
-  return await updateDoc(
-    doc(db, Collections.USERS_COLLECTION, id),
-    data
-  );
 };

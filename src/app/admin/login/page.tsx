@@ -58,8 +58,6 @@ export default function Login() {
 
       setToken(tokens.access);
       setUser(user);
-
-      toast.success("Login realizado com sucesso!");
       
       router.push(redirectUrl);
     } catch (error) {

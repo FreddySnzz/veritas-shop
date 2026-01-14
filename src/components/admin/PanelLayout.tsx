@@ -1,11 +1,12 @@
 'use client';
 
-import { refreshProductsAction } from "@/app/actions/cache-actions";
+import { refreshProductsAction } from "@/app/actions/cache.actions";
 import { CustomButton } from "../buttons/CustomButtom"
-import { ClipboardPenLine, Eye, Plus, RefreshCw } from "lucide-react";
+import { ClipboardPenLine, Eye, RefreshCw } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { toast } from "sonner";
+import { BackButton } from "../buttons/BackButtom";
 
 interface PanelLayoutProps {
   className?: string
@@ -29,8 +30,8 @@ export default function PanelLayout({ className }: PanelLayoutProps) {
   };
 
   return (
-    <div className={`font-sans ${className} overflow-y-hidden`}>
-      <div className="flex flex-col mx-4 gap-4">
+    <div className={`flex flex-col font-sans h-full ${className}`}>
+      <div className="flex-1 flex flex-col mx-6 gap-4 overflow-y-auto">
         <CustomButton
           onClick={() => router.push('/admin/estoques')}
         >
@@ -41,7 +42,7 @@ export default function PanelLayout({ className }: PanelLayoutProps) {
         <button
           onClick={handleUpdate}
           disabled={loading}
-          className={`w-full text-white py-4 rounded-2xl font-bold text-lg flex items-center justify-center gap-2 transition-colors
+          className={`w-full text-white py-4 rounded-2xl font-bold text-lg flex items-center justify-center gap-2 transition-colors shrink-0
             ${loading ? 'bg-gray-400 cursor-not-allowed' : 'bg-secondary hover:bg-secondary/90'}
           `}
         >
@@ -57,6 +58,15 @@ export default function PanelLayout({ className }: PanelLayoutProps) {
           <Eye className="w-6 h-6" />
           <span>Ver Pedidos</span>
         </CustomButton>
+        
+        <div className="pb-4"></div>
+      </div>
+      
+      <div className="shrink-0 mt-auto bg-background-alternative pt-2">
+        <hr className="border-muted-foreground/50 mb-4 mx-4" />
+        <div className="flex flex-col mx-4 my-4 gap-4">
+          <BackButton pushRoute="/admin" />
+        </div>
       </div>
     </div>
   );

@@ -4,8 +4,7 @@ import {
   createContext, 
   useContext, 
   ReactNode, 
-  useEffect, 
-  useState 
+  useSyncExternalStore
 } from 'react';
 import { useLocalStorage } from '@/data/hook/useLocalStorage';
 import { Customization } from '@/data/types/customization.type';
@@ -27,21 +26,22 @@ interface CustomizationContextType {
   resetCustomization: () => void;
   isComplete: () => boolean;
   isLoaded: boolean;
-}
+};
 
 const CustomizationContext = createContext<CustomizationContextType | undefined>(undefined);
+const emptySubscribe = () => () => {};
 
 export function CustomizationProvider({ children }: { children: ReactNode }) {
-  const [isMounted, setIsMounted] = useState(false);
+  const isMounted = useSyncExternalStore(
+    emptySubscribe,
+    () => true,
+    () => false
+  );
 
   const [storedCustomization, setStoredCustomization] = useLocalStorage<Customization>(
     'product_customization',
     INITIAL_CUSTOMIZATION
   );
-
-  useEffect(() => {
-    setIsMounted(true);
-  }, []);
 
   const updateField = <K extends keyof Customization>(
     field: K,

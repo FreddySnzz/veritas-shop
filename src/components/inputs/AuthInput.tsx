@@ -1,6 +1,8 @@
 interface AuthInputProps extends React.HTMLAttributes<HTMLInputElement> {
   label: string;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   value: any;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   changeValue: (newValue: any) => void;
   type?: React.HTMLInputTypeAttribute;
 }

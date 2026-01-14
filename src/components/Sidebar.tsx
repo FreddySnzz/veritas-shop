@@ -104,8 +104,8 @@ Aguardo retorno!`;
                       <div className="flex items-center gap-3 flex-1 min-w-0">
                         <div className="shrink-0 relative w-14 h-14 mx-auto">
                           <Image 
-                            src={items.cordao?.img!} 
-                            alt={items.cordao?.ref!} 
+                            src={items.cordao?.img || ''}
+                            alt={items.cordao?.ref || ''}
                             fill 
                             className="object-contain rounded-lg" 
                             sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
@@ -131,8 +131,8 @@ Aguardo retorno!`;
                       <div className="flex items-center gap-3 flex-1 min-w-0">
                         <div className="shrink-0 relative w-14 h-14 mx-auto">
                           <Image 
-                            src={items.conta?.img!} 
-                            alt={items.conta?.ref!} 
+                            src={items.conta?.img || ''}
+                            alt={items.conta?.ref || ''}
                             fill 
                             className="object-contain rounded-lg" 
                             sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
@@ -158,8 +158,8 @@ Aguardo retorno!`;
                       <div className="flex items-center gap-3 flex-1 min-w-0">
                         <div className="shrink-0 relative w-14 h-14 mx-auto">
                           <Image 
-                            src={items.letra?.img!} 
-                            alt={items.letra?.ref!} 
+                            src={items.letra?.img || ''}
+                            alt={items.letra?.ref || ''}
                             fill 
                             className="object-contain rounded-lg" 
                             sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
@@ -185,8 +185,8 @@ Aguardo retorno!`;
                       <div className="flex items-center gap-3 flex-1 min-w-0">
                         <div className="shrink-0 relative w-14 h-18 mx-auto">
                           <Image 
-                            src={items.crucifixo?.img!} 
-                            alt={items.crucifixo?.ref!} 
+                            src={items.crucifixo?.img || ''}
+                            alt={items.crucifixo?.ref || ''}
                             fill 
                             className="object-contain rounded-lg" 
                             sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
@@ -212,8 +212,8 @@ Aguardo retorno!`;
                       <div className="flex items-center gap-3 flex-1 min-w-0">
                         <div className="shrink-0 relative w-14 h-14 mx-auto">
                           <Image 
-                            src={items.entremeio?.img!} 
-                            alt={items.entremeio?.ref!} 
+                            src={items.entremeio?.img || ''}
+                            alt={items.entremeio?.ref || ''}
                             fill 
                             className="object-contain rounded-lg" 
                             sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"

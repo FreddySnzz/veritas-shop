@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect, useMemo } from 'react';
+import { useState, useMemo } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import Image from 'next/image';
 import { useCustomization } from '@/data/context/CustomizationContext';
@@ -10,6 +10,7 @@ import { CustomizationCatalogButton } from './buttons/CatalogButton';
 import MultiTextInput from './inputs/MultiTexts';
 import Sidebar from './Sidebar';
 import { Crucifixos, Entremeios } from '@/data/types/customization.type';
+import { useLocalStorage } from '@/data/hook/useLocalStorage';
 
 const STEPS = [
   { id: 'cordao', title: 'Cordão', subtitle: 'Escolha a cor do cordão' },
@@ -24,20 +25,11 @@ const STEPS = [
 type ProductData = typeof initialData;
 
 const RosarioWizard = () => {
-  const [products, setProducts] = useState<ProductData>(initialData);
-  const [isMounted, setIsMounted] = useState(false);
+  const [products] = useLocalStorage<ProductData>('veritas_products', initialData);
   const [currentStep, setCurrentStep] = useState(0);
   const [direction, setDirection] = useState(0);
   const [expandedSidebar, setExpandedSidebar] = useState(false);
   const { customization, updateCustomization, isComplete } = useCustomization();
-
-  useEffect(() => {
-    setIsMounted(true);
-    if (typeof window !== 'undefined') {
-      const savedProducts = window.localStorage.getItem('veritas_products');
-      if (savedProducts) setProducts(JSON.parse(savedProducts));
-    }
-  }, []);
 
   const handleNext = () => {
     let nextIndex = currentStep + 1;
@@ -73,6 +65,7 @@ const RosarioWizard = () => {
     }
   };
 
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const handleSelectAndAdvance = (key: string, value: any) => {
     if (customization[key as keyof typeof customization] === value) 
       return updateCustomization({ [key]: undefined });
@@ -349,8 +342,6 @@ const RosarioWizard = () => {
         return null;
     }
   };
-
-  if (!isMounted) return null;
 
   return (
     <div className="bg-gray-50 flex flex-col md:flex-row font-sans rounded-xl m-4">

@@ -1,6 +1,6 @@
 'use client';
 
-import React from 'react';
+import React, { useMemo } from 'react';
 import { usePathname } from "next/navigation";
 import {
   Breadcrumb,
@@ -12,6 +12,7 @@ import {
 } from "@/components/ui/breadcrumb";
 import { FiHome } from "react-icons/fi";
 import FlowerIcon from "./icons/FlowerIcon";
+import { verifyFirebaseId } from '@/data/functions/verifyFirebaseId';
 
 interface DynamicBreadcrumbProps {
   className?: string
@@ -20,10 +21,17 @@ interface DynamicBreadcrumbProps {
 
 export default function DynamicBreadcrumb({ className, listClassName }: DynamicBreadcrumbProps) {
   const paths = usePathname();
-  const pathNames = paths
-    .split('/')
-    .filter(path => path.length > 0)
-    .map(path => path);
+
+  const breadcrumbList = useMemo(() => {
+    const segments = paths.split('/').filter(path => path.length > 0);
+    const lastSegment = segments[segments.length - 1];
+
+    if (lastSegment && verifyFirebaseId(lastSegment)) {
+      segments.pop(); 
+    };
+
+    return segments;
+  }, [paths]);
 
   return (
     <Breadcrumb className={className}>
@@ -34,15 +42,16 @@ export default function DynamicBreadcrumb({ className, listClassName }: DynamicB
           </BreadcrumbLink>
         </BreadcrumbItem>
 
-        {pathNames.length > 0 && (
+        {breadcrumbList.length > 0 && (
           <BreadcrumbSeparator>
-            \
+            /
           </BreadcrumbSeparator>
         )}
 
-        {pathNames.map((link, index) => {
-          const href = `/${pathNames.slice(0, index + 1).join('/')}`;
-          const isLast = index === pathNames.length - 1;
+        { breadcrumbList.map((link, index) => {
+          const href = `/${breadcrumbList.slice(0, index + 1).join('/')}`;
+          
+          const isLast = index === breadcrumbList.length - 1;
           const formattedLink = link.charAt(0).toUpperCase() + link.slice(1).replace(/-/g, ' ');
 
           return (
@@ -56,6 +65,7 @@ export default function DynamicBreadcrumb({ className, listClassName }: DynamicB
                   </BreadcrumbLink>
                 )}
               </BreadcrumbItem>
+              
               {!isLast && (
                 <BreadcrumbSeparator>
                   <FlowerIcon className='scale-125' />
@@ -67,4 +77,4 @@ export default function DynamicBreadcrumb({ className, listClassName }: DynamicB
       </BreadcrumbList>
     </Breadcrumb>
   );
-}
+};
