@@ -11,6 +11,7 @@ import MultiTextInput from './inputs/MultiTexts';
 import Sidebar from './Sidebar';
 import { Crucifixos, Entremeios } from '@/data/types/customization.type';
 import { useLocalStorage } from '@/data/hook/useLocalStorage';
+import { useRouter } from 'next/navigation';
 
 const STEPS = [
   { id: 'cordao', title: 'Cordão', subtitle: 'Escolha a cor do cordão' },
@@ -30,6 +31,7 @@ const RosarioWizard = () => {
   const [direction, setDirection] = useState(0);
   const [expandedSidebar, setExpandedSidebar] = useState(false);
   const { customization, updateCustomization, isComplete } = useCustomization();
+  const router = useRouter();
 
   const handleNext = () => {
     let nextIndex = currentStep + 1;
@@ -53,16 +55,22 @@ const RosarioWizard = () => {
 
     if (STEPS[currentStep].id === 'crucifixo') {
       const hasText = customization.frase && customization.frase.length > 0;
+
       if (!hasText) {
-      const letrasIndex = STEPS.findIndex(s => s.id === 'letras');
-      if (prevIndex === letrasIndex) prevIndex--;
-      }
-    }
+        const letrasIndex = STEPS.findIndex(s => s.id === 'letras');
+        
+        if (prevIndex === letrasIndex) prevIndex--;
+      };
+    };
 
     if (prevIndex >= 0) {
       setDirection(-1);
       setCurrentStep(prevIndex);
-    }
+    };
+
+    if (currentStep === 0) {
+      router.push('/');
+    };
   };
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -312,7 +320,7 @@ const RosarioWizard = () => {
 
               <div className='w-full'>
                 <CustomizationCatalogButton 
-                  onClick={() => window.location.reload()}
+                  onClick={() => router.refresh()}
                   buttonText='Voltar para personalização' 
                 />
               </div>
@@ -331,7 +339,7 @@ const RosarioWizard = () => {
             <motion.div 
                animate={{ scale: [1, 1.05, 1] }}
                transition={{ duration: 2, repeat: Infinity }}
-               className="w-full"
+               className="flex items-center justify-center w-4/5"
             >
                <CustomizationCatalogButton onClick={() => setExpandedSidebar(true)} />
             </motion.div>
@@ -340,7 +348,7 @@ const RosarioWizard = () => {
 
       default:
         return null;
-    }
+    };
   };
 
   return (
@@ -381,26 +389,21 @@ const RosarioWizard = () => {
           </AnimatePresence>
         </div>
         
-        <footer className="mt-8 flex justify-between items-center py-4 border-t border-gray-200 bg-gray-50 z-5">
+        <footer className="mt-8 flex justify-between items-center py-4 border-t border-gray-200 bg-gray-50 z-5 gap-4">
           <button
             onClick={handleBack}
-            disabled={currentStep === 0}
-            className={`flex items-center gap-2 px-6 py-3 rounded-xl font-medium transition-colors ${
-              currentStep === 0 
-              ? 'text-gray-300 cursor-not-allowed' 
-              : 'text-gray-600 hover:bg-gray-200'
-            }`}
+            className={`flex w-full items-center justify-center gap-2 px-6 py-3 rounded-xl font-medium transition-all text-secondary bg-gray-100 hover:bg-gray-200`}
           >
             <ChevronLeft size={20} />
-            Voltar
+            <span>Voltar</span>
           </button>
 
           {currentStep < STEPS.length - 1 && (
             <button
               onClick={handleNext}
-              className="flex items-center gap-2 px-6 py-3 bg-secondary text-white rounded-xl font-medium hover:bg-gray-800 transition-all shadow-lg hover:shadow-xl"
+              className="flex w-full items-center justify-center gap-2 px-6 py-3 rounded-xl font-medium transition-all text-white bg-secondary hover:bg-secondary/90"
             >
-              {'Próximo'}
+              <span>Próximo</span>
               <ChevronRight size={20} />
             </button>
           )}

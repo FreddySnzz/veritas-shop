@@ -13,8 +13,8 @@ export function BackButton({ className, pushRoute }: ButtonProps) {
     <button
       type="button"
       onClick={() => router.push(pushRoute)}
-      className={`flex w-full px-4 py-3 rounded-lg items-center justify-center
-        bg-primary/20 hover:bg-primary/30 text-secondary transition-all cursor-pointer mr-2 ${className}
+      className={`flex w-full px-4 py-3 rounded-lg items-center justify-center font-medium
+        bg-gray-50 hover:bg-primary/10 text-secondary transition-all cursor-pointer mr-2 ${className}
       `}
     >
       Voltar

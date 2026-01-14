@@ -42,8 +42,9 @@ export default function PanelLayout({ className }: PanelLayoutProps) {
         <button
           onClick={handleUpdate}
           disabled={loading}
-          className={`w-full text-white py-4 rounded-2xl font-bold text-lg flex items-center justify-center gap-2 transition-colors shrink-0
-            ${loading ? 'bg-gray-400 cursor-not-allowed' : 'bg-secondary hover:bg-secondary/90'}
+          className={`flex items-center justify-center gap-2 transition-colors shrink-0 w-full py-4 
+            rounded-2xl font-bold text-lg cursor-pointer
+            ${loading ? 'cursor-not-allowed' : 'bg-white hover:bg-gray-50 text-secondary'}
           `}
         >
           <RefreshCw 
@@ -53,7 +54,7 @@ export default function PanelLayout({ className }: PanelLayoutProps) {
         </button>
 
         <CustomButton
-          onClick={() => console.log('Ver Pedidos')}
+          onClick={() => toast.warning("Em breve!")}
         >
           <Eye className="w-6 h-6" />
           <span>Ver Pedidos</span>
@@ -63,9 +64,9 @@ export default function PanelLayout({ className }: PanelLayoutProps) {
       </div>
       
       <div className="shrink-0 mt-auto bg-background-alternative pt-2">
-        <hr className="border-muted-foreground/50 mb-4 mx-4" />
-        <div className="flex flex-col mx-4 my-4 gap-4">
-          <BackButton pushRoute="/admin" />
+        <hr className="border-muted-foreground/50 mb-4 mx-6" />
+        <div className="flex flex-col mx-6 my-4 gap-4">
+          <BackButton pushRoute="/" />
         </div>
       </div>
     </div>

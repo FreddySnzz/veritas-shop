@@ -1,7 +1,7 @@
 'use server'
 
-import { getCachedProducts } from "@/data/services/product.service";
 import { revalidateTag } from "next/cache";
+import { getCachedProducts } from "@/data/services/product.service";
 
 export async function refreshProductsAction(
   collection: string

@@ -5,5 +5,6 @@ export default interface ProductModel {
   initial_price: number;
   image_url?: string;
   available: boolean;
+  customizable: boolean;
   updated_at: Date;
 }

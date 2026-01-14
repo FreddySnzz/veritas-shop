@@ -11,7 +11,7 @@ import { useMemo } from "react";
 interface SidebarProps {
   open: boolean;
   onClose: () => void;
-}
+};
 
 export default function Sidebar({ open, onClose }: SidebarProps) {
   const { customization, updateCustomization, resetCustomization, isComplete } = useCustomization();

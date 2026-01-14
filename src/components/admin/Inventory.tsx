@@ -4,6 +4,7 @@ import { Paintbrush, Plus, ShoppingBasket } from "lucide-react";
 import { CustomButton } from "../buttons/CustomButtom";
 import { useRouter } from "next/navigation";
 import { BackButton } from "../buttons/BackButtom";
+import { toast } from "sonner";
 
 export default function AdminInventory() {
   const router = useRouter();
@@ -19,7 +20,7 @@ export default function AdminInventory() {
 
         <div className="grid grid-cols-2 md:grid-cols-3 xl:grid-cols-5 gap-4 mx-4 mb-8">
           <CustomButton
-            className="flex-col"
+            className="flex-col shadow-lg shadow-secondary/5 border"
             onClick={() => router.push('/admin/estoques/catalogo/adicionar')}
           >
             <Plus className="w-6 h-6" />
@@ -27,8 +28,8 @@ export default function AdminInventory() {
           </CustomButton>
 
           <CustomButton
-            className="flex-col"
-            onClick={() => console.log('Adicionar Itens de Personalização')}
+            className="flex-col shadow-lg shadow-secondary/5 border"
+            onClick={() => toast.warning("Em breve!")}
           >
             <Plus className="w-6 h-6" />
             <span>Item de Personalização</span>
@@ -43,7 +44,7 @@ export default function AdminInventory() {
 
         <div className="grid grid-cols-2 md:grid-cols-3 xl:grid-cols-5 gap-4 mx-4">
           <CustomButton
-            className="flex-col"
+            className="flex-col shadow-lg shadow-secondary/5 border"
             onClick={() => router.push('/admin/estoques/catalogo')}
           >
             <ShoppingBasket className="w-6 h-6" />
@@ -51,8 +52,8 @@ export default function AdminInventory() {
           </CustomButton>
 
           <CustomButton
-            className="flex-col"
-            onClick={() => console.log('Adicionar Itens de Personalização')}
+            className="flex-col shadow-lg shadow-secondary/5 border"
+            onClick={() => toast.warning("Em breve!")}
           >
             <Paintbrush className="w-6 h-6" />
             <span>Itens de Personalização</span>

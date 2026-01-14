@@ -15,7 +15,7 @@ export function EditButton({ className, pushRoute }: ButtonProps) {
       type="button"
       onClick={() => router.push(pushRoute)}
       className={`flex items-center justify-center 
-        bg-secondary hover:bg-secondary/80 text-white transition-all cursor-pointer mr-2 ${className}
+        hover:text-gray-600 text-secondary/70 transition-all cursor-pointer mr-2 ${className}
       `}
     >
       <Pencil className="w-6 h-6" />

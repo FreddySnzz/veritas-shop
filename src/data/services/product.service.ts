@@ -2,10 +2,12 @@ import { db } from "../firebase/config";
 import {
   addDoc,
   collection,
+  deleteDoc,
   doc,
   getDoc,
   getDocs,
   query,
+  updateDoc,
   where,
 } from "firebase/firestore";
 import { Collections } from "../types/collections.enum";
@@ -89,11 +91,40 @@ export async function createProduct(data: ProductModel): Promise<ProductModel> {
   };
 };
 
+export async function updateProduct(id: string, data: ProductModel): Promise<ProductModel> {
+  const docRef = doc(db, Collections.PRODUCTS_COLLECTION, id);
+  const docSnap = await getDoc(docRef);
+  
+  if (!docSnap.exists()) {
+    throw new ProductServiceError("Product not exists", 404);
+  };
+
+  const updatedData = {
+    ...docSnap.data(),
+    ...data,
+  };
+
+  await updateDoc(docRef, updatedData);
+
+  return updatedData;
+};
+
+export async function deleteProduct(id: string) {
+  const docRef = doc(db, Collections.PRODUCTS_COLLECTION, id);
+  const docSnap = await getDoc(docRef);
+
+  if (!docSnap.exists()) {
+    throw new ProductServiceError("Product not exists", 404);
+  };
+
+  await deleteDoc(docRef);
+};
+
 export const getCachedProducts = unstable_cache(
   async () => getAllProducts(),
   ['products'],
   {
-    revalidate: 3600,
+    revalidate: 1800,
     tags: ['products'],
   }
 );

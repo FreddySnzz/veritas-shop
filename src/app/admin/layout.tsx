@@ -24,7 +24,7 @@ export default function AdminLayout({
 
   if (isLoading) {
     return (
-      <div className="flex min-h-screen items-center justify-center">
+      <div className="flex min-h-screen items-center justify-center bg-background-alternative">
         <Loader2 className="h-8 w-8 animate-spin text-gray-500" />
       </div>
     );
@@ -36,7 +36,7 @@ export default function AdminLayout({
 
   if (!isAuthenticated) {
     return (
-      <div className="flex min-h-screen items-center justify-center">
+      <div className="flex min-h-screen items-center justify-center bg-background-alternative">
         <Loader2 className="h-8 w-8 animate-spin text-gray-500" />
       </div>
     );
