@@ -3,5 +3,6 @@ export default interface CrucifixoModel {
   style?: string;
   available: boolean;
   ref: string;
-  img?: string;
+  image_url?: string;
+  updated_at: Date;
 }

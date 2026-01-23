@@ -1,5 +1,5 @@
-import DynamicBreadcrumb from "@/components/DynamicBreadcrumb";
 import { Header } from "@/components/Header";
+import DynamicBreadcrumb from "@/components/DynamicBreadcrumb";
 import PanelLayout from "@/components/admin/PanelLayout";
 
 export default function AdminPanel() {

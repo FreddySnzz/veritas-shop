@@ -33,22 +33,22 @@ export default function MultiTextInput() {
 
   return (
     <section id='texts' className="bg-white rounded-2xl p-4">
-      <div className="flex flex-col mb-4 gap-2">
+      <div className="flex flex-col mb-4">
         <span className="font-bold text-secondary">
           Texto
         </span>
-        <span className='text-muted-foreground font-light text-sm'>
-          (Caso adicione mais de uma palavra, valor adicional será incluso.)
+        <span className='text-muted-foreground font-light text-xs'>
+          Caso adicione mais de uma palavra, valor adicional será incluso.
         </span>
       </div>
 
       <div className="flex flex-col gap-3 w-full">
         {texts.map((text, index) => (
-          <div key={index} className="flex gap-2 w-full items-center">
+          <div key={index} className="flex gap-1 items-center">
             <input
               type="text"
               value={text}
-              className="bg-background-alternative-v2 text-secondary font-bold py-2 px-4 rounded-lg cursor-text flex-1 focus:outline-0"
+              className="bg-background-alternative-v2 text-secondary font-bold py-2 px-3 rounded-lg cursor-text flex-1 focus:outline-0"
               onChange={(e) => handleChange(index, e.target.value)}
               placeholder={`Texto ${index + 1}`}
               maxLength={10}
@@ -59,9 +59,9 @@ export default function MultiTextInput() {
             <button 
               onClick={() => handleRemove(index)}
               title="Remover este texto"
-              className="hover:opacity-75 transition-opacity"
+              className="hover:opacity-75 transition-opacity cursor-pointer"
             >
-              <MinusCircle className="text-red-500 w-6 h-6 cursor-pointer" />
+              <MinusCircle className="text-red-500 w-6 h-6" />
             </button>
           </div>
         ))}

@@ -1,13 +1,19 @@
 'use client'
 
-import { Paintbrush, Plus, ShoppingBasket } from "lucide-react";
-import { CustomButton } from "../buttons/CustomButtom";
+import { useState } from "react";
 import { useRouter } from "next/navigation";
+import { Paintbrush, Plus, ShoppingBasket } from "lucide-react";
+import { CustomButton } from "../buttons/CustomButton";
 import { BackButton } from "../buttons/BackButtom";
-import { toast } from "sonner";
+import AddCustomizationItemModal from "../modals/AddCustomizationItem";
 
 export default function AdminInventory() {
+  const [isOpen, setIsOpen] = useState(false);
   const router = useRouter();
+
+  const handleOpenModal = () => {
+    setIsOpen(!isOpen);
+  };
 
   return (
     <div className="flex flex-col font-sans h-full">
@@ -29,10 +35,11 @@ export default function AdminInventory() {
 
           <CustomButton
             className="flex-col shadow-lg shadow-secondary/5 border"
-            onClick={() => toast.warning("Em breve!")}
+            onClick={handleOpenModal}
           >
             <Plus className="w-6 h-6" />
             <span>Item de Personalização</span>
+            <AddCustomizationItemModal modalOpen={isOpen} />
           </CustomButton>
         </div>
 
@@ -53,7 +60,7 @@ export default function AdminInventory() {
 
           <CustomButton
             className="flex-col shadow-lg shadow-secondary/5 border"
-            onClick={() => toast.warning("Em breve!")}
+            onClick={() => router.push('/admin/estoques/itens-personalizacao')}
           >
             <Paintbrush className="w-6 h-6" />
             <span>Itens de Personalização</span>
@@ -62,8 +69,8 @@ export default function AdminInventory() {
       </div>
 
       <div className="shrink-0 mt-auto bg-background-alternative pt-2">
-        <hr className="border-muted-foreground/50 mb-4 mx-4" />
-        <div className="flex flex-col mx-4 my-4 gap-4">
+        <hr className="border-muted-foreground/50 mb-4 mx-6" />
+        <div className="flex flex-col mx-6 my-4 gap-4">
           <BackButton pushRoute="/admin" />
         </div>
       </div>

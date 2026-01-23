@@ -13,6 +13,11 @@ import {
 import { Collections } from "../types/collections.enum";
 import ProductModel from "../models/Product.model";
 import { unstable_cache } from "next/cache";
+import { getAllCrucifixos } from "./customization-items/crucifixo.service";
+import { getAllContas } from "./customization-items/conta.service";
+import { getAllEntremeios } from "./customization-items/entremeio.service";
+import { getAllLetras } from "./customization-items/letra.service";
+import { getAllCordoes } from "./customization-items/cordao.service";
 
 export class ProductServiceError extends Error {
   status: number;
@@ -54,8 +59,28 @@ export async function getAllProducts(): Promise<ProductModel[] | null> {
     return {
       id: doc.id,
       ...data,
-      initial_price: data.initial_price / 100,
-      updated_at: data.updated_at?.toMillis(),
+      initial_price: data.initial_price / 100
+    } as ProductModel;
+  });
+};
+
+export async function getProductByName(
+  name: string,
+): Promise<ProductModel[] | null> {
+  const productRef = collection(db, Collections.PRODUCTS_COLLECTION);
+
+  const nameQuery = query(
+    productRef, where("name", "==", name)
+  );
+
+  const nameSnap = await getDocs(nameQuery);
+
+  return nameSnap.docs.map((doc) => {
+    const data = doc.data();
+    return {
+      id: doc.id,
+      ...data,
+      initial_price: data.initial_price / 100
     } as ProductModel;
   });
 };
@@ -124,7 +149,22 @@ export const getCachedProducts = unstable_cache(
   async () => getAllProducts(),
   ['products'],
   {
-    revalidate: 1800,
+    revalidate: 3600,
     tags: ['products'],
+  }
+);
+
+export const getCachedCustomizationItems = unstable_cache(
+  async () => ({
+    crucifixos: await getAllCrucifixos(),
+    contas: await getAllContas(),
+    entremeios: await getAllEntremeios(),
+    letras: await getAllLetras(),
+    cordoes: await getAllCordoes(),
+  }),
+  ['customization_items'],
+  {
+    revalidate: 1800,
+    tags: ['customization_items'],
   }
 );

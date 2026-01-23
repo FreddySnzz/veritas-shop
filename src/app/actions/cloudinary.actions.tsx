@@ -50,8 +50,8 @@ export async function uploadImageAction(formData: FormData) {
       resource_type: "image"
     });
     
+    console.log("URL:", result.secure_url);
     return result.secure_url;
-    
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   } catch (error: any) {
     if (error.error?.message?.includes("File exists") || error.message?.includes("already exists")) {

@@ -4,23 +4,31 @@ import { useState, useEffect, useMemo, useRef } from "react";
 import { usePathname, useRouter } from "next/navigation";
 import Image from "next/image";
 import { toast } from "sonner";
+import { verifyFirebaseId } from "@/data/functions/verifyFirebaseId";
+import { 
+  createProductAction, 
+  getAllProductsAction, 
+  updateProductAction 
+} from "@/app/actions/products.action";
+import { deleteImageAction, uploadImageAction } from "@/app/actions/cloudinary.actions";
+import { ArrowBigUpDash, Images, Trash } from "lucide-react";
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 import { Switch } from "@/components/ui/switch";
 import ProductModel from "@/data/models/Product.model";
-import { verifyFirebaseId } from "@/data/functions/verifyFirebaseId";
-import { getCachedProductsAction } from "@/app/actions/cache.actions";
-import { 
-  ArrowBigUpDash, 
-  Images, 
-  Trash
-} from "lucide-react";
-import { createProductAction, updateProductAction } from "@/app/actions/products.action";
-import { deleteImageAction, uploadImageAction } from "@/app/actions/cloudinary.actions";
+import { ItemsCustomizationTypes } from "@/data/types/customization.type";
 
 interface ProductFormProps {
   initialData?: ProductModel | null
 };
+
+const CUSTOMIZATION_OPTIONS = [
+  { label: 'Cordão', value: ItemsCustomizationTypes.cordoes },
+  { label: 'Conta', value: ItemsCustomizationTypes.contas },
+  { label: 'Letras', value: ItemsCustomizationTypes.letras },
+  { label: 'Crucifixo', value: ItemsCustomizationTypes.crucifixos },
+  { label: 'Entremeio', value: ItemsCustomizationTypes.entremeios },
+];
 
 export function ProductForm({ 
   initialData,
@@ -30,6 +38,7 @@ export function ProductForm({
   const [initialPrice, setInitialPrice] = useState<number>(initialData?.initial_price || 0);
   const [available, setAvailable] = useState<boolean>(initialData?.available || false);
   const [customizable, setCustomizable] = useState<boolean>(initialData?.customizable || false);
+  const [customizationItems, setCustomizationItems] = useState<string[]>(initialData?.customization_items || []);
   const [currentImageUrl, setCurrentImageUrl] = useState<string>(initialData?.image_url || "");
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
@@ -50,13 +59,15 @@ export function ProductForm({
       if (verifyFirebaseId(productId)) {
         setIsLoading(true);
         try {
-          const cachedProducts = await getCachedProductsAction();
-          const foundProduct = cachedProducts?.find(p => p.id === productId);
+          const products = await getAllProductsAction();
+          const foundProduct = products?.find((p: ProductModel) => p.id === productId);
 
           if (foundProduct) {
             setName(foundProduct.name);
             setDesc(foundProduct.desc || "");
             setInitialPrice(foundProduct.initial_price);
+            setCustomizable(foundProduct.customizable);
+            setCustomizationItems(foundProduct.customization_items || []);
             setAvailable(foundProduct.available);
             setCurrentImageUrl(foundProduct.image_url || "");
             setIsEditMode(true);
@@ -132,6 +143,8 @@ export function ProductForm({
         name,
         desc,
         available,
+        customizable,
+        customization_items: customizationItems,
         initial_price: initialPrice * 100,
         image_url: finalUrlToSave,
         updated_at: new Date(),
@@ -157,10 +170,32 @@ export function ProductForm({
   const handleButtonClick = () => {
     fileInputRef.current?.click();
   };
+
+  const handleMainSwitchChange = (checked: boolean) => {
+    setCustomizable(checked);
+    if (!checked) {
+      setCustomizationItems([]); 
+    };
+  };
+
+  const toggleCustomizationItem = (itemValue: string) => {
+    setCustomizationItems((prev) => {
+      const exists = prev.includes(itemValue);
+      
+      if (exists) {
+        return prev.filter((item) => item !== itemValue);
+      } else {
+        return [...prev, itemValue];
+      }
+    });
+  };
   
   return (
-    <div className="flex flex-col font-sans h-full overflow-hidden">
-      <form onSubmit={handleSubmit} className="flex-1 flex flex-col mx-2 gap-4 overflow-y-auto space-y-6 px-4 font-sans">
+    <div className="flex-1 flex flex-col w-full min-h-0 overflow-hidden font-sans">
+      <form 
+        onSubmit={handleSubmit} 
+        className="flex-1 flex flex-col gap-4 overflow-y-auto px-6 pb-2 scrollbar-hide"
+      >
         <div className="flex flex-col gap-4">
           <div className="flex flex-col gap-2">
             <Label htmlFor="name" className="text-sm">Nome</Label>
@@ -172,7 +207,7 @@ export function ProductForm({
               required
               onChange={(e) => setName(e.target.value)}
               value={name}
-              className="h-12 bg-white focus-visible:ring-0 truncate text-secondary"
+              className="bg-white focus-visible:ring-0 truncate text-secondary"
               disabled={isLoading}
             />
           </div>
@@ -186,7 +221,7 @@ export function ProductForm({
               placeholder="Descrição do Produto"
               onChange={(e) => setDesc(e.target.value)}
               value={desc}
-              className="h-12 bg-white focus-visible:ring-0 truncate text-secondary"
+              className="bg-white focus-visible:ring-0 truncate text-secondary"
               disabled={isLoading}
             />
           </div>
@@ -204,7 +239,7 @@ export function ProductForm({
                 placeholder="0,00"
                 step="0.01"
                 min="0"
-                className="pl-10 h-12 bg-white focus-visible:ring-0 truncate text-secondary"
+                className="pl-10 bg-white focus-visible:ring-0 truncate text-secondary"
                 disabled={isLoading}
               />
             </div>
@@ -214,7 +249,6 @@ export function ProductForm({
             <Label htmlFor="image" className="text-sm">
               {isEditMode ? "Alterar Imagem (Opcional)" : "Imagem (Opcional)"}
             </Label>
-
             <span className="text-xs text-gray-400 mb-2">*.jpg / *.jpeg / *.png - tam. limite de 10MB</span>
 
             <Input
@@ -253,6 +287,7 @@ export function ProductForm({
                     src={imagePreview}
                     alt="preview"
                     draggable="false"
+                    loading="eager"
                     fill
                     className="object-cover rounded-2xl border border-gray-200 shadow-sm"
                     sizes="(max-width: 768px) 100vw, 250px"
@@ -271,36 +306,71 @@ export function ProductForm({
             )}
           </div>
 
-          <div className="flex w-full justify-between mt-4 gap-4 items-center">
-            <Label htmlFor="available">Disponível</Label>
+          <div className="flex items-center w-full justify-between px-4 py-3 bg-white rounded-lg border">
+            <Label htmlFor="available">Produto Disponível no Estoque?</Label>
             <Switch 
               id="available" 
-              disabled={isLoading}
-              onCheckedChange={setAvailable} 
               checked={available}
+              onCheckedChange={setAvailable}
+              disabled={isLoading}
               className="cursor-pointer"
             />
           </div>
 
-          <div className="flex w-full justify-between gap-4 items-center">
-            <Label htmlFor="customizable">Customizável</Label>
+          <div className="flex items-center w-full justify-between px-4 py-3 bg-white rounded-lg border">
+            <Label htmlFor="customizable">Produto Customizável?</Label>
             <Switch 
-              id="customizable" 
-              disabled={isLoading}
-              onCheckedChange={setCustomizable} 
+              id="customizable"
               checked={customizable}
+              onCheckedChange={handleMainSwitchChange}
+              disabled={isLoading}
               className="cursor-pointer"
             />
           </div>
+
+          {customizable && (
+            <div className="flex flex-col w-full bg-white rounded-lg border px-4 py-3 animate-in fade-in slide-in-from-top-2 duration-300">
+              <span className="flex text-xs font-medium mb-3 text-muted-foreground">
+                Personalizações disponíveis:
+              </span>
+
+              <div className="flex flex-col gap-2">
+                {CUSTOMIZATION_OPTIONS.map((option) => {
+                  const isChecked = customizationItems.includes(option.value);
+
+                  return (
+                    <div 
+                      key={option.value} 
+                      className="flex items-center justify-between w-full"
+                    >
+                      <Label 
+                        htmlFor={`cust-item-${option.value}`} 
+                        className="cursor-pointer"
+                      >
+                        {option.label}
+                      </Label>
+                      <Switch
+                        id={`cust-item-${option.value}`}
+                        checked={isChecked}
+                        onCheckedChange={() => toggleCustomizationItem(option.value)}
+                        disabled={isLoading}
+                        className="cursor-pointer"
+                      />
+                    </div>
+                  );
+                })}
+              </div>
+            </div>
+          )}
         </div>
       </form>
 
       <div className="shrink-0 mt-auto bg-background-alternative pt-2">
-        <hr className="border-muted-foreground/50 mb-4 mx-4" />
-        <div className="flex mx-4 my-4 gap-4">
+        <hr className="border-muted-foreground/50 mb-4 mx-6" />
+        <div className="flex mx-6 my-4 gap-4">
           <button 
             type="button"
-            onClick={() => router.push('/admin/estoques/catalogo')}
+            onClick={() => router.back()}
             className="flex w-full px-4 py-3 rounded-lg bg-primary/20 text-secondary items-center justify-center hover:bg-red-200 cursor-pointer transition-colors" 
             disabled={isLoading}
           >

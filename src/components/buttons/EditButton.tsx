@@ -18,7 +18,7 @@ export function EditButton({ className, pushRoute }: ButtonProps) {
         hover:text-gray-600 text-secondary/70 transition-all cursor-pointer mr-2 ${className}
       `}
     >
-      <Pencil className="w-6 h-6" />
+      <Pencil className="w-5 h-5" />
     </button>
   );
 };

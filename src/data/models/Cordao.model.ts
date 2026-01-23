@@ -4,5 +4,6 @@ export default interface CordaoModel {
   color?: string;
   available: boolean;
   ref: string;
-  img?: string;
+  image_url?: string;
+  updated_at: Date;
 }

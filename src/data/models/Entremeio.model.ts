@@ -4,5 +4,6 @@ export default interface EntremeioModel {
   style?: string;
   available: boolean;
   ref: string;
-  img?: string;
+  image_url?: string;
+  updated_at: Date;
 }

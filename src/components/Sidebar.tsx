@@ -1,87 +1,93 @@
+'use client';
+
 import Image from "next/image";
-import { FaTimes } from "react-icons/fa";
+import { useState } from "react";
+import { useApp } from "@/data/context/AppContext";
+import { useCart } from "@/data/context/CartContext";
+import { useRouter } from "next/navigation";
 import { useLockBodyScroll } from "@/data/hook/useBodyLockScroll";
-import { WhatsAppButton } from "./buttons/WhatsAppButton";
-import { useCustomization } from "@/data/context/CustomizationContext";
-import { calculateCustomizationPrice } from "@/data/functions/calculateCustomizationPrice";
-import { MinusCircle, Trash2, ShoppingCart } from "lucide-react";
-import { findItem } from "@/data/functions/findItemOnProductsArray";
-import { useMemo } from "react";
+import { Trash2, ShoppingCart, X, Minus, Plus } from "lucide-react";
+import { CustomButton } from "./buttons/CustomButton";
+import ClearCartModal from "./modals/ClearCart";
+import DeleteItemCartModal from "./modals/DeleteItemCart";
 
-interface SidebarProps {
-  open: boolean;
-  onClose: () => void;
-};
+export default function Sidebar() {
+  const { isSidebarOpen, closeSidebar } = useApp();
+  const router = useRouter();
+  const { 
+    cartCount, 
+    items, 
+    addQuantity,
+    subtractQuantity,
+  } = useCart();
+  const [alertOpen, setAlertOpen] = useState(true);
+  const [isClearCartModalOpen, setIsClearCartModalOpen] = useState(false);
+  const [isDeleteItemCartModalOpen, setIsDeleteItemCartModalOpen] = useState(false);
+  const [itemCartIdToDelete, setItemCartIdToDelete] = useState<string>('');
+  const isCartEmpty = cartCount === 0;
 
-export default function Sidebar({ open, onClose }: SidebarProps) {
-  const { customization, updateCustomization, resetCustomization, isComplete } = useCustomization();
-  const items = useMemo(() => {
-    const cordao = findItem('cordoes', customization?.cordao);
-    const conta = findItem('contas', customization?.conta);
-    const letra = findItem('letras', customization?.styleLetra);
-    const crucifixo = findItem('crucifixos', customization?.crucifixo);
-    const entremeio = findItem('entremeios', customization?.entremeio);
+  useLockBodyScroll(isSidebarOpen);
 
-    return {
-      cordao,
-      conta,
-      letra,
-      crucifixo,
-      entremeio,
-    };
-  }, [customization]);
-
-  const gerarMensagemWhatsApp = () => {
-    const mensagem = `Olá! Gostaria de fazer um pedido de Terço Personalizado:
-
-- Cordão: ${customization?.cordao || 'Não selecionado'}
-- Contas: ${customization?.conta || 'Não selecionado'}
-- Letras: ${customization?.styleLetra || 'Não selecionado'}
-- Crucifixo: ${customization?.crucifixo || 'Não selecionado'}
-- Entremeio: ${customization?.entremeio || 'Não selecionado'}
-- Texto: ${customization?.frase?.join(', ') || 'Não informado'}
-
-Aguardo retorno!`;
-
-    const url = `https://wa.me/5586994379414?text=${encodeURIComponent(mensagem)}`;
-    return url;
+  const handleCloseAlert = () => {
+    setAlertOpen(false);
   };
 
-  const isCartEmpty = !customization?.cordao && 
-                      !customization?.conta && 
-                      !customization?.styleLetra && 
-                      !customization?.crucifixo && 
-                      !customization?.entremeio && 
-                      (!customization?.frase || customization.frase.length === 0);
+  const handleSubtractQuantity = (id: string) => {
+    const itemQuantity = items.filter(item => item.cartId === id)[0].quantity;
+    
+    if ((itemQuantity - 1) >= 1) {
+      subtractQuantity(id);
+    };
 
-  useLockBodyScroll(open);
+    if ((itemQuantity - 1) < 1) return;
+  };
+
+  const handleRemoveItemCart = (id: string) => {
+    setItemCartIdToDelete(id);
+    setIsDeleteItemCartModalOpen(true);
+  };
+
+  const handleGoToCart = () => {
+    closeSidebar();
+    router.push('/carrinho');
+  };
 
   return (
     <>
       <div
-        onClick={onClose}
-        className={`fixed inset-0 bg-black/50 transition-opacity duration-300 z-40 font-sans ${
-          open ? "opacity-100 visible" : "opacity-0 invisible"
-        }`}
+        onClick={closeSidebar}
+        className={`fixed inset-0 bg-black/50 transition-opacity duration-300 z-40 font-sans 
+          ${ isSidebarOpen ? "opacity-100 visible" : "opacity-0 invisible"}
+        `}
       />
-
       <aside
         className={`fixed top-0 right-0 h-full w-full sm:w-100 md:w-112.5 lg:w-125 bg-white font-sans
           transform transition-transform duration-300 ease-in-out z-50 shadow-2xl flex flex-col 
-          ${ open ? "translate-x-0" : "translate-x-full"}`
-        }
+          ${ isSidebarOpen ? "translate-x-0" : "translate-x-full"}
+        `}
       >
         <div className="shrink-0 border-b border-gray-200 font-sans">
           <div className="flex items-center justify-between p-4">
-            <h2 className="text-xl font-bold text-secondary flex items-center gap-2">
-              Meu Carrinho
-            </h2>
+            <div className="flex flex-col">
+              <h2 className="text-xl font-bold text-secondary">
+                Meu Carrinho
+              </h2>
+              <button 
+                onClick={handleGoToCart} 
+                aria-label="Ir para página do carrinho" 
+                className="flex cursor-pointer"
+              >
+                <span className="text-xs hover:underline text-gray-400">
+                  Ir para página do carrinho
+                </span>
+              </button>
+            </div>
             <button 
-              onClick={onClose} 
+              onClick={closeSidebar} 
               aria-label="Fechar menu" 
               className="hover:bg-gray-100 rounded-lg p-2 transition-colors ml-auto cursor-pointer"
             >
-              <FaTimes className="text-secondary text-xl" />
+              <X className="text-secondary text-xl hover:text-secondary/80" />
             </button>
           </div>
         </div>
@@ -98,179 +104,118 @@ Aguardo retorno!`;
               </div>
             ) : (
               <>
-                <div className="space-y-3">
-                  {customization?.cordao && (
-                    <div className="flex items-center justify-between gap-3 p-3 bg-gray-50 rounded-lg hover:bg-gray-100 transition-colors">
-                      <div className="flex items-center gap-3 flex-1 min-w-0">
-                        <div className="shrink-0 relative w-14 h-14 mx-auto">
-                          <Image 
-                            src={items.cordao?.img || ''}
-                            alt={items.cordao?.ref || ''}
-                            fill 
-                            className="object-contain rounded-lg" 
-                            sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-                          />
-                        </div>
-                        <div className="flex-1 min-w-0">
-                          <p className="text-xs text-gray-500 uppercase tracking-wide">Cordão</p>
-                          <p className="text-sm font-medium text-gray-800 truncate">Ref: {customization.cordao}</p>
-                        </div>
-                      </div>
-                      <button 
-                        onClick={() => updateCustomization({ cordao: undefined })} 
-                        className="hrink-0 p-2 hover:bg-red-50 rounded-lg transition-colors group"
-                        aria-label="Remover cordão"
-                      >
-                        <MinusCircle className="w-5 h-5 text-gray-400 group-hover:text-red-500 transition-colors" />
-                      </button>
-                    </div>
-                  )}
+                <div className="space-y-8">
+                  <div className={`${alertOpen ? "" : "hidden"} flex justify-between bg-gray-50 rounded-lg transition-colors p-3`}>
+                    <span className="text-xs">
+                      <strong>Os produtos no carrinho não estão reservados.</strong><br/> Finalize seu pedido antes que o estoque acabe.
+                    </span>
+                    <button 
+                      onClick={handleCloseAlert}
+                      className="flex items-center justify-center cursor-pointer"
+                    >
+                      <X className="w-4 h-4 hover:text-secondary/80 transition-colors" />
+                    </button>
+                  </div>
 
-                  {customization?.conta && (
-                    <div className="flex items-center justify-between gap-3 p-3 bg-gray-50 rounded-lg hover:bg-gray-100 transition-colors">
-                      <div className="flex items-center gap-3 flex-1 min-w-0">
-                        <div className="shrink-0 relative w-14 h-14 mx-auto">
-                          <Image 
-                            src={items.conta?.img || ''}
-                            alt={items.conta?.ref || ''}
-                            fill 
-                            className="object-contain rounded-lg" 
-                            sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-                          />
-                        </div>
-                        <div className="flex-1 min-w-0">
-                          <p className="text-xs text-gray-500 uppercase tracking-wide">Contas</p>
-                          <p className="text-sm font-medium text-gray-800 truncate">Ref: {customization.conta}</p>
-                        </div>
-                      </div>
-                      <button 
-                        onClick={() => updateCustomization({ conta: undefined })} 
-                        className="shrink-0 p-2 hover:bg-red-50 rounded-lg transition-colors group"
-                        aria-label="Remover contas"
-                      >
-                        <MinusCircle className="w-5 h-5 text-gray-400 group-hover:text-red-500 transition-colors" />
-                      </button>
-                    </div>
-                  )}
-
-                  {customization?.styleLetra && (
-                    <div className="flex items-center justify-between gap-3 p-3 bg-gray-50 rounded-lg hover:bg-gray-100 transition-colors">
-                      <div className="flex items-center gap-3 flex-1 min-w-0">
-                        <div className="shrink-0 relative w-14 h-14 mx-auto">
-                          <Image 
-                            src={items.letra?.img || ''}
-                            alt={items.letra?.ref || ''}
-                            fill 
-                            className="object-contain rounded-lg" 
-                            sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-                          />
-                        </div>
-                        <div className="flex-1 min-w-0">
-                          <p className="text-xs text-gray-500 uppercase tracking-wide">Estilo de Letra</p>
-                          <p className="text-sm font-medium text-gray-800 truncate">Ref: {customization.styleLetra}</p>
-                        </div>
-                      </div>
-                      <button 
-                        onClick={() => updateCustomization({ styleLetra: undefined })} 
-                        className="shrink-0 p-2 hover:bg-red-50 rounded-lg transition-colors group"
-                        aria-label="Remover estilo de letra"
-                      >
-                        <MinusCircle className="w-5 h-5 text-gray-400 group-hover:text-red-500 transition-colors" />
-                      </button>
-                    </div>
-                  )}
-
-                  {customization?.crucifixo && (
-                    <div className="flex items-center justify-between gap-3 p-3 bg-gray-50 rounded-lg hover:bg-gray-100 transition-colors">
-                      <div className="flex items-center gap-3 flex-1 min-w-0">
-                        <div className="shrink-0 relative w-14 h-18 mx-auto">
-                          <Image 
-                            src={items.crucifixo?.img || ''}
-                            alt={items.crucifixo?.ref || ''}
-                            fill 
-                            className="object-contain rounded-lg" 
-                            sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-                          />
-                        </div>
-                        <div className="flex-1 min-w-0">
-                          <p className="text-xs text-gray-500 uppercase tracking-wide">Crucifixo</p>
-                          <p className="text-sm font-medium text-gray-800 truncate">Ref: {customization.crucifixo}</p>
-                        </div>
-                      </div>
-                      <button 
-                        onClick={() => updateCustomization({ crucifixo: undefined })} 
-                        className="shrink-0 p-2 hover:bg-red-50 rounded-lg transition-colors group"
-                        aria-label="Remover crucifixo"
-                      >
-                        <MinusCircle className="w-5 h-5 text-gray-400 group-hover:text-red-500 transition-colors" />
-                      </button>
-                    </div>
-                  )}
-
-                  {customization?.entremeio && (
-                    <div className="flex items-center justify-between gap-3 p-3 bg-gray-50 rounded-lg hover:bg-gray-100 transition-colors">
-                      <div className="flex items-center gap-3 flex-1 min-w-0">
-                        <div className="shrink-0 relative w-14 h-14 mx-auto">
-                          <Image 
-                            src={items.entremeio?.img || ''}
-                            alt={items.entremeio?.ref || ''}
-                            fill 
-                            className="object-contain rounded-lg" 
-                            sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-                          />
-                        </div>
-                        <div className="flex-1 min-w-0">
-                          <p className="text-xs text-gray-500 uppercase tracking-wide">Entremeio</p>
-                          <p className="text-sm font-medium text-gray-800 truncate">Ref: {customization.entremeio}</p>
-                        </div>
-                      </div>
-                      <button 
-                        onClick={() => updateCustomization({ entremeio: undefined })} 
-                        className="shrink-0 p-2 hover:bg-red-50 rounded-lg transition-colors group"
-                        aria-label="Remover entremeio"
-                      >
-                        <MinusCircle className="w-5 h-5 text-gray-400 group-hover:text-red-500 transition-colors" />
-                      </button>
-                    </div>
-                  )}
-
-                  {customization?.frase && customization.frase.length > 0 && (
-                    <div className="space-y-2">
-                      <p className="text-xs text-secondary uppercase tracking-wide font-bold px-1">
-                        Textos Personalizados
-                      </p>
-                      {customization.frase.map((frase: string, index: number) => (
-                        <div 
-                          key={index} 
-                          className="flex items-start justify-between gap-3 p-3 bg-gray-50 rounded-lg hover:bg-gray-100 transition-colors"
-                        >
-                          <div className="flex-1 min-w-0">
-                            <p className="text-xs text-gray-500 mb-1">Texto {index + 1}</p>
-                            <p className="text-sm text-gray-800 uppercase wrap-break-word">{frase}</p>
+                  {items.map((item) => (
+                    <div key={item.cartId} className="flex flex-col gap-2">
+                      <span className="font-bold ">
+                        {item.product.name}
+                      </span>
+                      <div className="flex">
+                        {item.product.image ? (
+                          <div className="relative w-25 h-25">
+                            <Image 
+                              src={item.product.image}
+                              alt={item.product.name}
+                              fill 
+                              className="object-cover rounded-lg aspect-square" 
+                              sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                            />
                           </div>
+                        ) : (
+                          <div className="relative w-25 h-25">
+                            <div className="absolute inset-0 flex items-center justify-center">
+                              <span className="text-gray-400 text-sm">Sem imagem</span>
+                            </div>
+                          </div>
+                        )}
+                        
+                        <div className="flex flex-col ml-2 grow">
+                          <div className="flex flex-col h-full justify-between text-xs">
+                            <span>
+                              Quantidade: {item.quantity}
+                            </span>
+
+                            {item.product.customizable && (
+                              <div className="flex text-[0.6rem] text-gray-500">
+                                <div className="flex grow flex-col">
+                                  {item.customization?.cordao && <span className="mr-1">Cordão: {item.customization.cordao}</span>}
+                                  {item.customization?.conta && <span className="mr-1">Contas: {item.customization.conta}</span>}
+                                  {item.customization?.styleLetra && <span className="mr-1">Letra: {item.customization.styleLetra}</span>}
+                                </div>
+                                <div className="flex grow flex-col">
+                                  {item.customization?.crucifixo && <span className="mr-1">Crucifixo: {item.customization.crucifixo}</span>}
+                                  {item.customization?.entremeio && <span className="mr-1">Entremeio: {item.customization.entremeio}</span>}
+                                  {item.customization?.frase && <span className="mr-1">Texto: {item.customization.frase.join(', ')}</span>}
+                                </div>
+                              </div>
+                            )}
+                            
+                            <div className="flex mt-2">
+                              <div className="flex border border-gray-200 gap-3 px-3 py-2 rounded">
+                                <button className="cursor-pointer">
+                                  <Minus 
+                                    onClick={() => handleSubtractQuantity(item.cartId)}
+                                    className="w-3 h-3 hover:text-secondary/80 transition-colors" 
+                                  />
+                                </button>
+                                <span className="px-3">
+                                  {item.quantity}
+                                </span>
+                                <button 
+                                  onClick={() => addQuantity(item.cartId)}
+                                  className="cursor-pointer"
+                                >
+                                  <Plus className="w-3 h-3 hover:text-secondary/80 transition-colors" />
+                                </button>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                        <div className="flex flex-col justify-center">
                           <button 
-                            onClick={() => {
-                              const novaFrase = customization.frase!.filter((_, i) => i !== index);
-                              updateCustomization({ frase: novaFrase });
-                            }} 
-                            className="shrink-0 p-2 hover:bg-red-50 rounded-lg transition-colors group"
-                            aria-label={`Remover texto ${index + 1}`}
+                            onClick={() => handleRemoveItemCart(item.cartId)}
+                            className="cursor-pointer"
                           >
-                            <MinusCircle className="w-5 h-5 text-gray-400 group-hover:text-red-500 transition-colors" />
+                            <Trash2 className="w-4 h-4 hover:text-secondary/80 transition-colors" />
                           </button>
                         </div>
-                      ))}
+                      </div>
                     </div>
-                  )}
+                  ))}
+
+                  <DeleteItemCartModal
+                    cartId={itemCartIdToDelete}
+                    modalOpen={isDeleteItemCartModalOpen}
+                    onClose={() => setIsDeleteItemCartModalOpen(false)}
+                  />
                 </div>
 
-                <button 
-                  onClick={resetCustomization}
-                  className="w-full flex items-center justify-center gap-2 py-3 text-red-500 hover:bg-red-50 rounded-lg transition-colors font-medium"
-                >
-                  <Trash2 className="w-4 h-4" />
-                  Limpar Carrinho
-                </button>
+                <div className="flex w-full items-center justify-center">
+                  <button 
+                    onClick={() => setIsClearCartModalOpen(true)}
+                    className="flex items-center justify-center gap-2 px-5 py-3 text-red-500 hover:bg-red-50 rounded-lg transition-colors font-medium cursor-pointer"
+                  >
+                    <Trash2 className="w-4 h-4" />
+                    Limpar Carrinho
+                  </button>
+
+                  <ClearCartModal
+                    modalOpen={isClearCartModalOpen}
+                    onClose={() => setIsClearCartModalOpen(false)}
+                  />
+                </div>
               </>
             )}
           </div>
@@ -279,18 +224,16 @@ Aguardo retorno!`;
         {!isCartEmpty && (
           <div className="shrink-0 border-t border-gray-200 bg-white p-4 space-y-3">
             <div className="flex items-center justify-between py-2 px-3">
-              <span className="font-medium text-gray-700">Valor aproximado:</span>
-              <span className="text-lg font-bold text-secondary">
-                R$ {calculateCustomizationPrice(customization).toFixed(2)}
-              </span>
+              <CustomButton
+                onClick={handleGoToCart}
+                className="bg-primary hover:bg-primary/90 text-white"
+              >
+                Ir para página do carrinho
+              </CustomButton>
             </div>
-
-            {isComplete() && (
-              <WhatsAppButton message={gerarMensagemWhatsApp()} />
-            )}
           </div>
         )}
       </aside>
     </>
   );
-}
+};

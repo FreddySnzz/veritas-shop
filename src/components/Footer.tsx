@@ -11,21 +11,24 @@ interface FooterProps extends React.HTMLAttributes<HTMLDivElement> {
 
 export default function Footer({ className }: FooterProps) {
   return (
-    <footer className={`w-full bg-secondary font-sans p-6 z-49 ${className}`}>
+    <footer className={`w-full bg-secondary font-sans p-8 z-49 ${className}`}>
       <div>
-        <div className="md:flex items-center justify-around mt-2">
+        <div className="md:flex items-center justify-around">
           <div className="flex flex-col items-center">
             <a href={`/`}>
-              <Typography className="text-center font-playfair-display" tittleColor="text-stone-300" size={"sm"} />
+              <Typography 
+                className="text-center font-playfair-display" 
+                tittleColor="text-stone-300" 
+                size={"sm"} 
+              />
             </a>
             <SlogganTypography className="text-center" />
-            <span className="text-xs text-center mb-6 font-playfair-display text-primary font-bold">São Gonçalo do Piauí - PI</span>
           </div>
 
           <PhraseSloganAlternative divClassName="text-center" className="text-muted-foreground text-sm" />
         </div>
 
-        <hr className="mt-8 border-muted-foreground/50"/>
+        <hr className="mt-6 border-muted-foreground/50"/>
         
         <div className="flex justify-around items-center">
           <div className="flex items-center justify-center gap-6 my-2 w-full">
@@ -49,11 +52,11 @@ export default function Footer({ className }: FooterProps) {
             <div className="flex mt-2 text-primary font-light text-sm">
               <div className="flex flex-col">
                 <a href={`/apresentacao`}>
-                  <span>Quem somos</span>
+                  <span className="hover:underline">Quem somos</span>
                 </a>
-                <span>Sistema de entregas</span>
+                <span className="hover:underline">Sistema de entregas</span>
                 <a href={`/admin`}>
-                  <span>Painel Administrativo</span>
+                  <span className="hover:underline">Painel Administrativo</span>
                 </a>
               </div>
             </div>
@@ -64,20 +67,28 @@ export default function Footer({ className }: FooterProps) {
       <div className="flex flex-col">
         <hr className="mt-4 border-muted-foreground/50"/>
         <div className="pt-4 text-center">
-          <p className="text-xs mb-2 font-semibold text-muted-foreground">
-            <span className="mr-1">
-              &copy; 2025 |
+          <div className="text-xs mb-2 font-semibold text-muted-foreground">
+            <div className="flex items-center justify-center">
+              <span className="mr-1">
+                &copy; 2025 |
+              </span>
+              <span>
+                {`Veritas Ateliê — Todos os direitos reservados.`}
+              </span>
+            </div>
+            <span className="text-xs text-center mb-6 font-playfair-display text-muted-foreground font-medium">
+              São Gonçalo do Piauí - PI
             </span>
-            <span>
-              {`Veritas Ateliê — Todos os direitos reservados.`}
-            </span>
-          </p>
+          </div>
         </div>
 
-        <div className="text-center text-sm text-muted-foreground/30 mt-6 mb-4">
-          <span>Desenvolvido com muito carinho por </span>
-          <span className="cursor-pointer hover:italic" onClick={() => openLinkOnButton("https://portfolio-freddy-snzz.vercel.app/")}>
-            <strong>Fredson Luiz</strong>. <span className="animate-pulse">❤️</span>
+        <div className="text-center text-sm text-muted-foreground/30 mt-4">
+          <span>Feito com carinho por </span>
+          <span 
+            className="cursor-pointer hover:italic" 
+            onClick={() => openLinkOnButton("https://portfolio-freddy-snzz.vercel.app/")}
+          >
+            Fredson Luiz. <span className="animate-pulse">❤️</span>
           </span>
         </div>
       </div>

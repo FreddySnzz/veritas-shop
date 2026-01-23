@@ -3,21 +3,18 @@
 import FlowerIcon from "./icons/FlowerIcon";
 import Link from "next/link";
 import { CartButton } from "./buttons/CartButton";
-import { useState } from "react";
 import Sidebar from "./Sidebar";
 import { LogoutButton } from "./buttons/LogoutButton";
 import { useAuth } from "@/data/context/AuthContext";
+import { useApp } from "@/data/context/AppContext";
 
 interface HeaderProps {
   mode: 'admin' | 'user';
-}
+};
 
 export function Header({ mode }: HeaderProps) {
   const { logout } = useAuth();
-  const [expanded, setExpanded] = useState(false);
-  const toggleExpanded = () => {
-    setExpanded((prev) => !prev);
-  };
+  const { toggleSidebar } = useApp();
 
   return (
     <header className="bg-white fixed top-0 z-50 w-screen">
@@ -41,12 +38,11 @@ export function Header({ mode }: HeaderProps) {
         </Link>
 
         { mode === 'user' ? 
-          <CartButton isOpen={toggleExpanded} /> : 
+          <CartButton isOpen={toggleSidebar} /> : 
           <LogoutButton onClick={() => logout()} /> 
         }
 
-        <Sidebar open={expanded} onClose={() => setExpanded(false)} />
-
+        <Sidebar />
       </div>
     </header>
   );

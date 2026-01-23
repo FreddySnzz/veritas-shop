@@ -1,7 +1,8 @@
-export default interface CrucifixoModel {
+export default interface LetraModel {
   id: string;
   name?: string;
   available: boolean;
   ref: string;
-  img?: string;
+  image_url?: string;
+  updated_at: Date;
 }

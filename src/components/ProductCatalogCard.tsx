@@ -1,30 +1,51 @@
-'use client'
+'use client';
 
-import Image from "next/image"
-import { useCustomization } from "@/data/context/CustomizationContext"
-import { useRouter } from "next/navigation"
+import Image from "next/image";
+import { useRouter } from "next/navigation";
+import { useCustomization } from "@/data/context/CustomizationContext";
+import { useCart } from '@/data/context/CartContext';
+import { LiaCartPlusSolid } from "react-icons/lia";
+import { toast } from "sonner";
 
 interface ProductCatalogProps extends React.HTMLAttributes<HTMLButtonElement> {
+  id?: string
   title: string
   desc: string
   price: number
   available?: boolean
+  customizable?: boolean
+  customizationItems?: string[]
   productPage: string
+  type: string
   img?: string
   className?: string
   onClick?: () => void
-}
+};
 
 export default function ProductCatalogCard(props: ProductCatalogProps) {
   const isAvailable = props.available !== false;
   const router = useRouter();
   const { updateCustomization } = useCustomization();
+  const { addItem } = useCart();
 
   const handleClick = async () => {
-    if (isAvailable) {
-      updateCustomization({ product: props.title });
+    if (isAvailable && props.customizable) {
+      updateCustomization({ 
+        product: props.title,
+        productType: props.type,
+        customizationItems: props.customizationItems
+      });
       router.push(props.productPage);
-    }
+    } else if (isAvailable && !props.customizable) {
+      addItem({
+        id: props.id as string,
+        name: props.title,
+        price: props.price,
+        image: props.img as string,
+        customizable: false
+      });
+      toast.success("Produto adicionado ao carrinho!", { duration: 1500 });
+    };
   };
 
   if (!isAvailable) {
@@ -115,7 +136,7 @@ export default function ProductCatalogCard(props: ProductCatalogProps) {
             </p>
           </div>
 
-          <div className="flex shrink-0 mt-auto pt-4 items-end justify-between"> 
+          <div className="flex relative shrink-0 mt-auto pt-4 items-end justify-between"> 
             <div className="flex flex-col">
               <span className="text-[0.625rem] text-gray-400">
                 a partir de
@@ -125,8 +146,8 @@ export default function ProductCatalogCard(props: ProductCatalogProps) {
               </p>
             </div>
 
-            <span className="text-sm text-primary font-medium opacity-0 group-hover:opacity-100 transition-opacity mb-0.5">
-              Ver mais →
+            <span className="absolute right-0 top-8.5 text-sm text-primary font-medium opacity-0 group-hover:opacity-100 transition-opacity mb-0.5">
+              { props.customizable ? 'Ver mais →' : <LiaCartPlusSolid className="w-6 h-6" /> }
             </span>
           </div>
         </div>

@@ -37,12 +37,12 @@ export default function DynamicBreadcrumb({ className, listClassName }: DynamicB
     <Breadcrumb className={className}>
       <BreadcrumbList className={`font-sans ${listClassName}`}>
         <BreadcrumbItem>
-          <BreadcrumbLink href="/" className="flex items-center">
+          <BreadcrumbLink href="/admin" className="flex items-center">
             <FiHome className="h-4 w-4" />
           </BreadcrumbLink>
         </BreadcrumbItem>
 
-        {breadcrumbList.length > 0 && (
+        {breadcrumbList.length > 0 && breadcrumbList.length <= 4 && (
           <BreadcrumbSeparator>
             /
           </BreadcrumbSeparator>
@@ -52,7 +52,11 @@ export default function DynamicBreadcrumb({ className, listClassName }: DynamicB
           const href = `/${breadcrumbList.slice(0, index + 1).join('/')}`;
           
           const isLast = index === breadcrumbList.length - 1;
-          const formattedLink = link.charAt(0).toUpperCase() + link.slice(1).replace(/-/g, ' ');
+          let formattedLink = link.charAt(0).toUpperCase() + link.slice(1).replace(/-/g, ' ');
+          formattedLink.includes('Itens personalizacao') ? formattedLink = 'Itens' : formattedLink;
+          formattedLink.includes('Cordoes') ? formattedLink = 'Cordões' : formattedLink;
+          formattedLink.includes('Catalogo') ? formattedLink = 'Produtos' : formattedLink;
+          formattedLink.includes('Admin') && breadcrumbList.length > 4 ? formattedLink = '' : formattedLink;
 
           return (
             <React.Fragment key={index}>

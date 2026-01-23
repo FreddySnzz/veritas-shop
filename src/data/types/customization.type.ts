@@ -1,44 +1,16 @@
-export interface Cordoes {
-  id: string;
-  name: string;
-  color: string;
-  available: boolean;
-  ref: string;
-  img: string;
-}
+import ContaModel from "../models/Conta.model";
+import CordaoModel from "../models/Cordao.model";
+import CrucifixoModel from "../models/Crucifixo.model";
+import EntremeioModel from "../models/Entremeio.model";
+import LetraModel from "../models/Letra.model";
 
-export interface Contas {
-  id: string;
-  name: string;
-  color: string;
-  available: boolean;
-  ref: string;
-  img: string;
-}
-
-export interface Letras {
-  id: string;
-  name: string;
-  available: boolean;
-  ref: string;
-  img: string;
-}
-
-export interface Crucifixos {
-  id: string;
-  style: string;
-  available: boolean;
-  ref: string;
-  img: string;
-}
-
-export interface Entremeios {
-  id: string;
-  name: string;
-  style: string;
-  available: boolean;
-  ref: string;
-  img: string;
+export enum ItemsCustomizationTypes {
+  'cordoes' = 'cordao',
+  'contas' = 'conta',
+  'letras' = 'letra',
+  'crucifixos' = 'crucifixo',
+  'entremeios' = 'entremeio',
+  'catalogImage' = 'catalog_image',
 }
 
 export interface Customization {
@@ -49,4 +21,14 @@ export interface Customization {
   crucifixo?: string;
   entremeio?: string;
   product?: string;
+  productType?: string;
+  customizationItems?: string[];
 }
+
+export interface CustomizationItems {
+  crucifixos: CrucifixoModel[];
+  contas: ContaModel[];
+  entremeios: EntremeioModel[];
+  letras: LetraModel[];
+  cordoes: CordaoModel[];
+};

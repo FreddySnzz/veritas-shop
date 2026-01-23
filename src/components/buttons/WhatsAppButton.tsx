@@ -6,7 +6,7 @@ import openLinkOnButton from "@/data/functions/openNewWindowButton";
 
 interface WhatsAppButtonProps extends React.HTMLAttributes<HTMLButtonElement> {
   message: string;
-}
+};
 
 export function WhatsAppButton(props: WhatsAppButtonProps) {
   return (
@@ -18,7 +18,7 @@ export function WhatsAppButton(props: WhatsAppButtonProps) {
       Finalizar Pedido no WhatsApp
     </button>
   );
-}
+};
 
 export function WhatsAppButtonFixed(props: WhatsAppButtonProps) {
   return (
@@ -32,4 +32,4 @@ export function WhatsAppButtonFixed(props: WhatsAppButtonProps) {
       <FaWhatsapp className="w-6 h-6" />
     </motion.button>
   );
-}
+};

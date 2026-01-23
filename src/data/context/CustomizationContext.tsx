@@ -67,11 +67,25 @@ export function CustomizationProvider({ children }: { children: ReactNode }) {
   const currentCustomization = isMounted ? storedCustomization : INITIAL_CUSTOMIZATION;
 
   const isComplete = () => {
-    return Boolean(
-      currentCustomization.cordao &&
-      currentCustomization.conta &&
-      currentCustomization.crucifixo
-    );
+    const itemsToCheck = currentCustomization.customizationItems || []; 
+    const OPTIONAL_STEPS = ['final', 'texto', 'letra', 'entremeio'];
+    const STEP_TO_STATE_KEY: Record<string, string> = {
+      'cordao': 'cordao',
+      'conta': 'conta', 
+      'letra': 'letra',  
+      'crucifixo': 'crucifixo',
+      'entremeio': 'entremeio',
+      'texto': 'frase'
+    };
+
+    return itemsToCheck.every((stepId) => {
+      if (OPTIONAL_STEPS.includes(stepId)) return true;
+
+      const stateKey = STEP_TO_STATE_KEY[stepId] || stepId;
+      const value = currentCustomization[stateKey as keyof typeof currentCustomization];
+
+      return value !== null && value !== undefined && value !== '';
+    });
   };
 
   if (!isMounted) return null; 
@@ -90,14 +104,14 @@ export function CustomizationProvider({ children }: { children: ReactNode }) {
       {children}
     </CustomizationContext.Provider>
   );
-}
+};
 
 export function useCustomization() {
   const context = useContext(CustomizationContext);
   
   if (context === undefined) {
     throw new Error('useCustomization must be used within a CustomizationProvider');
-  }
+  };
   
   return context;
-}
+};

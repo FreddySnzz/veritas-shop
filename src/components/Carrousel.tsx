@@ -1,9 +1,10 @@
 'use client';
 
-import { useEffect, useState, useRef, TouchEvent } from "react";
 import Image from "next/image";
-import { dataImages } from "@/data/constants/productsImages";
+import { useEffect, useState, useRef, TouchEvent } from "react";
 import { ChevronLeft, ChevronRight } from "lucide-react";
+import { getCachedCatalogImagesAction } from "@/app/actions/cache.actions";
+import CatalogImageModel from "@/data/models/CatalogImage.model";
 
 interface ImageCarouselProps {
   autoPlayInterval?: number;
@@ -12,7 +13,7 @@ interface ImageCarouselProps {
   className?: string;
   rounded?: boolean;
   swipeThreshold?: number;
-}
+};
 
 const ImageCarousel = ({ 
   autoPlayInterval = 10000,
@@ -24,14 +25,26 @@ const ImageCarousel = ({
 }: ImageCarouselProps) => {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [isAnimating, setIsAnimating] = useState(false);
-  const availableImages = dataImages.filter(img => img.available);
+  const [availableImages, setAvailableImages] = useState<CatalogImageModel[]>([]);
   
   const [touchStart, setTouchStart] = useState<number | null>(null);
   const [touchEnd, setTouchEnd] = useState<number | null>(null);
   
   const containerRef = useRef<HTMLDivElement>(null);
 
+  async function getImages() {
+    try {
+      const images = await getCachedCatalogImagesAction();
+      const availableImages = images.filter((img: CatalogImageModel) => img.available);
+      setAvailableImages(availableImages);
+    } catch (error) {
+      console.error("Erro ao carregar imagens:", error);
+    };
+  };
+
   useEffect(() => {
+    getImages();
+
     if (availableImages.length <= 1) return;
 
     const interval = setInterval(() => {
@@ -41,7 +54,7 @@ const ImageCarousel = ({
     }, autoPlayInterval);
 
     return () => clearInterval(interval);
-  }, [currentIndex, autoPlayInterval, availableImages.length]);
+  }, [currentIndex, autoPlayInterval]);
 
   const handlePrevious = () => {
     if (isAnimating) return;
@@ -62,7 +75,7 @@ const ImageCarousel = ({
       setIsAnimating(true);
       setCurrentIndex(index);
       setTimeout(() => setIsAnimating(false), 500);
-    }
+    };
   };
 
   const handleTouchStart = (e: TouchEvent) => {
@@ -77,7 +90,7 @@ const ImageCarousel = ({
   const handleTouchEnd = () => {
     if (!touchStart || !touchEnd) {
       return;
-    }
+    };
     
     const distance = touchStart - touchEnd;
     const isLeftSwipe = distance > swipeThreshold;
@@ -87,7 +100,7 @@ const ImageCarousel = ({
       handleNext();
     } else if (isRightSwipe) {
       handlePrevious();
-    }
+    };
 
     setTouchStart(null);
     setTouchEnd(null);
@@ -112,7 +125,7 @@ const ImageCarousel = ({
             >
               <div className="absolute inset-0 pointer-events-none" />
               <Image
-                src={image.url}
+                src={image.image_url || ''}
                 alt={`Slide ${index + 1}`}
                 fill 
                 loading="eager"

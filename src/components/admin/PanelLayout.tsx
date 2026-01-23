@@ -1,8 +1,8 @@
 'use client';
 
-import { refreshProductsAction } from "@/app/actions/cache.actions";
-import { CustomButton } from "../buttons/CustomButtom"
-import { ClipboardPenLine, Eye, RefreshCw } from "lucide-react";
+import { refreshCacheAction } from "@/app/actions/cache.actions";
+import { CustomButton } from "../buttons/CustomButton"
+import { ClipboardPenLine, Eye, Image, RefreshCw } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { toast } from "sonner";
@@ -19,7 +19,9 @@ export default function PanelLayout({ className }: PanelLayoutProps) {
   const handleUpdate = async () => {
     setLoading(true);
     try {
-      await refreshProductsAction('products'); 
+      await refreshCacheAction('products'); 
+      await refreshCacheAction('customization_items'); 
+      await refreshCacheAction('catalog_images');
       toast.success("Catálogo atualizado com sucesso!");
     } catch (error) {
       console.error(error);
@@ -37,6 +39,13 @@ export default function PanelLayout({ className }: PanelLayoutProps) {
         >
           <ClipboardPenLine className="w-6 h-6" />
           <span>Gerenciar Estoques</span>
+        </CustomButton>
+
+        <CustomButton
+          onClick={() => router.push('/admin/editar-carrossel')}
+        >
+          <Image className="w-6 h-6" />
+          <span>Editar Carrossel</span>
         </CustomButton>
 
         <button

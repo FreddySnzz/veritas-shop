@@ -22,7 +22,7 @@ export default function Home() {
           </PageFadeInAnimationWrapper>
         </main>
         
-        <WhatsAppButtonFixed message={"https://wa.me/5586994379414?text=Olá Veritas Ateliê, gostaria de fazer um orçamento 😄!"} />
+        <WhatsAppButtonFixed message={"https://wa.me/5586994379414?text=Olá, gostaria de fazer um orçamento 😄!"} />
         <Footer />
       </section>
     </>

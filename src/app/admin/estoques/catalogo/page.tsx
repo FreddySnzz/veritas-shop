@@ -9,7 +9,7 @@ export default function ManageInvertoryCatalogPage() {
       <main className="flex-1 flex flex-col bg-background-alternative overflow-hidden">
         <div className="shrink-0">
           <DynamicBreadcrumb className="mt-12 p-6" />
-          <hr className="border-muted-foreground/50 mb-4 mx-4" />
+          <hr className="border-muted-foreground/50 mb-4 mx-6" />
         </div>
         <ManageCatalogInventory />
       </main>

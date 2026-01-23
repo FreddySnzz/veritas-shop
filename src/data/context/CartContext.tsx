@@ -3,18 +3,27 @@
 import { createContext, useContext, ReactNode } from 'react';
 import { useLocalStorage } from '@/data/hook/useLocalStorage';
 import { Customization } from '@/data/types/customization.type';
-import ProductModel from '../models/Product.model';
+
+export interface BaseProduct {
+  id: string;
+  name: string;
+  price: number;
+  image: string;
+  customizable: boolean;
+};
 
 export interface CartItem {
   cartId: string;
-  product: ProductModel;
+  product: BaseProduct;
   quantity: number;
   customization?: Customization;
 };
 
 interface CartContextType {
   items: CartItem[];
-  addItem: (product: ProductModel, customization?: Customization) => void;
+  addItem: (product: BaseProduct, customization?: Customization) => void;
+  addQuantity: (cartId: string) => void;
+  subtractQuantity: (cartId: string) => void;
   removeItem: (cartId: string) => void;
   clearCart: () => void;
   cartTotal: number;
@@ -24,9 +33,9 @@ interface CartContextType {
 const CartContext = createContext<CartContextType | undefined>(undefined);
 
 export function CartProvider({ children }: { children: ReactNode }) {
-  const [items, setItems] = useLocalStorage<CartItem[]>('veritas_shopping_cart', []);
+  const [items, setItems] = useLocalStorage<CartItem[]>('shopping_cart', []);
 
-  const addItem = (product: ProductModel, customization?: Customization) => {
+  const addItem = (product: BaseProduct, customization?: Customization) => {
     setItems((prev) => {
       if (!product.customizable) {
         const existingItem = prev.find(item => item.product.id === product.id);
@@ -56,9 +65,21 @@ export function CartProvider({ children }: { children: ReactNode }) {
 
   const clearCart = () => setItems([]);
 
+  const addQuantity = (cartId: string) => {
+    setItems((prev) => prev.map(item => 
+      item.cartId === cartId ? { ...item, quantity: item.quantity + 1 } : item
+    ));
+  };
+
+  const subtractQuantity = (cartId: string) => {
+    setItems((prev) => prev.map(item => 
+      item.cartId === cartId ? { ...item, quantity: item.quantity - 1 } : item
+    ));
+  };
+
   const cartCount = items.reduce((acc, item) => acc + item.quantity, 0);
   const cartTotal = items.reduce((acc, item) => {
-    return acc + (item.product.initial_price * item.quantity);
+    return acc + (item.product.price * item.quantity);
   }, 0);
 
   return (
@@ -67,6 +88,8 @@ export function CartProvider({ children }: { children: ReactNode }) {
         items,
         addItem,
         removeItem,
+        addQuantity,
+        subtractQuantity,
         clearCart,
         cartTotal,
         cartCount
