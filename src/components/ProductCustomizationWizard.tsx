@@ -43,7 +43,7 @@ interface ProductCustomizerProps {
 
 const ProductCustomizerWizard = ({ baseProduct }: ProductCustomizerProps) => {
   const { toggleSidebar } = useApp();
-  const { customization, updateCustomization, isComplete } = useCustomization();
+  const { customization, updateCustomization, isComplete, resetCustomization } = useCustomization();
   const { addItem } = useCart();
   const [customizationItems, setCustomizationItems] = useState<CustomizationCatalog | null>(null);
   const [isLoading, setIsLoading] = useState(true);
@@ -97,6 +97,7 @@ const ProductCustomizerWizard = ({ baseProduct }: ProductCustomizerProps) => {
 
     setTimeout(() => {
       toggleSidebar();
+      resetCustomization();
     }, 3000);
   };
 
