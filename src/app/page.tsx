@@ -1,11 +1,20 @@
-import ImageCarousel from "@/components/Carrousel";
 import { Header } from "@/components/Header";
-import Footer from "../components/Footer";
+import { 
+  getCachedCatalogImagesAction, 
+  getCachedProductsAction 
+} from "./actions/cache.actions";
+import CatalogCarrousel from "@/components/CatalogCarrousel";
 import Catalog from "@/components/Catalog";
 import { PageFadeInAnimationWrapper } from "@/components/PageFadeInAnimationWrapper";
 import { WhatsAppButtonFixed } from "@/components/buttons/WhatsAppButton";
+import CatalogImageModel from "@/data/models/CatalogImage.model";
+import Footer from "../components/Footer";
 
-export default function Home() {
+export default async function Home() {
+  const products = await getCachedProductsAction();
+  const images = await getCachedCatalogImagesAction();
+  const availableImages = images.filter((img: CatalogImageModel) => img.available);
+
   return (
     <>
       <Header mode="user" />
@@ -13,11 +22,14 @@ export default function Home() {
         <main className="w-full h-auto">
           <PageFadeInAnimationWrapper>
             <section id="carrousel">
-              <ImageCarousel className="mt-14"/>
+              <CatalogCarrousel 
+                images={availableImages}
+                className="mt-14"
+              />
             </section>
 
             <section id="products">
-              <Catalog />
+              <Catalog products={products} />
             </section>
           </PageFadeInAnimationWrapper>
         </main>

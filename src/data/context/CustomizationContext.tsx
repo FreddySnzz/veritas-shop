@@ -7,24 +7,19 @@ import {
   useSyncExternalStore
 } from 'react';
 import { useLocalStorage } from '@/data/hook/useLocalStorage';
-import { Customization } from '@/data/types/customization.type';
 
-const INITIAL_CUSTOMIZATION: Customization = {
-  cordao: undefined,
-  conta: undefined,
-  styleLetra: undefined,
-  crucifixo: undefined,
-  entremeio: undefined,
-  frase: undefined,
-  product: undefined,
+export interface CustomizationState {
+  frase?: string[]; 
+  [categoryKey: string]: string | string[] | undefined | number; 
 };
 
+const INITIAL_CUSTOMIZATION: CustomizationState = {};
+
 interface CustomizationContextType {
-  customization: Customization;
-  updateField: <K extends keyof Customization>(field: K, value: Customization[K]) => void;
-  updateCustomization: (updates: Partial<Customization>) => void;
+  customization: CustomizationState;
+  updateCustomization: (updates: Partial<CustomizationState>) => void;
   resetCustomization: () => void;
-  isComplete: () => boolean;
+  isComplete: (requiredItems?: string[], optionalItems?: string[]) => boolean;
   isLoaded: boolean;
 };
 
@@ -38,22 +33,12 @@ export function CustomizationProvider({ children }: { children: ReactNode }) {
     () => false
   );
 
-  const [storedCustomization, setStoredCustomization] = useLocalStorage<Customization>(
+  const [storedCustomization, setStoredCustomization] = useLocalStorage<CustomizationState>(
     'product_customization',
     INITIAL_CUSTOMIZATION
   );
 
-  const updateField = <K extends keyof Customization>(
-    field: K,
-    value: Customization[K]
-  ) => {
-    setStoredCustomization(prev => ({
-      ...prev,
-      [field]: value,
-    }));
-  };
-
-  const updateCustomization = (updates: Partial<Customization>) => {
+  const updateCustomization = (updates: Partial<CustomizationState>) => {
     setStoredCustomization(prev => ({
       ...prev,
       ...updates,
@@ -66,24 +51,19 @@ export function CustomizationProvider({ children }: { children: ReactNode }) {
 
   const currentCustomization = isMounted ? storedCustomization : INITIAL_CUSTOMIZATION;
 
-  const isComplete = () => {
-    const itemsToCheck = currentCustomization.customizationItems || []; 
-    const OPTIONAL_STEPS = ['final', 'texto', 'letra', 'entremeio'];
-    const STEP_TO_STATE_KEY: Record<string, string> = {
-      'cordao': 'cordao',
-      'conta': 'conta', 
-      'letra': 'letra',  
-      'crucifixo': 'crucifixo',
-      'entremeio': 'entremeio',
-      'texto': 'frase'
-    };
+  const isComplete = (
+    requiredItems: string[] = [], 
+    optionalItems: string[] = ['texto_personalizado', 'letras', 'final']
+  ) => {
+    if (!requiredItems.length) return true;
 
-    return itemsToCheck.every((stepId) => {
-      if (OPTIONAL_STEPS.includes(stepId)) return true;
+    const mandatoryItems = requiredItems.filter(item => !optionalItems.includes(item));
 
-      const stateKey = STEP_TO_STATE_KEY[stepId] || stepId;
-      const value = currentCustomization[stateKey as keyof typeof currentCustomization];
-
+    return mandatoryItems.every((key) => {
+      const value = currentCustomization[key];
+      
+      if (Array.isArray(value)) return value.length > 0;
+      
       return value !== null && value !== undefined && value !== '';
     });
   };
@@ -94,7 +74,6 @@ export function CustomizationProvider({ children }: { children: ReactNode }) {
     <CustomizationContext.Provider
       value={{
         customization: currentCustomization,
-        updateField,
         updateCustomization,
         resetCustomization,
         isComplete,

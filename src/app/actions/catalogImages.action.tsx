@@ -15,7 +15,7 @@ export async function getAllCatalogImagesAction() {
     return images;
   } catch (error) {
     console.error("Erro ao carregar imagens:", error);
-    return null;
+    return error;
   };
 };
 
@@ -27,7 +27,7 @@ export async function createCatalogImageAction(data: any) {
     return image;
   } catch (error) {
     console.error("Erro ao criar imagem:", error);
-    return null;
+    return error;
   };
 };
 
@@ -39,7 +39,7 @@ export async function updateCatalogImageAction(id: string, data: any) {
     return serializeFirestoreData(image);
   } catch (error) {
     console.error("Erro ao atualizar imagem:", error);
-    return null;
+    return error;
   };
 };
 

@@ -9,7 +9,7 @@ import { useAuth } from "@/data/context/AuthContext";
 import { useApp } from "@/data/context/AppContext";
 
 interface HeaderProps {
-  mode: 'admin' | 'user';
+  mode: 'admin' | 'user' | 'cart';
 };
 
 export function Header({ mode }: HeaderProps) {
@@ -19,7 +19,12 @@ export function Header({ mode }: HeaderProps) {
   return (
     <header className="bg-white fixed top-0 z-50 w-screen">
       <div className="flex items-center justify-between mx-auto px-4 md:px-8 py-2">
-        <Link href="/" className="relative flex gap-2">
+        <Link 
+          aria-label="Voltar para a página inicial"
+          title="Voltar para a página inicial"
+          href="/" 
+          className="relative flex gap-2"
+        >
           <div className="flex items-center gap-2">
             <FlowerIcon
               width={40} 
@@ -37,8 +42,11 @@ export function Header({ mode }: HeaderProps) {
           </div>
         </Link>
 
-        { mode === 'user' ? 
-          <CartButton isOpen={toggleSidebar} /> : 
+        { mode === 'user' && 
+          <CartButton isOpen={toggleSidebar} />
+        }
+
+        { mode === 'admin' && 
           <LogoutButton onClick={() => logout()} /> 
         }
 

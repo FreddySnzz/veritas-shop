@@ -1,18 +1,21 @@
 'use client';
 
-import openLinkOnButton from "@/data/functions/openNewWindowButton";
+import Link from "next/link";
 
 interface InstagramButtonProps {
   className?: string;
-}
+};
 
 export function InstagramButton({ className }: InstagramButtonProps) {
   return (
-    <button 
-      onClick={() => openLinkOnButton('https://www.instagram.com/veritas_atelie')} 
-      className={`font-sans text-secondary cursor-pointer ${className}`}
+    <Link
+      href="https://www.instagram.com/veritas_atelie"
+      target="_blank"
+      rel="noopener noreferrer"
     >
-      @veritas_atelie
-    </button>
+      <button className={`font-sans text-secondary cursor-pointer ${className}`}>
+        @veritas_atelie
+      </button>
+    </Link>
   );
-}
+};

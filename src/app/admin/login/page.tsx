@@ -2,7 +2,6 @@
 
 import { useEffect, useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
-import Image from "next/image";
 import Link from "next/link";
 import { useAuth } from "@/data/context/AuthContext";
 import { Loader2 } from "lucide-react";
@@ -12,7 +11,6 @@ import { Input } from "@/components/ui/input";
 import { PasswordInput } from "@/components/ui/password-input";
 import { login } from "@/data/services/auth.service";
 import { LogoHorizontal } from "@/components/Typography";
-import { dataImages } from "@/data/constants/productsImages";
 
 export default function Login() {
   const [email, setEmail] = useState('');
@@ -70,17 +68,6 @@ export default function Login() {
 
   return (
     <main className="flex justify-center min-h-screen items-center font-sans bg-background-alternative">
-      <div className="hidden lg:flex lg:w-3/5 justify-center items-center max-h-screen bg-background-alternative">
-        <Image 
-          src={dataImages[Math.floor(Math.random() * dataImages.length)].url}
-          alt="signin" 
-          width={1080} 
-          height={1080} 
-          draggable="false"
-          loading="eager"
-          className="w-auto max-h-screen object-cover" 
-        />
-      </div>
       <div className="m-10 w-full sm:w-1/2 lg:w-1/3">
         <div className="w-full mb-8">
           <LogoHorizontal />

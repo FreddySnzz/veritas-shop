@@ -3,11 +3,15 @@
 import Image from "next/image";
 import { useState } from "react";
 import { useCart } from "@/data/context/CartContext";
+import { useAuth } from "@/data/context/AuthContext";
 import { Minus, Plus, ShoppingCart, Trash2, X } from "lucide-react";
 import DeleteItemCartModal from "./modals/DeleteItemCart";
 import ClearCartModal from "./modals/ClearCart";
 import { BackButton } from "./buttons/BackButtom";
 import { WhatsAppButton } from "./buttons/WhatsAppButton";
+import { CartProductItem } from "@/data/types/cart-products.type";
+import { formatAndCapitalize } from "@/data/functions/formatAndCapitalize";
+import CartAlert from "./CartAlert";
 
 export default function Cart() {
   const { 
@@ -16,15 +20,11 @@ export default function Cart() {
     addQuantity,
     subtractQuantity,
   } = useCart();
-  const [alertOpen, setAlertOpen] = useState(true);
+  const { user } = useAuth();
   const [isClearCartModalOpen, setIsClearCartModalOpen] = useState(false);
   const [isDeleteItemCartModalOpen, setIsDeleteItemCartModalOpen] = useState(false);
   const [itemCartIdToDelete, setItemCartIdToDelete] = useState<string>('');
   const isCartEmpty = cartCount === 0;
-
-  const handleCloseAlert = () => {
-    setAlertOpen(false);
-  };
 
   const handleSubtractQuantity = (id: string) => {
     const itemQuantity = items.filter(item => item.cartId === id)[0].quantity;
@@ -56,82 +56,62 @@ export default function Cart() {
     );
   };
 
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const gerarMensagemWhatsApp = (items: any) => {
-    const labels = {
-      cordao: 'Cordão',
-      conta: 'Contas',
-      styleLetra: 'Estilo da Letra',
-      letra: 'Estilo da Letra',
-      crucifixo: 'Crucifixo',
-      entremeio: 'Entremeio',
-      frase: 'Texto/Nome'
+  const renderCustomizationDesc = (
+    key: string, 
+    value: string | string[] | undefined
+  ) => {
+    if (!key || !value) return "Não informado";
+    key = formatAndCapitalize(key);
+
+    if (key.includes('Letras') || key.includes('Frase')) {
+      const formattedValue = Array.isArray(value) ? value.join(', ') : value;
+      return `${key}: ${formattedValue}\n`;
     };
 
+    return `${key}: ${value}\n`;
+  };
+
+  const gerarMensagemWhatsApp = (items: CartProductItem[]) => {
     let mensagem = `Olá! Gostaria de finalizar o seguinte pedido:\n\n`;
     let totalGeral = 0;
-
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    items.forEach((item: any, index: number) => {
+    
+    items.forEach((item: CartProductItem, index: number) => {
       const { product, quantity, customization } = item;
       const subtotal = product.price * quantity;
       totalGeral += subtotal;
-
+      
+      mensagem += `----------------------------------------------------------------\n`;
       mensagem += `*ITEM ${index + 1}: ${product.name}*\n`;
-      mensagem += `Qtd: ${quantity}un (R$ ${product.price.toFixed(2)} un)\n`;
-      mensagem += `--------------------\n`;
+      mensagem += `Quantidade: ${quantity} (R$ ${product.price.toFixed(2)} / und)\n`;
+      mensagem += `----------------------------------------------------------------\n`;
 
-      const allowedItems = product.customizationItems || [];
-
-      if (allowedItems.includes('cordao') && customization.cordao) {
-        mensagem += `- ${labels.cordao}: ${customization.cordao}\n`;
-      };
-
-      if (allowedItems.includes('conta') && customization.conta) {
-        mensagem += `- ${labels.conta}: ${customization.conta}\n`;
-      };
-
-      if (allowedItems.includes('letra') || allowedItems.includes('texto')) {
-        if (customization.styleLetra) {
-          mensagem += `- ${labels.styleLetra}: ${customization.styleLetra}\n`;
-        };
-        
-        if (customization.frase && customization.frase.length > 0) {
-          const textoFormatado = customization.frase.join(', '); 
-          mensagem += `- ${labels.frase}: ${textoFormatado}\n`;
-        };
-      };
-
-      if (allowedItems.includes('crucifixo') && customization.crucifixo) {
-        mensagem += `- ${labels.crucifixo}: ${customization.crucifixo}\n`;
-      };
-
-      if (allowedItems.includes('entremeio')) {
-        const entremeioVal = customization.entremeio ? customization.entremeio : 'Sem entremeio';
-        mensagem += `- ${labels.entremeio}: ${entremeioVal}\n`;
-      };
+      Object.entries(customization || {}).forEach(([key, value]) => {
+        mensagem += `• ${renderCustomizationDesc(key, value)}`;
+      });
 
       mensagem += `\n`;
     });
 
+    mensagem += `======================================\n`;
     mensagem += `*Total Estimado: R$ ${totalGeral.toFixed(2)}*\n`;
-    mensagem += `\nAguardo a confirmação e dados para pagamento!`;
+    mensagem += `======================================\n`;
+    mensagem += `Aguardo a confirmação e dados para pagamento!`;
     
-    const numeroWhatsApp = "5586994379414";
+    const numeroWhatsApp = user?.phone || "5586994379414";
     return `https://wa.me/${numeroWhatsApp}?text=${encodeURIComponent(mensagem)}`;
   };
 
   return (
     <div className="flex-1 flex flex-col w-full min-h-0 overflow-hidden font-sans">
-      <div className="flex-1 overflow-y-auto scrollbar-hide">
+      <div className="flex-1 overflow-y-auto scrollbar-hide mt-4">
         <div className="flex px-6 py-2">
           <h2 className="text-xl font-bold text-secondary">
             Meu Carrinho
           </h2>
         </div>
-        <div className="px-6 py-2 space-y-4">
+        <div className="flex flex-col h-full px-6 py-2 space-y-4">
           {isCartEmpty ? (
-            <div className="flex flex-col items-center justify-center py-12 text-center">
+            <div className="flex flex-col h-full items-center justify-center py-12 text-center">
               <ShoppingCart className="w-16 h-16 text-gray-300 mb-4" />
               <p className="text-gray-500 font-medium">Seu carrinho está vazio</p>
               <p className="text-sm text-gray-400 mt-2">
@@ -141,17 +121,7 @@ export default function Cart() {
           ) : (
             <>
               <div className="space-y-2">
-                <div className={`${alertOpen ? "" : "hidden"} flex justify-between bg-gray-50 rounded-lg transition-colors p-3`}>
-                  <span className="text-xs">
-                    <strong>Os produtos no carrinho não estão reservados.</strong><br/> Finalize seu pedido antes que o estoque acabe.
-                  </span>
-                  <button 
-                    onClick={handleCloseAlert}
-                    className="flex items-center justify-center cursor-pointer"
-                  >
-                    <X className="w-4 h-4 hover:text-secondary/80 transition-colors" />
-                  </button>
-                </div>
+                <CartAlert />
 
                 {items.map((item) => (
                   <div 
@@ -163,7 +133,7 @@ export default function Cart() {
                     </span>
                     <div className="flex">
                       {item.product.image ? (
-                        <div className="relative w-35 h-35">
+                        <div className="relative w-35 h-35 shrink-0">
                           <Image 
                             src={item.product.image}
                             alt={item.product.name}
@@ -189,12 +159,14 @@ export default function Cart() {
                           {item.product.customizable && (
                             <div className="flex text-xs text-gray-500 h-full mt-2">
                               <div className="flex grow flex-col">
-                                {item.customization?.cordao && <span className="mr-1">Cordão: {item.customization.cordao}</span>}
-                                {item.customization?.conta && <span className="mr-1">Contas: {item.customization.conta}</span>}
-                                {item.customization?.styleLetra && <span className="mr-1">Letra: {item.customization.styleLetra}</span>}
-                                {item.customization?.crucifixo && <span className="mr-1">Crucifixo: {item.customization.crucifixo}</span>}
-                                {item.customization?.entremeio && <span className="mr-1">Entremeio: {item.customization.entremeio}</span>}
-                                {item.customization?.frase && <span className="mr-1">Texto: {item.customization.frase.join(', ')}</span>}
+                                {Object.entries(item.customization || {}).map(([key, value]) => (
+                                  <span 
+                                    key={key} 
+                                    className="mr-1"
+                                  >
+                                    • {renderCustomizationDesc(key, value)}
+                                  </span>
+                                ))}
                               </div>
                             </div>
                           )}
@@ -203,6 +175,9 @@ export default function Cart() {
                       
                       <div className="flex flex-col justify-center">
                         <button 
+                          type="button"
+                          aria-label="Remover item do carrinho"
+                          title="Remover item do carrinho"
                           onClick={() => handleRemoveItemCart(item.cartId)}
                           className="cursor-pointer"
                         >
@@ -214,16 +189,22 @@ export default function Cart() {
                     <div className="flex gap-4 items-center justify-between">
                       <div className="flex mt-2">
                         <div className="flex border border-gray-200 gap-3 px-2 py-1 rounded">
-                          <button className="cursor-pointer px-2">
-                            <Minus 
-                              onClick={() => handleSubtractQuantity(item.cartId)}
-                              className="w-3 h-3 hover:text-secondary/80 transition-colors" 
-                            />
+                          <button 
+                            type="button"
+                            aria-label="Diminuir quantidade"
+                            title="Diminuir quantidade"
+                            onClick={() => handleSubtractQuantity(item.cartId)}
+                            className="cursor-pointer px-2"
+                          >
+                            <Minus className="w-3 h-3 hover:text-secondary/80 transition-colors" />
                           </button>
                           <span className="px-3 cursor-default">
                             {item.quantity}
                           </span>
                           <button 
+                            type="button"
+                            aria-label="Aumentar quantidade"
+                            title="Aumentar quantidade"
                             onClick={() => addQuantity(item.cartId)}
                             className="cursor-pointer px-2"
                           >
@@ -247,8 +228,12 @@ export default function Cart() {
 
               <div className="flex w-full items-center justify-center">
                 <button 
+                  type="button"
+                  aria-label="Limpar carrinho"
                   onClick={() => setIsClearCartModalOpen(true)}
-                  className="flex items-center justify-center gap-2 px-5 py-2 text-red-500 hover:bg-red-50 rounded-lg transition-colors font-medium cursor-pointer"
+                  className={`flex items-center justify-center gap-2 px-5 py-3 
+                    text-red-500/80 hover:text-red-600 transition-colors font-medium cursor-pointer
+                  `}
                 >
                   <Trash2 className="w-4 h-4" />
                   <span>Limpar Carrinho</span>
@@ -259,10 +244,6 @@ export default function Cart() {
                   onClose={() => setIsClearCartModalOpen(false)}
                 />
               </div>
-
-              <WhatsAppButton
-                message={gerarMensagemWhatsApp(items)}
-              />
             </>
           )}
         </div>
@@ -274,7 +255,8 @@ export default function Cart() {
         </div>
         <hr className="border-muted-foreground/50 mb-4 mx-6" />
         <div className="flex flex-col mx-6 my-4 gap-4">
-          <BackButton pushRoute="/" />
+          <WhatsAppButton message={gerarMensagemWhatsApp(items)} />
+          <BackButton backRoute />
         </div>
       </div>
     </div>

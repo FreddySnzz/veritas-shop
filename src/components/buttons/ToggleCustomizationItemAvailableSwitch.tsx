@@ -1,8 +1,7 @@
 'use client'
 
 import { useState, useEffect, useTransition } from "react";
-import { toast } from "sonner";
-import { Switch } from "../ui/switch";
+import { useRouter } from "next/navigation";
 import { updateCordaoAction } from "@/app/actions/customization-items/cordao.action";
 import { updateContaAction } from "@/app/actions/customization-items/conta.action";
 import { updateEntremeioAction } from "@/app/actions/customization-items/entremeio.action";
@@ -10,7 +9,10 @@ import { updateLetraAction } from "@/app/actions/customization-items/letra.actio
 import { updateCrucifixoAction } from "@/app/actions/customization-items/crucifixo.action";
 import { ItemsCustomizationTypes } from "@/data/types/customization.type";
 import { updateCatalogImageAction } from "@/app/actions/catalogImages.action";
-import { useRouter } from "next/navigation";
+import { toast } from "sonner";
+import { Switch } from "../ui/switch";
+import { updateCustomizationItemCategoryAction } from "@/app/actions/customizationItemsCategory.action";
+import { updateCustomizationItemAction } from "@/app/actions/customizationItems.action";
 
 interface ToggleProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
   idProduct: string;
@@ -22,12 +24,9 @@ const ACTION_MAP: Record<ItemsCustomizationTypes, (
   id: string, 
   data: { available: boolean }
 ) => Promise<any>> = {
-  cordao: updateCordaoAction,
-  conta: updateContaAction,
-  entremeio: updateEntremeioAction,
-  letra: updateLetraAction,
-  crucifixo: updateCrucifixoAction,
-  catalog_image: updateCatalogImageAction
+  customization_item: updateCustomizationItemAction,
+  catalog_image: updateCatalogImageAction,
+  category: updateCustomizationItemCategoryAction,
 };
 
 export function ToggleCustomizationItemAvailableSwitch({ idProduct, available, itemType }: ToggleProps) {
@@ -51,7 +50,14 @@ export function ToggleCustomizationItemAvailableSwitch({ idProduct, available, i
 
     startTransition(async () => {
       try {
-        await updateAction(idProduct, { available: checked });
+        const result = await updateAction(idProduct, { available: checked });
+
+        if (result instanceof Error) {
+          toast.error("Erro ao atualizar o status do item.");
+          setAvailableState(!checked);
+          return;
+        };
+
         toast.success(`Disponibilidade atualizada com sucesso!`);
         router.refresh();
       } catch (error) {

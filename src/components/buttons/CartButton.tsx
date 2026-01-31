@@ -13,8 +13,11 @@ export function CartButton({ isOpen }: CartButtonProps) {
   return (
     <div className="relative">
       <button
+        type="button"
+        aria-label="Ver carrinho"
+        title="Ver carrinho"
         onClick={isOpen}
-        className="p-2 hover:bg-gray-100 rounded-lg cursor-pointer"
+        className="p-2 cursor-pointer"
       >
         { items.length > 0 ? 
           <span className="absolute flex size-4 top-0.5 right-0 z-10 items-center justify-center gap-2 rounded-full text-xs font-semibold font-sans">
@@ -22,8 +25,10 @@ export function CartButton({ isOpen }: CartButtonProps) {
             <span className="relative inline-flex size-4 rounded-full bg-primary justify-center items-center text-secondary">
               {items.length}
             </span>
-          </span> : null }
-        <ShoppingCart className="w-6 h-6 text-secondary" />
+          </span> 
+          : null 
+        }
+        <ShoppingCart className="w-6 h-6 text-secondary hover:text-secondary/70 transition-colors" />
       </button>
     </div>
   );

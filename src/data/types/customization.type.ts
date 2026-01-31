@@ -5,13 +5,10 @@ import EntremeioModel from "../models/Entremeio.model";
 import LetraModel from "../models/Letra.model";
 
 export enum ItemsCustomizationTypes {
-  'cordoes' = 'cordao',
-  'contas' = 'conta',
-  'letras' = 'letra',
-  'crucifixos' = 'crucifixo',
-  'entremeios' = 'entremeio',
+  'customizationItem' = 'customization_item',
   'catalogImage' = 'catalog_image',
-}
+  'category' = 'category',
+};
 
 export interface Customization {
   cordao?: string;
@@ -23,7 +20,7 @@ export interface Customization {
   product?: string;
   productType?: string;
   customizationItems?: string[];
-}
+};
 
 export interface CustomizationItems {
   crucifixos: CrucifixoModel[];
@@ -31,4 +28,10 @@ export interface CustomizationItems {
   entremeios: EntremeioModel[];
   letras: LetraModel[];
   cordoes: CordaoModel[];
+};
+
+export type CustomizationItemConfig = {
+  category_name: string;
+  category: string;
+  required: boolean;
 };

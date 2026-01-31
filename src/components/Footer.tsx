@@ -1,8 +1,8 @@
 'use client';
 
+import Link from "next/link";
 import { FaInstagram, FaWhatsapp } from "react-icons/fa6";
 import { SlogganTypography, Typography } from "./Typography";
-import openLinkOnButton from "@/data/functions/openNewWindowButton";
 import { PhraseSloganAlternative } from "./Phrases";
 
 interface FooterProps extends React.HTMLAttributes<HTMLDivElement> {
@@ -15,13 +15,17 @@ export default function Footer({ className }: FooterProps) {
       <div>
         <div className="md:flex items-center justify-around">
           <div className="flex flex-col items-center">
-            <a href={`/`}>
+            <Link 
+              aria-label="Voltar para a página inicial"
+              title="Voltar para a página inicial"
+              href={`/`}
+            >
               <Typography 
                 className="text-center font-playfair-display" 
                 tittleColor="text-stone-300" 
                 size={"sm"} 
               />
-            </a>
+            </Link>
             <SlogganTypography className="text-center" />
           </div>
 
@@ -34,16 +38,26 @@ export default function Footer({ className }: FooterProps) {
           <div className="flex items-center justify-center gap-6 my-2 w-full">
             <div className="flex mt-2 text-primary">
               <div className="flex cursor-pointer hover:text-blue-400">
-                <a href={`https://www.instagram.com/veritas_atelie`} target="_blank" className="cursor-pointer">
+                <Link 
+                  aria-label="Instagram"
+                  title="Instagram"
+                  href={`https://www.instagram.com/veritas_atelie`} 
+                  target="_blank" 
+                >
                   <FaInstagram size={35} />
-                </a>
+                </Link>
               </div>
             </div>
             <div className="flex mt-2 text-primary">
               <div className="flex cursor-pointer hover:text-green-500">
-                <a href={`https://wa.me/5586994379414`} target="_blank" className="cursor-pointer">
+                <Link 
+                  aria-label="WhatsApp"
+                  title="WhatsApp"
+                  href={`https://wa.me/5586994379414`} 
+                  target="_blank" 
+                >
                   <FaWhatsapp size={35} />
-                </a>
+                </Link>
               </div>
             </div>
           </div>
@@ -51,13 +65,28 @@ export default function Footer({ className }: FooterProps) {
           <div className="flex items-center justify-around my-2 w-full">
             <div className="flex mt-2 text-primary font-light text-sm">
               <div className="flex flex-col">
-                <a href={`/apresentacao`}>
-                  <span className="hover:underline">Quem somos</span>
-                </a>
-                <span className="hover:underline">Sistema de entregas</span>
-                <a href={`/admin`}>
+                <Link 
+                  aria-label="Sobre nós"
+                  title="Sobre nós"
+                  href={`/apresentacao`}
+                >
+                  <span className="hover:underline">Sobre nós</span>
+                </Link>
+                <Link
+                  aria-label="Termos e Condições"
+                  title="Termos e Condições"
+                  href={`#`}
+                >
+                  <span className="hover:underline">Termos e Condições</span>
+                </Link>
+                <Link 
+                  aria-label="Painel Administrativo"
+                  title="Painel Administrativo"
+                  href={`/admin`}
+                  target="_blank"
+                >
                   <span className="hover:underline">Painel Administrativo</span>
-                </a>
+                </Link>
               </div>
             </div>
           </div>
@@ -83,13 +112,19 @@ export default function Footer({ className }: FooterProps) {
         </div>
 
         <div className="text-center text-sm text-muted-foreground/30 mt-4">
-          <span>Feito com carinho por </span>
-          <span 
-            className="cursor-pointer hover:italic" 
-            onClick={() => openLinkOnButton("https://portfolio-freddy-snzz.vercel.app/")}
+          <span>Desenvolvido com carinho por </span>
+          <Link
+            aria-label="Ver Portfólio"
+            title="Ver Portfólio"
+            href="https://portfolio-freddy-snzz.vercel.app/"
+            target="_blank"
+            rel="noopener noreferrer"
           >
-            Fredson Luiz. <span className="animate-pulse">❤️</span>
-          </span>
+            <span className="transition-all">
+              <span className="cursor-pointer hover:font-medium hover:italic">Fredson Luiz.</span>
+              <span className="animate-pulse"> ❤️</span>
+            </span>
+          </Link>
         </div>
       </div>
     </footer>

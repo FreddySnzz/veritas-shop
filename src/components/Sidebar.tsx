@@ -8,8 +8,10 @@ import { useRouter } from "next/navigation";
 import { useLockBodyScroll } from "@/data/hook/useBodyLockScroll";
 import { Trash2, ShoppingCart, X, Minus, Plus } from "lucide-react";
 import { CustomButton } from "./buttons/CustomButton";
+import { formatAndCapitalize } from "@/data/functions/formatAndCapitalize";
 import ClearCartModal from "./modals/ClearCart";
 import DeleteItemCartModal from "./modals/DeleteItemCart";
+import CartAlert from "./CartAlert";
 
 export default function Sidebar() {
   const { isSidebarOpen, closeSidebar } = useApp();
@@ -20,17 +22,12 @@ export default function Sidebar() {
     addQuantity,
     subtractQuantity,
   } = useCart();
-  const [alertOpen, setAlertOpen] = useState(true);
   const [isClearCartModalOpen, setIsClearCartModalOpen] = useState(false);
   const [isDeleteItemCartModalOpen, setIsDeleteItemCartModalOpen] = useState(false);
   const [itemCartIdToDelete, setItemCartIdToDelete] = useState<string>('');
   const isCartEmpty = cartCount === 0;
 
   useLockBodyScroll(isSidebarOpen);
-
-  const handleCloseAlert = () => {
-    setAlertOpen(false);
-  };
 
   const handleSubtractQuantity = (id: string) => {
     const itemQuantity = items.filter(item => item.cartId === id)[0].quantity;
@@ -50,6 +47,21 @@ export default function Sidebar() {
   const handleGoToCart = () => {
     closeSidebar();
     router.push('/carrinho');
+  };
+
+  const renderCustomizationDesc = (
+    key: string, 
+    value: string | string[] | undefined
+  ) => {
+    if (!key || !value) return "Não informado";
+    key = formatAndCapitalize(key);
+
+    if (key.includes('Letras') || key.includes('Frase')) {
+      const formattedValue = Array.isArray(value) ? value.join(', ') : value;
+      return `${key}: ${formattedValue}\n`;
+    };
+
+    return `${key}: ${value}`;
   };
 
   return (
@@ -83,19 +95,21 @@ export default function Sidebar() {
               </button>
             </div>
             <button 
+              type="button"
+              aria-label="Fechar carrinho"
+              title="Fechar carrinho"
               onClick={closeSidebar} 
-              aria-label="Fechar menu" 
-              className="hover:bg-gray-100 rounded-lg p-2 transition-colors ml-auto cursor-pointer"
+              className="p-2 transition-colors ml-auto cursor-pointer"
             >
-              <X className="text-secondary text-xl hover:text-secondary/80" />
+              <X className="text-secondary text-xl hover:text-secondary/70" />
             </button>
           </div>
         </div>
 
         <div className="flex-1 overflow-y-auto">
-          <div className="p-4 space-y-4">
+          <div className="flex flex-col h-full p-4 space-y-4">
             {isCartEmpty ? (
-              <div className="flex flex-col items-center justify-center py-12 text-center">
+              <div className="flex flex-col h-full items-center justify-center py-12 text-center">
                 <ShoppingCart className="w-16 h-16 text-gray-300 mb-4" />
                 <p className="text-gray-500 font-medium">Seu carrinho está vazio</p>
                 <p className="text-sm text-gray-400 mt-2">
@@ -105,17 +119,7 @@ export default function Sidebar() {
             ) : (
               <>
                 <div className="space-y-8">
-                  <div className={`${alertOpen ? "" : "hidden"} flex justify-between bg-gray-50 rounded-lg transition-colors p-3`}>
-                    <span className="text-xs">
-                      <strong>Os produtos no carrinho não estão reservados.</strong><br/> Finalize seu pedido antes que o estoque acabe.
-                    </span>
-                    <button 
-                      onClick={handleCloseAlert}
-                      className="flex items-center justify-center cursor-pointer"
-                    >
-                      <X className="w-4 h-4 hover:text-secondary/80 transition-colors" />
-                    </button>
-                  </div>
+                  <CartAlert />
 
                   {items.map((item) => (
                     <div key={item.cartId} className="flex flex-col gap-2">
@@ -124,7 +128,7 @@ export default function Sidebar() {
                       </span>
                       <div className="flex">
                         {item.product.image ? (
-                          <div className="relative w-25 h-25">
+                          <div className="relative w-25 h-25 shrink-0">
                             <Image 
                               src={item.product.image}
                               alt={item.product.name}
@@ -141,39 +145,45 @@ export default function Sidebar() {
                           </div>
                         )}
                         
-                        <div className="flex flex-col ml-2 grow">
+                        <div className="flex flex-col ml-3 grow">
                           <div className="flex flex-col h-full justify-between text-xs">
                             <span>
                               Quantidade: {item.quantity}
                             </span>
 
                             {item.product.customizable && (
-                              <div className="flex text-[0.6rem] text-gray-500">
-                                <div className="flex grow flex-col">
-                                  {item.customization?.cordao && <span className="mr-1">Cordão: {item.customization.cordao}</span>}
-                                  {item.customization?.conta && <span className="mr-1">Contas: {item.customization.conta}</span>}
-                                  {item.customization?.styleLetra && <span className="mr-1">Letra: {item.customization.styleLetra}</span>}
-                                </div>
-                                <div className="flex grow flex-col">
-                                  {item.customization?.crucifixo && <span className="mr-1">Crucifixo: {item.customization.crucifixo}</span>}
-                                  {item.customization?.entremeio && <span className="mr-1">Entremeio: {item.customization.entremeio}</span>}
-                                  {item.customization?.frase && <span className="mr-1">Texto: {item.customization.frase.join(', ')}</span>}
+                              <div className="flex text-[0.6rem] text-gray-500 mt-1">
+                                <div className="grid grid-cols-2">
+                                  {Object.entries(item.customization || {}).map(([key, value]) => (
+                                    <span 
+                                      key={key}
+                                      className="mr-1"
+                                    >
+                                      {`• ${renderCustomizationDesc(key, value)}`}
+                                    </span>
+                                  ))}
                                 </div>
                               </div>
                             )}
                             
                             <div className="flex mt-2">
                               <div className="flex border border-gray-200 gap-3 px-3 py-2 rounded">
-                                <button className="cursor-pointer">
-                                  <Minus 
-                                    onClick={() => handleSubtractQuantity(item.cartId)}
-                                    className="w-3 h-3 hover:text-secondary/80 transition-colors" 
-                                  />
+                                <button 
+                                  type="button"
+                                  aria-label="Diminuir quantidade"
+                                  title="Diminuir quantidade"
+                                  className="cursor-pointer"
+                                  onClick={() => handleSubtractQuantity(item.cartId)}
+                                >
+                                  <Minus className="w-3 h-3 hover:text-secondary/80 transition-colors" />
                                 </button>
                                 <span className="px-3">
                                   {item.quantity}
                                 </span>
                                 <button 
+                                  type="button"
+                                  aria-label="Aumentar quantidade"
+                                  title="Aumentar quantidade"
                                   onClick={() => addQuantity(item.cartId)}
                                   className="cursor-pointer"
                                 >
@@ -183,8 +193,12 @@ export default function Sidebar() {
                             </div>
                           </div>
                         </div>
+
                         <div className="flex flex-col justify-center">
                           <button 
+                            type="button"
+                            aria-label="Remover item do carrinho"
+                            title="Remover item do carrinho"
                             onClick={() => handleRemoveItemCart(item.cartId)}
                             className="cursor-pointer"
                           >
@@ -204,8 +218,12 @@ export default function Sidebar() {
 
                 <div className="flex w-full items-center justify-center">
                   <button 
+                    type="button"
+                    aria-label="Limpar carrinho"
                     onClick={() => setIsClearCartModalOpen(true)}
-                    className="flex items-center justify-center gap-2 px-5 py-3 text-red-500 hover:bg-red-50 rounded-lg transition-colors font-medium cursor-pointer"
+                    className={`flex items-center justify-center gap-2 px-5 py-3 
+                      text-red-500/80 hover:text-red-600 transition-colors font-medium cursor-pointer
+                    `}
                   >
                     <Trash2 className="w-4 h-4" />
                     Limpar Carrinho
@@ -225,6 +243,8 @@ export default function Sidebar() {
           <div className="shrink-0 border-t border-gray-200 bg-white p-4 space-y-3">
             <div className="flex items-center justify-between py-2 px-3">
               <CustomButton
+                type="button"
+                aria-label="Ir para página do carrinho"
                 onClick={handleGoToCart}
                 className="bg-primary hover:bg-primary/90 text-white"
               >

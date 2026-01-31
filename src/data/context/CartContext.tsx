@@ -3,24 +3,10 @@
 import { createContext, useContext, ReactNode } from 'react';
 import { useLocalStorage } from '@/data/hook/useLocalStorage';
 import { Customization } from '@/data/types/customization.type';
-
-export interface BaseProduct {
-  id: string;
-  name: string;
-  price: number;
-  image: string;
-  customizable: boolean;
-};
-
-export interface CartItem {
-  cartId: string;
-  product: BaseProduct;
-  quantity: number;
-  customization?: Customization;
-};
+import { BaseProduct, CartProductItem } from '../types/cart-products.type';
 
 interface CartContextType {
-  items: CartItem[];
+  items: CartProductItem[];
   addItem: (product: BaseProduct, customization?: Customization) => void;
   addQuantity: (cartId: string) => void;
   subtractQuantity: (cartId: string) => void;
@@ -33,7 +19,7 @@ interface CartContextType {
 const CartContext = createContext<CartContextType | undefined>(undefined);
 
 export function CartProvider({ children }: { children: ReactNode }) {
-  const [items, setItems] = useLocalStorage<CartItem[]>('shopping_cart', []);
+  const [items, setItems] = useLocalStorage<CartProductItem[]>('shopping_cart', []);
 
   const addItem = (product: BaseProduct, customization?: Customization) => {
     setItems((prev) => {
@@ -48,7 +34,7 @@ export function CartProvider({ children }: { children: ReactNode }) {
         };
       };
 
-      const newItem: CartItem = {
+      const newItem: CartProductItem = {
         cartId: crypto.randomUUID(),
         product,
         quantity: 1,

@@ -9,118 +9,78 @@ import {
 } from "react";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
-import { toast } from "sonner";
-import { ItemsCustomizationTypes } from "@/data/types/customization.type";
-import { ArrowBigUpDash, Images, Trash, Loader2 } from "lucide-react";
-import { getCachedCustomizationItemsAction } from "@/app/actions/cache.actions";
+import { 
+  getCachedCustomizationItemsAction, 
+  getCachedCustomizationItemsCategoriesAction, 
+} from "@/app/actions/cache.actions";
 import { deleteImageAction, uploadImageAction } from "@/app/actions/cloudinary.actions";
-import { createCordaoAction, updateCordaoAction } from "@/app/actions/customization-items/cordao.action";
-import { createContaAction, updateContaAction } from "@/app/actions/customization-items/conta.action";
-import { createEntremeioAction, updateEntremeioAction } from "@/app/actions/customization-items/entremeio.action";
-import { createLetraAction, updateLetraAction } from "@/app/actions/customization-items/letra.action";
-import { createCrucifixoAction, updateCrucifixoAction } from "@/app/actions/customization-items/crucifixo.action";
-import CrucifixoModel from "@/data/models/Crucifixo.model";
-import ContaModel from "@/data/models/Conta.model";
-import EntremeioModel from "@/data/models/Entremeio.model";
-import LetraModel from "@/data/models/Letra.model";
-import CordaoModel from "@/data/models/Cordao.model";
+import { CustomizationItemsCategoryModel } from "@/data/models/CustomizationItemsCategory";
+import { ArrowBigUpDash, Images, Trash } from "lucide-react";
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 import { Switch } from "@/components/ui/switch";
-import { 
-  Select, 
-  SelectContent, 
-  SelectGroup, 
-  SelectItem, 
-  SelectTrigger, 
-  SelectValue 
-} from "../ui/select";
+import { toast } from "sonner";
+import { createCustomizationItemAction, deleteCustomizationItemAction, updateCustomizationItemAction } from "@/app/actions/customizationItems.action";
+import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectValue } from "../ui/select";
+import { generateRefNumber } from "@/data/functions/generateRefForItem";
+import { CustomizationItemsModel } from "@/data/models/CustomizationItems.model";
+import CustomModal from "../modals/CustomModal";
 
 interface CustomizationItemFormProps {
   mode: string;
   itemId?: string;
-  itemType?: keyof typeof ItemsCustomizationTypes;
+  itemType?: string;
 };
 
-type CachedItemsType = {
-  crucifixos: CrucifixoModel[] | null;
-  contas: ContaModel[] | null;
-  entremeios: EntremeioModel[] | null;
-  letras: LetraModel[] | null;
-  cordoes: CordaoModel[] | null;
-};
+export function CustomizationItemForm({ itemId, mode }: CustomizationItemFormProps) {
+  const [categories, setCategories] = useState<[]>([]);
+  const [customizationItems, setCustomizationItems] = useState<CustomizationItemsModel[]>([]);
 
-const FIELD_CONFIG: Record<string, { hasName: boolean, hasStyle: boolean, hasColor: boolean }> = {
-  cordao:     { hasName: true,  hasStyle: false, hasColor: true },
-  conta:      { hasName: true,  hasStyle: false, hasColor: true },
-  letra:      { hasName: true,  hasStyle: false, hasColor: false },
-  crucifixo:  { hasName: false, hasStyle: true,  hasColor: false },
-  entremeio:  { hasName: true,  hasStyle: true,  hasColor: false },
-};
-
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-const ACTIONS_MAP: any = {
-  cordao:     { update: updateCordaoAction, create: createCordaoAction },
-  conta:      { update: updateContaAction, create: createContaAction },
-  letra:      { update: updateLetraAction, create: createLetraAction },
-  crucifixo:  { update: updateCrucifixoAction, create: createCrucifixoAction },
-  entremeio:  { update: updateEntremeioAction, create: createEntremeioAction },
-};
-
-export function CustomizationItemForm({ itemType, itemId, mode }: CustomizationItemFormProps) {
   const [isPending, startTransition] = useTransition();
   const [isLoading, setIsLoading] = useState<boolean>(true);
+  const [isDeleteModalOpen, setIsDeleteModalOpen] = useState<boolean>(false);
   const isEditMode = mode === 'editar';
   const router = useRouter();
   
   const [name, setName] = useState<string>("");
+  const [categoryKey, setCategoryKey] = useState<string>("");
   const [style, setStyle] = useState<string>("");
-  const [categoryKey, setCategoryKey] = useState<keyof CachedItemsType>(
-    (itemType as keyof CachedItemsType) || 'cordoes'
-  );
   const [color, setColor] = useState<string>("");
-  const [available, setAvailable] = useState<boolean>(true);
   const [currentImageUrl, setCurrentImageUrl] = useState<string>("");
+  const [priceAddon, setPriceAddon] = useState<number>(0);
+  const [sizeHeight, setSizeHeight] = useState<number>(0);
+  const [sizeWidth, setSizeWidth] = useState<number>(0);
+  const [available, setAvailable] = useState<boolean>(true);
+
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
-  
-  const [allItemsOfCategory, setAllItemsOfCategory] = useState<any[]>([]); 
-  const [currentRef, setCurrentRef] = useState<number | null>(null);
-
-  const getSingularType = (key: string) => ItemsCustomizationTypes[key as keyof typeof ItemsCustomizationTypes];
-
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const getNextRef = (items: any[]) => {
-    if (!items || items.length === 0) return 1;
-    const maxRef = items.reduce((max, item) => Math.max(max, Number(item.ref) || 0), 0);
-    return maxRef + 1;
-  };
 
   async function getInitialData() {
     setIsLoading(true);
 
     try {
       const cachedItems = await getCachedCustomizationItemsAction();
-      
-      const currentList = cachedItems[categoryKey] || [];
-      setAllItemsOfCategory(currentList);
+      setCustomizationItems(cachedItems);
+
+      const cachedCategories = await getCachedCustomizationItemsCategoriesAction();
+      setCategories(cachedCategories.map((category: CustomizationItemsCategoryModel) => category));
 
       if (isEditMode && itemId) {
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        const foundItem = currentList.find((i: any) => i.id === itemId);
+        const foundItem = cachedItems.find((item: CustomizationItemsModel) => item.id === itemId);
         
         if (foundItem) {
-          const itemData = foundItem as any; 
-
-          setName(itemData.name || "");
-          setStyle(itemData.style || ""); 
-          setColor(itemData.color || "");
-          setAvailable(itemData.available ?? true);
-          setCurrentImageUrl(itemData.image_url || "");
-          setCurrentRef(itemData.ref);
+          setName(foundItem.name || "");
+          setCategoryKey(foundItem.category || "");
+          setStyle(foundItem.metadata?.style || ""); 
+          setColor(foundItem.metadata?.color || "");
+          setCurrentImageUrl(foundItem.image_url || "");
+          setPriceAddon(Number(foundItem.metadata?.price_addon) || 0);
+          setSizeHeight(Number(foundItem.metadata?.size_height) || 0);
+          setSizeWidth(Number(foundItem.metadata?.size_width) || 0);
+          setAvailable(foundItem.available ?? true);
         } else {
           toast.error("Item não encontrado.");
-          router.push(`/admin/estoques/catalogo`);
+          router.back();
         };
       };
     } catch (error) {
@@ -134,7 +94,7 @@ export function CustomizationItemForm({ itemType, itemId, mode }: CustomizationI
   useEffect(() => {
     getInitialData();
   // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [categoryKey, itemId, isEditMode]);
+  }, [itemId, isEditMode]);
 
   const handleButtonClick = () => fileInputRef.current?.click();
 
@@ -168,16 +128,6 @@ export function CustomizationItemForm({ itemType, itemId, mode }: CustomizationI
     e.preventDefault();
     setIsLoading(true);
 
-    const singularType = getSingularType(categoryKey);
-    const actions = ACTIONS_MAP[singularType];
-    const config = FIELD_CONFIG[singularType];
-
-    if (!actions) {
-      toast.error(`Ações não definidas para ${singularType}`);
-      setIsLoading(false);
-      return;
-    };
-
     try {
       let finalUrlToSave = currentImageUrl;
 
@@ -187,32 +137,39 @@ export function CustomizationItemForm({ itemType, itemId, mode }: CustomizationI
         finalUrlToSave = await uploadImageAction(formData);
       };
 
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      const payload: any = {
-        available,
-        image_url: finalUrlToSave,
-        updated_at: new Date(),
+      const metadata = {
+        style: style,
+        color: color,
+        size_height: sizeHeight,
+        size_width: sizeWidth,
       };
 
-      if (config.hasName) payload.name = name;
-      if (config.hasStyle) payload.style = style;
-      if (config.hasColor) payload.color = color;
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      const payload: any = {
+        name,
+        available,
+        category: categoryKey,
+        image_url: finalUrlToSave,
+        metadata,
+        price_addon: priceAddon,
+        updated_at: new Date(),
+      };
 
       startTransition(async () => {
         try {
           if (isEditMode && itemId) {
-            await actions.update(itemId, payload);
+            await updateCustomizationItemAction(itemId, payload);
             toast.success("Item atualizado com sucesso!");
           } else {
-            const newRef = getNextRef(allItemsOfCategory);
+            const newRef = generateRefNumber(customizationItems, categoryKey);
             payload.ref = newRef;
             
-            await actions.create(payload);
+            await createCustomizationItemAction(payload);
             toast.success(`Item criado com sucesso!`);
           };
             
           router.refresh();
-          router.push(`/admin/estoques/itens-personalizacao/${categoryKey}`);
+          router.back();
         } catch (err) {
           console.error(err);
           toast.error("Erro ao salvar no banco de dados.");
@@ -227,8 +184,20 @@ export function CustomizationItemForm({ itemType, itemId, mode }: CustomizationI
     };
   };
 
-  const currentSingularType = getSingularType(categoryKey);
-  const activeConfig = FIELD_CONFIG[currentSingularType] || { hasName: true, hasStyle: false, hasColor: false };
+  const handleDeleteItem = async (itemId: string) => {
+    setIsLoading(true);
+
+    try {
+      await deleteCustomizationItemAction(itemId);
+      toast.success("Item deletado com sucesso!");
+      router.back();
+    } catch (error) {
+      console.error("Erro ao deletar item:", error);
+      toast.error("Erro ao deletar item.");
+    } finally {
+      setIsLoading(false);
+    };
+  };
 
   return (
     <div className="flex flex-col font-sans h-full overflow-hidden">
@@ -236,27 +205,25 @@ export function CustomizationItemForm({ itemType, itemId, mode }: CustomizationI
         onSubmit={handleSubmit} 
         className="flex-1 flex flex-col gap-4 overflow-y-auto px-6 font-sans scrollbar-hide"
       >
-        {activeConfig.hasName && (
-          <div className="flex flex-col gap-2">
-            <Label htmlFor="name" className="text-sm">Nome de Referência</Label>
-            <Input
-              id="name"
-              value={name}
-              onChange={(e) => setName(e.target.value)}
-              placeholder={"Ex: Marrom"}
-              required={activeConfig.hasName}
-              disabled={isLoading}
-              className="bg-white focus-visible:ring-0 truncate text-secondary"
-            />
-          </div>
-        )}
-        
+        <div className="flex flex-col gap-2">
+          <Label htmlFor="name" className="text-sm">Nome de Referência</Label>
+          <Input
+            id="name"
+            value={name}
+            onChange={(e) => setName(e.target.value)}
+            placeholder={"Ex: Entremeio de São José / Cordão Simples"}
+            required={true}
+            disabled={isLoading}
+            className="bg-white focus-visible:ring-0 truncate text-secondary"
+          />
+        </div>
+
         <div className="flex flex-col gap-2">
           <Label className="text-sm">Categoria do Item</Label>
           <Select 
             disabled={isEditMode || isLoading}
             value={categoryKey} 
-            onValueChange={(value) => setCategoryKey(value as keyof CachedItemsType)}
+            onValueChange={(value) => setCategoryKey(value)}
           >
             <SelectTrigger className={`flex w-full items-center justify-between gap-2 rounded-lg px-4
               bg-white text-sm text-secondary transition-colors hover:bg-gray-50 focus-visible:ring-0 focus-visible:ring-offset-transparent focus-visible:ring-primary
@@ -265,12 +232,12 @@ export function CustomizationItemForm({ itemType, itemId, mode }: CustomizationI
             </SelectTrigger>
             <SelectContent position={"item-aligned"}>
               <SelectGroup className="font-sans">
-                {Object.keys(ItemsCustomizationTypes).map((key) => (
+                {categories?.map((category: CustomizationItemsCategoryModel) => (
                   <SelectItem 
-                    key={key} 
-                    value={key}
+                    key={category.id}
+                    value={category.category_name}
                   >
-                    {key.charAt(0).toUpperCase() + key.slice(1)}
+                    {category.name}
                   </SelectItem>
                 ))}
               </SelectGroup>
@@ -278,45 +245,40 @@ export function CustomizationItemForm({ itemType, itemId, mode }: CustomizationI
           </Select>
         </div>
 
-        {activeConfig.hasStyle && (
-          <div className="flex flex-col gap-2">
-            <Label htmlFor="style" className="text-sm">Estilo</Label>
+        <div className="flex flex-col gap-2">
+          <Label htmlFor="style" className="text-sm">Estilo ou Referência de Cor (Opcional)</Label>
+          <Input
+            id="style"
+            value={style}
+            onChange={(e) => setStyle(e.target.value)}
+            placeholder="Ex: Ouro Velho / Brilhante / Marrom Café"
+            disabled={isLoading}
+            className="bg-white focus-visible:ring-0 truncate text-secondary"
+          />
+        </div>
+
+        <div className="flex flex-col gap-2">
+          <Label htmlFor="color" className="text-sm">Código da Cor (Opcional)</Label>
+          <div className="flex gap-4 items-center">
             <Input
-              id="style"
-              value={style}
-              onChange={(e) => setStyle(e.target.value)}
-              placeholder="Ex: Ouro Velho"
-              required={activeConfig.hasStyle}
+              id="color"
+              type="color"
+              value={color}
+              onChange={(e) => setColor(e.target.value)}
+              className="w-20 h-10 p-1 cursor-pointer"
               disabled={isLoading}
-              className="bg-white focus-visible:ring-0 truncate text-secondary"
+            />
+            <Input 
+              value={color}
+              onChange={(e) => setColor(e.target.value)}
+              placeholder="#000000"
+              maxLength={7}
+              max={7}
+              className="flex-1 bg-white focus-visible:ring-0 truncate text-secondary"
+              disabled={isLoading}
             />
           </div>
-        )}
-
-        {activeConfig.hasColor && (
-          <div className="flex flex-col gap-2">
-            <Label htmlFor="color" className="text-sm">Cor de Referência (Opcional)</Label>
-            <div className="flex gap-4 items-center">
-              <Input
-                id="color"
-                type="color"
-                value={color}
-                onChange={(e) => setColor(e.target.value)}
-                className="w-20 h-10 p-1 cursor-pointer"
-                disabled={isLoading}
-              />
-              <Input 
-                value={color}
-                onChange={(e) => setColor(e.target.value)}
-                placeholder="#000000"
-                maxLength={7}
-                max={7}
-                className="flex-1 bg-white focus-visible:ring-0 truncate text-secondary"
-                disabled={isLoading}
-              />
-            </div>
-          </div>
-        )}
+        </div>
 
         <div className="flex flex-col">
           <Label className="text-sm mb-1">Imagem do Item</Label>
@@ -367,7 +329,7 @@ export function CustomizationItemForm({ itemType, itemId, mode }: CustomizationI
                 type="button"
                 onClick={handleRemoveImage}
                 disabled={isLoading}
-                className="mt-3 flex items-center gap-2 text-red-500 hover:text-red-700 text-sm font-medium"
+                className="mt-3 flex items-center gap-2 text-red-500 hover:text-red-700 text-sm font-medium cursor-pointer"
               >
                 <Trash className="w-4 h-4" />
                 <span>Remover Imagem</span>
@@ -376,7 +338,68 @@ export function CustomizationItemForm({ itemType, itemId, mode }: CustomizationI
           )}
         </div>
 
-        <div className="flex items-center w-full justify-between px-4 py-3 mb-4 bg-white rounded-lg border">
+        <div className="flex flex-col gap-2">
+          <Label 
+            htmlFor="priceAddon" 
+            className="text-sm"
+          >
+            Quanto esse item soma ao preço final? (Opcional)
+          </Label>
+          <div className="relative">
+            <span className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground">R$</span>
+            <Input
+              id="priceAddon"
+              type="number"
+              required
+              onChange={(e) => setPriceAddon(Number(e.target.value) || 0)}
+              value={priceAddon}
+              placeholder="0,00"
+              step="0.01"
+              min="0"
+              className="pl-10 bg-white focus-visible:ring-0 truncate text-secondary"
+              disabled={isLoading}
+            />
+          </div>
+        </div>
+
+        <div className="flex flex-col gap-2">
+          <Label 
+            htmlFor="sizeHeight" 
+            className="text-sm"
+          >
+            Medidas do item (Opcional)
+          </Label>
+          <div className="flex items-center gap-2">
+            <span className="text-secondary">Altura: </span>
+            <Input
+              id="sizeHeight"
+              type="number"
+              required
+              onChange={(e) => setSizeHeight(Number(e.target.value) || 0)}
+              value={sizeHeight}
+              placeholder="0,00"
+              step="0.01"
+              min="0"
+              className="bg-white focus-visible:ring-0 truncate text-secondary"
+              disabled={isLoading}
+            />
+            <span className="text-secondary">Largura: </span>
+            <Input
+              id="sizeWidth"
+              type="number"
+              required
+              onChange={(e) => setSizeWidth(Number(e.target.value) || 0)}
+              value={sizeWidth}
+              placeholder="0,00"
+              step="0.01"
+              min="0"
+              className="bg-white focus-visible:ring-0 truncate text-secondary"
+              disabled={isLoading}
+            />
+          </div>
+        </div>
+
+        <div className="flex items-center w-full justify-between px-4 py-3 bg-white rounded-lg border">
           <Label htmlFor="available">Item Disponível no Estoque?</Label>
           <Switch 
             id="available" 
@@ -386,6 +409,50 @@ export function CustomizationItemForm({ itemType, itemId, mode }: CustomizationI
             className="cursor-pointer"
           />
         </div>
+
+        {isEditMode && itemId && (
+          <div className="flex items-center w-full justify-center py-2 mb-4">
+            <button 
+              type="button"
+              className="flex items-center gap-2 cursor-pointer hover:text-red-500 transition-colors"
+              onClick={() => setIsDeleteModalOpen(true)}
+            >
+              <Trash className="w-4 h-4" />
+              <span className="text-sm font-medium hover:underline">
+                Deletar Item
+              </span>
+            </button>
+
+            <CustomModal
+              modalOpen={isDeleteModalOpen}
+              onClose={() => setIsDeleteModalOpen(false)}
+              className=""
+            >
+              <div className="flex flex-col items-center justify-center p-2 gap-4">
+                <p className="font-bold">
+                  Tem certeza que deseja deletar este item?
+                </p>
+
+                <div className="flex w-full items-center justify-end gap-2">
+                  <button 
+                    type="button"
+                    onClick={() => setIsDeleteModalOpen(false)}
+                    className="flex w-full px-4 py-2 rounded-lg bg-gray-100 items-center justify-center font-medium cursor-pointer"
+                  >
+                    <span>Cancelar</span>
+                  </button>
+                  <button 
+                    type="button"
+                    onClick={() => handleDeleteItem(itemId)}
+                    className="flex w-full px-4 py-2 rounded-lg bg-primary text-white items-center justify-center font-medium cursor-pointer"
+                  >
+                    <span>Confirmar</span>
+                  </button>
+                </div>
+              </div>
+            </CustomModal>
+          </div>
+        )}
       </form>
 
       <div className="shrink-0 mt-auto bg-background-alternative pt-2">

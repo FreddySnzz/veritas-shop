@@ -3,6 +3,7 @@
 import { useState } from 'react';
 import { PlusCircle, MinusCircle } from 'lucide-react';
 import { useCustomization } from "@/data/context/CustomizationContext";
+import { onlyLetters } from '@/data/functions/inputMasks';
 
 export default function MultiTextInput() {
   const { customization, updateCustomization } = useCustomization();
@@ -49,7 +50,7 @@ export default function MultiTextInput() {
               type="text"
               value={text}
               className="bg-background-alternative-v2 text-secondary font-bold py-2 px-3 rounded-lg cursor-text flex-1 focus:outline-0"
-              onChange={(e) => handleChange(index, e.target.value)}
+              onChange={(e) => handleChange(index, onlyLetters(e.target.value))}
               placeholder={`Texto ${index + 1}`}
               maxLength={10}
               title="Por favor, digite apenas letras e números"

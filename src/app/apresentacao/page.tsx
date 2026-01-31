@@ -3,11 +3,11 @@
 import * as motion from "motion/react-client"
 import ButtonScrollDown from "@/components/buttons/ButtonScrollDown";
 import { WhatsAppButtonFixed } from "@/components/buttons/WhatsAppButton";
-import ImageCarousel from "@/components/Carrousel";
 import About from "@/components/About";
 import { CatalogButton } from "@/components/buttons/CatalogButton";
 import { SlogganTypography, Typography } from "@/components/Typography";
 import Footer from "@/components/Footer";
+import CatalogCarrousel from "@/components/CatalogCarrousel";
 
 export default function Apresentation() {
   return (
@@ -47,7 +47,7 @@ export default function Apresentation() {
           </div>
 
           <section id="carrousel">
-            <ImageCarousel className="h-screen"/>
+            <CatalogCarrousel className="h-screen"/>
           </section>
 
           <div className="flex flex-col items-center justify-center mt-4">

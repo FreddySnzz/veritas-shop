@@ -13,11 +13,6 @@ import {
 import { Collections } from "../types/collections.enum";
 import ProductModel from "../models/Product.model";
 import { unstable_cache } from "next/cache";
-import { getAllCrucifixos } from "./customization-items/crucifixo.service";
-import { getAllContas } from "./customization-items/conta.service";
-import { getAllEntremeios } from "./customization-items/entremeio.service";
-import { getAllLetras } from "./customization-items/letra.service";
-import { getAllCordoes } from "./customization-items/cordao.service";
 
 export class ProductServiceError extends Error {
   status: number;
@@ -151,20 +146,5 @@ export const getCachedProducts = unstable_cache(
   {
     revalidate: 3600,
     tags: ['products'],
-  }
-);
-
-export const getCachedCustomizationItems = unstable_cache(
-  async () => ({
-    crucifixos: await getAllCrucifixos(),
-    contas: await getAllContas(),
-    entremeios: await getAllEntremeios(),
-    letras: await getAllLetras(),
-    cordoes: await getAllCordoes(),
-  }),
-  ['customization_items'],
-  {
-    revalidate: 1800,
-    tags: ['customization_items'],
   }
 );

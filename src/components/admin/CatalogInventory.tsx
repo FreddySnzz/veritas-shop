@@ -1,9 +1,10 @@
+import Link from "next/link";
 import Image from "next/image";
+import ProductModel from "@/data/models/Product.model";
 import { getCachedProductsAction } from "@/app/actions/cache.actions";
 import { DeleteButton } from "../buttons/DeleteButton";
 import { BackButton } from "../buttons/BackButtom";
 import CardButton from "../buttons/CardButton";
-import ProductModel from "@/data/models/Product.model";
 
 export default async function ManageCatalogInventory() {
   const products = await getCachedProductsAction();
@@ -11,6 +12,17 @@ export default async function ManageCatalogInventory() {
   return (
     <div className="flex flex-col font-sans h-full overflow-hidden">
       <div className="flex-1 min-h-0 grid grid-cols-1 md:grid-cols-3 xl:grid-cols-5 gap-4 mx-6 overflow-y-auto content-start pb-4 scrollbar-hide">
+        <div>
+          <Link 
+            href={'/admin/estoques/catalogo/adicionar'}
+            className={`flex items-center justify-center w-full py-4 px-2 font-sans font-bold gap-3
+              bg-white hover:bg-gray-50 text-secondary rounded-2xl text-lg transition-all cursor-pointer shadow shadow-secondary/5
+            `}
+          >
+            <span>Adicionar Produto</span>
+          </Link>
+        </div>
+
         {products && products?.length > 0 ? products?.map((product: ProductModel) => (
           <CardButton 
             key={product.id}
@@ -18,10 +30,10 @@ export default async function ManageCatalogInventory() {
             className="bg-white"
           >
             <div>
-              {product.image_url ? (
+              {product.images_url ? (
                 <div className="relative w-35 h-35 shrink-0">
                   <Image
-                    src={product.image_url}
+                    src={product.images_url[0]}
                     alt="preview"
                     draggable="false"
                     fill

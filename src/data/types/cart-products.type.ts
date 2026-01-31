@@ -1,10 +1,34 @@
-import { Product } from "./products.type"
+import { Customization } from "./customization.type"
 
-export type CartItem = Product & { quantity: number }
+interface ProductCart {
+  id: string;
+  cordoes: string;
+  contas: string;
+  letras: string;
+  crucifixos: string;
+  entremeios: string;
+};
+
+export type CartItem = ProductCart & { quantity: number }
 
 export type CartStore = {
   cart: CartItem[]
-  addToCart: (product: Product) => void
+  addToCart: (product: ProductCart) => void
   removeFromCart: (productId: number) => void
   clearCart: () => void
 }
+
+export interface BaseProduct {
+  id: string;
+  name: string;
+  price: number;
+  image: string;
+  customizable: boolean;
+};
+
+export interface CartProductItem {
+  cartId: string;
+  product: BaseProduct;
+  quantity: number;
+  customization?: Customization;
+};

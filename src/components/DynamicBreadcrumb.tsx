@@ -13,13 +13,16 @@ import {
 import { FiHome } from "react-icons/fi";
 import FlowerIcon from "./icons/FlowerIcon";
 import { verifyFirebaseId } from '@/data/functions/verifyFirebaseId';
+import ProductModel from '@/data/models/Product.model';
 
 interface DynamicBreadcrumbProps {
   className?: string
   listClassName?: string
+  mode?: 'user' | 'admin'
+  product?: ProductModel
 };
 
-export default function DynamicBreadcrumb({ className, listClassName }: DynamicBreadcrumbProps) {
+export default function DynamicBreadcrumb({ className, listClassName, mode, product }: DynamicBreadcrumbProps) {
   const paths = usePathname();
 
   const breadcrumbList = useMemo(() => {
@@ -37,7 +40,12 @@ export default function DynamicBreadcrumb({ className, listClassName }: DynamicB
     <Breadcrumb className={className}>
       <BreadcrumbList className={`font-sans ${listClassName}`}>
         <BreadcrumbItem>
-          <BreadcrumbLink href="/admin" className="flex items-center">
+          <BreadcrumbLink 
+            aria-label="Voltar para a página inicial"
+            title="Voltar para a página inicial"
+            href={ mode === 'admin' ? '/admin' : '/'} 
+            className="flex items-center"
+          >
             <FiHome className="h-4 w-4" />
           </BreadcrumbLink>
         </BreadcrumbItem>
@@ -54,7 +62,6 @@ export default function DynamicBreadcrumb({ className, listClassName }: DynamicB
           const isLast = index === breadcrumbList.length - 1;
           let formattedLink = link.charAt(0).toUpperCase() + link.slice(1).replace(/-/g, ' ');
           formattedLink.includes('Itens personalizacao') ? formattedLink = 'Itens' : formattedLink;
-          formattedLink.includes('Cordoes') ? formattedLink = 'Cordões' : formattedLink;
           formattedLink.includes('Catalogo') ? formattedLink = 'Produtos' : formattedLink;
           formattedLink.includes('Admin') && breadcrumbList.length > 4 ? formattedLink = '' : formattedLink;
 
@@ -62,7 +69,7 @@ export default function DynamicBreadcrumb({ className, listClassName }: DynamicB
             <React.Fragment key={index}>
               <BreadcrumbItem>
                 {isLast ? (
-                  <BreadcrumbPage>{formattedLink}</BreadcrumbPage>
+                  <BreadcrumbPage>{product ? product.name : formattedLink}</BreadcrumbPage>
                 ) : (
                   <BreadcrumbLink href={href}>
                     {formattedLink}

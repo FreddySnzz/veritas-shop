@@ -1,6 +1,14 @@
 "use client";
 
-import { createContext, type ReactNode, useCallback, useContext, useEffect, useState, useRef } from "react";
+import { 
+  type ReactNode, 
+  createContext, 
+  useCallback, 
+  useContext, 
+  useEffect, 
+  useState, 
+  useRef 
+} from "react";
 import { deleteCookie, getCookie, setCookie } from "@/lib/cookies";
 import { User } from "../types/auth";
 import { useRouter, usePathname } from "next/navigation";
@@ -12,7 +20,7 @@ interface AuthContextType {
   setToken: (token: string) => void;
   setUser: (user: User) => void;
   logout: () => void;
-}
+};
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 

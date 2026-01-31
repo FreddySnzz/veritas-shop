@@ -26,6 +26,7 @@ export async function login(
         id: user[0].id,
         name: user[0].name,
         email: user[0].email,
+        phone: user[0].phone,
       },
       tokens: {
         access: accessToken,

@@ -3,5 +3,6 @@ export default interface UserModel {
   name: string;
   email: string;
   password: string;
+  phone?: string;
   updated_at: Date;
-}
+};

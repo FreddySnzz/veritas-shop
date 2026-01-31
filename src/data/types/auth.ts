@@ -8,6 +8,7 @@ export interface LoginResponse {
     id: string;
     name: string;
     email: string;
+    phone?: string;
   };
   tokens: {
     access: string;
@@ -18,4 +19,5 @@ export type User = {
   id: string;
   name: string;
   email: string;
+  phone?: string;
 };

@@ -4,4 +4,4 @@ export default interface CatalogImageModel {
   image_url?: string;
   available: boolean;
   updated_at: Date;
-}
+};

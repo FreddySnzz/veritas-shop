@@ -1,6 +1,6 @@
 import DynamicBreadcrumb from "@/components/DynamicBreadcrumb";
 import { Header } from "@/components/Header";
-import AdminInventory from "@/components/admin/Inventory";
+import AdminInventoryLayout from "@/components/admin/AdminInventoryLayout";
 
 export default function AdminInvetoryPage() {
   return (
@@ -10,7 +10,7 @@ export default function AdminInvetoryPage() {
         <div className="shrink-0">
           <DynamicBreadcrumb className="mt-12 p-6" />
         </div>
-        <AdminInventory />
+        <AdminInventoryLayout />
       </main>
     </div>
   );

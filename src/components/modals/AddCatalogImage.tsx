@@ -81,7 +81,12 @@ export default function AddCatalogImageModal({ modalOpen, onClose }: AddCatalogI
         updated_at: new Date(),
       };
 
-      await createCatalogImageAction(dataToSubmit);
+      const result = await createCatalogImageAction(dataToSubmit);
+
+      if (result instanceof Error) {
+        toast.error("Erro ao adicionar imagem.");
+        return;
+      };
 
       toast.success("Imagem adicionada ao Catálogo!");
       router.refresh();
@@ -189,11 +194,19 @@ export default function AddCatalogImageModal({ modalOpen, onClose }: AddCatalogI
           </div>
         </form>
 
-        <div className="flex flex-col w-full mt-2">
+        <div className="flex w-full mt-2 gap-4">
+          <button 
+            onClick={onClose}
+            className={`flex w-full items-center justify-center px-4 py-2 rounded-lg font-medium cursor-pointer
+              bg-gray-50 text-secondary border border-gray-100 hover:bg-gray-100 transition-colors
+            `}
+          >
+            <span>Fechar</span>
+          </button>
           <button 
             type="submit" 
             onClick={handleSubmit}
-            className={`flex w-full py-2 rounded-lg justify-center items-center cursor-pointer transition-colors font-medium
+            className={`flex w-full px-4 py-2 rounded-lg justify-center items-center cursor-pointer transition-colors font-medium
               bg-primary text-white hover:bg-primary/90
             `} 
             disabled={isLoading}
@@ -203,14 +216,6 @@ export default function AddCatalogImageModal({ modalOpen, onClose }: AddCatalogI
                 <span>Salvando...</span>
               </div>
             ) : 'Salvar Imagem'}
-          </button>
-          <button 
-            onClick={onClose}
-            className={`flex w-full items-center justify-center px-4 py-2 rounded-lg font-medium cursor-pointer
-              bg-gray-50 text-secondary mt-2 border border-gray-100 hover:bg-gray-100 transition-colors
-            `}
-          >
-            <span>Fechar</span>
           </button>
         </div>
       </div>

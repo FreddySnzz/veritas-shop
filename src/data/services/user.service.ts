@@ -5,6 +5,7 @@ import {
   getDoc,
   getDocs,
   query,
+  updateDoc,
   where,
 } from "firebase/firestore";
 import UserModel from "../models/User.model";
@@ -55,4 +56,25 @@ export async function getUserById(
   );
 
   return data;
+};
+
+export async function updateUser(
+  id: string, 
+  data: UserModel
+): Promise<UserModel> {
+  const docRef = doc(db, Collections.USERS_COLLECTION, id);
+  const docSnap = await getDoc(docRef);
+  
+  if (!docSnap.exists()) {
+    throw new UserServiceError("User not exists", 404);
+  };
+
+  const updatedData = {
+    ...docSnap.data(),
+    ...data,
+  };
+
+  await updateDoc(docRef, updatedData);
+
+  return updatedData;
 };

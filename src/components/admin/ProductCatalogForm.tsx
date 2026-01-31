@@ -1,56 +1,60 @@
 'use client';
 
-import { useState, useEffect, useMemo, useRef } from "react";
+import { useState, useEffect, useRef } from "react";
 import { usePathname, useRouter } from "next/navigation";
 import Image from "next/image";
-import { toast } from "sonner";
 import { verifyFirebaseId } from "@/data/functions/verifyFirebaseId";
+import { getCachedCustomizationItemsCategoriesAction } from "@/app/actions/cache.actions";
+import { uploadImageAction } from "@/app/actions/cloudinary.actions"; 
 import { 
   createProductAction, 
   getAllProductsAction, 
   updateProductAction 
 } from "@/app/actions/products.action";
-import { deleteImageAction, uploadImageAction } from "@/app/actions/cloudinary.actions";
-import { ArrowBigUpDash, Images, Trash } from "lucide-react";
+import { Images, Trash, X } from "lucide-react";
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 import { Switch } from "@/components/ui/switch";
-import ProductModel from "@/data/models/Product.model";
-import { ItemsCustomizationTypes } from "@/data/types/customization.type";
+import { Textarea } from "../ui/textarea";
+import ProductModel from "@/data/models/Product.model"; 
+import { CustomizationItemsCategoryModel } from "@/data/models/CustomizationItemsCategory";
+import { CustomizationItemConfig } from "@/data/types/customization.type";
+import { toast } from "sonner";
 
 interface ProductFormProps {
   initialData?: ProductModel | null
 };
 
-const CUSTOMIZATION_OPTIONS = [
-  { label: 'Cordão', value: ItemsCustomizationTypes.cordoes },
-  { label: 'Conta', value: ItemsCustomizationTypes.contas },
-  { label: 'Letras', value: ItemsCustomizationTypes.letras },
-  { label: 'Crucifixo', value: ItemsCustomizationTypes.crucifixos },
-  { label: 'Entremeio', value: ItemsCustomizationTypes.entremeios },
-];
-
 export function ProductForm({ 
   initialData,
 }: ProductFormProps) {
+  const [customizationOptions, setCustomizationOptions] = useState<CustomizationItemsCategoryModel[]>([]);
+
   const [name, setName] = useState<string>(initialData?.name || "");
   const [desc, setDesc] = useState<string>(initialData?.desc || "");
   const [initialPrice, setInitialPrice] = useState<number>(initialData?.initial_price || 0);
   const [available, setAvailable] = useState<boolean>(initialData?.available || false);
   const [customizable, setCustomizable] = useState<boolean>(initialData?.customizable || false);
-  const [customizationItems, setCustomizationItems] = useState<string[]>(initialData?.customization_items || []);
-  const [currentImageUrl, setCurrentImageUrl] = useState<string>(initialData?.image_url || "");
-  const [selectedFile, setSelectedFile] = useState<File | null>(null);
+  const [customizationItems, setCustomizationItems] = useState<CustomizationItemConfig[]>(
+    (initialData?.customization_items as unknown as CustomizationItemConfig[]) || []
+  );
+  const [existingImages, setExistingImages] = useState<string[]>(initialData?.images_url || []);
+  const [newFiles, setNewFiles] = useState<File[]>([]);
+  const [newFilesPreviews, setNewFilesPreviews] = useState<string[]>([]);
+  
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   const [isEditMode, setIsEditMode] = useState(!!initialData);
   const [isLoading, setIsLoading] = useState<boolean>(false);
-  
+   
   const router = useRouter();
   const pathname = usePathname();
 
   useEffect(() => {
     const initializeForm = async () => {
+      const categories = await getCachedCustomizationItemsCategoriesAction();
+      setCustomizationOptions(categories);
+
       if (initialData) return;
 
       const paths = pathname.split('/');
@@ -67,11 +71,12 @@ export function ProductForm({
             setDesc(foundProduct.desc || "");
             setInitialPrice(foundProduct.initial_price);
             setCustomizable(foundProduct.customizable);
-            setCustomizationItems(foundProduct.customization_items || []);
+            const items = (foundProduct.customization_items as unknown as CustomizationItemConfig[]) || [];
+            setCustomizationItems(items);
             setAvailable(foundProduct.available);
-            setCurrentImageUrl(foundProduct.image_url || "");
+            setExistingImages(foundProduct.images_url || []);
             setIsEditMode(true);
-          }
+          };
         } catch (error) {
           console.error("Erro ao carregar produto:", error);
         } finally {
@@ -83,30 +88,35 @@ export function ProductForm({
     initializeForm();
   }, [pathname, initialData]);
 
-  const imagePreview = useMemo(() => {
-    if (selectedFile) {
-      return URL.createObjectURL(selectedFile);
+  useEffect(() => {
+    const newUrls = newFiles.map(file => URL.createObjectURL(file));
+    setNewFilesPreviews(newUrls);
+
+    return () => {
+      newUrls.forEach(url => URL.revokeObjectURL(url));
     };
+  }, [newFiles]);
 
-    if (currentImageUrl) {
-      return currentImageUrl;
+  const handleFileSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (e.target.files && e.target.files.length > 0) {
+      const selectedFiles = Array.from(e.target.files);
+      const validFiles = selectedFiles.filter(file => file.size <= 10 * 1024 * 1024);
+      
+      if (validFiles.length !== selectedFiles.length) {
+        toast.warning("Alguns arquivos eram maiores que 10MB e foram ignorados.");
+      };
+
+      setNewFiles(prev => [...prev, ...validFiles]);
+      if (fileInputRef.current) fileInputRef.current.value = "";
     };
-  }, [selectedFile, currentImageUrl]);
+  };
 
-  const handleRemoveImage = () => {
-    try {
-      setIsLoading(true);
+  const handleRemoveExistingImage = (urlToRemove: string) => {
+    setExistingImages(prev => prev.filter(url => url !== urlToRemove));
+  };
 
-      deleteImageAction(currentImageUrl);
-      setSelectedFile(null);
-      setCurrentImageUrl("");
-
-      toast.success("Imagem apagada com sucesso!");
-    } catch (error) {
-      console.error("Erro ao apagar imagem:", error);
-    } finally {
-      setIsLoading(false);
-    };
+  const handleRemoveNewFile = (indexToRemove: number) => {
+    setNewFiles(prev => prev.filter((_, index) => index !== indexToRemove));
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -120,24 +130,27 @@ export function ProductForm({
     };
 
     try {
-      let finalUrlToSave = currentImageUrl;
+      const uploadedUrls: string[] = [];
 
-      if (selectedFile) {
-        const formData = new FormData();
-
-        formData.append("file", selectedFile);
-
-        try {
-          finalUrlToSave = await uploadImageAction(formData);
-        } catch (error) {
-          console.error("Erro no upload de imagem:", error);
-          toast.error("Erro no upload de imagem.");
-          return;
+      if (newFiles.length > 0) {
+        for (const file of newFiles) {
+          const formData = new FormData();
+          formData.append("file", file);
+          try {
+            const url = await uploadImageAction(formData);
+            if (url) uploadedUrls.push(url);
+          } catch (error) {
+            console.error(`Erro ao subir arquivo ${file.name}:`, error);
+            toast.error(`Falha ao subir imagem: ${file.name}`);
+            setIsLoading(false);
+            return;
+          };
         };
       };
 
+      const finalImagesUrl = [...existingImages, ...uploadedUrls];
       const productId = isEditMode ? pathname.split('/').pop() : undefined;
-
+      
       const dataToSubmit = {
         id: productId,
         name,
@@ -146,7 +159,7 @@ export function ProductForm({
         customizable,
         customization_items: customizationItems,
         initial_price: initialPrice * 100,
-        image_url: finalUrlToSave,
+        images_url: finalImagesUrl,
         updated_at: new Date(),
       };
 
@@ -157,6 +170,8 @@ export function ProductForm({
       };
 
       toast.success(isEditMode ? "Produto atualizado!" : "Produto criado!");
+      setNewFiles([]);
+
       router.refresh(); 
       router.push(`/admin/estoques/catalogo`);
     } catch (error) {
@@ -177,19 +192,35 @@ export function ProductForm({
       setCustomizationItems([]); 
     };
   };
-
-  const toggleCustomizationItem = (itemValue: string) => {
+  
+  const toggleCustomizationCategory = (
+    categoryName: string, 
+    category: string,
+    isChecked: boolean
+  ) => {
     setCustomizationItems((prev) => {
-      const exists = prev.includes(itemValue);
-      
-      if (exists) {
-        return prev.filter((item) => item !== itemValue);
+      if (isChecked) {
+        return [...prev, { 
+          category_name: categoryName, 
+          category: category, 
+          required: false 
+        }];
       } else {
-        return [...prev, itemValue];
-      }
+        return prev.filter((item) => item.category !== category);
+      };
     });
   };
-  
+
+  const toggleRequiredStatus = (
+    categoryName: string, 
+    category: string, 
+    isRequired: boolean
+  ) => {
+    setCustomizationItems((prev) => prev.map(item => 
+      item.category === category ? { ...item, required: isRequired } : item
+    ));
+  };
+   
   return (
     <div className="flex-1 flex flex-col w-full min-h-0 overflow-hidden font-sans">
       <form 
@@ -214,14 +245,13 @@ export function ProductForm({
 
           <div className="flex flex-col gap-2">
             <Label htmlFor="desc" className="text-sm">Descrição (Opcional)</Label>
-            <Input
+            <Textarea
               id="description"
-              type="text"
-              autoComplete="description"
               placeholder="Descrição do Produto"
               onChange={(e) => setDesc(e.target.value)}
               value={desc}
-              className="bg-white focus-visible:ring-0 truncate text-secondary"
+              rows={4}
+              className="bg-white focus-visible:ring-0 text-secondary overflow-y-auto"
               disabled={isLoading}
             />
           </div>
@@ -246,62 +276,86 @@ export function ProductForm({
           </div>
 
           <div className="flex flex-col">
-            <Label htmlFor="image" className="text-sm">
-              {isEditMode ? "Alterar Imagem (Opcional)" : "Imagem (Opcional)"}
-            </Label>
-            <span className="text-xs text-gray-400 mb-2">*.jpg / *.jpeg / *.png - tam. limite de 10MB</span>
+            <div className="flex items-center justify-between">
+              <Label htmlFor="image" className="text-sm">Galeria de Imagens</Label>
+              <span className="text-xs text-gray-400">*.jpg / *.png - máx 10MB</span>
+            </div>
 
             <Input
               id="image"
               type="file"
               accept="image/*"
+              multiple
               ref={fileInputRef}
-              onChange={(e) => setSelectedFile(e.target.files?.[0] ?? null)}
+              onChange={handleFileSelect}
               className="hidden"
             />
-            <button 
-              type="button" 
+
+            <button
+              type="button"
               onClick={handleButtonClick}
               disabled={isLoading}
-              className={`flex gap-2 items-center justify-center px-4 py-1 font-medium cursor-pointer mt-2
-                bg-gray-300 text-secondary rounded-lg transition-all shadow
+              className={`flex gap-2 items-center justify-center px-4 py-2 font-medium cursor-pointer mt-2
+                bg-gray-100 hover:bg-gray-200 text-secondary rounded-lg transition-all border border-dashed border-gray-300
               `}
             >
-              {selectedFile ? (
-                <>
-                  <Images className="w-4 h-4 text-secondary" />
-                  Alterar Imagem
-                </>
-              ) : (
-                <>
-                  <ArrowBigUpDash className="w-4 h-4" />
-                  Selecionar Imagem
-                </>
-              )}
+              <Images className="w-4 h-4 text-secondary" />
+              <span>Adicionar Imagens</span>
             </button>
 
-            { imagePreview && (
-              <div className="flex flex-col justify-center items-center mt-6">
-                <div className="relative w-62 h-50">
-                  <Image
-                    src={imagePreview}
-                    alt="preview"
-                    draggable="false"
-                    loading="eager"
-                    fill
-                    className="object-cover rounded-2xl border border-gray-200 shadow-sm"
-                    sizes="(max-width: 768px) 100vw, 250px"
-                  />
-                </div>
-                <button 
-                  type="button"
-                  disabled={isLoading}
-                  onClick={handleRemoveImage}
-                  className="flex justify-center items-center gap-2 mt-4 cursor-pointer text-secondary"
-                >
-                  <Trash className="w-4 h-4" />
-                  <span className="text-sm">Apagar Imagem</span>
-                </button>
+            {(existingImages.length > 0 || newFiles.length > 0) && (
+              <div className="grid grid-cols-2 sm:grid-cols-3 gap-4 mt-4 bg-gray-50 p-4 rounded-xl border border-gray-100">
+                {existingImages.map((url, index) => (
+                  <div key={`existing-${index}`} className="relative aspect-square w-full group">
+                    <Image
+                      src={url}
+                      alt={`Produto imagem ${index + 1}`}
+                      fill
+                      className="object-cover rounded-lg border border-gray-200"
+                      sizes="(max-width: 768px) 50vw, 33vw"
+                    />
+
+                    <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity rounded-lg flex items-center justify-center">
+                      <button
+                        type="button"
+                        onClick={() => handleRemoveExistingImage(url)}
+                        className="bg-white/90 p-2 rounded-full text-red-500 hover:bg-white hover:scale-110 transition-all cursor-pointer"
+                        title="Remover imagem"
+                      >
+                        <Trash className="w-4 h-4" />
+                      </button>
+                    </div>
+                    <span className="absolute bottom-1 right-1 bg-black/60 text-white text-[10px] px-1.5 rounded">
+                      Salva
+                    </span>
+                  </div>
+                ))}
+
+                {newFilesPreviews.map((previewUrl, index) => (
+                  <div key={`new-${index}`} className="relative aspect-square w-full group">
+                    <Image
+                      src={previewUrl}
+                      alt={`Nova imagem ${index + 1}`}
+                      fill
+                      className="object-cover rounded-lg border-2 border-primary/50"
+                      sizes="(max-width: 768px) 50vw, 33vw"
+                    />
+
+                    <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity rounded-lg flex items-center justify-center">
+                      <button
+                        type="button"
+                        onClick={() => handleRemoveNewFile(index)}
+                        className="bg-white/90 p-2 rounded-full text-red-500 hover:bg-white hover:scale-110 transition-all cursor-pointer"
+                        title="Cancelar upload"
+                      >
+                        <X className="w-4 h-4" />
+                      </button>
+                    </div>
+                    <span className="absolute bottom-1 right-1 bg-primary text-white text-[10px] px-1.5 rounded">
+                      Nova
+                    </span>
+                  </div>
+                ))}
               </div>
             )}
           </div>
@@ -330,32 +384,68 @@ export function ProductForm({
 
           {customizable && (
             <div className="flex flex-col w-full bg-white rounded-lg border px-4 py-3 animate-in fade-in slide-in-from-top-2 duration-300">
-              <span className="flex text-xs font-medium mb-3 text-muted-foreground">
-                Personalizações disponíveis:
+              <span className="flex text-sm font-medium mb-3">
+                Configuração de Personalização:
               </span>
+              <div className="flex text-[0.6rem] text-gray-400 mb-2 px-1 justify-between uppercase tracking-wider font-bold">
+                 <span>Aceita:</span>
+                 <span>Obrigatório?</span>
+              </div>
 
               <div className="flex flex-col gap-2">
-                {CUSTOMIZATION_OPTIONS.map((option) => {
-                  const isChecked = customizationItems.includes(option.value);
-
+                {customizationOptions.sort().map((option: CustomizationItemsCategoryModel) => {
+                  const selectedConfig = customizationItems.find(item => item.category === option.category_name);
+                  const isChecked = !!selectedConfig;
+                  
                   return (
                     <div 
-                      key={option.value} 
-                      className="flex items-center justify-between w-full"
+                      key={option.id} 
+                      className={`flex items-center justify-between w-full p-2 rounded transition-colors border 
+                        ${isChecked ? 'bg-primary/5 border-primary/20' : 'bg-gray-50 border-transparent'}
+                      `}
                     >
-                      <Label 
-                        htmlFor={`cust-item-${option.value}`} 
-                        className="cursor-pointer"
-                      >
-                        {option.label}
-                      </Label>
-                      <Switch
-                        id={`cust-item-${option.value}`}
-                        checked={isChecked}
-                        onCheckedChange={() => toggleCustomizationItem(option.value)}
-                        disabled={isLoading}
-                        className="cursor-pointer"
-                      />
+                      <div className="flex items-center gap-3">
+                        <input
+                          type="checkbox"
+                          id={`cust-item-${option.category_name}`}
+                          checked={isChecked}
+                          disabled={isLoading}
+                          onChange={(e) => toggleCustomizationCategory(
+                            option.name, 
+                            option.category_name, 
+                            e.target.checked
+                          )}
+                          className="w-4 h-4 text-primary rounded border-gray-300 focus:ring-primary cursor-pointer accent-primary"
+                        />
+                        <Label 
+                          htmlFor={`cust-item-${option.category_name}`} 
+                          className="cursor-pointer font-medium text-sm text-secondary select-none"
+                        >
+                          {option.name}
+                        </Label>
+                      </div>
+
+                      {isChecked && (
+                        <div className="flex items-center gap-2 animate-in fade-in slide-in-from-right-2 duration-200">
+                          <label 
+                            className="text-xs text-muted-foreground cursor-pointer select-none" 
+                            htmlFor={`req-${option.category_name}`}
+                          >
+                            {selectedConfig?.required ? "Sim" : "Não"}
+                          </label>
+                          <input
+                            type="checkbox"
+                            id={`req-${option.category_name}`}
+                            checked={selectedConfig?.required || false}
+                            onChange={(e) => toggleRequiredStatus(
+                              option.name, 
+                              option.category_name, 
+                              e.target.checked
+                            )}
+                            className="w-4 h-4 text-primary rounded border-gray-300 focus:ring-primary cursor-pointer accent-primary"
+                          />
+                        </div>
+                      )}
                     </div>
                   );
                 })}
