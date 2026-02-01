@@ -24,7 +24,10 @@ export default async function AddProductCatalogPage({ params }: PageProps) {
     <div className="flex flex-col h-dvh overflow-hidden">
       <Header mode="user" />
       <main className="flex-1 flex flex-col bg-background-alternative overflow-hidden">
-        <ProductPageLayout product={product} />
+        <ProductPageLayout 
+          product={product} 
+          cachedProducts={getProducts}
+        />
       </main>
     </div>
   );

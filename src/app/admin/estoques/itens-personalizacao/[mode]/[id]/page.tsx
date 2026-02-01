@@ -1,7 +1,10 @@
 import { notFound } from "next/navigation";
-import DynamicBreadcrumb from "@/components/DynamicBreadcrumb";
+import { 
+  getCachedCustomizationItemsAction, 
+  getCachedCustomizationItemsCategoriesAction 
+} from "@/app/actions/cache.actions";
 import { Header } from "@/components/Header";
-import { getCachedCustomizationItemsAction } from "@/app/actions/cache.actions";
+import DynamicBreadcrumb from "@/components/DynamicBreadcrumb";
 import { CustomizationItemsModel } from "@/data/models/CustomizationItems.model";
 import { CustomizationItemForm } from "@/components/admin/CustomizationItemForm";
 
@@ -14,13 +17,14 @@ interface PageProps {
 
 export default async function AddProductCatalogPage({ params }: PageProps) {
   const { id, mode } = await params;
-  const items = await getCachedCustomizationItemsAction();
+  const cachedItems = await getCachedCustomizationItemsAction();
+  const cachedCategories = await getCachedCustomizationItemsCategoriesAction();
 
-  if (mode !== 'editar') {
-    notFound();
-  };
-  
-  if (!items.some((item: CustomizationItemsModel) => item.id === id)) {
+  const itemToEdit = mode === 'editar' 
+    ? cachedItems.find((item: CustomizationItemsModel) => item.id === id)
+    : undefined;
+
+  if (mode !== 'editar' && !itemToEdit) {
     notFound();
   };
 
@@ -33,7 +37,9 @@ export default async function AddProductCatalogPage({ params }: PageProps) {
         </div>
         <CustomizationItemForm 
           mode={mode}
-          itemId={id}
+          initialData={itemToEdit}
+          customizationItems={cachedItems}
+          categories={cachedCategories}
         />
       </main>
     </div>

@@ -39,6 +39,7 @@ export default function Footer({ className }: FooterProps) {
             <div className="flex mt-2 text-primary">
               <div className="flex cursor-pointer hover:text-blue-400">
                 <Link 
+                  rel="noopener noreferrer"
                   aria-label="Instagram"
                   title="Instagram"
                   href={`https://www.instagram.com/veritas_atelie`} 
@@ -51,6 +52,7 @@ export default function Footer({ className }: FooterProps) {
             <div className="flex mt-2 text-primary">
               <div className="flex cursor-pointer hover:text-green-500">
                 <Link 
+                  rel="noopener noreferrer"
                   aria-label="WhatsApp"
                   title="WhatsApp"
                   href={`https://wa.me/5586994379414`} 
@@ -83,7 +85,6 @@ export default function Footer({ className }: FooterProps) {
                   aria-label="Painel Administrativo"
                   title="Painel Administrativo"
                   href={`/admin`}
-                  target="_blank"
                 >
                   <span className="hover:underline">Painel Administrativo</span>
                 </Link>

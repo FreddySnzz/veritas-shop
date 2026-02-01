@@ -2,11 +2,6 @@
 
 import { useState, useEffect, useTransition } from "react";
 import { useRouter } from "next/navigation";
-import { updateCordaoAction } from "@/app/actions/customization-items/cordao.action";
-import { updateContaAction } from "@/app/actions/customization-items/conta.action";
-import { updateEntremeioAction } from "@/app/actions/customization-items/entremeio.action";
-import { updateLetraAction } from "@/app/actions/customization-items/letra.action";
-import { updateCrucifixoAction } from "@/app/actions/customization-items/crucifixo.action";
 import { ItemsCustomizationTypes } from "@/data/types/customization.type";
 import { updateCatalogImageAction } from "@/app/actions/catalogImages.action";
 import { toast } from "sonner";
@@ -23,6 +18,7 @@ interface ToggleProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
 const ACTION_MAP: Record<ItemsCustomizationTypes, (
   id: string, 
   data: { available: boolean }
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
 ) => Promise<any>> = {
   customization_item: updateCustomizationItemAction,
   catalog_image: updateCatalogImageAction,

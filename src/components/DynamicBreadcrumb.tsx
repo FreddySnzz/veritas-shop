@@ -60,10 +60,16 @@ export default function DynamicBreadcrumb({ className, listClassName, mode, prod
           const href = `/${breadcrumbList.slice(0, index + 1).join('/')}`;
           
           const isLast = index === breadcrumbList.length - 1;
+
           let formattedLink = link.charAt(0).toUpperCase() + link.slice(1).replace(/-/g, ' ');
-          formattedLink.includes('Itens personalizacao') ? formattedLink = 'Itens' : formattedLink;
-          formattedLink.includes('Catalogo') ? formattedLink = 'Produtos' : formattedLink;
-          formattedLink.includes('Admin') && breadcrumbList.length > 4 ? formattedLink = '' : formattedLink;
+          
+          if (formattedLink.includes('Itens personalizacao')) {
+            formattedLink = 'Itens';
+          } else if (formattedLink.includes('Catalogo')) {
+            formattedLink = 'Produtos';
+          } else if (formattedLink.includes('Admin') && breadcrumbList.length > 4) {
+            formattedLink = '';
+          };
 
           return (
             <React.Fragment key={index}>

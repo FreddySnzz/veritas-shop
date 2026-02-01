@@ -42,7 +42,7 @@ export default function CatalogCarrousel({
     }, autoPlayInterval);
 
     return () => clearInterval(interval);
-  }, [currentIndex, autoPlayInterval]);
+  }, [images.length, autoPlayInterval]);
 
   const handlePrevious = () => {
     if (isAnimating) return;

@@ -8,7 +8,6 @@ import {
   getDocs,
   query,
   updateDoc,
-  where,
 } from "firebase/firestore";
 import { unstable_cache } from "next/cache";
 import { Collections } from "../types/collections.enum";
@@ -31,26 +30,6 @@ export async function getAllCatalogImages(): Promise<CatalogImageModel[] | null>
     } as CatalogImageModel;
   });
 };
-
-// export async function getCatalogImageByDesc(
-//   desc: string,
-// ): Promise<CatalogImageModel[] | null> {
-//   const catalogImageRef = collection(db, Collections.CATALOG_IMAGES_COLLECTION);
-
-//   const descQuery = query(
-//     catalogImageRef, where("desc", "==", desc)
-//   );
-
-//   const descSnap = await getDocs(descQuery);
-
-//   return descSnap.docs.map((doc) => {
-//     const data = doc.data();
-//     return {
-//       id: doc.id,
-//       ...data,
-//     } as CatalogImageModel;
-//   });
-// };
 
 export async function getCatalogImageById(id: string) {
   const docSnap = await getDoc(

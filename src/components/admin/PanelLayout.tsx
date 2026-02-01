@@ -4,12 +4,12 @@ import { useState } from "react";
 import { useAuth } from "@/data/context/AuthContext";
 import { useRouter } from "next/navigation";
 import { refreshCacheAction } from "@/app/actions/cache.actions";
+import { updateUserAction } from "@/app/actions/users.action";
 import { CustomButton } from "../buttons/CustomButton"
-import { ClipboardPenLine, Eye, Image, RefreshCw } from "lucide-react";
+import { ClipboardPenLine, Eye, Image as ImageIcon, RefreshCw } from "lucide-react";
 import { toast } from "sonner";
 import { BackButton } from "../buttons/BackButtom";
 import { FaWhatsapp } from "react-icons/fa6";
-import { updateUserAction } from "@/app/actions/users.action";
 import CustomModal from "../modals/CustomModal";
 import { Input } from "../ui/input";
 import { onlyNumbers } from "@/data/functions/inputMasks";
@@ -70,7 +70,7 @@ export default function PanelLayout({ className }: PanelLayoutProps) {
         <CustomButton
           onClick={() => router.push('/admin/editar-carrossel')}
         >
-          <Image className="w-6 h-6" />
+          <ImageIcon className="w-6 h-6" />
           <span>Editar Carrossel</span>
         </CustomButton>
 
@@ -92,7 +92,7 @@ export default function PanelLayout({ className }: PanelLayoutProps) {
           onClick={() => setIsOpenWhatsAppModal(true)}
         >
           <FaWhatsapp className="w-6 h-6" />
-          <span>Atualizar número do WhatsApp</span>
+          <span>Mudar número do WhatsApp</span>
         </CustomButton>
 
         <CustomButton
@@ -117,10 +117,10 @@ export default function PanelLayout({ className }: PanelLayoutProps) {
         <div className="flex flex-col items-center justify-center p-2 gap-4">
           <div className="flex flex-col justify-center">
             <span className="font-bold">
-              Atualize o número do WhatsApp:
+              Atualizar o número do WhatsApp:
             </span>
             <span className="text-xs text-gray-400">
-              Esse número será usado para enviar mensagens de confirmação de pedidos.
+              Esse número será usado para enviar mensagens de confirmação de pedidos ou suporte para clientes.
             </span>
           </div>
 
@@ -140,7 +140,7 @@ export default function PanelLayout({ className }: PanelLayoutProps) {
               type="button"
               onClick={() => {
                 setWhatsappNumber(user?.phone || '');
-                setIsOpenWhatsAppModal(false)
+                setIsOpenWhatsAppModal(false);
               }}
               className="flex w-full px-4 py-2 rounded-lg bg-gray-100 items-center justify-center font-medium cursor-pointer"
             >

@@ -4,7 +4,7 @@ import Image from "next/image";
 import { useState } from "react";
 import { useCart } from "@/data/context/CartContext";
 import { useAuth } from "@/data/context/AuthContext";
-import { Minus, Plus, ShoppingCart, Trash2, X } from "lucide-react";
+import { Minus, Plus, ShoppingCart, Trash2 } from "lucide-react";
 import DeleteItemCartModal from "./modals/DeleteItemCart";
 import ClearCartModal from "./modals/ClearCart";
 import { BackButton } from "./buttons/BackButtom";

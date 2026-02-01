@@ -1,15 +1,43 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState, useSyncExternalStore } from "react";
 
 function checkTouchSupport(): boolean {
+  if (typeof window === "undefined") return false;
+  
   return (
-    typeof window !== "undefined" &&
-    (
-      "ontouchstart" in window ||
-      (navigator.maxTouchPoints ?? 0) > 0 ||
-      (navigator as any).msMaxTouchPoints > 0
-    )
+    "ontouchstart" in window ||
+    (navigator.maxTouchPoints ?? 0) > 0 ||
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    (navigator as any).msMaxTouchPoints > 0
   );
+};
+
+function subscribe(callback: () => void) {
+  window.addEventListener("resize", callback);
+  window.addEventListener("orientationchange", callback); 
+  
+  return () => {
+    window.removeEventListener("resize", callback);
+    window.removeEventListener("orientationchange", callback);
+  };
 }
+
+function getSnapshot() {
+  return checkTouchSupport();
+};
+
+function getServerSnapshot() {
+  return false; 
+};
+
+export function useIsTouchDevice() {
+  const isTouch = useSyncExternalStore(
+    subscribe,
+    getSnapshot,
+    getServerSnapshot
+  );
+
+  return isTouch;
+};
 
 export function useMouseDrag(quantity: number) {
   const containerRef = useRef<HTMLDivElement>(null);
@@ -17,25 +45,11 @@ export function useMouseDrag(quantity: number) {
 
   useEffect(() => {
     if (containerRef.current) {
-      const containerWidth = containerRef.current.offsetWidth
-      const contentWidth = containerRef.current.scrollWidth
-      setDragLeft(containerWidth - contentWidth)
+      const containerWidth = containerRef.current.offsetWidth;
+      const contentWidth = containerRef.current.scrollWidth;
+      setDragLeft(Math.min(0, containerWidth - contentWidth)); 
     }
-  }, [quantity])
+  }, [quantity]);
 
-  return { dragLeft, containerRef }
+  return { dragLeft, containerRef };
 };
-
-export function useIsTouchDevice() {
-  const [isTouch, setIsTouch] = useState(false);
-
-  useEffect(() => {
-    setIsTouch(checkTouchSupport());
-    const handleResize = () => setIsTouch(checkTouchSupport());
-
-    window.addEventListener("resize", handleResize);
-    return () => window.removeEventListener("resize", handleResize);
-  }, []);
-
-  return isTouch;
-}

@@ -8,10 +8,13 @@ export function LogoutButton({ onClick }: LogoutButtonProps) {
   return (
     <div className="relative">
       <button
+        type="button"
+        aria-label="Sair"
+        title="Sair"
         onClick={onClick}
-        className="p-2 hover:bg-gray-100 rounded-lg cursor-pointer"
+        className="p-2 cursor-pointer"
       >
-        <LogOut className="w-6 h-6 text-secondary" />
+        <LogOut className="w-6 h-6 text-secondary hover:text-secondary/70 transition-colors" />
       </button>
     </div>
   );

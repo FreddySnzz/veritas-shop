@@ -45,7 +45,7 @@ export default function AddCustomizationItemCategoryModal({ modalOpen, onClose }
     setIsLoading(true);
 
     try {
-      // await deleteImageAction(imageUrl);
+      await deleteImageAction(imageUrl);
       setSelectedFile(null);
       setImageUrl("");
     } catch (error) {

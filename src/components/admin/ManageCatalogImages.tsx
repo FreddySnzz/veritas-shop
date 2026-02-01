@@ -1,12 +1,11 @@
 'use client';
 
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import Image from "next/image";
 import { toast } from "sonner";
-import { getCachedCatalogImagesAction } from "@/app/actions/cache.actions";
 import { updateCatalogImageAction } from "@/app/actions/catalogImages.action";
 import { uploadImageAction } from "@/app/actions/cloudinary.actions";
-import { Plus, Trash, Save } from "lucide-react";
+import { Plus, Trash, Save, Pencil } from "lucide-react";
 import { BackButton } from "../buttons/BackButtom";
 import { CustomButton } from "../buttons/CustomButton";
 import { ToggleCustomizationItemAvailableSwitch } from "../buttons/ToggleCustomizationItemAvailableSwitch";
@@ -17,8 +16,10 @@ import AddCatalogImageModal from "../modals/AddCatalogImage";
 import CatalogImageModel from "@/data/models/CatalogImage.model";
 import { ItemsCustomizationTypes } from "@/data/types/customization.type";
 import DeleteCatalogImageModal from "../modals/DeleteCatalogImage";
+import { useIsTouchDevice } from "@/data/hook/useMouseDrag";
 
 interface ManageCatalogImagesProps {
+  images: CatalogImageModel[];
   className?: string;
 };
 
@@ -28,29 +29,14 @@ type PendingChange = {
   newDesc?: string;
 };
 
-export default function ManageCatalogImages({ className }: ManageCatalogImagesProps) {
-  const [catalogImages, setCatalogImages] = useState<CatalogImageModel[] | null>(null);
+export default function ManageCatalogImages({ images, className }: ManageCatalogImagesProps) {
   const [pendingChanges, setPendingChanges] = useState<Record<string, PendingChange>>({});
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [isAddModalOpen, setIsAddModalOpen] = useState(false);
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
   const [deleteImageId, setDeleteImageId] = useState<string>('');
 
-  async function getCatalogImages() {
-    setIsLoading(true);
-    try {
-      const images = await getCachedCatalogImagesAction();
-      setCatalogImages(images);
-    } catch (error) {
-      console.error("Erro ao carregar imagens:", error);
-    } finally {
-      setIsLoading(false);
-    };
-  };
-
-  useEffect(() => {
-    getCatalogImages();
-  }, []);
+  const isTouchDevice = useIsTouchDevice();
 
   const handleOpenAddModal = () => {
     setIsAddModalOpen(!isAddModalOpen);
@@ -133,7 +119,7 @@ export default function ManageCatalogImages({ className }: ManageCatalogImagesPr
 
   const hasPendingChanges = Object.keys(pendingChanges).length > 0;
   
-  { isLoading && <Loading /> }
+  if (isLoading) return <Loading />;
 
   return (
     <div className={`flex flex-col font-sans h-full ${className}`}>
@@ -146,7 +132,7 @@ export default function ManageCatalogImages({ className }: ManageCatalogImagesPr
           <span>Adicionar Imagem</span>
         </CustomButton>
 
-        {catalogImages?.map((image) => {
+        {images?.map((image) => {
           const changes = pendingChanges[image.id];
           const currentSrc = changes?.previewUrl || image.image_url;
           const currentDesc = changes?.newDesc !== undefined ? changes.newDesc : image.desc;
@@ -168,7 +154,7 @@ export default function ManageCatalogImages({ className }: ManageCatalogImagesPr
                   `}
                 />
                 
-                <div className="relative w-full h-60 shrink-0 group">
+                <div className="relative w-full h-60 shrink-0 group rounded-2xl overflow-hidden">
                   <label 
                     htmlFor={`file-input-${image.id}`} 
                     className="cursor-pointer block w-full h-full relative"
@@ -180,7 +166,7 @@ export default function ManageCatalogImages({ className }: ManageCatalogImagesPr
                         draggable="false"
                         fill
                         loading="eager"
-                        className="aspect-square rounded-2xl object-cover shadow-sm transition-opacity group-hover:opacity-90"
+                        className="aspect-square object-cover shadow-sm transition-opacity group-hover:opacity-90"
                         sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
                       />
                     ) : (
@@ -191,11 +177,25 @@ export default function ManageCatalogImages({ className }: ManageCatalogImagesPr
                       </div>
                     )}
                     
-                    <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity bg-black/10 rounded-2xl">
-                      <span className="bg-white/80 text-xs px-2 py-1 rounded shadow text-black font-semibold">
+                    <div 
+                      className={`absolute inset-0 flex items-center justify-center transition-opacity
+                        bg-black/10 rounded-2xl opacity-0 group-hover:opacity-100
+                      `}
+                    >
+                      <span className="bg-white/80 text-xs px-2 py-1 rounded-lg shadow text-black font-semibold">
                         Alterar Imagem
                       </span>
                     </div>
+
+                    {isTouchDevice && (
+                      <div 
+                        className={`absolute flex items-center justify-center 
+                          bg-secondary/80 rounded-bl-xl p-2 right-[-2] top-[-2]
+                        `}
+                      >
+                        <Pencil className="w-5 h-5 text-white" />
+                      </div>
+                    )}
                   </label>
                   
                   <input

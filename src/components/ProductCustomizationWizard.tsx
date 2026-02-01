@@ -248,11 +248,14 @@ export default function ProductCustomizerWizard({
       return (
         <div className="flex flex-col gap-4">
           <MultiTextInput />
-          <div className="bg-green-50 p-4 rounded-xl text-sm text-blue-700">
-            <p>Dica: O máximo de letras por mistério é 10.</p>
+          <div className="bg-green-50 p-2 rounded-xl text-xs text-primary">
+            <p>Dica¹: Caso adicione mais de uma palavra, será incluso um VALOR EXTRA.</p>
           </div>
-          <div className="bg-green-50 p-4 rounded-xl text-sm text-blue-700">
-            <p>Dica²: Dependendo da quantidade de letras/palavras será acrescido um valor ao valor final.</p>
+          <div className="bg-green-50 p-2 rounded-xl text-xs text-primary">
+            <p>Dica²: O máximo de letras por mistério é 10.</p>
+          </div>
+          <div className="bg-green-50 p-2 rounded-xl text-xs text-primary">
+            <p>Dica³: Dependendo da quantidade de letras/palavras será acrescido um valor ao valor final.</p>
           </div>
         </div>
       );
@@ -280,22 +283,16 @@ export default function ProductCustomizerWizard({
           </p>
 
           {completed && (
-            <motion.div 
-              animate={{ scale: [1, 1.05, 1] }}
-              transition={{ duration: 2, repeat: Infinity }}
-              className="w-full max-w-xs"
+            <button 
+              onClick={handleAddToCart}
+              className={`flex w-full items-center justify-center px-4 py-3 transition-colors
+                bg-primary text-white rounded-xl font-bold gap-3 shadow-lg hover:bg-primary/90 
+                ${!completed ? 'cursor-not-allowed' : 'cursor-pointer'}
+              `}
             >
-              <button 
-                onClick={handleAddToCart}
-                className={`flex w-full items-center justify-center px-4 py-3 transition-colors
-                  bg-primary text-white rounded-xl font-bold gap-3 shadow-lg hover:bg-primary/90 
-                  ${!completed ? 'cursor-not-allowed' : 'cursor-pointer'}
-                `}
-              >
-                <ShoppingCart className="w-5 h-5" />
-                <span>Adicionar ao Carrinho</span>
-              </button>
-            </motion.div>
+              <ShoppingCart className="w-5 h-5" />
+              <span>Adicionar ao Carrinho</span>
+            </button>
           )}
         </div>
       );
@@ -546,7 +543,7 @@ export default function ProductCustomizerWizard({
                 type="button"
                 aria-label="Sim"
                 onClick={() => {
-                  setDeleteCustomizationModalOpen(false),
+                  setDeleteCustomizationModalOpen(false);
                   router.back();
                 }}
                 className={`flex w-full px-4 py-2 rounded-lg items-center justify-center

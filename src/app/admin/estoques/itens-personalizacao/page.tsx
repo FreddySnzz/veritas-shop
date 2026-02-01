@@ -1,8 +1,11 @@
+import { getCachedCustomizationItemsAction } from "@/app/actions/cache.actions";
 import { Header } from "@/components/Header";
 import DynamicBreadcrumb from "@/components/DynamicBreadcrumb";
 import ManageCustomizationItemsInventoryLayout from "@/components/admin/ManageCustomizationItemsLayout";
 
-export default function ManageInvertoryCatalogPage() {
+export default async function ManageInvertoryCatalogPage() {
+  const items = await getCachedCustomizationItemsAction()
+
   return (
     <div className="flex flex-col h-dvh overflow-hidden">
       <Header mode="admin" />
@@ -11,7 +14,9 @@ export default function ManageInvertoryCatalogPage() {
           <DynamicBreadcrumb className="mt-12 p-6" />
           <hr className="border-muted-foreground/50 mb-4 mx-6" />
         </div>
-        <ManageCustomizationItemsInventoryLayout />
+        <ManageCustomizationItemsInventoryLayout
+          customizationItems={items}
+        />
       </main>
     </div>
   );

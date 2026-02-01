@@ -34,15 +34,6 @@ export default function MultiTextInput() {
 
   return (
     <section id='texts' className="bg-white rounded-2xl p-4">
-      <div className="flex flex-col mb-4">
-        <span className="font-bold text-secondary">
-          Texto
-        </span>
-        <span className='text-muted-foreground font-light text-xs'>
-          Caso adicione mais de uma palavra, valor adicional será incluso.
-        </span>
-      </div>
-
       <div className="flex flex-col gap-3 w-full">
         {texts.map((text, index) => (
           <div key={index} className="flex gap-1 items-center">

@@ -13,7 +13,7 @@ export function CustomButton({ onClick, children, className }: ButtonProps) {
       className={cn(
         "flex items-center justify-center w-full py-4 px-5",
         "bg-white hover:bg-gray-50 text-secondary",
-        "rounded-xl font-sans font-bold text-lg gap-2 transition-all cursor-pointer",
+        "rounded-xl font-sans font-bold gap-2 transition-all cursor-pointer",
         className
       )}
     >

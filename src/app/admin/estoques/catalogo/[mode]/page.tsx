@@ -1,3 +1,4 @@
+import { getCachedCustomizationItemsCategoriesAction } from "@/app/actions/cache.actions";
 import { Header } from "@/components/Header";
 import DynamicBreadcrumb from "@/components/DynamicBreadcrumb";
 import { ProductForm } from "@/components/admin/ProductCatalogForm";
@@ -15,6 +16,7 @@ export default async function AddProductCatalogPage({
   params: Promise<{ mode: string }> 
 }) {
   const { mode } = await params;
+  const categories = await getCachedCustomizationItemsCategoriesAction();
 
   if (mode !== 'adicionar' && mode !== 'editar') {
     notFound();
@@ -28,7 +30,10 @@ export default async function AddProductCatalogPage({
           <DynamicBreadcrumb className="mt-12 p-6" />
           <hr className="border-muted-foreground/50 mb-4 mx-6" />
         </div>
-        <ProductForm initialData={null} />
+        <ProductForm 
+          initialData={null} 
+          customizationOptions={categories}
+        />
       </main>
     </div>
   );

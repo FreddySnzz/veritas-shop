@@ -4,7 +4,6 @@ import { useState, useEffect, useRef } from "react";
 import { usePathname, useRouter } from "next/navigation";
 import Image from "next/image";
 import { verifyFirebaseId } from "@/data/functions/verifyFirebaseId";
-import { getCachedCustomizationItemsCategoriesAction } from "@/app/actions/cache.actions";
 import { uploadImageAction } from "@/app/actions/cloudinary.actions"; 
 import { 
   createProductAction, 
@@ -23,13 +22,13 @@ import { toast } from "sonner";
 
 interface ProductFormProps {
   initialData?: ProductModel | null
+  customizationOptions: CustomizationItemsCategoryModel[];
 };
 
 export function ProductForm({ 
   initialData,
+  customizationOptions,
 }: ProductFormProps) {
-  const [customizationOptions, setCustomizationOptions] = useState<CustomizationItemsCategoryModel[]>([]);
-
   const [name, setName] = useState<string>(initialData?.name || "");
   const [desc, setDesc] = useState<string>(initialData?.desc || "");
   const [initialPrice, setInitialPrice] = useState<number>(initialData?.initial_price || 0);
@@ -52,9 +51,6 @@ export function ProductForm({
 
   useEffect(() => {
     const initializeForm = async () => {
-      const categories = await getCachedCustomizationItemsCategoriesAction();
-      setCustomizationOptions(categories);
-
       if (initialData) return;
 
       const paths = pathname.split('/');
@@ -122,14 +118,17 @@ export function ProductForm({
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsLoading(true);
-
-    if (initialPrice <= 0) {
-      toast.error("O valor do produto não pode ser R$0,00");
-      setIsLoading(false);
-      return;
-    };
-
+    
     try {
+      if (initialPrice <= 0) {
+        toast.error("O valor do produto não pode ser R$0,00");
+        setIsLoading(false);
+        return;
+      };
+
+      if (!name) return toast.error("Nome do produto obrigatório.");
+      if (!initialPrice) return toast.error("Preço do produto obrigatório.");
+
       const uploadedUrls: string[] = [];
 
       if (newFiles.length > 0) {
@@ -224,18 +223,20 @@ export function ProductForm({
   return (
     <div className="flex-1 flex flex-col w-full min-h-0 overflow-hidden font-sans">
       <form 
+        id="product-catalog-form"
         onSubmit={handleSubmit} 
         className="flex-1 flex flex-col gap-4 overflow-y-auto px-6 pb-2 scrollbar-hide"
       >
         <div className="flex flex-col gap-4">
           <div className="flex flex-col gap-2">
-            <Label htmlFor="name" className="text-sm">Nome</Label>
+            <Label htmlFor="name" className="text-sm">
+              Nome *
+            </Label>
             <Input
               id="name"
               type="text"
               autoComplete="name"
               placeholder="Nome do Produto"
-              required
               onChange={(e) => setName(e.target.value)}
               value={name}
               className="bg-white focus-visible:ring-0 truncate text-secondary"
@@ -257,13 +258,14 @@ export function ProductForm({
           </div>
 
           <div className="flex flex-col gap-2">
-            <Label htmlFor="initialPrice" className="text-sm">Preço</Label>
+            <Label htmlFor="initialPrice" className="text-sm">
+              Preço *
+            </Label>
             <div className="relative">
               <span className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground">R$</span>
               <Input
                 id="initialPrice"
                 type="number"
-                required
                 onChange={(e) => setInitialPrice(Number(e.target.value) || 0)}
                 value={initialPrice > 0 ? initialPrice : ''}
                 placeholder="0,00"
@@ -277,7 +279,9 @@ export function ProductForm({
 
           <div className="flex flex-col">
             <div className="flex items-center justify-between">
-              <Label htmlFor="image" className="text-sm">Galeria de Imagens</Label>
+              <Label htmlFor="image" className="text-sm">
+                Galeria de Imagens (Opcional)
+              </Label>
               <span className="text-xs text-gray-400">*.jpg / *.png - máx 10MB</span>
             </div>
 
@@ -296,7 +300,8 @@ export function ProductForm({
               onClick={handleButtonClick}
               disabled={isLoading}
               className={`flex gap-2 items-center justify-center px-4 py-2 font-medium cursor-pointer mt-2
-                bg-gray-100 hover:bg-gray-200 text-secondary rounded-lg transition-all border border-dashed border-gray-300
+                bg-gray-100 hover:bg-gray-200 text-secondary rounded-lg 
+                transition-all border border-dashed border-gray-300
               `}
             >
               <Images className="w-4 h-4 text-secondary" />
@@ -304,9 +309,14 @@ export function ProductForm({
             </button>
 
             {(existingImages.length > 0 || newFiles.length > 0) && (
-              <div className="grid grid-cols-2 sm:grid-cols-3 gap-4 mt-4 bg-gray-50 p-4 rounded-xl border border-gray-100">
+              <div className={`grid grid-cols-2 sm:grid-cols-3 gap-4 mt-4 
+                bg-gray-50 p-4 rounded-xl border border-gray-100
+              `}>
                 {existingImages.map((url, index) => (
-                  <div key={`existing-${index}`} className="relative aspect-square w-full group">
+                  <div 
+                    key={`existing-${index}`} 
+                    className="relative aspect-square w-full group"
+                  >
                     <Image
                       src={url}
                       alt={`Produto imagem ${index + 1}`}
@@ -315,12 +325,17 @@ export function ProductForm({
                       sizes="(max-width: 768px) 50vw, 33vw"
                     />
 
-                    <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity rounded-lg flex items-center justify-center">
+                    <div className={`absolute inset-0 flex items-center justify-center 
+                      transition-opacity rounded-lg bg-black/40 opacity-0 group-hover:opacity-100 
+                    `}>
                       <button
                         type="button"
-                        onClick={() => handleRemoveExistingImage(url)}
-                        className="bg-white/90 p-2 rounded-full text-red-500 hover:bg-white hover:scale-110 transition-all cursor-pointer"
+                        aria-label="Remover imagem"
                         title="Remover imagem"
+                        onClick={() => handleRemoveExistingImage(url)}
+                        className={`bg-white/90 p-2 rounded-full text-red-500 hover:bg-white hover:scale-110 
+                          transition-all cursor-pointer
+                        `}
                       >
                         <Trash className="w-4 h-4" />
                       </button>
@@ -332,7 +347,10 @@ export function ProductForm({
                 ))}
 
                 {newFilesPreviews.map((previewUrl, index) => (
-                  <div key={`new-${index}`} className="relative aspect-square w-full group">
+                  <div 
+                    key={`new-${index}`} 
+                    className="relative aspect-square w-full group"
+                  >
                     <Image
                       src={previewUrl}
                       alt={`Nova imagem ${index + 1}`}
@@ -341,12 +359,17 @@ export function ProductForm({
                       sizes="(max-width: 768px) 50vw, 33vw"
                     />
 
-                    <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity rounded-lg flex items-center justify-center">
+                    <div className={`flex items-center justify-center absolute inset-0 
+                      bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity rounded-lg 
+                    `}>
                       <button
                         type="button"
-                        onClick={() => handleRemoveNewFile(index)}
-                        className="bg-white/90 p-2 rounded-full text-red-500 hover:bg-white hover:scale-110 transition-all cursor-pointer"
+                        aria-label="Cancelar upload"
                         title="Cancelar upload"
+                        onClick={() => handleRemoveNewFile(index)}
+                        className={`bg-white/90 p-2 rounded-full text-red-500 
+                          hover:bg-white hover:scale-110 transition-all cursor-pointer
+                        `}
                       >
                         <X className="w-4 h-4" />
                       </button>
@@ -383,13 +406,15 @@ export function ProductForm({
           </div>
 
           {customizable && (
-            <div className="flex flex-col w-full bg-white rounded-lg border px-4 py-3 animate-in fade-in slide-in-from-top-2 duration-300">
+            <div className={`flex flex-col w-full bg-white rounded-lg border 
+              px-4 py-3 animate-in fade-in slide-in-from-top-2 duration-300
+            `}>
               <span className="flex text-sm font-medium mb-3">
                 Configuração de Personalização:
               </span>
               <div className="flex text-[0.6rem] text-gray-400 mb-2 px-1 justify-between uppercase tracking-wider font-bold">
-                 <span>Aceita:</span>
-                 <span>Obrigatório?</span>
+                <span>Aceita:</span>
+                <span>Obrigatório?</span>
               </div>
 
               <div className="flex flex-col gap-2">
@@ -460,6 +485,7 @@ export function ProductForm({
         <div className="flex mx-6 my-4 gap-4">
           <button 
             type="button"
+            aria-label="Voltar"
             onClick={() => router.back()}
             className="flex w-full px-4 py-3 rounded-lg bg-primary/20 text-secondary items-center justify-center hover:bg-red-200 cursor-pointer transition-colors" 
             disabled={isLoading}
@@ -469,7 +495,8 @@ export function ProductForm({
 
           <button 
             type="submit" 
-            onClick={handleSubmit}
+            aria-label={isEditMode ? "Salvar Alterações" : "Criar Produto"}
+            form="product-catalog-form"
             className="flex w-full px-4 py-3 rounded-lg bg-primary text-white items-center justify-center hover:bg-primary/90 cursor-pointer transition-colors" 
             disabled={isLoading}
           >

@@ -2,133 +2,118 @@
 
 import { 
   useState, 
-  useEffect, 
   useMemo, 
   useRef, 
-  useTransition 
+  useTransition,
+  FormEvent,
+  useCallback
 } from "react";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
-import { 
-  getCachedCustomizationItemsAction, 
-  getCachedCustomizationItemsCategoriesAction, 
-} from "@/app/actions/cache.actions";
-import { deleteImageAction, uploadImageAction } from "@/app/actions/cloudinary.actions";
-import { CustomizationItemsCategoryModel } from "@/data/models/CustomizationItemsCategory";
 import { ArrowBigUpDash, Images, Trash } from "lucide-react";
+import { toast } from "sonner";
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 import { Switch } from "@/components/ui/switch";
-import { toast } from "sonner";
-import { createCustomizationItemAction, deleteCustomizationItemAction, updateCustomizationItemAction } from "@/app/actions/customizationItems.action";
-import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectValue } from "../ui/select";
-import { generateRefNumber } from "@/data/functions/generateRefForItem";
-import { CustomizationItemsModel } from "@/data/models/CustomizationItems.model";
+import { 
+  Select, 
+  SelectContent, 
+  SelectGroup, 
+  SelectItem, 
+  SelectTrigger, 
+  SelectValue 
+} from "../ui/select";
 import CustomModal from "../modals/CustomModal";
+import { deleteImageAction, uploadImageAction } from "@/app/actions/cloudinary.actions";
+import { 
+  createCustomizationItemAction, 
+  deleteCustomizationItemAction, 
+  updateCustomizationItemAction 
+} from "@/app/actions/customizationItems.action";
+import { generateRefNumber } from "@/data/functions/generateRefForItem";
+import { CustomizationItemsCategoryModel } from "@/data/models/CustomizationItemsCategory";
+import { CustomizationItemsModel } from "@/data/models/CustomizationItems.model";
+import { onlyNumbers } from "@/data/functions/inputMasks";
 
 interface CustomizationItemFormProps {
   mode: string;
-  itemId?: string;
-  itemType?: string;
+  initialData?: CustomizationItemsModel;
+  customizationItems: CustomizationItemsModel[];
+  categories: CustomizationItemsCategoryModel[];
 };
 
-export function CustomizationItemForm({ itemId, mode }: CustomizationItemFormProps) {
-  const [categories, setCategories] = useState<[]>([]);
-  const [customizationItems, setCustomizationItems] = useState<CustomizationItemsModel[]>([]);
-
-  const [isPending, startTransition] = useTransition();
-  const [isLoading, setIsLoading] = useState<boolean>(true);
-  const [isDeleteModalOpen, setIsDeleteModalOpen] = useState<boolean>(false);
-  const isEditMode = mode === 'editar';
+export function CustomizationItemForm({ 
+  mode, 
+  initialData,
+  customizationItems, 
+  categories 
+}: CustomizationItemFormProps) {
   const router = useRouter();
+  const [isPending, startTransition] = useTransition();
   
-  const [name, setName] = useState<string>("");
-  const [categoryKey, setCategoryKey] = useState<string>("");
-  const [style, setStyle] = useState<string>("");
-  const [color, setColor] = useState<string>("");
-  const [currentImageUrl, setCurrentImageUrl] = useState<string>("");
-  const [priceAddon, setPriceAddon] = useState<number>(0);
-  const [sizeHeight, setSizeHeight] = useState<number>(0);
-  const [sizeWidth, setSizeWidth] = useState<number>(0);
+  const [isUploading, setIsUploading] = useState<boolean>(false);
+  const [isDeleteModalOpen, setIsDeleteModalOpen] = useState<boolean>(false);
+  
+  const isEditMode = mode === 'editar';
+  const isLoading = isPending || isUploading;
+
+  const [name, setName] = useState<string>(initialData?.name || "");
+  const [categoryKey, setCategoryKey] = useState<string>(initialData?.category || "");
+  const [style, setStyle] = useState<string>(initialData?.metadata?.style || "");
+  const [color, setColor] = useState<string>(initialData?.metadata?.color || "#000000");
+  const [currentImageUrl, setCurrentImageUrl] = useState<string>(() => initialData?.image_url || "");
   const [available, setAvailable] = useState<boolean>(true);
+  const [priceAddon, setPriceAddon] = useState<string>(() => 
+    initialData?.metadata?.price_addon !== undefined ? String(initialData.metadata.price_addon) : ""
+  );
+  const [sizeHeight, setSizeHeight] = useState<string>(() => 
+    initialData?.metadata?.size_height !== undefined ? String(initialData.metadata.size_height) : ""
+  );
+  const [sizeWidth, setSizeWidth] = useState<string>(() => 
+    initialData?.metadata?.size_width !== undefined ? String(initialData.metadata.size_width) : ""
+  );
 
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
-
-  async function getInitialData() {
-    setIsLoading(true);
-
-    try {
-      const cachedItems = await getCachedCustomizationItemsAction();
-      setCustomizationItems(cachedItems);
-
-      const cachedCategories = await getCachedCustomizationItemsCategoriesAction();
-      setCategories(cachedCategories.map((category: CustomizationItemsCategoryModel) => category));
-
-      if (isEditMode && itemId) {
-        const foundItem = cachedItems.find((item: CustomizationItemsModel) => item.id === itemId);
-        
-        if (foundItem) {
-          setName(foundItem.name || "");
-          setCategoryKey(foundItem.category || "");
-          setStyle(foundItem.metadata?.style || ""); 
-          setColor(foundItem.metadata?.color || "");
-          setCurrentImageUrl(foundItem.image_url || "");
-          setPriceAddon(Number(foundItem.metadata?.price_addon) || 0);
-          setSizeHeight(Number(foundItem.metadata?.size_height) || 0);
-          setSizeWidth(Number(foundItem.metadata?.size_width) || 0);
-          setAvailable(foundItem.available ?? true);
-        } else {
-          toast.error("Item não encontrado.");
-          router.back();
-        };
-      };
-    } catch (error) {
-      console.error("Erro ao carregar dados", error);
-      toast.error("Erro ao carregar itens.");
-    } finally {
-      setIsLoading(false);
-    };
-  };
-
-  useEffect(() => {
-    getInitialData();
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [itemId, isEditMode]);
 
   const handleButtonClick = () => fileInputRef.current?.click();
 
   const imagePreview = useMemo(() => {
     if (selectedFile) return URL.createObjectURL(selectedFile);
     if (currentImageUrl) return currentImageUrl;
+
     return null;
   }, [selectedFile, currentImageUrl]);
 
-  const handleRemoveImage = async () => {
+  const handleRemoveImage = useCallback(async () => {
     if (!currentImageUrl) {
       setSelectedFile(null);
       return;
     };
     
-    setIsLoading(true);
+    setIsUploading(true);
 
     try {
       await deleteImageAction(currentImageUrl);
       setSelectedFile(null);
       setCurrentImageUrl("");
+      toast.success("Imagem removida.");
     } catch (error) {
       console.error("Erro ao apagar imagem:", error);
       toast.error("Erro ao apagar imagem do servidor.");
     } finally {
-      setIsLoading(false);
+      setIsUploading(false);
     };
-  };
+  }, [currentImageUrl]);
 
-  const handleSubmit = async (e: React.FormEvent) => {
+  const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
-    setIsLoading(true);
-
+    setIsUploading(true);
+    
     try {
+      if (!name) return toast.error("Nome do item obrigatório.");
+      if (!categoryKey) return toast.error("Categoria do item obrigatório.");
+
       let finalUrlToSave = currentImageUrl;
 
       if (selectedFile) {
@@ -140,31 +125,28 @@ export function CustomizationItemForm({ itemId, mode }: CustomizationItemFormPro
       const metadata = {
         style: style,
         color: color,
-        size_height: sizeHeight,
-        size_width: sizeWidth,
+        size_height: sizeHeight ? Number(sizeHeight) : 0,
+        size_width: sizeWidth ? Number(sizeWidth) : 0,
       };
 
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      const payload: any = {
+      const payload = {
         name,
         available,
         category: categoryKey,
         image_url: finalUrlToSave,
         metadata,
-        price_addon: priceAddon,
+        price_addon: priceAddon ? Number(priceAddon) : 0,
         updated_at: new Date(),
       };
 
       startTransition(async () => {
         try {
-          if (isEditMode && itemId) {
-            await updateCustomizationItemAction(itemId, payload);
+          if (isEditMode && initialData) {
+            await updateCustomizationItemAction(initialData.id, payload);
             toast.success("Item atualizado com sucesso!");
           } else {
             const newRef = generateRefNumber(customizationItems, categoryKey);
-            payload.ref = newRef;
-            
-            await createCustomizationItemAction(payload);
+            await createCustomizationItemAction({...payload, ref: newRef});
             toast.success(`Item criado com sucesso!`);
           };
             
@@ -180,59 +162,62 @@ export function CustomizationItemForm({ itemId, mode }: CustomizationItemFormPro
       console.error("Erro geral no submit:", error);
       toast.error("Erro ao processar requisição.");
     } finally {
-      setIsLoading(false);
+      setIsUploading(false);
     };
   };
 
-  const handleDeleteItem = async (itemId: string) => {
-    setIsLoading(true);
-
-    try {
-      await deleteCustomizationItemAction(itemId);
-      toast.success("Item deletado com sucesso!");
-      router.back();
-    } catch (error) {
-      console.error("Erro ao deletar item:", error);
-      toast.error("Erro ao deletar item.");
-    } finally {
-      setIsLoading(false);
-    };
+  const handleDeleteItem = async () => {
+    if (!initialData) return;
+    
+    startTransition(async () => {
+      try {
+        await deleteCustomizationItemAction(initialData.id);
+        toast.success("Item deletado com sucesso!");
+        router.refresh();
+        router.back();
+      } catch (error) {
+        console.error("Erro ao deletar item:", error);
+        toast.error("Erro ao deletar item.");
+      };
+    });
   };
 
   return (
-    <div className="flex flex-col font-sans h-full overflow-hidden">
+    <div className="flex-1 flex flex-col w-full min-h-0 overflow-hidden font-sans">
       <form 
+        id="customization-form"
         onSubmit={handleSubmit} 
-        className="flex-1 flex flex-col gap-4 overflow-y-auto px-6 font-sans scrollbar-hide"
+        className="flex-1 flex flex-col gap-4 overflow-y-auto px-6 pb-2 scrollbar-hide"
       >
         <div className="flex flex-col gap-2">
-          <Label htmlFor="name" className="text-sm">Nome de Referência</Label>
+          <Label htmlFor="name" className="text-sm">Nome de Referência *</Label>
           <Input
             id="name"
             value={name}
             onChange={(e) => setName(e.target.value)}
-            placeholder={"Ex: Entremeio de São José / Cordão Simples"}
-            required={true}
+            placeholder="Ex: Entremeio de São José / Cordão Simples"
             disabled={isLoading}
             className="bg-white focus-visible:ring-0 truncate text-secondary"
           />
         </div>
 
         <div className="flex flex-col gap-2">
-          <Label className="text-sm">Categoria do Item</Label>
+          <Label className="text-sm">Categoria do Item *</Label>
           <Select 
             disabled={isEditMode || isLoading}
             value={categoryKey} 
             onValueChange={(value) => setCategoryKey(value)}
           >
-            <SelectTrigger className={`flex w-full items-center justify-between gap-2 rounded-lg px-4
-              bg-white text-sm text-secondary transition-colors hover:bg-gray-50 focus-visible:ring-0 focus-visible:ring-offset-transparent focus-visible:ring-primary
-            `}>
-              <SelectValue />
+            <SelectTrigger 
+              className={`flex w-full items-center justify-between gap-2 rounded-lg px-4 
+                bg-white text-sm text-secondary transition-colors hover:bg-gray-50 
+                focus-visible:ring-0 focus-visible:ring-offset-transparent focus-visible:ring-primary
+              `}>
+              <SelectValue placeholder="Selecione uma categoria" />
             </SelectTrigger>
-            <SelectContent position={"item-aligned"}>
+            <SelectContent position="item-aligned">
               <SelectGroup className="font-sans">
-                {categories?.map((category: CustomizationItemsCategoryModel) => (
+                {categories?.map((category) => (
                   <SelectItem 
                     key={category.id}
                     value={category.category_name}
@@ -273,7 +258,6 @@ export function CustomizationItemForm({ itemId, mode }: CustomizationItemFormPro
               onChange={(e) => setColor(e.target.value)}
               placeholder="#000000"
               maxLength={7}
-              max={7}
               className="flex-1 bg-white focus-visible:ring-0 truncate text-secondary"
               disabled={isLoading}
             />
@@ -281,23 +265,28 @@ export function CustomizationItemForm({ itemId, mode }: CustomizationItemFormPro
         </div>
 
         <div className="flex flex-col">
-          <Label className="text-sm mb-1">Imagem do Item</Label>
-          <span className="text-xs text-gray-400 mb-2">*.jpg / *.jpeg / *.png - tam. limite de 10MB</span>
+          <Label htmlFor="image" className="text-sm mb-1">
+            Imagem do Item (Opcional)
+          </Label>
+          <span className="text-xs text-gray-400 mb-2">
+            *.jpg / *.jpeg / *.png - tam. limite de 10MB
+          </span>
           
-          <Input
+          <input
             ref={fileInputRef}
             type="file"
             accept="image/*"
             onChange={(e) => setSelectedFile(e.target.files?.[0] ?? null)}
             className="hidden"
+            onClick={(e) => (e.currentTarget.value = '')} 
           />
 
           <button 
             type="button" 
             onClick={handleButtonClick}
             disabled={isLoading}
-            className={`flex gap-2 items-center justify-center px-4 py-2 font-medium cursor-pointer mt-2
-              bg-gray-200 text-secondary rounded-lg transition-all shadow
+            className={`flex gap-2 items-center justify-center px-4 py-2 font-medium cursor-pointer mt-2 
+              bg-gray-200 text-secondary rounded-lg transition-all shadow hover:bg-gray-300 disabled:opacity-50
             `}
           >
             {selectedFile || currentImageUrl ? (
@@ -320,16 +309,20 @@ export function CustomizationItemForm({ itemId, mode }: CustomizationItemFormPro
                   src={imagePreview}
                   alt="Preview"
                   fill
-                  draggable="false"
+                  loading="eager"
+                  draggable={false}
                   className="object-cover rounded-2xl border border-gray-200 shadow-sm"
                   sizes="(max-width: 768px) 100vw, 250px"
                 />
               </div>
               <button 
                 type="button"
+                aria-label="Remover imagem"
                 onClick={handleRemoveImage}
                 disabled={isLoading}
-                className="mt-3 flex items-center gap-2 text-red-500 hover:text-red-700 text-sm font-medium cursor-pointer"
+                className={`flex items-center mt-3 gap-2 font-medium
+                  text-red-500 hover:text-red-700 text-sm cursor-pointer disabled:opacity-50
+                `}
               >
                 <Trash className="w-4 h-4" />
                 <span>Remover Imagem</span>
@@ -339,22 +332,18 @@ export function CustomizationItemForm({ itemId, mode }: CustomizationItemFormPro
         </div>
 
         <div className="flex flex-col gap-2">
-          <Label 
-            htmlFor="priceAddon" 
-            className="text-sm"
-          >
+          <Label htmlFor="priceAddon" className="text-sm">
             Quanto esse item soma ao preço final? (Opcional)
           </Label>
           <div className="relative">
             <span className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground">R$</span>
             <Input
               id="priceAddon"
-              type="number"
-              required
-              onChange={(e) => setPriceAddon(Number(e.target.value) || 0)}
+              type="text"
+              inputMode="decimal"
+              onChange={(e) => setPriceAddon(onlyNumbers(e.target.value))}
               value={priceAddon}
               placeholder="0,00"
-              step="0.01"
               min="0"
               className="pl-10 bg-white focus-visible:ring-0 truncate text-secondary"
               disabled={isLoading}
@@ -363,44 +352,41 @@ export function CustomizationItemForm({ itemId, mode }: CustomizationItemFormPro
         </div>
 
         <div className="flex flex-col gap-2">
-          <Label 
-            htmlFor="sizeHeight" 
-            className="text-sm"
-          >
-            Medidas do item (Opcional)
-          </Label>
+          <Label className="text-sm">Medidas do item (Opcional) *cm</Label>
           <div className="flex items-center gap-2">
-            <span className="text-secondary">Altura: </span>
-            <Input
-              id="sizeHeight"
-              type="number"
-              required
-              onChange={(e) => setSizeHeight(Number(e.target.value) || 0)}
-              value={sizeHeight}
-              placeholder="0,00"
-              step="0.01"
-              min="0"
-              className="bg-white focus-visible:ring-0 truncate text-secondary"
-              disabled={isLoading}
-            />
-            <span className="text-secondary">Largura: </span>
-            <Input
-              id="sizeWidth"
-              type="number"
-              required
-              onChange={(e) => setSizeWidth(Number(e.target.value) || 0)}
-              value={sizeWidth}
-              placeholder="0,00"
-              step="0.01"
-              min="0"
-              className="bg-white focus-visible:ring-0 truncate text-secondary"
-              disabled={isLoading}
-            />
+            <div className="flex-1 flex items-center gap-2">
+               <Label htmlFor="sizeHeight" className="text-secondary whitespace-nowrap">Altura:</Label>
+               <Input
+                  id="sizeHeight"
+                  type="text"
+                  inputMode="decimal"
+                  onChange={(e) => setSizeHeight(onlyNumbers(e.target.value))}
+                  value={sizeHeight}
+                  placeholder="0"
+                  min="0"
+                  className="bg-white focus-visible:ring-0 truncate text-secondary"
+                  disabled={isLoading}
+               />
+            </div>
+            <div className="flex-1 flex items-center gap-2">
+               <Label htmlFor="sizeWidth" className="text-secondary whitespace-nowrap">Largura:</Label>
+               <Input
+                  id="sizeWidth"
+                  type="text"
+                  inputMode="decimal"
+                  onChange={(e) => setSizeWidth(onlyNumbers(e.target.value))}
+                  value={sizeWidth}
+                  placeholder="0"
+                  min="0"
+                  className="bg-white focus-visible:ring-0 truncate text-secondary"
+                  disabled={isLoading}
+               />
+            </div>
           </div>
         </div>
 
         <div className="flex items-center w-full justify-between px-4 py-3 bg-white rounded-lg border">
-          <Label htmlFor="available">Item Disponível no Estoque?</Label>
+          <Label htmlFor="available" className="cursor-pointer">Item Disponível no Estoque?</Label>
           <Switch 
             id="available" 
             checked={available}
@@ -410,12 +396,14 @@ export function CustomizationItemForm({ itemId, mode }: CustomizationItemFormPro
           />
         </div>
 
-        {isEditMode && itemId && (
+        {isEditMode && (
           <div className="flex items-center w-full justify-center py-2 mb-4">
             <button 
               type="button"
-              className="flex items-center gap-2 cursor-pointer hover:text-red-500 transition-colors"
+              aria-label="Deletar Item"
+              className="flex items-center gap-2 cursor-pointer hover:text-red-500 transition-colors disabled:opacity-50"
               onClick={() => setIsDeleteModalOpen(true)}
+              disabled={isLoading}
             >
               <Trash className="w-4 h-4" />
               <span className="text-sm font-medium hover:underline">
@@ -426,10 +414,9 @@ export function CustomizationItemForm({ itemId, mode }: CustomizationItemFormPro
             <CustomModal
               modalOpen={isDeleteModalOpen}
               onClose={() => setIsDeleteModalOpen(false)}
-              className=""
             >
               <div className="flex flex-col items-center justify-center p-2 gap-4">
-                <p className="font-bold">
+                <p className="font-bold text-center">
                   Tem certeza que deseja deletar este item?
                 </p>
 
@@ -437,16 +424,21 @@ export function CustomizationItemForm({ itemId, mode }: CustomizationItemFormPro
                   <button 
                     type="button"
                     onClick={() => setIsDeleteModalOpen(false)}
-                    className="flex w-full px-4 py-2 rounded-lg bg-gray-100 items-center justify-center font-medium cursor-pointer"
+                    className={`flex w-full px-4 py-2 rounded-lg items-center justify-center
+                      bg-gray-100 hover:bg-gray-200 font-medium cursor-pointer
+                    `}
+                    disabled={isLoading}
                   >
                     <span>Cancelar</span>
                   </button>
                   <button 
                     type="button"
-                    onClick={() => handleDeleteItem(itemId)}
-                    className="flex w-full px-4 py-2 rounded-lg bg-primary text-white items-center justify-center font-medium cursor-pointer"
+                    onClick={handleDeleteItem}
+                    className={`flex w-full px-4 py-2 rounded-lg items-center justify-center font-medium cursor-pointer
+                      bg-red-500 text-white hover:bg-red-600 disabled:opacity-70`}
+                    disabled={isLoading}
                   >
-                    <span>Confirmar</span>
+                    {isPending ? "Deletando..." : "Confirmar"}
                   </button>
                 </div>
               </div>
@@ -460,21 +452,23 @@ export function CustomizationItemForm({ itemId, mode }: CustomizationItemFormPro
         <div className="flex mx-6 my-4 gap-4">
           <button
             type="button"
+            aria-label="Voltar"
             onClick={() => router.back()}
-            className="flex w-full px-4 py-3 rounded-lg bg-primary/20 text-secondary items-center justify-center hover:bg-red-200 cursor-pointer transition-colors"
-            disabled={isLoading || isPending}
+            className="flex w-full px-4 py-3 rounded-lg bg-primary/20 text-secondary items-center justify-center hover:bg-red-200 cursor-pointer transition-colors disabled:opacity-50"
+            disabled={isLoading}
           >
             Cancelar
           </button>
-
+          
           <button
             type="submit"
-            onClick={handleSubmit}
-            className="flex w-full px-4 py-3 rounded-lg bg-primary text-white items-center justify-center hover:bg-primary/90 cursor-pointer transition-colors"
-            disabled={isLoading || isPending}
+            aria-label={isEditMode ? "Salvar Alterações" : "Criar Item"}
+            form="customization-form" 
+            className="flex w-full px-4 py-3 rounded-lg bg-primary text-white items-center justify-center hover:bg-primary/90 cursor-pointer transition-colors disabled:opacity-70 disabled:cursor-not-allowed"
+            disabled={isLoading}
           >
-            {isLoading || isPending ? (
-              <div className="flex justify-center items-center gap-2">
+            {isLoading ? (
+              <div className="flex justify-center items-center gap-2 animate-pulse">
                 <span>Salvando...</span>
               </div>
             ) : (

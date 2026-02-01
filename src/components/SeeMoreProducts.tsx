@@ -3,32 +3,19 @@
 import * as motion from "motion/react-client";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
-import { useEffect, useState } from "react";
-import { getCachedProductsAction } from "@/app/actions/cache.actions";
 import ProductModel from "@/data/models/Product.model";
 import { useMouseDrag, useIsTouchDevice } from "@/data/hook/useMouseDrag";
 import { mountProductUrl } from "@/data/functions/removeAccentsAndSpaces";
 
 interface SeeMoreProductsProps {
   atualProduct: ProductModel;
+  cachedProducts: ProductModel[];
 };
 
-export default function SeeMoreProducts({ atualProduct }: SeeMoreProductsProps) {
-  const [products, setProducts] = useState<ProductModel[]>([]);
-  const { containerRef, dragLeft } = useMouseDrag(products.length);
+export default function SeeMoreProducts({ atualProduct, cachedProducts }: SeeMoreProductsProps) {
+  const { containerRef, dragLeft } = useMouseDrag(cachedProducts.length);
   const isTouchDevice = useIsTouchDevice();
   const router = useRouter();
-
-  useEffect(() => {
-    async function getProducts() {
-      let products = await getCachedProductsAction();
-      products = products.filter((product: ProductModel) => product.id !== atualProduct.id);
-
-      setProducts(products);
-    };
-
-    getProducts();
-  }, []);
 
   return (
     <div className="flex flex-1 flex-col py-4">
@@ -39,7 +26,7 @@ export default function SeeMoreProducts({ atualProduct }: SeeMoreProductsProps) 
         dragElastic={0.05}
         className={`flex cursor-grab active:cursor-grabbing scrollbar-hide mx-4 gap-4`}
       >
-        {products.map((product: ProductModel) => (
+        {cachedProducts.map((product: ProductModel) => product.id !== atualProduct.id && (
           <div 
             key={product.id}
             className="flex flex-1 flex-col h-full"

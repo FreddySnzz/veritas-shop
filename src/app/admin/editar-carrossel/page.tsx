@@ -1,8 +1,11 @@
 import { Header } from "@/components/Header";
 import DynamicBreadcrumb from "@/components/DynamicBreadcrumb";
 import ManageCatalogImages from "@/components/admin/ManageCatalogImages";
+import { getCachedCatalogImagesAction } from "@/app/actions/cache.actions";
 
-export default function ManageCatalogImagesPage() {
+export default async function ManageCatalogImagesPage() {
+  const images = await getCachedCatalogImagesAction();
+
   return (
     <div className="flex flex-col h-dvh overflow-hidden">
       <Header mode="admin" />
@@ -11,7 +14,10 @@ export default function ManageCatalogImagesPage() {
           <DynamicBreadcrumb className="mt-12 p-6" />
           <hr className="border-muted-foreground/50 mb-4 mx-6" />
         </div>
-        <ManageCatalogImages className="flex-1 overflow-hidden" />
+        <ManageCatalogImages 
+          images={images}
+          className="flex-1 overflow-hidden" 
+        />
       </main>
     </div>
   );

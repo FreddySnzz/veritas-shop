@@ -16,10 +16,11 @@ import { removeAccentsAndSpacesToURL } from "@/data/functions/removeAccentsAndSp
 
 interface ProductPageLayoutProps {
   product: ProductModel;
+  cachedProducts: ProductModel[];
   className?: string;
 };
 
-export default function ProductPageLayout({ product }: ProductPageLayoutProps) {
+export default function ProductPageLayout({ product, cachedProducts }: ProductPageLayoutProps) {
   const { addItem } = useCart();
   const router = useRouter();
 
@@ -181,7 +182,10 @@ export default function ProductPageLayout({ product }: ProductPageLayoutProps) {
             </span>
           </div>
           <div className="overflow-hidden mb-8">
-            <SeeMoreProducts atualProduct={product} />
+            <SeeMoreProducts 
+              atualProduct={product} 
+              cachedProducts={cachedProducts}
+            />
           </div>
         </div>
 

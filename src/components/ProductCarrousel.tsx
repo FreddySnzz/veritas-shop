@@ -45,7 +45,7 @@ export default function ProductCarrousel({
     }, autoPlayInterval);
 
     return () => clearInterval(interval);
-  }, [currentIndex, autoPlayInterval]);
+  }, [availableImages.length, autoPlayInterval]);
 
   const handlePrevious = () => {
     if (isAnimating) return;
