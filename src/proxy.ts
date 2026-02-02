@@ -2,11 +2,19 @@ import { NextResponse } from 'next/server';
 import type { NextRequest } from 'next/server';
 import { jwtVerify } from 'jose';
 
+//DEBUG
+const secretEnv = process.env.JWT_SECRET || "";
+if (secretEnv.length === 0) {
+  console.error("CRÍTICO: JWT_SECRET está vazia ou indefinida no Middleware!");
+} else {
+  console.log(`DEBUG: JWT_SECRET carregada. Comprimento: ${secretEnv.length}`);
+}
+
 const SECRET_KEY = new TextEncoder().encode(process.env.JWT_SECRET || "");
 
 const publicAdminRoutes = ['/admin/login'];
 
-export async function proxy(request: NextRequest) {
+export default async function proxy(request: NextRequest) {
   const { pathname } = request.nextUrl;
   
   const isAdminRoute = pathname.startsWith('/admin');
@@ -20,18 +28,24 @@ export async function proxy(request: NextRequest) {
 
   if (isAdminRoute && !isPublicAdminRoute) {
     if (!token) {
+      console.log("DEBUG: Redirecionando para login (sem token)");
       const loginUrl = new URL('/admin/login', request.url);
       loginUrl.searchParams.set('redirect', pathname);
 
       return NextResponse.redirect(loginUrl);
-    }
+    };
 
     try {
-      await jwtVerify(token, SECRET_KEY);
+      await jwtVerify(token, SECRET_KEY, {
+        algorithms: ['HS256'],
+        clockTolerance: 15 
+      });
+      console.log("DEBUG: Token verificado com sucesso!");
 
       return NextResponse.next();
     } catch (error) {
-      console.error("Login service error:", error);
+      console.error("ERRO DE VALIDAÇÃO DO MIDDLEWARE:", error);
+
       const loginUrl = new URL('/admin/login', request.url);
       loginUrl.searchParams.set('expired', 'true');
       
@@ -39,12 +53,12 @@ export async function proxy(request: NextRequest) {
       response.cookies.delete('veritas_token');
 
       return response;
-    }
-  }
+    };
+  };
 
   if (isPublicAdminRoute && token) {
     try {
-      await jwtVerify(token, SECRET_KEY);
+      await jwtVerify(token, SECRET_KEY, { clockTolerance: 15 });
       
       const redirectParam = request.nextUrl.searchParams.get('redirect');
       const destination = redirectParam && redirectParam.startsWith('/admin') 
@@ -58,11 +72,11 @@ export async function proxy(request: NextRequest) {
       response.cookies.delete('veritas_token');
       
       return response;
-    }
-  }
+    };
+  };
 
   return NextResponse.next();
-}
+};
 
 export const config = {
   matcher: ['/admin/:path*'],

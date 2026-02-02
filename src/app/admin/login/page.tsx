@@ -50,7 +50,7 @@ export default function Login() {
       if (!response) {
         toast.error("Email ou senha inválidos");
         return;
-      }
+      };
 
       const { user, tokens } = response;
 
