@@ -248,13 +248,13 @@ export default function ProductCustomizerWizard({
       return (
         <div className="flex flex-col gap-4">
           <MultiTextInput />
-          <div className="bg-green-50 p-2 rounded-xl text-xs text-primary">
+          <div className="bg-white p-2 rounded-xl text-xs text-primary">
             <p>Dica¹: Caso adicione mais de uma palavra, será incluso um VALOR EXTRA.</p>
           </div>
-          <div className="bg-green-50 p-2 rounded-xl text-xs text-primary">
+          <div className="bg-white p-2 rounded-xl text-xs text-primary">
             <p>Dica²: O máximo de letras por mistério é 10.</p>
           </div>
-          <div className="bg-green-50 p-2 rounded-xl text-xs text-primary">
+          <div className="bg-white p-2 rounded-xl text-xs text-primary">
             <p>Dica³: Dependendo da quantidade de letras/palavras será acrescido um valor ao valor final.</p>
           </div>
         </div>

@@ -25,14 +25,14 @@ export default function ItemCollapse({
         className="flex w-full items-center justify-between cursor-pointer focus:outline-none"
         aria-expanded={expanded}
       >
-        <span className="font-bold text-gray-400">
+        <span className="font-bold text-secondary">
           {title}
         </span>
         <motion.div
           animate={{ rotate: expanded ? 0 : -90 }}
           transition={{ duration: 0.3 }}
         >
-          <FaAngleDown className="text-gray-400" />
+          <FaAngleDown className="text-secondary" />
         </motion.div>
       </button>
 

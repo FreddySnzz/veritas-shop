@@ -6,7 +6,7 @@ import { useRouter } from "next/navigation";
 import { refreshCacheAction } from "@/app/actions/cache.actions";
 import { updateUserAction } from "@/app/actions/users.action";
 import { CustomButton } from "../buttons/CustomButton"
-import { ClipboardPenLine, Eye, Image as ImageIcon, RefreshCw } from "lucide-react";
+import { ClipboardPenLine, Eye, Image as ImageIcon, RefreshCw, X } from "lucide-react";
 import { toast } from "sonner";
 import { BackButton } from "../buttons/BackButtom";
 import { FaWhatsapp } from "react-icons/fa6";
@@ -78,7 +78,7 @@ export default function PanelLayout({ className }: PanelLayoutProps) {
           onClick={handleUpdateCatalog}
           disabled={loading}
           className={`flex items-center justify-center gap-2 transition-colors shrink-0 w-full py-4 
-            rounded-2xl font-bold text-lg cursor-pointer
+            rounded-2xl font-bold text-secondary cursor-pointer
             ${loading ? 'cursor-not-allowed' : 'bg-white hover:bg-gray-50 text-secondary'}
           `}
         >
@@ -102,13 +102,6 @@ export default function PanelLayout({ className }: PanelLayoutProps) {
           <span>Ver Pedidos</span>
         </CustomButton>
       </div>
-      
-      <div className="shrink-0 mt-auto bg-background-alternative pt-2">
-        <hr className="border-muted-foreground/50 mb-4 mx-6" />
-        <div className="flex flex-col mx-6 my-4 gap-4">
-          <BackButton pushRoute="/" />
-        </div>
-      </div>
 
       <CustomModal
         modalOpen={isOpenWhatsAppModal}
@@ -116,10 +109,21 @@ export default function PanelLayout({ className }: PanelLayoutProps) {
       >
         <div className="flex flex-col items-center justify-center p-2 gap-4">
           <div className="flex flex-col justify-center">
-            <span className="font-bold">
-              Atualizar o número do WhatsApp:
-            </span>
-            <span className="text-xs text-gray-400">
+            <div className="flex justify-between items-center border-b border-gray-100 pb-4">
+              <h2 className="text-lg font-bold text-gray-800">
+                Atualizar Número do WhatsApp
+              </h2>
+              <button 
+                type="button"
+                aria-label="Fechar"
+                title="Fechar"
+                onClick={() => setIsOpenWhatsAppModal(false)} 
+                className="cursor-pointer"
+              >
+                <X className="w-5 h-5 text-gray-500 hover:text-gray-400 transition-colors" />
+              </button>
+            </div>
+            <span className="text-xs text-gray-400 mt-4">
               Esse número será usado para enviar mensagens de confirmação de pedidos ou suporte para clientes.
             </span>
           </div>
@@ -142,20 +146,31 @@ export default function PanelLayout({ className }: PanelLayoutProps) {
                 setWhatsappNumber(user?.phone || '');
                 setIsOpenWhatsAppModal(false);
               }}
-              className="flex w-full px-4 py-2 rounded-lg bg-gray-100 items-center justify-center font-medium cursor-pointer"
+              className={`flex w-full px-4 py-2 items-center justify-center
+                bg-gray-50 hover:bg-primary/10 font-medium cursor-pointer rounded-lg
+              `}
             >
               <span>Cancelar</span>
             </button>
             <button 
               type="button"
               onClick={() => handleUpdateWhatsApp(whatsappNumber)}
-              className="flex w-full px-4 py-2 rounded-lg bg-primary text-white items-center justify-center font-medium cursor-pointer"
+              className={`flex w-full px-4 py-2 items-center justify-center cursor-pointer
+                bg-primary hover:bg-primary/90 text-white rounded-lg font-medium transition-all
+              `}
             >
               <span>{loading ? 'Atualizando...' : 'Confirmar'}</span>
             </button>
           </div>
         </div>
       </CustomModal>
+      
+      <div className="shrink-0 mt-auto bg-background-alternative pt-2">
+        <hr className="border-muted-foreground/50 mb-4 mx-6" />
+        <div className="flex flex-col mx-6 my-4 gap-4">
+          <BackButton pushRoute="/" />
+        </div>
+      </div>
     </div>
   );
 };

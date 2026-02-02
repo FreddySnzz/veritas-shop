@@ -1,28 +1,52 @@
 'use client';
 
-import { useMemo, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import Image from "next/image";
-import { createCustomizationItemCategoryAction } from "@/app/actions/customizationItemsCategory.action";
+import { 
+  createCustomizationItemCategoryAction, 
+  updateCustomizationItemCategoryAction 
+} from "@/app/actions/customizationItemsCategory.action";
 import { removeAccentsAndSpaces } from "@/data/functions/removeAccentsAndSpaces";
+import { CustomizationItemsCategoryModel } from "@/data/models/CustomizationItemsCategory";
 import { deleteImageAction, uploadImageAction } from "@/app/actions/cloudinary.actions";
 import { Label } from "../ui/label";
 import { Input } from "../ui/input";
 import { toast } from "sonner";
-import { ArrowBigUpDash, Images, Trash } from "lucide-react";
+import { ArrowBigUpDash, Images, Trash, X } from "lucide-react";
 import { useLockBodyScroll } from "@/data/hook/useBodyLockScroll";
 
-interface AddCustomizationItemCategoryProps extends React.HTMLAttributes<HTMLElement> {
+interface CustomizationItemCategoryProps extends React.HTMLAttributes<HTMLElement> {
+  mode: 'editar' | 'adicionar';
+  initialData?: CustomizationItemsCategoryModel;
   modalOpen: boolean
   onClose?: () => void
 };
 
-export default function AddCustomizationItemCategoryModal({ modalOpen, onClose }: AddCustomizationItemCategoryProps) {
+export default function CustomizationItemCategoryModal({ 
+  mode,
+  initialData,
+  modalOpen, 
+  onClose 
+}: CustomizationItemCategoryProps) {
   const [name, setName] = useState<string>('');
   const [imageUrl, setImageUrl] = useState<string>('');
   const [isLoading, setIsLoading] = useState<boolean>(false);
 
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
+
+  useEffect(() => {
+    if (modalOpen) {
+      if (mode === 'editar' && initialData) {
+        setName(initialData.name);
+        setImageUrl(initialData.image_url || '');
+      } else {
+        setName('');
+        setImageUrl('');
+      }
+      setSelectedFile(null);
+    };
+  }, [modalOpen, mode, initialData]);
 
   const imagePreview = useMemo(() => {
     if (selectedFile) return URL.createObjectURL(selectedFile);
@@ -77,37 +101,75 @@ export default function AddCustomizationItemCategoryModal({ modalOpen, onClose }
         updated_at: new Date(),
       };
 
-      const result = await createCustomizationItemCategoryAction(dataSubmit);
+      if (mode === 'editar' && initialData) {
+        const result = await updateCustomizationItemCategoryAction(
+          initialData.id, 
+          dataSubmit
+        );
 
-      if (result instanceof Error) {
-        toast.error("Erro ao adicionar categoria.");
-        return;
+        if (result instanceof Error) {
+          toast.error("Erro ao editar categoria.");
+          return;
+        };
+      } else if (mode === 'adicionar') {
+        const result = await createCustomizationItemCategoryAction(dataSubmit);
+  
+        if (result instanceof Error) {
+          toast.error("Erro ao adicionar categoria.");
+          return;
+        };
       };
 
-      toast.success("Categoria adicionada com sucesso!");
+      toast.success(`Categoria ${mode === 'editar' ? 'editada' : 'adicionada'} com sucesso!`);
     } catch (error) {
       console.error("Erro geral no submit:", error);
       toast.error("Erro ao processar requisição.");
     } finally {
       setName("");
+      setImageUrl("");
       setIsLoading(false);
-      window.location.reload();
+      setTimeout(() => {
+         window.location.reload();
+      }, 500);
     };
   };
 
   return (
     <div 
       onClick={onClose}
-      className="fixed inset-0 z-50 flex flex-col items-center justify-center bg-black/30 p-4 backdrop-blur-xs transition-all cursor-default"
+      className={`fixed inset-0 z-50 flex flex-col items-center justify-center 
+        bg-black/30 p-4 backdrop-blur-xs transition-all cursor-default
+      `}
     >
       <div 
         onClick={(e) => e.stopPropagation()}
         className="flex flex-col gap-4 w-full max-w-md bg-white text-secondary p-6 rounded-lg shadow-xl"
       >
-        <form onSubmit={handleSubmit}>
+        <div className="flex justify-between items-center border-b border-gray-100 pb-4">
+          <h2 className="text-xl font-bold text-gray-800">
+            {mode === 'editar' ? 'Editar Categoria' : 'Nova Categoria'}
+          </h2>
+          <button 
+            type="button"
+            aria-label="Fechar"
+            title="Fechar"
+            onClick={onClose} 
+            className="cursor-pointer"
+          >
+            <X className="w-5 h-5 text-gray-500 hover:text-gray-400 transition-colors" />
+          </button>
+        </div>
+
+        <form 
+          id="add-category"
+          onSubmit={handleSubmit}
+        >
           <div className="flex flex-col gap-4">
             <div className="flex flex-col gap-2">
-              <Label htmlFor="name" className="font-bold text-lg">Nome da Categoria (no plural):</Label>
+              <Label htmlFor="name" className="font-bold">
+                Nome da Categoria (no plural):
+              </Label>
+              
               <Input
                 id="name"
                 type="text"
@@ -118,12 +180,21 @@ export default function AddCustomizationItemCategoryModal({ modalOpen, onClose }
                 className="bg-gray-50 focus-visible:ring-0 truncate text-secondary font-medium"
                 disabled={isLoading}
               />
+
+              {mode === 'editar' && (
+                <span className="text-xs text-primary">
+                  ATENÇÃO: Alterar o nome da categoria pode causar problemas no sistema.
+                </span>
+              )}
             </div>
 
             <div className="flex flex-col">
-              <Label className="text-sm mb-1">Imagem da Item da Categoria (Opcional)</Label>
-              <span className="text-xs text-gray-400 mb-2">*.jpg / *.jpeg / *.png - tam. limite de 10MB</span>
-              <span className="text-xs text-gray-400 mb-2">Essa imagem servirá para ajudar o usuário a identificar o item no produto final.</span>
+              <Label className="font-bold mb-1">
+                Imagem do Item da Categoria (Opcional)
+              </Label>
+              <span className="text-xs text-gray-400 mb-2">
+                *.jpg / *.jpeg / *.png - tam. limite de 10MB
+              </span>
               
               <Input
                 ref={fileInputRef}
@@ -135,6 +206,7 @@ export default function AddCustomizationItemCategoryModal({ modalOpen, onClose }
 
               <button 
                 type="button" 
+                aria-label="Alterar Imagem"
                 onClick={handleButtonClick}
                 disabled={isLoading}
                 className={`flex gap-2 items-center justify-center px-4 py-2 font-medium cursor-pointer mt-2
@@ -155,8 +227,8 @@ export default function AddCustomizationItemCategoryModal({ modalOpen, onClose }
               </button>
 
               {imagePreview && (
-                <div className="relative mt-4 w-full flex flex-col items-center p-4 border rounded-xl bg-gray-50">
-                  <div className="relative w-40 h-40">
+                <div className="relative mt-4 flex flex-col items-center p-4 border rounded-xl bg-gray-50">
+                  <div className="relative w-30 h-30">
                     <Image
                       src={imagePreview}
                       alt="Preview"
@@ -168,33 +240,48 @@ export default function AddCustomizationItemCategoryModal({ modalOpen, onClose }
                   </div>
                   <button 
                     type="button"
+                    aria-label="Remover imagem"
                     onClick={handleRemoveImage}
                     disabled={isLoading}
-                    className="mt-3 flex items-center gap-2 text-red-500 hover:text-red-700 text-sm font-medium cursor-pointer"
+                    className={`mt-3 flex items-center gap-2 text-red-500 hover:text-red-700 
+                      text-sm font-medium cursor-pointer
+                    `}
                   >
                     <Trash className="w-4 h-4" />
                     <span>Remover Imagem</span>
                   </button>
                 </div>
               )}
+
+              <span className="text-xs text-primary mt-2">
+                Essa imagem servirá para ajudar o usuário a identificar o item no produto final.
+              </span>
             </div>
           </div>
         </form>
 
         <div className="flex w-full gap-4">
           <button 
+            type="button"
+            aria-label="Fechar"
             onClick={onClose}
-            className={`flex w-full items-center justify-center px-4 py-2 rounded-lg font-medium cursor-pointer
-              bg-gray-50 text-secondary border border-gray-100 hover:bg-gray-100 transition-colors
-              `}
+            className={`flex w-full items-center justify-center px-4 py-2 rounded-lg font-medium 
+              bg-gray-50 text-secondary border border-gray-100 hover:bg-gray-100 
+              transition-colors disabled:opacity-50 cursor-pointer
+            `}
+            disabled={isLoading}
           >
             <span>Fechar</span>
           </button>
+
           <button 
+            form="add-category"
             type="submit" 
+            aria-label="Salvar Categoria"
             onClick={handleSubmit}
-            className={`flex w-full px-4 py-2 rounded-lg justify-center items-center cursor-pointer transition-colors font-medium
-              bg-primary text-white hover:bg-primary/80
+            className={`flex w-full px-4 py-2 rounded-lg justify-center items-center cursor-pointer 
+              bg-primary text-white hover:bg-primary/80 transition-colors font-medium
+              disabled:opacity-50
             `} 
             disabled={isLoading}
           >

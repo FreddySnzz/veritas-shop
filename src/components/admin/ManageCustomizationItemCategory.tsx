@@ -1,41 +1,54 @@
 'use client';
 
+import Image from "next/image";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
-import { Label } from "@/components/ui/label";
 import { deleteCategoryAction } from "@/app/actions/customizationItemsCategory.action";
 import { CustomizationItemsCategoryModel } from "@/data/models/CustomizationItemsCategory";
 import { Trash2 } from "lucide-react";
-import AddCustomizationItemCategoryModal from "../modals/AddCustomizationItemCategory";
+import CustomizationItemCategoryModal from "../modals/CustomizationItemCategory";
 import { ToggleCustomizationItemAvailableSwitch } from "../buttons/ToggleCustomizationItemAvailableSwitch";
 import { CustomButton } from "../buttons/CustomButton";
 import { ItemsCustomizationTypes } from "@/data/types/customization.type";
 import CustomModal from "../modals/CustomModal";
-import Image from "next/image";
+import { BackButton } from "../buttons/BackButtom";
 
 interface ManageCustomizationItemCategoryProps {
   categories: CustomizationItemsCategoryModel[];
 };
 
 export function ManageCustomizationItemCategory({ categories }: ManageCustomizationItemCategoryProps) {
-  const [addCategoryModalOpen, setAddCategoryModalOpen] = useState<boolean>(false);
+  const [categoryModalOpen, setCategoryModalOpen] = useState<boolean>(false);
   const [deleteCategoryModalOpen, setDeleteCategoryModalOpen] = useState<boolean>(false);
-  const [idCategory, setIdCategory] = useState<string>('');
-  const [isLoading, setIsLoading] = useState<boolean>(true);
+  const [categoryToModify, setCategoryToModify] = useState<CustomizationItemsCategoryModel | null>(null);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
   const router = useRouter();
 
-  const handleOpenDeleteModal = (id: string) => {
-    setIdCategory(id);
+  const handleOpenCategoryModal = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    setCategoryToModify(null);
+    setCategoryModalOpen(true);
+  };
+
+  const handleEditCategory = (category: CustomizationItemsCategoryModel) => {
+    setCategoryToModify(category);
+    setCategoryModalOpen(true);
+  };
+
+  const handleOpenDeleteModal = (e: React.MouseEvent, category: CustomizationItemsCategoryModel) => {
+    e.stopPropagation();
+    setCategoryToModify(category);
     setDeleteCategoryModalOpen(true);
   };
 
   const handleDeleteCategory = async (id: string) => {
+    setIsLoading(true);
     try {
       await deleteCategoryAction(id);
       toast.success("Categoria removida com sucesso!");
       setDeleteCategoryModalOpen(false);
-      setIdCategory('');
+      setCategoryToModify(null);
       router.refresh();
     } catch (error) {
       console.error("Erro ao remover categoria:", error);
@@ -49,25 +62,26 @@ export function ManageCustomizationItemCategory({ categories }: ManageCustomizat
     <div className="flex flex-col font-sans h-full overflow-hidden">
       <div className="flex overflow-y-auto px-6 font-sans scrollbar-hide mb-4">
         <CustomButton
+          type="button"
+          aria-label="Adicionar Categoria"
           className={`flex items-center justify-center w-full py-4 px-2 font-sans font-bold gap-3
-            bg-white hover:bg-gray-50 text-secondary rounded-2xl text-lg transition-all cursor-pointer shadow shadow-secondary/5
+            bg-white hover:bg-gray-50 text-secondary rounded-2xl text-lg 
+            transition-all cursor-pointer shadow shadow-secondary/5
           `}
-          onClick={() => setAddCategoryModalOpen(true)}
+          onClick={(e: React.MouseEvent) => handleOpenCategoryModal(e)}
         >
           <span>Adicionar Categoria</span>
         </CustomButton>
-
-        <AddCustomizationItemCategoryModal 
-          modalOpen={addCategoryModalOpen} 
-          onClose={() => setAddCategoryModalOpen(false)}
-        />
       </div>
 
       <div className="flex-1 flex flex-col gap-4 overflow-y-auto px-6 font-sans scrollbar-hide">
         {categories.map((category: CustomizationItemsCategoryModel) => (
           <div 
             key={category.name} 
-            className="flex items-center justify-between gap-2 w-full bg-white rounded-xl p-4 border border-gray-100"
+            onClick={() => handleEditCategory(category)}
+            className={`flex justify-between gap-4 w-full cursor-pointer
+              bg-white rounded-xl p-4 border border-gray-100
+            `}
           >
             {category.image_url ? (
               <div className="relative w-15 h-15 shrink-0">
@@ -82,30 +96,25 @@ export function ManageCustomizationItemCategory({ categories }: ManageCustomizat
                 />
               </div>
             ) : (
-              <div className={`shrink-0 flex items-center justify-center w-15 h-15 rounded-lg bg-gray-200`}>
+              <div 
+                className={`shrink-0 flex items-center justify-center w-15 h-15 
+                  rounded-lg bg-gray-200
+                `}
+              >
                 <span className="text-[0.6rem] text-secondary px-2 text-center font-medium">
                   Sem Imagem
                 </span>
               </div>
             )}
             
-            <div className="flex flex-col justify-center grow w-full">
-              <span className="font-bold">
-                Categoria:
-              </span>
-              <span className="line-clamp-1">
+            <div className="flex flex-col grow justify-center w-full">
+              <span className="font-bold text-secondary">
                 {category.name}
               </span>
             </div>
 
-            <div className="flex items-center w-full justify-end gap-3">
-              <div className="flex items-center gap-3">
-                <Label 
-                  htmlFor="available"
-                  className="font-bold"
-                >
-                  Disponível?
-                </Label>
+            <div className="flex w-full items-center justify-end gap-6">
+              <div className="flex flex-col items-center">
                 <ToggleCustomizationItemAvailableSwitch
                   idProduct={category.id}
                   available={category.available}
@@ -115,8 +124,10 @@ export function ManageCustomizationItemCategory({ categories }: ManageCustomizat
 
               <button 
                 type="button"
-                onClick={() => handleOpenDeleteModal(category.id)}
-                className="flex hover:text-red-500 transition-colors cursor-pointer"
+                aria-label="Deletar Categoria"
+                title="Deletar Categoria"
+                onClick={(e) => handleOpenDeleteModal(e, category)}
+                className="flex items-center hover:text-red-500 transition-colors cursor-pointer"
               >
                 <Trash2 className="w-5 h-5" />
               </button>
@@ -124,6 +135,16 @@ export function ManageCustomizationItemCategory({ categories }: ManageCustomizat
           </div>
         ))}
       </div>
+
+      <CustomizationItemCategoryModal 
+        mode={categoryToModify ? 'editar' : 'adicionar'}
+        initialData={categoryToModify || undefined}
+        modalOpen={categoryModalOpen} 
+        onClose={() => {
+          setCategoryToModify(null);
+          setCategoryModalOpen(false)
+        }}
+      />
 
       <CustomModal
         modalOpen={deleteCategoryModalOpen}
@@ -139,37 +160,38 @@ export function ManageCustomizationItemCategory({ categories }: ManageCustomizat
         </div>
 
         <div className="grid grid-cols-2 gap-4">
-          <div 
+          <button 
+            type="button"
+            aria-label="Cancelar"
             onClick={() => setDeleteCategoryModalOpen(false)}
             className={`flex gap-2 items-center justify-center px-4 py-2 rounded-lg cursor-pointer
               bg-gray-100 text-secondary hover:bg-gray-200 transition-colors font-medium
+              disabled:opacity-50
             `}
+            disabled={isLoading}
           >
             <span>Cancelar</span>
-          </div>
+          </button>
 
-          <div 
-            onClick={() => handleDeleteCategory(idCategory)}
+          <button 
+            type="button"
+            aria-label="Confirmar"
+            onClick={() => handleDeleteCategory(categoryToModify?.id || '')}
             className={`flex gap-2 items-center justify-center px-4 py-2 rounded-lg cursor-pointer
               bg-primary text-white hover:bg-primary/90 transition-colors font-medium
+              disabled:opacity-50
             `}
+            disabled={isLoading}
           >
-            <span>Confirmar</span>
-          </div>
+            <span>{isLoading ? 'Deletando...' : 'Sim, deletar'}</span>
+          </button>
         </div>
       </CustomModal>
 
       <div className="shrink-0 mt-auto bg-background-alternative pt-2">
         <hr className="border-muted-foreground/50 mb-4 mx-6" />
-        <div className="flex mx-6 my-4 gap-4">
-          <button
-            type="button"
-            onClick={() => router.back()}
-            className="flex w-full px-4 py-3 rounded-lg bg-primary/20 text-secondary items-center justify-center hover:bg-red-200 cursor-pointer transition-colors"
-            disabled={isLoading}
-          >
-            Voltar
-          </button>
+        <div className="flex mx-6 my-4">
+          <BackButton backRoute />
         </div>
       </div>
     </div>

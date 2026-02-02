@@ -80,10 +80,10 @@ export default function Cart() {
       const subtotal = product.price * quantity;
       totalGeral += subtotal;
       
-      mensagem += `----------------------------------------------------------------\n`;
+      mensagem += `----------------------------------------------------\n`;
       mensagem += `*ITEM ${index + 1}: ${product.name}*\n`;
       mensagem += `Quantidade: ${quantity} (R$ ${product.price.toFixed(2)} / und)\n`;
-      mensagem += `----------------------------------------------------------------\n`;
+      mensagem += `----------------------------------------------------\n`;
 
       Object.entries(customization || {}).forEach(([key, value]) => {
         mensagem += `• ${renderCustomizationDesc(key, value)}`;
@@ -92,9 +92,9 @@ export default function Cart() {
       mensagem += `\n`;
     });
 
-    mensagem += `======================================\n`;
+    mensagem += `============================\n`;
     mensagem += `*Total Estimado: R$ ${totalGeral.toFixed(2)}*\n`;
-    mensagem += `======================================\n`;
+    mensagem += `============================\n`;
     mensagem += `Aguardo a confirmação e dados para pagamento!`;
     
     const numeroWhatsApp = user?.phone || "5586994379414";
@@ -187,7 +187,7 @@ export default function Cart() {
                     </div>
                     
                     <div className="flex gap-4 items-center justify-between">
-                      <div className="flex mt-2">
+                      <div className="flex ml-1.5">
                         <div className="flex border border-gray-200 gap-3 px-2 py-1 rounded">
                           <button 
                             type="button"
@@ -250,11 +250,11 @@ export default function Cart() {
       </div>
 
       <div className="shrink-0 mt-auto bg-background-alternative">
-        <div className="flex my-2 mx-6 items-center justify-between">
+        <div className="flex mx-6 items-center justify-between">
           {renderTotalCartValue()}
         </div>
-        <hr className="border-muted-foreground/50 mb-4 mx-6" />
-        <div className="flex flex-col mx-6 my-4 gap-4">
+        <hr className="border-muted-foreground/50 mx-6" />
+        <div className="flex flex-col mx-6 my-2 gap-2">
           <WhatsAppButton message={gerarMensagemWhatsApp(items)} />
           <BackButton backRoute />
         </div>

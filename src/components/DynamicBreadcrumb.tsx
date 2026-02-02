@@ -22,7 +22,12 @@ interface DynamicBreadcrumbProps {
   product?: ProductModel
 };
 
-export default function DynamicBreadcrumb({ className, listClassName, mode, product }: DynamicBreadcrumbProps) {
+export default function DynamicBreadcrumb({ 
+  className, 
+  listClassName, 
+  mode, 
+  product 
+}: DynamicBreadcrumbProps) {
   const paths = usePathname();
 
   const breadcrumbList = useMemo(() => {

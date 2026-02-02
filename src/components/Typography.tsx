@@ -2,7 +2,7 @@ import FlowerIcon from "./icons/FlowerIcon";
 
 interface TypographyProps {
   flowerColor?: string;
-  tittleColor?: string;
+  titleColor?: string;
   subtitleColor?: string;
   className?: string;
   size?: 'xs' | 'sm' | 'md' | 'lg' | 'xl' | number;
@@ -18,7 +18,7 @@ const sizeMap = {
 
 export function Typography({ 
   flowerColor = "var(--color-primary)",
-  tittleColor = "text-secondary", 
+  titleColor = "text-secondary", 
   className,
   size = 'md'
 }: TypographyProps) {
@@ -36,7 +36,7 @@ export function Typography({
         height={60 * multiplier} 
         color={flowerColor} 
       />
-      <div className={`flex flex-col text-center ${tittleColor}`}>
+      <div className={`flex flex-col text-center ${titleColor}`}>
         <span 
           className="mt-2"
           style={{ fontSize: `${3 * multiplier}rem` }}

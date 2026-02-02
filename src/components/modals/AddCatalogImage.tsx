@@ -6,7 +6,7 @@ import { useRouter } from "next/navigation";
 import { useLockBodyScroll } from "@/data/hook/useBodyLockScroll";
 import { Label } from "../ui/label";
 import { Input } from "../ui/input";
-import { ArrowBigUpDash, Images, Trash } from "lucide-react";
+import { ArrowBigUpDash, Images, Trash, X } from "lucide-react";
 import { deleteImageAction, uploadImageAction } from "@/app/actions/cloudinary.actions";
 import { createCatalogImageAction } from "@/app/actions/catalogImages.action";
 import { toast } from "sonner";
@@ -112,6 +112,21 @@ export default function AddCatalogImageModal({ modalOpen, onClose }: AddCatalogI
         onClick={(e) => e.stopPropagation()}
         className="flex flex-col gap-4 w-full max-w-md bg-white p-6 rounded-lg shadow-xl"
       >
+        <div className="flex justify-between items-center border-b border-gray-100 pb-4">
+          <h2 className="text-lg font-bold text-gray-800">
+            Adicionar Imagem ao Carrossel
+          </h2>
+          <button 
+            type="button"
+            aria-label="Fechar"
+            title="Fechar"
+            onClick={onClose} 
+            className="cursor-pointer"
+          >
+            <X className="w-5 h-5 text-gray-500 hover:text-gray-400 transition-colors" />
+          </button>
+        </div>
+
         <form onSubmit={handleSubmit}> 
           <div className="flex flex-col gap-4">
             <div className="flex flex-col gap-2">

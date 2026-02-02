@@ -22,7 +22,7 @@ export default function Footer({ className }: FooterProps) {
             >
               <Typography 
                 className="text-center font-playfair-display" 
-                tittleColor="text-stone-300" 
+                titleColor="text-stone-300" 
                 size={"sm"} 
               />
             </Link>

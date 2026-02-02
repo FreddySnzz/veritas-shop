@@ -19,6 +19,7 @@ import ProductModel from "@/data/models/Product.model";
 import { CustomizationItemsCategoryModel } from "@/data/models/CustomizationItemsCategory";
 import { CustomizationItemConfig } from "@/data/types/customization.type";
 import { toast } from "sonner";
+import { BackButton } from "../buttons/BackButtom";
 
 interface ProductFormProps {
   initialData?: ProductModel | null
@@ -483,21 +484,16 @@ export function ProductForm({
       <div className="shrink-0 mt-auto bg-background-alternative pt-2">
         <hr className="border-muted-foreground/50 mb-4 mx-6" />
         <div className="flex mx-6 my-4 gap-4">
-          <button 
-            type="button"
-            aria-label="Voltar"
-            onClick={() => router.back()}
-            className="flex w-full px-4 py-3 rounded-lg bg-primary/20 text-secondary items-center justify-center hover:bg-red-200 cursor-pointer transition-colors" 
-            disabled={isLoading}
-          >
-            Cancelar
-          </button>
+          <BackButton backRoute />
 
           <button 
             type="submit" 
             aria-label={isEditMode ? "Salvar Alterações" : "Criar Produto"}
             form="product-catalog-form"
-            className="flex w-full px-4 py-3 rounded-lg bg-primary text-white items-center justify-center hover:bg-primary/90 cursor-pointer transition-colors" 
+            className={`flex w-full px-4 py-3 rounded-lg font-medium
+              bg-primary text-white items-center justify-center hover:bg-primary/90 
+              cursor-pointer transition-colors
+            `}
             disabled={isLoading}
           >
             {isLoading ? (

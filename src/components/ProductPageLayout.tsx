@@ -43,16 +43,20 @@ export default function ProductPageLayout({ product, cachedProducts }: ProductPa
   return (
     <div className="flex flex-col font-sans h-full overflow-hidden">
       <div className="flex-1 flex flex-col overflow-y-auto font-sans scrollbar-hide">
-        <div className="flex flex-col p-8 pb-6">
-          <div className="mt-12">
-            <DynamicBreadcrumb 
-              mode="user" 
-              product={product}
-            />
-          </div>
+        <div className="mx-8 mt-18 mb-4">
+          <DynamicBreadcrumb 
+            mode="user" 
+            product={product}
+          />
+        </div>
+        
+        <div className="flex flex-col px-8">
+          <ProductCarrousel 
+            product={product} 
+            className="shrink-0 mb-4"
+          />
 
-          <div className="flex flex-col pt-6">
-            <hr className="border-muted-foreground/50 mb-6" />
+          <div className="flex flex-col">
             <h2 className="text-2xl font-bold">
               {product.name}
             </h2>
@@ -68,7 +72,7 @@ export default function ProductPageLayout({ product, cachedProducts }: ProductPa
             </div>
           )}
 
-          <div className="flex relative shrink-0 mt-auto pt-4 items-end justify-between"> 
+          <div className="flex relative shrink-0 mt-auto pt-2 items-end justify-between"> 
             <div className="flex justify-center items-baseline gap-1">
               <span className="font-bold text-2xl">
                 R$ {product.initial_price.toFixed(2)}
@@ -84,11 +88,6 @@ export default function ProductPageLayout({ product, cachedProducts }: ProductPa
             </div>
           )}
         </div>
-
-        <ProductCarrousel 
-          product={product} 
-          className="shrink-0"
-        />
 
         <div className="flex flex-col p-8">
           {product.customizable ? (

@@ -8,7 +8,6 @@ import CatalogCarrousel from "./CatalogCarrousel";
 import CatalogImageModel from "@/data/models/CatalogImage.model";
 import About from "./About";
 import { WhatsAppButtonFixed } from "./buttons/WhatsAppButton";
-import Footer from "./Footer";
 
 interface ApresentationProps {
   images: CatalogImageModel[];
@@ -85,7 +84,6 @@ export default function Apresentation({ images }: ApresentationProps ) {
       <WhatsAppButtonFixed 
         message={"https://wa.me/5586994379414?text=Olá, gostaria de fazer um pedido de Terço Personalizado!"} 
       />
-      <Footer />
     </section>
   );
 }
