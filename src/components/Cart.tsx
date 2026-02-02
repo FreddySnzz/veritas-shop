@@ -86,6 +86,7 @@ export default function Cart() {
       mensagem += `----------------------------------------------------\n`;
 
       Object.entries(customization || {}).forEach(([key, value]) => {
+        if (!key || !value) return;
         mensagem += `• ${renderCustomizationDesc(key, value)}`;
       });
 

@@ -6,7 +6,7 @@ export interface CustomizationItemsModel {
   ref: string;
   image_url?: string;
   available: boolean;
-  price_modifier?: number; 
+  price_addon?: number; 
   metadata?: {[key: string]: string };
   updated_at: Date;
 };

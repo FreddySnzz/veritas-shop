@@ -149,16 +149,13 @@ export default function ProductCustomizerWizard({
   const handleNext = () => {
     if (!currentStep) return;
 
-    if (currentStep.id === 'texto_personalizado') {
-      const hasText = customization.frase && customization.frase.length > 0;
-      if (!hasText) {
-        const nextIndex = currentStepIndex + 1;
-        if (wizardSteps[nextIndex]?.id === 'letras') {
-          setDirection(1);
-          setCurrentStepIndex(nextIndex + 1); 
-          return;
-        };
-      };
+    const nextIndex = currentStepIndex + 1;
+    const hasText = customization.frase && customization.frase.length > 0;
+
+    if (wizardSteps[nextIndex]?.id === 'letras' && !hasText) {
+      setDirection(1);
+      setCurrentStepIndex(prev => prev + 2);
+      return;
     };
 
     if (currentStepIndex < wizardSteps.length - 1) {
@@ -168,11 +165,22 @@ export default function ProductCustomizerWizard({
   };
 
   const handleBack = () => {
+    if (!currentStep) return;
+
+    const prevIndex = currentStepIndex - 1;
+    const hasText = customization.frase && customization.frase.length > 0;
+
+    if (wizardSteps[prevIndex]?.id === 'letras' && !hasText) {
+      setDirection(-1);
+      setCurrentStepIndex(prev => prev - 2);
+      return;
+    };
+
     if (currentStepIndex > 0) {
       setDirection(-1);
       setCurrentStepIndex(prev => prev - 1);
     } else {
-      return setDeleteCustomizationModalOpen(true);
+      setDeleteCustomizationModalOpen(true);
     };
   };
 
@@ -279,7 +287,7 @@ export default function ProductCustomizerWizard({
           <p className="text-gray-500 mb-8 max-w-xs mx-auto">
             {completed 
               ? "Sua personalização foi concluída com sucesso." 
-              : "Você precisa selecionar todos os itens obrigatórios para continuar."}
+              : "Você precisa selecionar todos os itens obrigatórios (*) para continuar."}
           </p>
 
           {completed && (
@@ -541,7 +549,7 @@ export default function ProductCustomizerWizard({
               </button>
               <button 
                 type="button"
-                aria-label="Sim"
+                aria-label="Salvar"
                 onClick={() => {
                   setDeleteCustomizationModalOpen(false);
                   router.back();
@@ -550,7 +558,7 @@ export default function ProductCustomizerWizard({
                   bg-primary hover:bg-primary/90 text-white font-medium cursor-pointer 
                 `}
               >
-                <span>Sim</span>
+                <span>Salvar</span>
               </button>
             </div>
           </div>

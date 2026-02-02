@@ -64,8 +64,8 @@ export function CustomizationItemForm({
   const [color, setColor] = useState<string>(initialData?.metadata?.color || "#000000");
   const [currentImageUrl, setCurrentImageUrl] = useState<string>(() => initialData?.image_url || "");
   const [available, setAvailable] = useState<boolean>(true);
-  const [priceAddon, setPriceAddon] = useState<string>(() => 
-    initialData?.metadata?.price_addon !== undefined ? String(initialData.metadata.price_addon) : ""
+  const [priceAddon, setPriceAddon] = useState<string>(
+    initialData?.price_addon !== undefined ? String(initialData.price_addon) : ""
   );
   const [sizeHeight, setSizeHeight] = useState<string>(() => 
     initialData?.metadata?.size_height !== undefined ? String(initialData.metadata.size_height) : ""
@@ -344,7 +344,7 @@ export function CustomizationItemForm({
               inputMode="decimal"
               onChange={(e) => setPriceAddon(onlyNumbers(e.target.value))}
               value={priceAddon}
-              placeholder="0,00"
+              placeholder="0.00"
               min="0"
               className="pl-10 bg-white focus-visible:ring-0 truncate text-secondary"
               disabled={isLoading}

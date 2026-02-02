@@ -52,7 +52,7 @@ export function ProductForm({
 
   useEffect(() => {
     const initializeForm = async () => {
-      if (initialData) return;
+      if (!initialData) return;
 
       const paths = pathname.split('/');
       const productId = paths[paths.length - 1];
@@ -163,6 +163,8 @@ export function ProductForm({
         updated_at: new Date(),
       };
 
+      console.log(dataToSubmit);
+
       if (isEditMode && productId) {
         await updateProductAction(productId, dataToSubmit);
       } else {
@@ -269,9 +271,8 @@ export function ProductForm({
                 type="number"
                 onChange={(e) => setInitialPrice(Number(e.target.value) || 0)}
                 value={initialPrice > 0 ? initialPrice : ''}
-                placeholder="0,00"
-                step="0.01"
-                min="0"
+                placeholder="0.00"
+                min="1"
                 className="pl-10 bg-white focus-visible:ring-0 truncate text-secondary"
                 disabled={isLoading}
               />
