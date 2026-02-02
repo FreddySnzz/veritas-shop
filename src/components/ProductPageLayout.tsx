@@ -49,13 +49,13 @@ export default function ProductPageLayout({ product, cachedProducts }: ProductPa
             product={product}
           />
         </div>
+
+        <ProductCarrousel 
+          product={product} 
+          className="shrink-0 mb-4"
+        />
         
         <div className="flex flex-col px-8">
-          <ProductCarrousel 
-            product={product} 
-            className="shrink-0 mb-4"
-          />
-
           <div className="flex flex-col">
             <h2 className="text-2xl font-bold">
               {product.name}
