@@ -20,4 +20,5 @@ export type CustomizationItemConfig = {
   category_name: string;
   category: string;
   required: boolean;
+  available: boolean;
 };

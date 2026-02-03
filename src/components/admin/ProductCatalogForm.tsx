@@ -208,7 +208,8 @@ export function ProductForm({
         return [...prev, { 
           category_name: categoryName, 
           category: category, 
-          required: false 
+          required: false,
+          available: true
         }];
       } else {
         return prev.filter((item) => item.category !== category);
@@ -426,7 +427,9 @@ export function ProductForm({
 
               <div className="flex flex-col gap-2">
                 {customizationOptions.sort().map((option: CustomizationItemsCategoryModel) => {
-                  const selectedConfig = customizationItems.find(item => item.category === option.category_name);
+                  if (!option.available) return null;
+                  
+                  const selectedConfig = customizationItems.find(item => item.category ===  option.category_name);
                   const isChecked = !!selectedConfig;
                   
                   return (

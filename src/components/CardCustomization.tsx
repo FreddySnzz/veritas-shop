@@ -20,10 +20,8 @@ export default function CardCustomization({
       title={`Selecionar item (${item.ref})`}
       onClick={onSelect}
       className={`group relative p-3 rounded-xl border text-left transition-all duration-200 w-full
-        ${ isSelected ? 'border-primary shadow-sm' :
-          'border-transparent bg-white shadow-sm'
-        } cursor-pointer`
-      }
+        cursor-pointer ${ isSelected ? 'border-primary shadow-sm' : 'border-transparent bg-white shadow-sm'}
+      `}
     >
       <div className="aspect-square relative w-full mb-3 rounded-lg bg-gray-50 overflow-hidden">
         {item.image_url ? (
@@ -51,7 +49,7 @@ export default function CardCustomization({
         </span>
 
         {item?.metadata && (
-          <div className="flex text-[9px] text-gray-400 font-mono gap-1">
+          <div className="flex text-[8px] text-gray-400 font-mono gap-1">
             {Number(item?.metadata?.size_height) > 0 && (
               <>
                 <span>Altura: {item?.metadata?.size_height}cm</span>

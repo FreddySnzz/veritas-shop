@@ -1,10 +1,12 @@
-import { getCachedCustomizationItemsAction } from "@/app/actions/cache.actions";
+import { 
+  getCachedCustomizationItemsAction,
+} from "@/app/actions/cache.actions";
 import { Header } from "@/components/Header";
 import DynamicBreadcrumb from "@/components/DynamicBreadcrumb";
 import ManageCustomizationItemsInventoryLayout from "@/components/admin/ManageCustomizationItemsLayout";
 
 export default async function ManageInvertoryCatalogPage() {
-  const items = await getCachedCustomizationItemsAction()
+  const items = await getCachedCustomizationItemsAction();
 
   return (
     <div className="flex flex-col h-dvh overflow-hidden">

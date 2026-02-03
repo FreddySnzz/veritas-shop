@@ -9,10 +9,10 @@ import { CustomizationItemsCategoryModel } from "@/data/models/CustomizationItem
 import { Trash2 } from "lucide-react";
 import CustomizationItemCategoryModal from "../modals/CustomizationItemCategory";
 import { ToggleCustomizationItemAvailableSwitch } from "../buttons/ToggleCustomizationItemAvailableSwitch";
-import { CustomButton } from "../buttons/CustomButton";
 import { ItemsCustomizationTypes } from "@/data/types/customization.type";
 import CustomModal from "../modals/CustomModal";
 import { BackButton } from "../buttons/BackButtom";
+import { FloatAddButton } from "../buttons/AddButtom";
 
 interface ManageCustomizationItemCategoryProps {
   categories: CustomizationItemsCategoryModel[];
@@ -60,21 +60,17 @@ export function ManageCustomizationItemCategory({ categories }: ManageCustomizat
 
   return (
     <div className="flex flex-col font-sans h-full overflow-hidden">
-      <div className="flex overflow-y-auto px-6 font-sans scrollbar-hide mb-4">
-        <CustomButton
-          type="button"
-          aria-label="Adicionar Categoria"
-          className={`flex items-center justify-center w-full py-4 px-2 font-sans font-bold gap-3
-            bg-white hover:bg-gray-50 text-secondary rounded-2xl text-lg 
-            transition-all cursor-pointer shadow shadow-secondary/5
-          `}
-          onClick={(e: React.MouseEvent) => handleOpenCategoryModal(e)}
-        >
-          <span>Adicionar Categoria</span>
-        </CustomButton>
+      <div className="flex overflow-y-auto px-6 font-sans scrollbar-hide">
+        <div className="fixed bottom-25 right-7 z-15">
+          <FloatAddButton
+            pushRoute={'#'}
+            onClick={(e: React.MouseEvent) => handleOpenCategoryModal(e)}
+            className="p-3"
+          />
+        </div>
       </div>
 
-      <div className="flex-1 flex flex-col gap-4 overflow-y-auto px-6 font-sans scrollbar-hide">
+      <div className="flex-1 flex flex-col gap-2 overflow-y-auto px-6 font-sans scrollbar-hide">
         {categories.map((category: CustomizationItemsCategoryModel) => (
           <div 
             key={category.name} 

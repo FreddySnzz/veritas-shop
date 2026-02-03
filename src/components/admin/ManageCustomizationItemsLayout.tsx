@@ -1,16 +1,15 @@
 'use client';
 
 import Image from "next/image";
-import { useRouter } from "next/navigation";
 import { CustomizationItemsModel } from "@/data/models/CustomizationItems.model";
 import { ToggleCustomizationItemAvailableSwitch } from "../buttons/ToggleCustomizationItemAvailableSwitch";
 import { ItemsCustomizationTypes } from "@/data/types/customization.type";
 import { BackButton } from "../buttons/BackButtom";
-import { CustomButton } from "../buttons/CustomButton";
 import CardButton from "../buttons/CardButton";
 import { formatAndCapitalize } from "@/data/functions/formatAndCapitalize";
 import ItemContent from "../ItemContent";
 import ItemCollapse from "../ItemCollapse";
+import { FloatAddButton } from "../buttons/AddButtom";
 
 interface ManageCustomizationItemsLayoutProps {
   customizationItems: CustomizationItemsModel[];
@@ -19,7 +18,6 @@ interface ManageCustomizationItemsLayoutProps {
 export default function ManageCustomizationItemsLayout({ 
   customizationItems 
 }: ManageCustomizationItemsLayoutProps) {
-  const router = useRouter();
   const groups = Object.groupBy(customizationItems, (item) => item.category);
   const groupedItems = Object.entries(groups).map(([category, items]) => ({
     category,
@@ -31,13 +29,11 @@ export default function ManageCustomizationItemsLayout({
       <div className={`flex-1 min-h-0 grid grid-cols-1 md:grid-cols-3 xl:grid-cols-5 
         gap-4 mx-4 overflow-y-auto scrollbar-hide content-start pb-4
       `}>
-        <div className="flex mx-2">
-          <CustomButton
-            className="bg-white hover:bg-gray-50 text-secondary shadow shadow-secondary/5"
-            onClick={() => router.push('/admin/estoques/itens-personalizacao/adicionar')}
-          >
-            <span>Adicionar Item</span>
-          </CustomButton>
+        <div className="fixed bottom-25 right-7 z-15">
+          <FloatAddButton
+            pushRoute={'/admin/estoques/itens-personalizacao/adicionar'}
+            className="p-3"
+          />
         </div>
 
         <div className="flex flex-col mx-2 gap-4">

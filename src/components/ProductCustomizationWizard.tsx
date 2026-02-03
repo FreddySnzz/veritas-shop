@@ -66,7 +66,7 @@ const UI_METADATA: Record<string, UIMetadata> = {
     subtitle: 'Escolha a cor das Contas (Ave Maria)'
   },
   'contas_talhadas': { 
-    subtitle: 'Escolha o estilo das Contas Talhadas (Podem ser usadas nas contas maiores ou menores).',
+    subtitle: 'Escolha o estilo das Contas Talhadas (Podem ser usadas como contas maiores ou menores).',
     isGrouped: true,
   },
   'texto_personalizado': { 
@@ -432,7 +432,9 @@ export default function ProductCustomizerWizard({
                     aria-label="Exemplo"
                     title="Veja um exemplo"
                     onClick={() => setIsOpenImageHelperModal(true)}
-                    className="flex items-center text-primary hover:text-primary/80 text-sm font-medium cursor-pointer"
+                    className={`flex items-center text-primary 
+                      hover:text-primary/80 text-sm font-medium cursor-pointer
+                    `}
                   >
                     <span className='hover:underline'>(?)</span>
                   </button>
