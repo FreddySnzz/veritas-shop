@@ -20,6 +20,8 @@ import { CustomizationItemsCategoryModel } from "@/data/models/CustomizationItem
 import { CustomizationItemConfig } from "@/data/types/customization.type";
 import { toast } from "sonner";
 import { BackButton } from "../buttons/BackButtom";
+import { useIsTouchDevice } from "@/data/hook/useMouseDrag";
+import { cn } from "@/lib/utils";
 
 interface ProductFormProps {
   initialData?: ProductModel | null
@@ -32,7 +34,9 @@ export function ProductForm({
 }: ProductFormProps) {
   const [name, setName] = useState<string>(initialData?.name || "");
   const [desc, setDesc] = useState<string>(initialData?.desc || "");
-  const [initialPrice, setInitialPrice] = useState<number>(initialData?.initial_price || 0);
+  const [initialPrice, setInitialPrice] = useState<number>((initialData?.initial_price && 
+    Number(initialData.initial_price / 100)) || 0
+  );
   const [available, setAvailable] = useState<boolean>(initialData?.available || false);
   const [customizable, setCustomizable] = useState<boolean>(initialData?.customizable || false);
   const [customizationItems, setCustomizationItems] = useState<CustomizationItemConfig[]>(
@@ -49,10 +53,11 @@ export function ProductForm({
    
   const router = useRouter();
   const pathname = usePathname();
+  const isTouchDevice = useIsTouchDevice();
 
   useEffect(() => {
     const initializeForm = async () => {
-      if (!initialData) return;
+      if (initialData) return;
 
       const paths = pathname.split('/');
       const productId = paths[paths.length - 1];
@@ -162,8 +167,6 @@ export function ProductForm({
         images_url: finalImagesUrl,
         updated_at: new Date(),
       };
-
-      console.log(dataToSubmit);
 
       if (isEditMode && productId) {
         await updateProductAction(productId, dataToSubmit);
@@ -323,20 +326,22 @@ export function ProductForm({
                       src={url}
                       alt={`Produto imagem ${index + 1}`}
                       fill
+                      loading="eager"
                       className="object-cover rounded-lg border border-gray-200"
                       sizes="(max-width: 768px) 50vw, 33vw"
                     />
 
-                    <div className={`absolute inset-0 flex items-center justify-center 
-                      transition-opacity rounded-lg bg-black/40 opacity-0 group-hover:opacity-100 
-                    `}>
+                    <div className={cn(`absolute inset-0 flex items-center justify-center 
+                      transition-opacity rounded-lg bg-black/40 opacity-0 group-hover:opacity-100`, 
+                      isTouchDevice && `bg-black/20 opacity-100`)
+                    }>
                       <button
                         type="button"
                         aria-label="Remover imagem"
                         title="Remover imagem"
                         onClick={() => handleRemoveExistingImage(url)}
-                        className={`bg-white/90 p-2 rounded-full text-red-500 hover:bg-white hover:scale-110 
-                          transition-all cursor-pointer
+                        className={`bg-white/90 p-2 text-red-500 hover:bg-white hover:scale-110 
+                          transition-all cursor-pointer rounded-full
                         `}
                       >
                         <Trash className="w-4 h-4" />

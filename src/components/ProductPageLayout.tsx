@@ -1,6 +1,7 @@
 'use client';
 
 import Link from "next/link";
+import { useMemo } from "react";
 import { useRouter } from "next/navigation";
 import { useCart } from "@/data/context/CartContext";
 import DynamicBreadcrumb from "./DynamicBreadcrumb";
@@ -24,6 +25,14 @@ export default function ProductPageLayout({ product, cachedProducts }: ProductPa
   const { addItem } = useCart();
   const router = useRouter();
 
+  const sortedCustomizationItems = useMemo(() => {
+    if (!product?.customization_items) return [];
+
+    return [...product.customization_items].sort((a, b) =>
+      a.category.localeCompare(b.category)
+    );
+  }, [product.customization_items]);
+
   const handleCopyLinkToClipboard = () => {
     navigator.clipboard.writeText(window.location.href);
     toast.success("Link copiado para a área de transferência.");
@@ -37,6 +46,7 @@ export default function ProductPageLayout({ product, cachedProducts }: ProductPa
       image: product?.images_url?.[0] || "",
       customizable: false
     });
+    
     toast.success("Produto adicionado ao carrinho!", { duration: 1500 });
   };
 
@@ -102,7 +112,7 @@ export default function ProductPageLayout({ product, cachedProducts }: ProductPa
                 <span>Personalizar agora</span>
               </CustomButton>
             </div>
-          ) : 
+          ) : (
             <div className="flex flex-col mb-6">
               <CustomButton
                 type="button"
@@ -114,7 +124,7 @@ export default function ProductPageLayout({ product, cachedProducts }: ProductPa
                 <span>Adicionar ao Carrinho</span>
               </CustomButton>
             </div>
-          }
+          )}
 
           <div className="flex items-center justify-center gap-4 w-full mb-6">
             <span className="font-medium text-sm">
@@ -152,7 +162,7 @@ export default function ProductPageLayout({ product, cachedProducts }: ProductPa
               </span>
               {product.customization_items && (
                 <div className="flex flex-col">
-                  {product.customization_items.map((item, index) => (
+                  {sortedCustomizationItems.map((item, index) => (
                     <div
                       key={index} 
                       className="flex ml-4 font-medium text-sm text-secondary"

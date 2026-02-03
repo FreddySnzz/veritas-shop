@@ -97,12 +97,15 @@ export default function ProductCustomizerWizard({
   const router = useRouter();
 
   const wizardSteps = useMemo(() => {
-    const productConfigItems = baseProduct.customization_items || [];
+    const productConfigItems = baseProduct.customization_items && 
+      baseProduct.customization_items.sort(
+        (a, b) => a.category_name.localeCompare(b.category_name)
+      ) || [];
     
     const steps = productConfigItems.map((configItem) => {
       const categoryData = categories.find(category => category.category_name === configItem.category);
+
       const uiData = UI_METADATA[configItem.category];
-      
       const displayName = categoryData?.name || configItem.category.charAt(0).toUpperCase() + configItem.category.slice(1);
       const displaySubtitle = uiData?.subtitle || `Selecione uma opção de ${displayName}`;
 

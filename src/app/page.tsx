@@ -7,11 +7,13 @@ import CatalogCarrousel from "@/components/CatalogCarrousel";
 import Catalog from "@/components/Catalog";
 import { PageFadeInAnimationWrapper } from "@/components/PageFadeInAnimationWrapper";
 import { WhatsAppButtonFixed } from "@/components/buttons/WhatsAppButton";
+import ProductModel from "@/data/models/Product.model";
 import CatalogImageModel from "@/data/models/CatalogImage.model";
 import Footer from "../components/Footer";
 
 export default async function Home() {
   const products = await getCachedProductsAction();
+  const availableProducts = products.filter((product: ProductModel) => product.available);
   const images = await getCachedCatalogImagesAction();
   const availableImages = images.filter((img: CatalogImageModel) => img.available);
 
@@ -29,7 +31,7 @@ export default async function Home() {
             </section>
 
             <section id="products">
-              <Catalog products={products} />
+              <Catalog products={availableProducts} />
             </section>
           </PageFadeInAnimationWrapper>
         </main>

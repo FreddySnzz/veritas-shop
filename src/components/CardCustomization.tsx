@@ -49,6 +49,20 @@ export default function CardCustomization({
         <span className="text-[10px] text-gray-400 font-mono">
           Ref: {item.ref}
         </span>
+
+        {item?.metadata && (
+          <div className="flex text-[9px] text-gray-400 font-mono gap-1">
+            {Number(item?.metadata?.size_height) > 0 && (
+              <>
+                <span>Altura: {item?.metadata?.size_height}cm</span>
+                <span>|</span>
+              </>
+            )}
+            {Number(item?.metadata?.size_width) > 0 && (
+              <span>Largura: {item?.metadata?.size_width}cm</span>
+            )}
+          </div>
+        )}
       </div>
 
       {isSelected && (

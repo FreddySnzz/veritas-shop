@@ -2,13 +2,12 @@ import { NextResponse } from 'next/server';
 import type { NextRequest } from 'next/server';
 import { jwtVerify } from 'jose';
 
-//DEBUG
 const secretEnv = process.env.JWT_SECRET || "";
 if (secretEnv.length === 0) {
   console.error("CRÍTICO: JWT_SECRET está vazia ou indefinida no Middleware!");
 } else {
   console.log(`DEBUG: JWT_SECRET carregada. Comprimento: ${secretEnv.length}`);
-}
+};
 
 const SECRET_KEY = new TextEncoder().encode(process.env.JWT_SECRET || "");
 
@@ -28,7 +27,6 @@ export default async function proxy(request: NextRequest) {
 
   if (isAdminRoute && !isPublicAdminRoute) {
     if (!token) {
-      console.log("DEBUG: Redirecionando para login (sem token)");
       const loginUrl = new URL('/admin/login', request.url);
       loginUrl.searchParams.set('redirect', pathname);
 
@@ -40,7 +38,6 @@ export default async function proxy(request: NextRequest) {
         algorithms: ['HS256'],
         clockTolerance: 15 
       });
-      console.log("DEBUG: Token verificado com sucesso!");
 
       return NextResponse.next();
     } catch (error) {
