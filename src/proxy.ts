@@ -2,13 +2,6 @@ import { NextResponse } from 'next/server';
 import type { NextRequest } from 'next/server';
 import { jwtVerify } from 'jose';
 
-const secretEnv = process.env.JWT_SECRET || "";
-if (secretEnv.length === 0) {
-  console.error("CRÍTICO: JWT_SECRET está vazia ou indefinida no Middleware!");
-} else {
-  console.log(`DEBUG: JWT_SECRET carregada. Comprimento: ${secretEnv.length}`);
-};
-
 const SECRET_KEY = new TextEncoder().encode(process.env.JWT_SECRET || "");
 
 const publicAdminRoutes = ['/admin/login'];
@@ -28,16 +21,14 @@ export default async function proxy(request: NextRequest) {
   if (isAdminRoute && !isPublicAdminRoute) {
     if (!token) {
       const loginUrl = new URL('/admin/login', request.url);
+      console.log("DEBUG: Token verificado com sucesso!");
       loginUrl.searchParams.set('redirect', pathname);
 
       return NextResponse.redirect(loginUrl);
     };
 
     try {
-      await jwtVerify(token, SECRET_KEY, {
-        algorithms: ['HS256'],
-        clockTolerance: 15 
-      });
+      await jwtVerify(token, SECRET_KEY, { clockTolerance: 15 });
 
       return NextResponse.next();
     } catch (error) {
@@ -56,7 +47,7 @@ export default async function proxy(request: NextRequest) {
   if (isPublicAdminRoute && token) {
     try {
       await jwtVerify(token, SECRET_KEY, { clockTolerance: 15 });
-      
+      console.log("DEBUG2: Token verificado com sucesso!");
       const redirectParam = request.nextUrl.searchParams.get('redirect');
       const destination = redirectParam && redirectParam.startsWith('/admin') 
         ? redirectParam 
