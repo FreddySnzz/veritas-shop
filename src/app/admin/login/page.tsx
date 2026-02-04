@@ -1,5 +1,6 @@
 'use client';
 
+import Cookies from 'js-cookie';
 import { useEffect, useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import Link from "next/link";
@@ -13,11 +14,13 @@ import { login } from "@/data/services/auth.service";
 import { LogoHorizontal } from "@/components/Typography";
 
 export default function Login() {
+  const searchParams = useSearchParams();
+  const { setToken, setUser } = useAuth();
+  const [isLoading, setIsLoading] = useState(false);
+
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [isLoading, setIsLoading] = useState(false);
-  const { setToken, setUser, isAuthenticated, isLoading: authLoading } = useAuth();
-  const searchParams = useSearchParams();
+  
   const router = useRouter();
   
   const isExpired = searchParams.get("expired") === "true";
@@ -26,19 +29,10 @@ export default function Login() {
   useEffect(() => {
     if (isExpired) {
       localStorage.clear();
+      Cookies.remove('veritas_token');
       toast.warning("Sua sessão expirou. Faça login novamente.");
-    }
+    };
   }, [isExpired]);
-
-  useEffect(() => {
-    if (isAuthenticated && !authLoading) {
-      const timer = setTimeout(() => {
-        router.replace(redirectUrl);
-      }, 100);
-      
-      return () => clearTimeout(timer);
-    }
-  }, [isAuthenticated, authLoading, router, redirectUrl]);
   
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -49,15 +43,26 @@ export default function Login() {
 
       if (!response) {
         toast.error("Email ou senha inválidos");
+        setIsLoading(false);
         return;
       };
 
       const { user, tokens } = response;
 
+      Cookies.set('veritas_token', tokens.access, { 
+        expires: 1,
+        path: '/',
+      });
+
       setToken(tokens.access);
       setUser(user);
-      
-      router.push(redirectUrl);
+
+      toast.success("Login realizado com sucesso");
+      router.refresh();
+
+      setTimeout(() => {
+        router.replace(redirectUrl);
+      }, 100);
     } catch (error) {
       console.error("Login error:", error);
       toast.error("Erro inesperado ao realizar login");

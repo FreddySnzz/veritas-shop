@@ -21,7 +21,6 @@ export default async function proxy(request: NextRequest) {
   if (isAdminRoute && !isPublicAdminRoute) {
     if (!token) {
       const loginUrl = new URL('/admin/login', request.url);
-      console.log("DEBUG: Token verificado com sucesso!");
       loginUrl.searchParams.set('redirect', pathname);
 
       return NextResponse.redirect(loginUrl);
@@ -47,7 +46,6 @@ export default async function proxy(request: NextRequest) {
   if (isPublicAdminRoute && token) {
     try {
       await jwtVerify(token, SECRET_KEY, { clockTolerance: 15 });
-      console.log("DEBUG2: Token verificado com sucesso!");
       const redirectParam = request.nextUrl.searchParams.get('redirect');
       const destination = redirectParam && redirectParam.startsWith('/admin') 
         ? redirectParam 
