@@ -62,6 +62,7 @@ export default function Login() {
 
       setTimeout(() => {
         router.replace(redirectUrl);
+        window.location.reload();
       }, 100);
     } catch (error) {
       console.error("Login error:", error);
