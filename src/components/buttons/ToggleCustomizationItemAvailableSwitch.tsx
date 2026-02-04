@@ -6,7 +6,7 @@ import { ItemsCustomizationTypes } from "@/data/types/customization.type";
 import { updateCatalogImageAction } from "@/app/actions/catalogImages.action";
 import { toast } from "sonner";
 import { Switch } from "../ui/switch";
-import { updateCustomizationItemCategoryAction } from "@/app/actions/customizationItemsCategory.action";
+import { updateCustomizationItemCategoryStatusAction } from "@/app/actions/customizationItemsCategory.action";
 import { updateCustomizationItemAction } from "@/app/actions/customizationItems.action";
 
 interface ToggleProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
@@ -22,10 +22,14 @@ const ACTION_MAP: Record<ItemsCustomizationTypes, (
 ) => Promise<any>> = {
   customization_item: updateCustomizationItemAction,
   catalog_image: updateCatalogImageAction,
-  category: updateCustomizationItemCategoryAction,
+  category: updateCustomizationItemCategoryStatusAction,
 };
 
-export function ToggleCustomizationItemAvailableSwitch({ idProduct, available, itemType }: ToggleProps) {
+export function ToggleCustomizationItemAvailableSwitch({ 
+  idProduct, 
+  available, 
+  itemType 
+}: ToggleProps) {
   const router = useRouter()
   const [isPending, startTransition] = useTransition();
   const [availableState, setAvailableState] = useState<boolean>(available);

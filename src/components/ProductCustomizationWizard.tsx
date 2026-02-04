@@ -98,9 +98,11 @@ export default function ProductCustomizerWizard({
 
   const wizardSteps = useMemo(() => {
     const productConfigItems = baseProduct.customization_items && 
-      baseProduct.customization_items.sort(
-        (a, b) => a.category_name.localeCompare(b.category_name)
-      ) || [];
+      baseProduct.customization_items
+        .filter((item) => item.available)
+        .sort(
+          (a, b) => a.category_name.localeCompare(b.category_name)
+        ) || [];
     
     const steps = productConfigItems.map((configItem) => {
       const categoryData = categories.find(category => category.category_name === configItem.category);

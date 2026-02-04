@@ -28,9 +28,11 @@ export default function ProductPageLayout({ product, cachedProducts }: ProductPa
   const sortedCustomizationItems = useMemo(() => {
     if (!product?.customization_items) return [];
 
-    return [...product.customization_items].sort((a, b) =>
-      a.category.localeCompare(b.category)
-    );
+    return [...product.customization_items]
+      .filter((item) => item.available)
+      .sort((a, b) =>
+        a.category.localeCompare(b.category)
+      );
   }, [product.customization_items]);
 
   const handleCopyLinkToClipboard = () => {

@@ -1,4 +1,6 @@
 import { db } from "../firebase/config";
+import { db as adminDb } from "../firebase/config-admin";
+import { firestore } from "firebase-admin";
 import {
   addDoc,
   collection,
@@ -14,6 +16,7 @@ import { unstable_cache } from "next/cache";
 import { Collections } from "../types/collections.enum";
 import { ProductServiceError } from "./product.service";
 import { CustomizationItemsCategoryModel } from "@/data/models/CustomizationItemsCategory";
+import { CustomizationItemConfig } from "../types/customization.type";
 
 export async function getAllCategories(): Promise<CustomizationItemsCategoryModel[] | null> {
   const q = query(collection(
@@ -100,6 +103,101 @@ export async function updateCategory(
   await updateDoc(docRef, updatedData);
 
   return updatedData;
+};
+
+export async function updateCategoryStatus(
+  id: string,
+  status: boolean,
+) {
+  try {
+    const category = await getCategoryById(id);
+
+    const categoryRef = adminDb.collection(
+      Collections.CUSTOMIZATION_ITEMS_CATEGORIES_COLLECTION
+    ).doc(id);
+
+    const itemsSnapshot = await adminDb.collection(
+      Collections.CUSTOMIZATION_ITEMS_COLLECTION
+    ).where("category", "==", category.category_name).get();
+
+    const productsSnapshot = await adminDb.collection(
+      Collections.PRODUCTS_COLLECTION
+    ).where("customizable", "==", true).get();
+
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    type Operation = { ref: firestore.DocumentReference; data: any };
+    const operations: Operation[] = [];
+
+    operations.push({
+      ref: categoryRef,
+      data: { 
+        available: status, 
+        updated_at: new Date() 
+      }
+    });
+
+    itemsSnapshot.docs.forEach((doc) => {
+      operations.push({
+        ref: doc.ref,
+        data: { 
+          available: status, 
+          updated_at: new Date() 
+        }
+      });
+    });
+
+    productsSnapshot.docs.forEach((doc) => {
+      const productData = doc.data() as any;
+      const hasCategory = productData.customization_items?.some(
+        (item: CustomizationItemConfig) => item.category === category.category_name
+      );
+
+      if (hasCategory && productData.customization_items) {
+        const updatedCustomizationItems = productData.customization_items
+          .map((item: CustomizationItemConfig) => {
+            if (item.category === category.category_name) {
+              return { 
+                ...item, 
+                available: status 
+              };
+            };
+
+            return item;
+          });
+
+        operations.push({
+          ref: doc.ref,
+          data: { 
+            customization_items: updatedCustomizationItems,
+            updated_at: new Date() 
+          }
+        });
+      }
+    });
+
+    const CHUNK_SIZE = 500;
+    const batchPromises = [];
+
+    for (let i = 0; i < operations.length; i += CHUNK_SIZE) {
+      const chunk = operations.slice(i, i + CHUNK_SIZE);
+      const batch = adminDb.batch();
+
+      chunk.forEach((op) => {
+        batch.update(op.ref, op.data);
+      });
+
+      batchPromises.push(batch.commit());
+    };
+
+    await Promise.all(batchPromises);
+    return { 
+      success: true, 
+      count: operations.length 
+    };
+  } catch (error) {
+    console.error("Erro ao desabilitar categoria:", error);
+    throw new Error("Falha ao atualizar dados.");
+  };
 };
 
 export async function deleteCategory(id: string) {
