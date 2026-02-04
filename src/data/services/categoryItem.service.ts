@@ -147,6 +147,7 @@ export async function updateCategoryStatus(
     });
 
     productsSnapshot.docs.forEach((doc) => {
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       const productData = doc.data() as any;
       const hasCategory = productData.customization_items?.some(
         (item: CustomizationItemConfig) => item.category === category.category_name

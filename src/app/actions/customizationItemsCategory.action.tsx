@@ -54,9 +54,9 @@ export async function createCustomizationItemCategoryAction(data: any) {
   };
 };
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
 export async function updateCustomizationItemCategoryAction(
   id: string, 
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   data: any
 ) {
   try {
@@ -69,9 +69,9 @@ export async function updateCustomizationItemCategoryAction(
   };
 };
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
 export async function updateCustomizationItemCategoryStatusAction(
   id: string, 
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   data: any
 ) {
   try {
