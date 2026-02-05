@@ -1,18 +1,22 @@
 'use client';
 
-import FlowerIcon from "./icons/FlowerIcon";
 import Link from "next/link";
+import FlowerIcon from "./icons/FlowerIcon";
 import { CartButton } from "./buttons/CartButton";
 import Sidebar from "./Sidebar";
 import { LogoutButton } from "./buttons/LogoutButton";
 import { useAuth } from "@/data/context/AuthContext";
 import { useApp } from "@/data/context/AppContext";
+import Searchbar from "./Searchbar";
 
 interface HeaderProps {
   mode: 'admin' | 'user' | 'cart';
+  search?: boolean;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  data?: any[];
 };
 
-export function Header({ mode }: HeaderProps) {
+export function Header({ mode, search, data }: HeaderProps) {
   const { logout } = useAuth();
   const { toggleSidebar } = useApp();
 
@@ -42,13 +46,27 @@ export function Header({ mode }: HeaderProps) {
           </div>
         </Link>
 
-        { mode === 'user' && 
-          <CartButton isOpen={toggleSidebar} />
-        }
+        <div className="flex justify-end items-center gap-2 w-[60%]">
+          {/* <div className="flex items-center justify-center"> // TODO: theme provider
+            <Sun className="w-6 h-6 text-secondary" />
+            <Moon className="w-6 h-6 text-secondary" />
+          </div> */}
 
-        { mode === 'admin' && 
-          <LogoutButton onClick={() => logout()} /> 
-        }
+          { search && data &&
+            <Searchbar
+              searchbarPlaceholder="Pesquisar produtos"
+              data={data}
+            />
+          }
+
+          { mode === 'user' && 
+            <CartButton isOpen={toggleSidebar} />
+          }
+
+          { mode === 'admin' && 
+            <LogoutButton onClick={() => logout()} /> 
+          }
+        </div>
 
         <Sidebar />
       </div>

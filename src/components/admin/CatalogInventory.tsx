@@ -5,6 +5,7 @@ import { DeleteButton } from "../buttons/DeleteButton";
 import { BackButton } from "../buttons/BackButtom";
 import CardButton from "../buttons/CardButton";
 import { FloatAddButton } from "../buttons/AddButtom";
+import { formatCurrency } from "@/data/functions/formatAndCapitalize";
 
 export default async function ManageCatalogInventory() {
   const products = await getCachedProductsAction();
@@ -57,7 +58,7 @@ export default async function ManageCatalogInventory() {
                 {product.desc}
               </p>
               <p className="text-xs mt-2 text-secondary">
-                R$ {product.initial_price.toFixed(2)}
+                {formatCurrency(product.initial_price)}
               </p>
               <p className={`text-sm font-medium mt-1 ${product.available ? 'text-green-600' : 'text-red-500'}`}>
                 Disponível: {product.available ? 'Sim' : 'Não'}

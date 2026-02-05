@@ -14,6 +14,7 @@ import { toast } from "sonner";
 import { FaWhatsapp } from "react-icons/fa6";
 import { IoMdCopy } from "react-icons/io";
 import { removeAccentsAndSpacesToURL } from "@/data/functions/removeAccentsAndSpaces";
+import { formatCurrency } from "@/data/functions/formatAndCapitalize";
 
 interface ProductPageLayoutProps {
   product: ProductModel;
@@ -87,7 +88,7 @@ export default function ProductPageLayout({ product, cachedProducts }: ProductPa
           <div className="flex relative shrink-0 mt-auto pt-2 items-end justify-between"> 
             <div className="flex justify-center items-baseline gap-1">
               <span className="font-bold text-2xl">
-                R$ {product.initial_price.toFixed(2)}
+                {formatCurrency(product.initial_price)}
               </span>
             </div>
           </div>

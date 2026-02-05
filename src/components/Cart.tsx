@@ -10,7 +10,7 @@ import ClearCartModal from "./modals/ClearCart";
 import { BackButton } from "./buttons/BackButtom";
 import { WhatsAppButton } from "./buttons/WhatsAppButton";
 import { CartProductItem } from "@/data/types/cart-products.type";
-import { formatAndCapitalize } from "@/data/functions/formatAndCapitalize";
+import { formatAndCapitalize, formatCurrency } from "@/data/functions/formatAndCapitalize";
 import CartAlert from "./CartAlert";
 
 export default function Cart() {
@@ -50,7 +50,7 @@ export default function Cart() {
           Total apróx.:
         </span>
         <span className="text-lg font-bold text-secondary">
-          R$ {total.toFixed(2)}
+          {formatCurrency(total)}
         </span>
       </div>
     );
@@ -82,7 +82,7 @@ export default function Cart() {
       
       mensagem += `----------------------------------------------------\n`;
       mensagem += `*ITEM ${index + 1}: ${product.name}*\n`;
-      mensagem += `Quantidade: ${quantity} (R$ ${product.price.toFixed(2)} / und)\n`;
+      mensagem += `Quantidade: ${quantity} (${formatCurrency(product.price)} / und)\n`;
       mensagem += `----------------------------------------------------\n`;
 
       Object.entries(customization || {}).forEach(([key, value]) => {
@@ -94,7 +94,7 @@ export default function Cart() {
     });
 
     mensagem += `============================\n`;
-    mensagem += `*Total Estimado: R$ ${totalGeral.toFixed(2)}*\n`;
+    mensagem += `*Total Estimado: ${formatCurrency(totalGeral)}*\n`;
     mensagem += `============================\n`;
     mensagem += `Aguardo a confirmação e dados para pagamento!`;
     
@@ -214,7 +214,7 @@ export default function Cart() {
                         </div>
                       </div>
                       <span className="text-sm text-gray-400 font-medium">
-                        {item.quantity} x R$ {item.product.price.toFixed(2)}
+                        {item.quantity} x {formatCurrency(item.product.price)}
                       </span>
                     </div>
                   </div>

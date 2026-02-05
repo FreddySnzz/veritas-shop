@@ -1,4 +1,9 @@
-import { useEffect, useRef, useState, useSyncExternalStore } from "react";
+import { 
+  useEffect, 
+  useRef, 
+  useState, 
+  useSyncExternalStore 
+} from "react";
 
 function checkTouchSupport(): boolean {
   if (typeof window === "undefined") return false;

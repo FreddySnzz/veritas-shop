@@ -3,8 +3,8 @@ import {
   getCachedCatalogImagesAction, 
   getCachedProductsAction 
 } from "./actions/cache.actions";
+import CatalogLayout from "@/components/CatalogLayout";
 import CatalogCarrousel from "@/components/CatalogCarrousel";
-import Catalog from "@/components/Catalog";
 import { PageFadeInAnimationWrapper } from "@/components/PageFadeInAnimationWrapper";
 import { WhatsAppButtonFixed } from "@/components/buttons/WhatsAppButton";
 import ProductModel from "@/data/models/Product.model";
@@ -13,13 +13,17 @@ import Footer from "../components/Footer";
 
 export default async function Home() {
   const products = await getCachedProductsAction();
-  const availableProducts = products.filter((product: ProductModel) => product.available);
+  const availableProducts = products?.filter((product: ProductModel) => product.available);
   const images = await getCachedCatalogImagesAction();
-  const availableImages = images.filter((img: CatalogImageModel) => img.available);
+  const availableImages = images?.filter((img: CatalogImageModel) => img.available);
 
   return (
     <>
-      <Header mode="user" />
+      <Header 
+        mode="user" 
+        search 
+        data={availableProducts}
+      />
       <section id="home-catalog" className="flex flex-col justify-center items-center bg-background-alternative">
         <main className="w-full h-auto">
           <PageFadeInAnimationWrapper>
@@ -31,7 +35,7 @@ export default async function Home() {
             </section>
 
             <section id="products">
-              <Catalog products={availableProducts} />
+              <CatalogLayout products={availableProducts} />
             </section>
           </PageFadeInAnimationWrapper>
         </main>

@@ -6,6 +6,7 @@ import { useRouter } from "next/navigation";
 import ProductModel from "@/data/models/Product.model";
 import { useMouseDrag, useIsTouchDevice } from "@/data/hook/useMouseDrag";
 import { mountProductUrl } from "@/data/functions/removeAccentsAndSpaces";
+import { formatCurrency } from "@/data/functions/formatAndCapitalize";
 
 interface SeeMoreProductsProps {
   atualProduct: ProductModel;
@@ -74,7 +75,7 @@ export default function SeeMoreProducts({ atualProduct, cachedProducts }: SeeMor
               >
                 <div className="flex flex-col gap-1 items-start">
                   <p className="font-bold group-hover:text-primary transition-colors">
-                    R$ {product.initial_price.toFixed(2)}
+                    {formatCurrency(product.initial_price)}
                   </p>
                   <p className="font-light text-sm text-gray-600 line-clamp-1 group-hover:text-primary transition-colors">
                     {product.name}
