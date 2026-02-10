@@ -2,7 +2,9 @@
 
 import * as motion from "motion/react-client"
 
-export function PageFadeInAnimationWrapper({ children }: { children: React.ReactNode }) {
+export function PageFadeInAnimationWrapper(
+  { children }: { children: React.ReactNode }
+) {
   return (
     <motion.div
       initial={{ opacity: 0, y: 0 }}

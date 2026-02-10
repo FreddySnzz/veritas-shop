@@ -10,6 +10,9 @@ import { formatAndCapitalize } from "@/data/functions/formatAndCapitalize";
 import ItemContent from "../ItemContent";
 import ItemCollapse from "../ItemCollapse";
 import { FloatAddButton } from "../buttons/AddButtom";
+import { SearchbarInput } from "../inputs/SearchbarInput";
+import { useMemo, useState } from "react";
+import { X } from "lucide-react";
 
 interface ManageCustomizationItemsLayoutProps {
   customizationItems: CustomizationItemsModel[];
@@ -18,7 +21,26 @@ interface ManageCustomizationItemsLayoutProps {
 export default function ManageCustomizationItemsLayout({ 
   customizationItems 
 }: ManageCustomizationItemsLayoutProps) {
-  const groups = Object.groupBy(customizationItems, (item) => item.category);
+  const [searchText, setSearchText] = useState('');
+
+  const filteredData = useMemo(() => {
+    if (!searchText) return customizationItems;
+    
+    const lowerSearch = searchText.toLowerCase();
+    return customizationItems.filter((item) => {
+      const name = item.name.toLowerCase();
+      const category = item.category.toLowerCase();
+      const ref = item.ref.toLowerCase();
+      const style = item.metadata?.style?.toLowerCase();
+      
+      return name.includes(lowerSearch) || 
+        category.includes(lowerSearch) || 
+        style?.includes(lowerSearch) ||
+        ref.includes(lowerSearch);
+    });
+  }, [searchText, customizationItems]);
+
+  const groups = Object.groupBy(filteredData, (item) => item.category);
   const groupedItems = Object.entries(groups).map(([category, items]) => ({
     category,
     items
@@ -27,13 +49,35 @@ export default function ManageCustomizationItemsLayout({
   return (
     <div className="flex flex-col font-sans h-full overflow-hidden">
       <div className={`flex-1 min-h-0 grid grid-cols-1 md:grid-cols-3 xl:grid-cols-5 
-        gap-4 mx-4 overflow-y-auto scrollbar-hide content-start pb-4
-      `}>
+        gap-4 mx-4 overflow-y-auto scrollbar-hide content-start pb-4`}
+      >
         <div className="fixed bottom-25 right-7 z-15">
           <FloatAddButton
             pushRoute={'/admin/estoques/itens-personalizacao/adicionar'}
             className="p-3"
           />
+        </div>
+
+        <div className="flex w-full items-center justify-center px-1">
+          <SearchbarInput
+            searchbarPlaceholder="Pesquise por nome, estilo, categoria ou referência"
+            value={searchText}
+            onChange={(e) => {
+              setSearchText(e.target.value);
+            }}
+            className="bg-white shadow-xs"
+          />
+          
+          {searchText.length > 0 && (
+            <button
+              aria-label="Limpar pesquisa"
+              title="Limpar pesquisa"
+              className="fixed right-8 cursor-pointer"
+              onClick={() => setSearchText('')}
+            >
+              <X className="w-6 h-6 text-secondary cursor-pointer" />
+            </button>
+          )}
         </div>
 
         <div className="flex flex-col mx-2 gap-4">

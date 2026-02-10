@@ -5,7 +5,7 @@ import { cn } from "@/lib/utils";
 import { Search, X, Loader2 } from "lucide-react";
 import ProductCard from "./ProductCard";
 import { useMediaQuery } from "@/data/hook/useMediaQuery";
-import SearchbarInput from "./inputs/SearchbarInput";
+import { SearchbarInput } from "./inputs/SearchbarInput";
 
 interface SearchbarProps {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -85,17 +85,19 @@ export default function Searchbar({
         <div className="absolute right-2 flex items-center justify-center">
           {isSearching ? (
             <Loader2 className="w-5 h-5 text-primary animate-spin" />
-          ) : searchText.length > 0 ? (
+          ) : searchText.length > 0 || isOpen ? (
             <button
               onClick={handleClear}
               aria-label="Limpar pesquisa"
+              title={!isMdUp ? "Limpar pesquisa" : ""}
               className="cursor-pointer"
             >
-              <X className="w-6 h-6 text-secondary" />
+              <X className="w-6 h-6 text-secondary cursor-pointer" />
             </button>
         ) : (
           <button
             aria-label="Abrir pesquisa"
+            title={!isMdUp ? "Abrir pesquisa" : ""}
             className="cursor-pointer"
             onClick={toggleOpenSearchbar}
           >
@@ -113,7 +115,7 @@ export default function Searchbar({
         )}>
           <div className="max-h-[60vh] overflow-y-auto scrollbar-hide">
             {filteredData.length > 0 ? (
-              <div className="grid grid-cols-2 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 p-4">
+              <div className="grid grid-cols-2 md:grid-cols-2 lg:grid-cols-3 gap-4 p-4">
                 {filteredData.map((product) => (
                   <div key={product.id} className="h-full">
                     <ProductCard 
@@ -141,7 +143,7 @@ export default function Searchbar({
       )}
 
       {!isMdUp && isOpen && (
-        <div className={cn(`fixed flex items-center justify-center top-0 right-20 h-14
+        <div className={cn(`fixed flex items-center justify-center top-0 right-22 h-14
           bg-transparent animate-in fade-in slide-in-from-right-2 duration-300`, 
           'w-[73%]',
           isXsDown && "w-[68%] right-21",

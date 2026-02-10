@@ -14,6 +14,7 @@ interface PageProps {
 export default async function AddProductCatalogPage({ params }: PageProps) {
   const { item } = await params;
   const getProducts = await getCachedProductsAction();
+  const availableProducts = getProducts?.filter((product: ProductModel) => product.available);
   const product = getProducts.find((product: ProductModel) => mountProductUrl(product) === item);
 
   if (!product) {
@@ -22,7 +23,11 @@ export default async function AddProductCatalogPage({ params }: PageProps) {
 
   return (
     <div className="flex flex-col h-dvh overflow-hidden">
-      <Header mode="user" />
+      <Header 
+        mode="user" 
+        search 
+        data={availableProducts}
+      />
       <main className="flex-1 flex flex-col bg-background-alternative overflow-hidden">
         <ProductPageLayout 
           product={product} 

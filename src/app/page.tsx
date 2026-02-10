@@ -18,31 +18,33 @@ export default async function Home() {
   const availableImages = images?.filter((img: CatalogImageModel) => img.available);
 
   return (
-    <>
+    <section 
+      id="home-catalog" 
+      className="flex flex-col h-dvh overflow-hidden"
+    >
       <Header 
         mode="user" 
         search 
         data={availableProducts}
       />
-      <section id="home-catalog" className="flex flex-col justify-center items-center bg-background-alternative">
-        <main className="w-full h-auto">
-          <PageFadeInAnimationWrapper>
-            <section id="carrousel">
-              <CatalogCarrousel 
-                images={availableImages}
-                className="mt-14"
-              />
-            </section>
 
-            <section id="products">
-              <CatalogLayout products={availableProducts} />
-            </section>
-          </PageFadeInAnimationWrapper>
-        </main>
+      <main className="flex-1 flex flex-col bg-background-alternative overflow-y-auto scrollbar-hide">
+        <PageFadeInAnimationWrapper>
+          <CatalogCarrousel 
+            images={availableImages}
+            className="mt-14"
+          />
+          <CatalogLayout 
+            products={availableProducts} 
+          />
+        </PageFadeInAnimationWrapper>
         
-        <WhatsAppButtonFixed message={"https://wa.me/5586994379414?text=Olá, gostaria de fazer um orçamento 😄!"} />
         <Footer />
-      </section>
-    </>
+      </main>
+      
+      <WhatsAppButtonFixed 
+        message={"https://wa.me/5586994379414?text=Olá, gostaria de fazer um orçamento 😄!"} 
+      />
+    </section>
   );
-}
+};

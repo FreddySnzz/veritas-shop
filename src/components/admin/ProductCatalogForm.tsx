@@ -316,8 +316,8 @@ export function ProductForm({
 
             {(existingImages.length > 0 || newFiles.length > 0) && (
               <div className={`grid grid-cols-2 sm:grid-cols-3 gap-4 mt-4 
-                bg-gray-50 p-4 rounded-xl border border-gray-100
-              `}>
+                bg-gray-50 p-4 rounded-xl border border-gray-100`}
+              >
                 {existingImages.map((url, index) => (
                   <div 
                     key={`existing-${index}`} 
@@ -368,8 +368,8 @@ export function ProductForm({
                     />
 
                     <div className={`flex items-center justify-center absolute inset-0 
-                      bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity rounded-lg 
-                    `}>
+                      bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity rounded-lg`}
+                    >
                       <button
                         type="button"
                         aria-label="Cancelar upload"
@@ -415,8 +415,8 @@ export function ProductForm({
 
           {customizable && (
             <div className={`flex flex-col w-full bg-white rounded-lg border 
-              px-4 py-3 animate-in fade-in slide-in-from-top-2 duration-300
-            `}>
+              px-4 py-3 animate-in fade-in slide-in-from-top-2 duration-300`}
+            >
               <span className="flex text-sm font-medium mb-3">
                 Configuração de Personalização:
               </span>

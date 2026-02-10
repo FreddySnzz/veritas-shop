@@ -62,8 +62,8 @@ export default function ProductCard({ product, mode }: ProductCardProps) {
             </div>
             
             <span className={`text-xs text-primary font-medium opacity-0 -translate-x-2 
-              group-hover:translate-x-0 group-hover:opacity-100 transition-all duration-300
-            `}>
+              group-hover:translate-x-0 group-hover:opacity-100 transition-all duration-300`}
+            >
               {mode === 'header' ? "" : (
                 <span>Ver mais →</span>
               )}

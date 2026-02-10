@@ -18,9 +18,10 @@ export function WhatsAppButton(props: WhatsAppButtonProps) {
       <button
         type="button"
         aria-label="Finalizar pedido no WhatsApp"
-        className={`w-full py-3 rounded-lg font-sans font-bold text-lg flex items-center justify-center gap-3
-          bg-linear-to-r from-green-500 to-green-600 text-white hover:from-green-600/90 hover:to-green-700/90
-          cursor-pointer transition-colors shadow-lg
+        className={`w-full py-3 flex items-center justify-center gap-3
+          bg-linear-to-r from-green-500 to-green-600 
+          text-white hover:from-green-600/90 hover:to-green-700/90
+          cursor-pointer transition-colors shadow-lg rounded-lg font-sans font-bold text-lg
         `}
       >
         <FaWhatsapp className="w-6 h-6" />
@@ -44,8 +45,10 @@ export function WhatsAppButtonFixed(props: WhatsAppButtonProps) {
         aria-label="Falar com suporte"
         title="Falar com suporte"
         type="button"
-        className={`fixed z-40 cursor-pointer top-[91%] left-[84%] md:left-[92%] xl:left-[95%] items-center justify-center p-3
-          bg-linear-to-r from-green-500 to-green-600 text-white rounded-full hover:from-green-600 hover:to-green-700 transition-all shadow-lg 
+        className={`fixed z-40 cursor-pointer top-[91%] left-[84%] md:left-[92%] xl:left-[95%] 
+          bg-linear-to-r from-green-500 to-green-600 
+          text-white hover:from-green-600/90 hover:to-green-600/90
+          rounded-full transition-colors shadow-lg p-3 items-center justify-center 
         `}
       >
         <FaWhatsapp className="w-6 h-6" />

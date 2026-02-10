@@ -212,8 +212,8 @@ export function CustomizationItemForm({
             <SelectTrigger 
               className={`flex w-full items-center justify-between gap-2 rounded-lg px-4 
                 bg-white text-sm text-secondary transition-colors hover:bg-gray-50 
-                focus-visible:ring-0 focus-visible:ring-offset-transparent focus-visible:ring-primary
-              `}>
+                focus-visible:ring-0 focus-visible:ring-offset-transparent focus-visible:ring-primary`}
+              >
               <SelectValue placeholder="Selecione uma categoria" />
             </SelectTrigger>
             <SelectContent position="item-aligned">

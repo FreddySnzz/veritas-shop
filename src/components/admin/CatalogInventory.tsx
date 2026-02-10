@@ -1,28 +1,67 @@
+'use client';
+
+import { useMemo, useState } from "react";
 import Image from "next/image";
 import ProductModel from "@/data/models/Product.model";
-import { getCachedProductsAction } from "@/app/actions/cache.actions";
 import { DeleteButton } from "../buttons/DeleteButton";
 import { BackButton } from "../buttons/BackButtom";
 import CardButton from "../buttons/CardButton";
 import { FloatAddButton } from "../buttons/AddButtom";
 import { formatCurrency } from "@/data/functions/formatAndCapitalize";
+import { SearchbarInput } from "../inputs/SearchbarInput";
+import { X } from "lucide-react";
 
-export default async function ManageCatalogInventory() {
-  const products = await getCachedProductsAction();
+interface ManageCatalogInventoryProps {
+  products: ProductModel[];
+};
+
+export default function ManageCatalogInventory({ products }: ManageCatalogInventoryProps) {
+  const [searchText, setSearchText] = useState('');
+
+  const filteredData = useMemo(() => {
+    if (!searchText) return products;
+    
+    const lowerSearch = searchText.toLowerCase();
+    return products.filter((item) => 
+      item.name.toLowerCase().includes(lowerSearch)
+    );
+  }, [searchText, products]);
 
   return (
     <div className="flex flex-col font-sans h-full overflow-hidden">
       <div className={`flex-1 min-h-0 grid grid-cols-1 md:grid-cols-3 xl:grid-cols-5 
-        gap-2 mx-6 overflow-y-auto content-start pb-4 scrollbar-hide
-      `}>
+        gap-2 mx-6 overflow-y-auto content-start pb-4 scrollbar-hide`}
+      >
         <div className="fixed bottom-25 right-7 z-15">
           <FloatAddButton
             pushRoute={'/admin/estoques/catalogo/adicionar'}
             className="p-3"
           />
         </div>
+        
+        <div className="flex w-full items-center justify-center mb-2">
+          <SearchbarInput
+            searchbarPlaceholder="Pesquisar produtos"
+            value={searchText}
+            onChange={(e) => {
+              setSearchText(e.target.value);
+            }}
+            className="bg-white shadow-xs"
+          />
+          
+          {searchText.length > 0 && (
+            <button
+              aria-label="Limpar pesquisa"
+              title="Limpar pesquisa"
+              className="fixed right-8 cursor-pointer"
+              onClick={() => setSearchText('')}
+            >
+              <X className="w-6 h-6 text-secondary cursor-pointer" />
+            </button>
+          )}
+        </div>
 
-        {products && products?.length > 0 ? products?.map((product: ProductModel) => (
+        {filteredData && filteredData?.length > 0 ? filteredData?.map((product: ProductModel) => (
           <CardButton 
             key={product.id}
             pushRoute={`/admin/estoques/catalogo/editar/${product.id}`}
@@ -73,10 +112,9 @@ export default async function ManageCatalogInventory() {
             </div>
           </CardButton>
         )) : (
-          <div className="flex items-center justify-center w-full h-full">
-            <span className="text-gray-500 px-2 text-center">
-              Sem Produtos
-            </span>
+          <div className="flex w-full h-[55vh] items-center justify-center text-gray-400">
+            <span>Nenhum produto encontrado com</span>
+            <span className="font-bold ml-1">&quot;{searchText}&quot;.</span>
           </div>
         )}
       </div>

@@ -6,29 +6,32 @@ interface SearchbarInputProps extends React.HTMLAttributes<HTMLElement> {
   inputRef?: React.RefObject<HTMLInputElement>;
   onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
   onFocus?: () => void;
+  className?: string;
 };
 
-export default function SearchbarInput({ 
+export function SearchbarInput({ 
   searchbarPlaceholder,
   onChange,
   onFocus,
   value,
   inputRef,
+  className,
 }: SearchbarInputProps) {
-
   return (
-    <input
-      ref={inputRef}
-      type="text"
-      placeholder={searchbarPlaceholder}
-      value={value}
-      onFocus={onFocus}
-      onChange={onChange}
-      className={cn(
-        "w-full pl-4 pr-10 py-2 text-sm font-medium text-secondary",
-        "bg-background-alternative rounded-lg ring-0",
-        "focus:outline-none transition-all"
-      )}
-    />
+    <>
+      <input
+        ref={inputRef}
+        type="text"
+        placeholder={searchbarPlaceholder}
+        value={value}
+        onFocus={onFocus}
+        onChange={onChange}
+        className={cn(
+          "w-full pl-4 pr-10 py-2 text-sm font-medium text-secondary",
+          "bg-background-alternative rounded-lg ring-0",
+          "focus:outline-none transition-all", className
+        )}
+      />
+    </>
   );
 };
