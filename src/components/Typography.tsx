@@ -36,7 +36,7 @@ export function Typography({
         height={60 * multiplier} 
         color={flowerColor} 
       />
-      <div className={`flex flex-col text-center ${titleColor}`}>
+      <div className={`flex flex-col text-center ${titleColor} font-playfair-display`}>
         <span 
           className="mt-2"
           style={{ fontSize: `${3 * multiplier}rem` }}

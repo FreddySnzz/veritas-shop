@@ -11,7 +11,11 @@ interface DeleteProductItemProps extends React.HTMLAttributes<HTMLElement> {
   onClose?: () => void
 };
 
-export default function DeleteProductItemModal({ productId, modalOpen, onClose }: DeleteProductItemProps) {
+export default function DeleteProductItemModal({ 
+  productId, 
+  modalOpen, 
+  onClose 
+}: DeleteProductItemProps) {
   const router = useRouter();
   useLockBodyScroll(modalOpen);
 
@@ -33,7 +37,9 @@ export default function DeleteProductItemModal({ productId, modalOpen, onClose }
   return (
     <div 
       onClick={onClose}
-      className="fixed inset-0 z-50 flex flex-col items-center justify-center bg-black/50 p-4 backdrop-blur-xs transition-all cursor-default"
+      className={`fixed inset-0 z-50 flex flex-col items-center justify-center 
+        bg-black/50 p-4 backdrop-blur-xs transition-all cursor-default
+      `}
     >
       <div 
         onClick={(e) => e.stopPropagation()}

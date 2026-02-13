@@ -2,8 +2,8 @@ import { PhraseNSFatima } from "./Phrases";
 
 export default function About() {
   return (
-    <section id={'about'} className="w-auto h-auto p-4">
-      <div className="flex flex-col p-8">
+    <section id={'about'} className="w-auto h-auto">
+      <div className="flex flex-col">
         <div>
           <h1 className="font-playfair-display text-secondary font-bold text-2xl">Sobre nós</h1>
         </div>

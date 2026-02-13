@@ -9,17 +9,26 @@ import { mountProductUrl } from "@/data/functions/removeAccentsAndSpaces";
 import { formatCurrency } from "@/data/functions/formatAndCapitalize";
 
 interface SeeMoreProductsProps {
-  atualProduct: ProductModel;
+  atualProductId: string;
   cachedProducts: ProductModel[];
+  className?: string;
 };
 
-export default function SeeMoreProducts({ atualProduct, cachedProducts }: SeeMoreProductsProps) {
-  const { containerRef, dragLeft } = useMouseDrag(cachedProducts.length);
+export default function SeeMoreProducts({ 
+  atualProductId,
+  cachedProducts,
+  className
+}: SeeMoreProductsProps) {
+  const availableProducts = cachedProducts.filter(
+    (product: ProductModel) => product.available
+  );
+
+  const { containerRef, dragLeft } = useMouseDrag(availableProducts.length);
   const isTouchDevice = useIsTouchDevice();
   const router = useRouter();
 
   return (
-    <div className="flex flex-1 flex-col py-4">
+    <div className={`flex flex-1 flex-col py-4 ${className}`}>
       <motion.div
         ref={containerRef}
         drag="x"
@@ -27,7 +36,7 @@ export default function SeeMoreProducts({ atualProduct, cachedProducts }: SeeMor
         dragElastic={0.05}
         className={`flex cursor-grab active:cursor-grabbing scrollbar-hide mx-4 gap-4`}
       >
-        {cachedProducts.map((product: ProductModel) => product.id !== atualProduct.id && (
+        {availableProducts.map((product: ProductModel) => product.id !== atualProductId && (
           <div 
             key={product.id}
             className="flex flex-1 flex-col h-full"

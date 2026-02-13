@@ -8,7 +8,7 @@ import { updateUserAction } from "@/app/actions/users.action";
 import { CustomButton } from "../buttons/CustomButton"
 import { ClipboardPenLine, Eye, Image as ImageIcon, RefreshCw, X } from "lucide-react";
 import { toast } from "sonner";
-import { BackButton } from "../buttons/BackButtom";
+import { BackButton } from "../buttons/BackButton";
 import { FaWhatsapp } from "react-icons/fa6";
 import CustomModal from "../modals/CustomModal";
 import { Input } from "../ui/input";

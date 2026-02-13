@@ -34,7 +34,7 @@ import { generateRefNumber } from "@/data/functions/generateRefForItem";
 import { CustomizationItemsCategoryModel } from "@/data/models/CustomizationItemsCategory";
 import { CustomizationItemsModel } from "@/data/models/CustomizationItems.model";
 import { onlyNumbers } from "@/data/functions/inputMasks";
-import { BackButton } from "../buttons/BackButtom";
+import { BackButton } from "../buttons/BackButton";
 
 interface CustomizationItemFormProps {
   mode: string;

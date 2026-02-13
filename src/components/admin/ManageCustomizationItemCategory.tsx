@@ -11,8 +11,8 @@ import CustomizationItemCategoryModal from "../modals/CustomizationItemCategory"
 import { ToggleCustomizationItemAvailableSwitch } from "../buttons/ToggleCustomizationItemAvailableSwitch";
 import { ItemsCustomizationTypes } from "@/data/types/customization.type";
 import CustomModal from "../modals/CustomModal";
-import { BackButton } from "../buttons/BackButtom";
-import { FloatAddButton } from "../buttons/AddButtom";
+import { BackButton } from "../buttons/BackButton";
+import { FloatAddButton } from "../buttons/AddButton";
 import { SearchbarInput } from "../inputs/SearchbarInput";
 
 interface ManageCustomizationItemCategoryProps {

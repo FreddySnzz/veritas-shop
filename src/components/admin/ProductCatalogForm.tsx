@@ -19,7 +19,7 @@ import ProductModel from "@/data/models/Product.model";
 import { CustomizationItemsCategoryModel } from "@/data/models/CustomizationItemsCategory";
 import { CustomizationItemConfig } from "@/data/types/customization.type";
 import { toast } from "sonner";
-import { BackButton } from "../buttons/BackButtom";
+import { BackButton } from "../buttons/BackButton";
 import { useIsTouchDevice } from "@/data/hook/useMouseDrag";
 import { cn } from "@/lib/utils";
 

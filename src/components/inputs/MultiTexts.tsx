@@ -33,24 +33,32 @@ export default function MultiTextInput() {
   };
 
   return (
-    <section id='texts' className="bg-white rounded-2xl p-4">
-      <div className="flex flex-col gap-3 w-full">
+    <section 
+      id='texts' 
+      className={`bg-white rounded-xl p-4`}
+    >
+      <div className={`flex flex-col gap-3 w-full`}>
         {texts.map((text, index) => (
-          <div key={index} className="flex gap-1 items-center">
+          <div 
+            key={index} 
+            className={`flex items-center gap-2`}
+          >
             <input
               type="text"
               value={text}
-              className="bg-background-alternative-v2 text-secondary font-bold py-2 px-3 rounded-lg cursor-text flex-1 focus:outline-0"
               onChange={(e) => handleChange(index, onlyLetters(e.target.value))}
               placeholder={`Texto ${index + 1}`}
               maxLength={10}
               title="Por favor, digite apenas letras e números"
               onBlur={handleSubmitText}
+              className={`bg-background-alternative-v2 text-secondary font-bold py-2 px-3 
+                rounded-lg cursor-text flex-1 focus:outline-0 w-full
+              `}
             />
             
             <button 
-              onClick={() => handleRemove(index)}
               title="Remover este texto"
+              onClick={() => handleRemove(index)}
               className="hover:opacity-75 transition-opacity cursor-pointer"
             >
               <MinusCircle className="text-red-500 w-6 h-6" />
@@ -59,10 +67,14 @@ export default function MultiTextInput() {
         ))}
 
         {texts.length < 5 && (
-          <div className={`flex ${texts.length === 0 ? 'justify-center' : 'justify-center'} mt-1`}>
+          <div className={`flex ${texts.length === 0 ? 
+            'justify-center' : 'justify-center'} mt-1`}
+          >
             <button 
               onClick={handleAdd} 
-              className="flex items-center gap-2 text-secondary font-semibold hover:opacity-80 transition-opacity"
+              className={`flex items-center gap-2 text-secondary font-semibold 
+                hover:opacity-80 transition-opacity
+              `}
             >
               <PlusCircle className="text-secondary w-6 h-6 cursor-pointer" />
               <span>Adicionar Texto</span>
@@ -71,11 +83,11 @@ export default function MultiTextInput() {
         )}
         
         {texts.length === 5 && (
-          <span className="text-xs text-red-400 text-center">
+          <span className="text-xs text-red-400 font-bold text-center">
             Limite máximo de 5 textos atingido.
           </span>
         )}
       </div>
     </section>
   );
-}
+};

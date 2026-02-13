@@ -23,7 +23,8 @@ export default function RootLayout({
   return (
     <html lang="pt-br">
       <body
-        className={`${playfair.variable} ${space.variable} ${geistMono.variable} ${geistSans.variable} antialiased font-playfair-display`}
+        className={`${playfair.variable} ${space.variable} ${geistMono.variable} 
+          ${geistSans.variable} antialiased font-playfair-display`}
       >
         <AuthProvider>
           <CartProvider>

@@ -3,7 +3,7 @@
 import { useRouter } from "next/navigation";
 import { ListChecks, Paintbrush, Plus, ShoppingBasket } from "lucide-react";
 import { CustomButton } from "../buttons/CustomButton";
-import { BackButton } from "../buttons/BackButtom";
+import { BackButton } from "../buttons/BackButton";
 
 export default function AdminInventoryLayout() {
   const router = useRouter();

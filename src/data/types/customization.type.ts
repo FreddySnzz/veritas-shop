@@ -22,3 +22,15 @@ export type CustomizationItemConfig = {
   required: boolean;
   available: boolean;
 };
+
+export type Step = {
+  id: string;
+  title: string;
+  imageHelper?: string;
+  isGrouped?: boolean;
+  isOptional?: boolean; 
+  isVirtual?: boolean;
+  subtitle?: string;
+  href?: string;
+  isValid?: boolean;
+};

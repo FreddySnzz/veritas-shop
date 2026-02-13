@@ -10,7 +10,11 @@ interface DeleteCatalogImageProps extends React.HTMLAttributes<HTMLElement> {
   onClose?: () => void
 };
 
-export default function DeleteCatalogImageModal({ idCatalogImage, modalOpen, onClose }: DeleteCatalogImageProps) {
+export default function DeleteCatalogImageModal({ 
+  idCatalogImage, 
+  modalOpen, 
+  onClose 
+}: DeleteCatalogImageProps) {
   useLockBodyScroll(modalOpen);
 
   const handleDelete = async (id: string) => {
@@ -31,7 +35,9 @@ export default function DeleteCatalogImageModal({ idCatalogImage, modalOpen, onC
   return (
     <div 
       onClick={onClose}
-      className="fixed inset-0 z-50 flex flex-col items-center justify-center bg-black/50 p-4 backdrop-blur-xs transition-all cursor-default"
+      className={`fixed inset-0 z-50 flex flex-col items-center justify-center 
+        bg-black/50 p-4 backdrop-blur-xs transition-all cursor-default
+      `}
     >
       <div 
         onClick={(e) => e.stopPropagation()}

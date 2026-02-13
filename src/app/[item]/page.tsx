@@ -4,6 +4,7 @@ import ProductModel from "@/data/models/Product.model";
 import ProductPageLayout from "@/components/ProductPageLayout";
 import { getCachedProductsAction } from "../actions/cache.actions";
 import { mountProductUrl } from "@/data/functions/removeAccentsAndSpaces";
+import Footer from "@/components/Footer";
 
 interface PageProps {
   params: Promise<{
@@ -22,18 +23,19 @@ export default async function AddProductCatalogPage({ params }: PageProps) {
   };
 
   return (
-    <div className="flex flex-col h-dvh overflow-hidden">
+    <div className="flex flex-col h-dvh overflow-y-auto bg-background-alternative">
       <Header 
         mode="user" 
         search 
         data={availableProducts}
       />
-      <main className="flex-1 flex flex-col bg-background-alternative overflow-hidden">
+      <main className="flex-1 flex flex-col">
         <ProductPageLayout 
           product={product} 
           cachedProducts={getProducts}
         />
       </main>
+      <Footer />
     </div>
   );
 };

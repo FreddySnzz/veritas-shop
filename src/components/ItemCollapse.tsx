@@ -8,12 +8,14 @@ interface ItemCollapseProps {
   title: string;
   children: React.ReactNode;
   className?: string;
+  titleClassName?: string;
 };
 
 export default function ItemCollapse({ 
   title, 
   children,
   className,
+  titleClassName,
 }: ItemCollapseProps) {
   const [expanded, setExpanded] = useState(false);
   const toggleExpanded = () => setExpanded((prev) => !prev);
@@ -25,7 +27,7 @@ export default function ItemCollapse({
         className="flex w-full items-center justify-between cursor-pointer focus:outline-none"
         aria-expanded={expanded}
       >
-        <span className="font-bold text-secondary">
+        <span className={`font-bold text-secondary ${titleClassName}`}>
           {title}
         </span>
         <motion.div

@@ -1,13 +1,22 @@
 import { Header } from "@/components/Header";
 import Cart from "@/components/Cart";
+import Footer from "@/components/Footer";
+import { getCachedProductsAction } from "../actions/cache.actions";
+import ProductModel from "@/data/models/Product.model";
 
-export default function CartPage() {
+export default async function CartPage() {
+  const products = await getCachedProductsAction();
+  const availableProducts = products?.filter((product: ProductModel) => product.available);
+
   return (
-    <div className="flex flex-col h-dvh overflow-hidden">
+    <div className="flex flex-col h-dvh overflow-y-auto bg-background-alternative">
       <Header mode="cart" />
-      <main className="flex-1 flex flex-col bg-background-alternative overflow-hidden mt-14">
-        <Cart />
+      <main className="flex-1 flex flex-col px-6 mt-20 md:mt-24 sm:px-14 lg:px-16">
+        <Cart catalogProducts={availableProducts} />
       </main>
+      <div className="hidden md:block">
+        <Footer />
+      </div>
     </div>
   );
 };

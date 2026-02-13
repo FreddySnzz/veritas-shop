@@ -16,7 +16,10 @@ interface AddCatalogImageProps extends React.HTMLAttributes<HTMLElement> {
   onClose?: () => void
 };
 
-export default function AddCatalogImageModal({ modalOpen, onClose }: AddCatalogImageProps) {
+export default function AddCatalogImageModal({ 
+  modalOpen, 
+  onClose 
+}: AddCatalogImageProps) {
   const [desc, setDesc] = useState<string>('');
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [currentImageUrl, setCurrentImageUrl] = useState<string>("");
@@ -106,7 +109,9 @@ export default function AddCatalogImageModal({ modalOpen, onClose }: AddCatalogI
   return (
     <div 
       onClick={onClose}
-      className="fixed inset-0 z-50 flex flex-col items-center justify-center bg-black/50 p-4 backdrop-blur-xs transition-all cursor-default"
+      className={`fixed inset-0 z-50 flex flex-col items-center justify-center 
+        bg-black/50 p-4 backdrop-blur-xs transition-all cursor-default
+      `}
     >
       <div 
         onClick={(e) => e.stopPropagation()}

@@ -6,7 +6,7 @@ import { toast } from "sonner";
 import { updateCatalogImageAction } from "@/app/actions/catalogImages.action";
 import { uploadImageAction } from "@/app/actions/cloudinary.actions";
 import { Plus, Trash, Save, Pencil } from "lucide-react";
-import { BackButton } from "../buttons/BackButtom";
+import { BackButton } from "../buttons/BackButton";
 import { CustomButton } from "../buttons/CustomButton";
 import { ToggleCustomizationItemAvailableSwitch } from "../buttons/ToggleCustomizationItemAvailableSwitch";
 import { Label } from "../ui/label";

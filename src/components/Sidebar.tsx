@@ -81,9 +81,14 @@ export default function Sidebar() {
         <div className="shrink-0 border-b border-gray-200 font-sans">
           <div className="flex items-center justify-between p-4">
             <div className="flex flex-col">
-              <h2 className="text-xl font-bold text-secondary">
-                Meu Carrinho
-              </h2>
+              <div className="flex items-baseline gap-1">
+                <span className="text-xl font-bold text-secondary">
+                  Meu Carrinho
+                </span>
+                <span className="text-xs font-medium text-gray-400">
+                  ({items.length} {items.length > 1 ? "produtos" : "produto"})
+                </span>
+              </div>
               <button 
                 onClick={handleGoToCart} 
                 aria-label="Ir para página do carrinho" 

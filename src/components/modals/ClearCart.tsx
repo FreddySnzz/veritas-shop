@@ -10,7 +10,10 @@ interface ClearCartProps extends React.HTMLAttributes<HTMLElement> {
   onClose?: () => void
 };
 
-export default function ClearCartModal({ modalOpen, onClose }: ClearCartProps) {
+export default function ClearCartModal({ 
+  modalOpen, 
+  onClose 
+}: ClearCartProps) {
   const { clearCart } = useCart();
   const { resetCustomization } = useCustomization()
   useLockBodyScroll(modalOpen);
@@ -33,7 +36,9 @@ export default function ClearCartModal({ modalOpen, onClose }: ClearCartProps) {
   return (
     <div 
       onClick={onClose}
-      className="fixed inset-0 z-50 flex flex-col items-center justify-center bg-black/50 p-4 backdrop-blur-xs transition-all cursor-default"
+      className={`fixed inset-0 z-50 flex flex-col items-center justify-center 
+        bg-black/50 p-4 backdrop-blur-xs transition-all cursor-default
+      `}
     >
       <div 
         onClick={(e) => e.stopPropagation()}
