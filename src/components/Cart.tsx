@@ -3,7 +3,6 @@
 import Image from "next/image";
 import { useState } from "react";
 import { useCart } from "@/data/context/CartContext";
-import { useAuth } from "@/data/context/AuthContext";
 import { 
   Minus, 
   Plus, 
@@ -25,19 +24,20 @@ import ProductModel from "@/data/models/Product.model";
 import { SupportButton } from "./buttons/SupportButton";
 
 interface CartProps extends React.HTMLAttributes<HTMLElement> {
+  whatsappNumber?: string;
   catalogProducts: ProductModel[];
 };
 
-export default function Cart(
-  { catalogProducts }: CartProps
-) {
+export default function Cart({ 
+  catalogProducts,
+  whatsappNumber
+ }: CartProps) {
   const { 
     cartCount, 
     items, 
     addQuantity,
     subtractQuantity,
   } = useCart();
-  const { user } = useAuth();
   const [isClearCartModalOpen, setIsClearCartModalOpen] = useState(false);
   const [isDeleteItemCartModalOpen, setIsDeleteItemCartModalOpen] = useState(false);
   const [itemCartIdToDelete, setItemCartIdToDelete] = useState<string>('');
@@ -78,7 +78,7 @@ export default function Cart(
     return `• ${key}: ${value}\n`;
   };
 
-  const gerarMensagemWhatsApp = (items: CartProductItem[]) => {
+  const generateWhatsAppMessage = (items: CartProductItem[]) => {
     let mensagem = `Olá! Gostaria de finalizar o seguinte pedido:\n\n`;
     let totalGeral = 0;
     
@@ -104,9 +104,8 @@ export default function Cart(
     mensagem += `*Total Estimado: ${formatCurrency(totalGeral)}*\n`;
     mensagem += `============================\n`;
     mensagem += `Aguardo a confirmação e dados para pagamento!`;
-    
-    const numeroWhatsApp = user?.phone || "5586994379414";
-    return `https://wa.me/${numeroWhatsApp}?text=${encodeURIComponent(mensagem)}`;
+
+    return `https://wa.me/${whatsappNumber}?text=${encodeURIComponent(mensagem)}`;
   };
 
   return (
@@ -275,7 +274,7 @@ export default function Cart(
                       </button>
                     </div>
                     <hr className="border-muted-foreground/50 my-2" />
-                    <WhatsAppButton message={gerarMensagemWhatsApp(items)} />
+                    <WhatsAppButton message={generateWhatsAppMessage(items)} />
                     <SupportButton messageToSupport="Olá, estou tendo problemas no meu carrinho!" />
                   </div>
                 </div>
@@ -341,7 +340,7 @@ export default function Cart(
         
         <hr className="border-muted-foreground/50" />
         <div className="flex flex-col my-2 gap-2">
-          <WhatsAppButton message={gerarMensagemWhatsApp(items)} />
+          <WhatsAppButton message={generateWhatsAppMessage(items)} />
           <BackButton backRoute />
         </div>
       </div>

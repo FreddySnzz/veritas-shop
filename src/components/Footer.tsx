@@ -8,9 +8,13 @@ import { useMediaQuery } from "@/data/hook/useMediaQuery";
 
 interface FooterProps extends React.HTMLAttributes<HTMLDivElement> {
   className?: string;
+  whatsappNumber?: string;
 };
 
-export default function Footer({ className }: FooterProps) {
+export default function Footer({ 
+  className,
+  whatsappNumber
+}: FooterProps) {
   const isSmUp = useMediaQuery("(min-width: 540px)");
   const isMdUp = useMediaQuery("(min-width: 768px)");
 
@@ -59,14 +63,15 @@ export default function Footer({ className }: FooterProps) {
                     rel="noopener noreferrer"
                     aria-label="Instagram"
                     title="Instagram"
-                    href={`https://www.instagram.com/veritas_atelie`} 
+                    href={`https://www.instagram.com/veritas_atelie/`} 
                     target="_blank" 
+                    className="flex items-center justify-center"
                   >
                     <FaInstagram size={35} />
+                    <span className="hidden sm:block ml-2 text-sm hover:underline">
+                      Instagram
+                    </span>
                   </Link>
-                  <span className="hidden sm:block ml-2 text-sm hover:underline">
-                    Instagram
-                  </span>
                 </div>
               </div>
               
@@ -78,14 +83,15 @@ export default function Footer({ className }: FooterProps) {
                     rel="noopener noreferrer"
                     aria-label="WhatsApp"
                     title="WhatsApp"
-                    href={`https://wa.me/5586994379414`} 
+                    href={`https://wa.me/${whatsappNumber}`} 
                     target="_blank" 
+                    className="flex items-center justify-center"
                   >
                     <FaWhatsapp size={35} />
+                    <span className="hidden sm:block ml-2 text-sm hover:underline">
+                      WhatsApp
+                    </span>
                   </Link>
-                  <span className="hidden sm:block ml-2 text-sm hover:underline">
-                    WhatsApp
-                  </span>
                 </div>
               </div>
             </div>

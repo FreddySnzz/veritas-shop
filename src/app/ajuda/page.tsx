@@ -2,8 +2,11 @@ import { Header } from "@/components/Header";
 import Footer from "@/components/Footer";
 import HelpLayout from "@/components/HelpLayout";
 import DynamicBreadcrumb from "@/components/DynamicBreadcrumb";
+import { getAdminInfoAction } from "../actions/users.action";
 
 export default async function HelpPage() {
+  const { user } = await getAdminInfoAction();
+
   return (
     <div className="flex flex-col h-dvh overflow-y-auto bg-background-alternative">
       <Header mode="user" />
@@ -14,7 +17,9 @@ export default async function HelpPage() {
         </div>
         <HelpLayout />
       </main>
-      <Footer />
+      <Footer 
+        whatsappNumber={user?.phone || '5586994379414'}
+      />
     </div>
   );
 };

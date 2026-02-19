@@ -5,6 +5,7 @@ import ProductPageLayout from "@/components/ProductPageLayout";
 import { getCachedProductsAction } from "../actions/cache.actions";
 import { mountProductUrl } from "@/data/functions/removeAccentsAndSpaces";
 import Footer from "@/components/Footer";
+import { getAdminInfoAction } from "../actions/users.action";
 
 interface PageProps {
   params: Promise<{
@@ -13,6 +14,7 @@ interface PageProps {
 };
 
 export default async function AddProductCatalogPage({ params }: PageProps) {
+  const { user } = await getAdminInfoAction();
   const { item } = await params;
   const getProducts = await getCachedProductsAction();
   const availableProducts = getProducts?.filter((product: ProductModel) => product.available);
@@ -35,7 +37,9 @@ export default async function AddProductCatalogPage({ params }: PageProps) {
           cachedProducts={getProducts}
         />
       </main>
-      <Footer />
+      <Footer 
+        whatsappNumber={user?.phone || '5586994379414'}
+      />
     </div>
   );
 };

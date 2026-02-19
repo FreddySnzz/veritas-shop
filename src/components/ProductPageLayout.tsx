@@ -270,7 +270,7 @@ export default function ProductPageLayout({
                 title="Compartilhar no WhatsApp"
                 rel="noopener noreferrer"
                 target="_blank"
-                href={`https://wa.me/5586994379414?text=*Olha%20só%20esse%20produto%20incrível%20que%20encontrei%20na%20Veritas%20Ateliê!*%0A${window.location.href}`}
+                href={`https://api.whatsapp.com/send?text=*Olha%20só%20esse%20produto%20incrível%20que%20encontrei%20na%20Veritas%20Ateliê!*%0A${window.location.href}`}
                 className="flex items-center text-sm gap-1 hover:underline"
               >
                 <FaWhatsapp className="w-4 h-4" />
@@ -329,7 +329,7 @@ export default function ProductPageLayout({
       </div>
 
       <div className="flex flex-col pt-6">
-        <div className="flex ml-16">
+        <div className="flex ml-8 lg:ml-12">
           <span className="font-bold uppercase">
             Mais Produtos
           </span>
@@ -338,7 +338,7 @@ export default function ProductPageLayout({
           <SeeMoreProducts 
             atualProductId={product.id} 
             cachedProducts={cachedProducts}
-            className="ml-12"
+            className="ml-4 lg:ml-8"
           />
         </div>
       </div>

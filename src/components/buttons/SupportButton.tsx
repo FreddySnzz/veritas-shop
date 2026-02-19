@@ -1,21 +1,21 @@
 'use client';
 
 import Link from "next/link";
-import { useAuth } from "@/data/context/AuthContext";
 import { MessageSquareWarning } from "lucide-react";
 
 interface SupportButtonProps extends React.HTMLAttributes<HTMLElement> {
   title?: string;
   messageToSupport: string;
   className?: string;
+  whatsappNumber?: string;
 };
 
 export function SupportButton({ 
   title = "Relatar problema",
   messageToSupport, 
-  className 
+  className,
+  whatsappNumber
 }: SupportButtonProps) {
-  const { user } = useAuth();
 
   return (
     <Link
@@ -23,7 +23,7 @@ export function SupportButton({
       title="Abrir chat com o suporte"
       rel="noopener noreferrer"
       target="_blank"
-      href={`https://wa.me/${user?.phone || 
+      href={`https://wa.me/${whatsappNumber || 
         "5586994379414"}?text=${encodeURIComponent(messageToSupport)}
       `}
       className={`flex items-center justify-center 

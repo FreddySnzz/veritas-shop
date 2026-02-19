@@ -1,13 +1,26 @@
 'use client';
 
+import { useEffect, useState } from "react";
 import * as motion from "motion/react-client"
 import About from "./About";
 import { SlogganTypography, Typography } from "./Typography";
 import ButtonScrollDown from "./buttons/ButtonScrollDown";
 import { CatalogButton } from "./buttons/CatalogButton";
 import { WhatsAppButtonFixed } from "./buttons/WhatsAppButton";
+import UserModel from "@/data/models/User.model";
+import { getAdminInfoAction } from "@/app/actions/users.action";
 
 export default function Apresentation() {
+  const [user, setUser] = useState<UserModel>();
+
+  useEffect(() => {
+    const fetchUser = async () => {
+      const user = await getAdminInfoAction();
+      setUser(user);
+    };
+    fetchUser();
+  }, []);
+
   return (
     <section 
       id="home" 
@@ -64,7 +77,9 @@ export default function Apresentation() {
       </section>
 
       <WhatsAppButtonFixed 
-        message={"https://wa.me/5586994379414?text=Olá, gostaria de fazer um pedido de Terço Personalizado!"} 
+        message={`https://wa.me/${user?.phone || 
+          "5586994379414"}?text=${encodeURIComponent('Olá, gostaria de fazer um pedido de Terço Personalizado!')}`
+        } 
       />
     </section>
   );

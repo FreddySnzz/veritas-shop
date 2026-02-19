@@ -10,8 +10,10 @@ import { WhatsAppButtonFixed } from "@/components/buttons/WhatsAppButton";
 import ProductModel from "@/data/models/Product.model";
 import CatalogImageModel from "@/data/models/CatalogImage.model";
 import Footer from "../components/Footer";
+import { getAdminInfoAction } from "./actions/users.action";
 
 export default async function Home() {
+  const { user } = await getAdminInfoAction();
   const products = await getCachedProductsAction();
   const availableProducts = products?.filter((product: ProductModel) => product.available);
   const images = await getCachedCatalogImagesAction();
@@ -35,9 +37,13 @@ export default async function Home() {
           </div>
         </PageFadeInAnimationWrapper>
       </main>
-      <Footer />
       <WhatsAppButtonFixed 
-        message={"https://wa.me/5586994379414?text=Olá, gostaria de fazer um orçamento 😄!"} 
+        message={`https://wa.me/${user?.phone || 
+          '5586994379414'}?text=${encodeURIComponent('Olá, gostaria de fazer um orçamento detalhado 😄!')}`
+        } 
+      />
+      <Footer 
+        whatsappNumber={user?.phone || '5586994379414'}
       />
     </div>
   );

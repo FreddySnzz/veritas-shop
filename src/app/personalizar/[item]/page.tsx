@@ -11,6 +11,7 @@ import {
   removeAccentsAndSpacesToURL 
 } from "@/data/functions/removeAccentsAndSpaces";
 import Footer from "@/components/Footer";
+import { getAdminInfoAction } from "@/app/actions/users.action";
 
 interface PageProps {
   params: Promise<{
@@ -19,6 +20,7 @@ interface PageProps {
 };
 
 export default async function Customization({ params }: PageProps) {
+  const { user } = await getAdminInfoAction();
   const { item } = await params;
   const products = await getCachedProductsAction();
   const customizationItems = await getCachedCustomizationItemsAction();
@@ -46,7 +48,9 @@ export default async function Customization({ params }: PageProps) {
         </main>
       </div>
       <div className="hidden md:block shrink-0">
-        <Footer />
+        <Footer 
+        whatsappNumber={user?.phone || '5586994379414'}
+      />
       </div>
     </div>
   );
