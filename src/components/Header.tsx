@@ -22,7 +22,7 @@ export function Header({ mode, search, data }: HeaderProps) {
 
   return (
     <header className="bg-white fixed top-0 z-50 w-screen">
-      <div className="flex items-center justify-between mx-auto px-4 md:px-8 py-2">
+      <div className="flex items-center justify-between mx-auto px-4 md:px-8 lg:px-12 py-2">
         <Link 
           aria-label="Voltar para a página inicial"
           title="Voltar para a página inicial"

@@ -2,10 +2,10 @@ import { Header } from "@/components/Header";
 import Footer from "@/components/Footer";
 import HelpLayout from "@/components/HelpLayout";
 import DynamicBreadcrumb from "@/components/DynamicBreadcrumb";
-import { getAdminInfoAction } from "../actions/users.action";
+import { getCachedAdminInfoAction } from "../actions/cache.actions";
 
 export default async function HelpPage() {
-  const { user } = await getAdminInfoAction();
+  const { user } = await getCachedAdminInfoAction();
 
   return (
     <div className="flex flex-col h-dvh overflow-y-auto bg-background-alternative">

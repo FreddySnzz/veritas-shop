@@ -5,6 +5,7 @@ interface ItemContentProps {
   icon?: React.ReactNode;
   label?: string;
   href?: string;
+  className?: string;
 };
 
 export default function ItemContent({ 
@@ -12,13 +13,14 @@ export default function ItemContent({
   icon,
   label, 
   href,
+  className,
 }: ItemContentProps) {
   if (href) {
     return (
       <Link
         href={href}
         className={`flex w-full items-center gap-3 p-1 rounded-lg 
-          text-gray-300 hover:bg-slate-800 hover:text-white transition
+          text-gray-300 hover:bg-slate-800 hover:text-white
         `}
       >
         {icon}
@@ -27,9 +29,9 @@ export default function ItemContent({
     );
   } else if (!href) {
     return (
-      <>
+      <div className={className}>
         {children}
-      </>
+      </div>
     );
   }
 };

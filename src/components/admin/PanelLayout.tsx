@@ -6,7 +6,13 @@ import { useRouter } from "next/navigation";
 import { refreshCacheAction } from "@/app/actions/cache.actions";
 import { updateUserAction } from "@/app/actions/users.action";
 import { CustomButton } from "../buttons/CustomButton"
-import { ClipboardPenLine, Eye, Image as ImageIcon, RefreshCw, X } from "lucide-react";
+import { 
+  ClipboardPenLine, 
+  Eye, 
+  Image as ImageIcon, 
+  RefreshCw, 
+  X 
+} from "lucide-react";
 import { toast } from "sonner";
 import { BackButton } from "../buttons/BackButton";
 import { FaWhatsapp } from "react-icons/fa6";
@@ -59,7 +65,23 @@ export default function PanelLayout({ className }: PanelLayoutProps) {
 
   return (
     <div className={`flex flex-col font-sans h-full ${className}`}>
-      <div className="flex-1 flex flex-col mx-6 gap-4 overflow-y-auto">
+      <div className={`flex-1 flex flex-col gap-4 overflow-y-auto
+        lg:grid lg:grid-cols-4 xl:grid-cols-5`}
+      >
+        <button
+          onClick={handleUpdateCatalog}
+          disabled={loading}
+          className={`flex lg:flex-col gap-2 shrink-0 w-full lg:max-h-1/2 xl:max-h-1/3 py-4 
+            rounded-2xl font-bold text-secondary cursor-pointer transition-colors items-center justify-center
+            ${loading ? 'cursor-not-allowed' : 'bg-white hover:bg-gray-50 text-secondary'}
+          `}
+        >
+          <RefreshCw 
+            className={`w-6 h-6 ${loading && 'animate-spin'}`} 
+          />
+          {loading ? 'Atualizando...' : 'Atualizar Catálogo'}
+        </button>
+
         <CustomButton
           onClick={() => router.push('/admin/estoques')}
         >
@@ -71,22 +93,8 @@ export default function PanelLayout({ className }: PanelLayoutProps) {
           onClick={() => router.push('/admin/editar-carrossel')}
         >
           <ImageIcon className="w-6 h-6" />
-          <span>Editar Carrossel</span>
+          <span>Editar Carrossel do Catálogo</span>
         </CustomButton>
-
-        <button
-          onClick={handleUpdateCatalog}
-          disabled={loading}
-          className={`flex items-center justify-center gap-2 transition-colors shrink-0 w-full py-4 
-            rounded-2xl font-bold text-secondary cursor-pointer
-            ${loading ? 'cursor-not-allowed' : 'bg-white hover:bg-gray-50 text-secondary'}
-          `}
-        >
-          <RefreshCw 
-            className={`w-6 h-6 ${loading && 'animate-spin'}`} 
-          />
-          {loading ? 'Atualizando...' : 'Atualizar Catálogo'}
-        </button>
 
         <CustomButton
           onClick={() => setIsOpenWhatsAppModal(true)}
@@ -165,9 +173,9 @@ export default function PanelLayout({ className }: PanelLayoutProps) {
         </div>
       </CustomModal>
       
-      <div className="shrink-0 mt-auto bg-background-alternative pt-2">
-        <hr className="border-muted-foreground/50 mb-4 mx-6" />
-        <div className="flex flex-col mx-6 my-4 gap-4">
+      <div className="shrink-0 mt-auto bg-background-alternative md:hidden">
+        <hr className="border-muted-foreground/50 mb-2" />
+        <div className="flex flex-col">
           <BackButton pushRoute="/" />
         </div>
       </div>

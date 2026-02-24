@@ -1,5 +1,6 @@
 import { Header } from "@/components/Header";
 import { 
+  getCachedAdminInfoAction,
   getCachedCatalogImagesAction, 
   getCachedProductsAction 
 } from "./actions/cache.actions";
@@ -10,10 +11,9 @@ import { WhatsAppButtonFixed } from "@/components/buttons/WhatsAppButton";
 import ProductModel from "@/data/models/Product.model";
 import CatalogImageModel from "@/data/models/CatalogImage.model";
 import Footer from "../components/Footer";
-import { getAdminInfoAction } from "./actions/users.action";
 
 export default async function Home() {
-  const { user } = await getAdminInfoAction();
+  const { user } = await getCachedAdminInfoAction();
   const products = await getCachedProductsAction();
   const availableProducts = products?.filter((product: ProductModel) => product.available);
   const images = await getCachedCatalogImagesAction();

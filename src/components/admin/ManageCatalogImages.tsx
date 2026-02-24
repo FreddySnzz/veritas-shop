@@ -17,6 +17,7 @@ import CatalogImageModel from "@/data/models/CatalogImage.model";
 import { ItemsCustomizationTypes } from "@/data/types/customization.type";
 import DeleteCatalogImageModal from "../modals/DeleteCatalogImage";
 import { useIsTouchDevice } from "@/data/hook/useMouseDrag";
+import { FloatAddButton } from "../buttons/AddButton";
 
 interface ManageCatalogImagesProps {
   images: CatalogImageModel[];
@@ -123,15 +124,27 @@ export default function ManageCatalogImages({ images, className }: ManageCatalog
 
   return (
     <div className={`flex flex-col font-sans h-full ${className}`}>
-      <div className="flex-1 flex flex-col min-h-0 overflow-y-auto content-start gap-4 mx-6 pb-4 scrollbar-hide">
-        <CustomButton
-          onClick={handleOpenAddModal}
-          className="flex items-center justify-center gap-2 transition-colors shrink-0 w-full py-4"
-        >
-          <Plus className="w-6 h-6" />
-          <span>Adicionar Imagem</span>
-        </CustomButton>
+      <CustomButton
+        onClick={handleOpenAddModal}
+        className={`hidden md:flex items-center justify-center gap-2 shrink-0 w-full py-3
+          bg-primary text-white hover:bg-primary/90 transition-colors lg:flex-row mb-4
+        `}
+      >
+        <Plus className="w-6 h-6" />
+        <span>Adicionar Imagem</span>
+      </CustomButton>
 
+      <div className="fixed md:hidden bottom-22 right-5 z-15">
+        <FloatAddButton
+          pushRoute={'#'}
+          onClick={handleOpenAddModal}
+          className="p-3"
+        />
+      </div>
+
+      <div className={`flex-1 flex flex-col min-h-0 overflow-y-auto content-start 
+        gap-4 scrollbar-hide lg:grid lg:grid-cols-2 xl:grid-cols-3 lg:gap-4`}
+      >
         {images?.map((image) => {
           const changes = pendingChanges[image.id];
           const currentSrc = changes?.previewUrl || image.image_url;
@@ -149,7 +162,8 @@ export default function ManageCatalogImages({ images, className }: ManageCatalog
                   placeholder="Descrição para a imagem (opcional)"
                   onChange={(e) => handleUpdateDescription(e.target.value, image.id)}
                   value={currentDesc || ''}
-                  className={`bg-white truncate text-sm line-clamp-1 font-medium text-secondary border-none shadow-none p-0 h-4 rounded-none
+                  className={`bg-white truncate text-sm line-clamp-1 font-medium text-secondary border-none 
+                    shadow-none p-0 h-4 rounded-none
                     focus-visible:ring-0 focus:bg-gray-50 focus:rounded-lg focus:border focus:h-6 focus:px-2
                   `}
                 />
@@ -219,7 +233,10 @@ export default function ManageCatalogImages({ images, className }: ManageCatalog
                   <button 
                     type="button"
                     onClick={() => handleOpenDeleteModal(image.id)}
-                    className="flex items-center justify-center gap-2 text-red-700 hover:text-red-500 transition-colors shrink-0 rounded-2xl font-medium text-xs cursor-pointer"
+                    className={`flex items-center justify-center gap-2 
+                      text-red-700 hover:text-red-500 transition-colors shrink-0 rounded-2xl 
+                      font-medium text-xs cursor-pointer
+                    `}
                   >
                     <Trash className="w-4 h-4" />
                     <span>Apagar Imagem do Catálogo</span>
@@ -231,19 +248,21 @@ export default function ManageCatalogImages({ images, className }: ManageCatalog
         })}
       </div>
 
-      <div className="shrink-0 mt-auto bg-background-alternative pt-2">
-        <hr className="border-muted-foreground/50 mb-4 mx-6" />
-        <div className="flex flex-col mx-6 my-4 gap-4">
+      <div className="shrink-0 md:hidden mt-auto bg-background-alternative z-10">
+        <hr className="border-muted-foreground/50 my-2" />
+        <div className="flex flex-col gap-4">
           {hasPendingChanges && (
             <CustomButton
               onClick={handleSaveChanges}
-              className="flex items-center justify-center w-full py-2 gap-2 bg-primary hover:bg-primary/80 text-white animate-in fade-in slide-in-from-bottom-4"
+              className={`flex items-center justify-center w-full py-2 gap-2 
+                bg-primary hover:bg-primary/80 text-white animate-in fade-in slide-in-from-bottom-4
+              `}
             >
               <Save className="w-5 h-5" />
               <span>Salvar Alterações ({Object.keys(pendingChanges).length})</span>
             </CustomButton>
           )}
-          <BackButton pushRoute="/admin" />
+          <BackButton backRoute />
         </div>
       </div>
 

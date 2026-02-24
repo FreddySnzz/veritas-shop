@@ -1,12 +1,14 @@
 import { Header } from "@/components/Header";
 import Cart from "@/components/Cart";
 import Footer from "@/components/Footer";
-import { getCachedProductsAction } from "../actions/cache.actions";
+import { 
+  getCachedAdminInfoAction, 
+  getCachedProductsAction 
+} from "../actions/cache.actions";
 import ProductModel from "@/data/models/Product.model";
-import { getAdminInfoAction } from "../actions/users.action";
 
 export default async function CartPage() {
-  const { user } = await getAdminInfoAction();
+  const { user } = await getCachedAdminInfoAction();
   const products = await getCachedProductsAction();
   const availableProducts = products?.filter((product: ProductModel) => product.available);
 

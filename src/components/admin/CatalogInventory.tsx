@@ -9,7 +9,9 @@ import CardButton from "../buttons/CardButton";
 import { FloatAddButton } from "../buttons/AddButton";
 import { formatCurrency } from "@/data/functions/formatAndCapitalize";
 import { SearchbarInput } from "../inputs/SearchbarInput";
-import { X } from "lucide-react";
+import { Plus, X } from "lucide-react";
+import { CustomButton } from "../buttons/CustomButton";
+import { useRouter } from "next/navigation";
 
 interface ManageCatalogInventoryProps {
   products: ProductModel[];
@@ -27,19 +29,12 @@ export default function ManageCatalogInventory({ products }: ManageCatalogInvent
     );
   }, [searchText, products]);
 
+  const router = useRouter();
+
   return (
     <div className="flex flex-col font-sans h-full overflow-hidden">
-      <div className={`flex-1 min-h-0 grid grid-cols-1 md:grid-cols-3 xl:grid-cols-5 
-        gap-2 mx-6 overflow-y-auto content-start pb-4 scrollbar-hide`}
-      >
-        <div className="fixed bottom-25 right-7 z-15">
-          <FloatAddButton
-            pushRoute={'/admin/estoques/catalogo/adicionar'}
-            className="p-3"
-          />
-        </div>
-        
-        <div className="flex w-full items-center justify-center mb-2">
+      <div className="flex w-full items-center justify-center md:gap-3 mb-2 md:mb-4">
+        <div className="grow">
           <SearchbarInput
             searchbarPlaceholder="Pesquisar produtos"
             value={searchText}
@@ -48,24 +43,46 @@ export default function ManageCatalogInventory({ products }: ManageCatalogInvent
             }}
             className="bg-white shadow-xs"
           />
-          
-          {searchText.length > 0 && (
-            <button
-              aria-label="Limpar pesquisa"
-              title="Limpar pesquisa"
-              className="fixed right-8 cursor-pointer"
-              onClick={() => setSearchText('')}
-            >
-              <X className="w-6 h-6 text-secondary cursor-pointer" />
-            </button>
-          )}
+        </div>
+        <div>
+          <CustomButton 
+            onClick={() => router.push('/admin/estoques/catalogo/adicionar')}
+            className={`hidden md:flex lg:flex-row py-2 lg:px-8 rounded-lg shadow-xs
+              bg-primary text-white hover:bg-primary/90 font-bold text-md
+            `}
+          >
+            <Plus className="w-6 h-6" />
+            <span>Adicionar</span>
+          </CustomButton>
+        </div>
+        
+        {searchText.length > 0 && (
+          <button
+            aria-label="Limpar pesquisa"
+            title="Limpar pesquisa"
+            className="fixed right-8 cursor-pointer"
+            onClick={() => setSearchText('')}
+          >
+            <X className="w-6 h-6 text-secondary cursor-pointer" />
+          </button>
+        )}
+      </div>
+
+      <div className={`flex-1 min-h-0 grid grid-cols-1 lg:grid-cols-3 xl:grid-cols-4
+        gap-2 overflow-y-auto content-start scrollbar-hide`}
+      >
+        <div className="fixed md:hidden bottom-25 right-7 md:bottom-10 z-15">
+          <FloatAddButton
+            pushRoute={'/admin/estoques/catalogo/adicionar'}
+            className="p-3"
+          />
         </div>
 
         {filteredData && filteredData?.length > 0 ? filteredData?.map((product: ProductModel) => (
           <CardButton 
             key={product.id}
             pushRoute={`/admin/estoques/catalogo/editar/${product.id}`}
-            className="bg-white"
+            className="bg-white h-full"
           >
             <div>
               {product.images_url ? (
@@ -96,15 +113,17 @@ export default function ManageCatalogInventory({ products }: ManageCatalogInvent
               <p className="text-xs text-gray-400 mt-1 line-clamp-2">
                 {product.desc}
               </p>
-              <p className="text-xs mt-2 text-secondary">
+              <p className="text-xs mt-1 text-secondary font-medium">
                 {formatCurrency(product.initial_price)}
               </p>
-              <p className={`text-sm font-medium mt-1 ${product.available ? 'text-green-600' : 'text-red-500'}`}>
-                Disponível: {product.available ? 'Sim' : 'Não'}
-              </p>
-              <p className={`text-sm font-medium mt-1 ${product.customizable ? 'text-green-600' : 'text-red-500'}`}>
-                Customizável: {product.customizable ? 'Sim' : 'Não'}
-              </p>
+              <div className="flex flex-col mt-1">
+                <p className={`text-xs font-medium ${product.available ? 'text-green-600' : 'text-red-500'}`}>
+                  Disponível: {product.available ? 'Sim' : 'Não'}
+                </p>
+                <p className={`text-xs font-medium ${product.customizable ? 'text-green-600' : 'text-red-500'}`}>
+                  Customizável: {product.customizable ? 'Sim' : 'Não'}
+                </p>
+              </div>
             </div>
 
             <div className="absolute bottom-3.5 right-2">
@@ -119,10 +138,10 @@ export default function ManageCatalogInventory({ products }: ManageCatalogInvent
         )}
       </div>
 
-      <div className="shrink-0 mt-auto bg-background-alternative pt-2 z-10">
-        <hr className="border-muted-foreground/50 mb-4 mx-6" />
-        <div className="flex flex-col mx-6 my-4 gap-4">
-          <BackButton pushRoute="/admin/estoques" />
+      <div className="md:hidden shrink-0 mt-auto bg-background-alternative z-10">
+        <hr className="border-muted-foreground/50 my-2" />
+        <div className="flex flex-col gap-4">
+          <BackButton backRoute />
         </div>
       </div>
     </div>

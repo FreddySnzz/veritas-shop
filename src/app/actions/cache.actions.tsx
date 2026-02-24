@@ -9,6 +9,7 @@ import { getCachedCustomizationItems } from "@/data/services/customizationItems.
 import { CustomizationItemsCategoryModel } from "@/data/models/CustomizationItemsCategory";
 import { CustomizationItemsModel } from "@/data/models/CustomizationItems.model";
 import ProductModel from "@/data/models/Product.model";
+import { getCachedAdminInfo } from "@/data/services/user.service";
 
 export async function refreshCacheAction(collection: string) {
   revalidateTag(collection, "max");
@@ -25,6 +26,16 @@ export async function getCachedProductsAction() {
   };
   
   return serializeFirestoreData(sortedItems);
+};
+
+export async function getCachedAdminInfoAction() {
+  const admin = await getCachedAdminInfo();
+
+  if (!admin) {
+    return null;
+  };
+
+  return serializeFirestoreData(admin);
 };
 
 export async function getCachedCatalogImagesAction() {

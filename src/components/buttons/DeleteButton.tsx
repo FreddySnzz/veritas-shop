@@ -23,7 +23,7 @@ export function DeleteButton({ className, idProduct }: ButtonProps) {
           hover:text-gray-600 text-secondary/70 transition-all cursor-pointer mr-2 ${className}
         `}
       >
-        <Trash className="w-5 h-5" />
+        <Trash className="w-4 h-4" />
       </button>
 
       <DeleteProductItemModal

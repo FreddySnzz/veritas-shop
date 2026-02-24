@@ -1,10 +1,10 @@
 import { Header } from "@/components/Header";
 import Footer from "@/components/Footer";
 import DynamicBreadcrumb from "@/components/DynamicBreadcrumb";
-import { getAdminInfoAction } from "@/app/actions/users.action";
+import { getCachedAdminInfoAction } from "@/app/actions/cache.actions";
 
 export default async function TermsAndConditionsPage() {
-  const { user } = await getAdminInfoAction();
+  const { user } = await getCachedAdminInfoAction();
 
   return (
     <div className="flex flex-col h-dvh overflow-y-auto bg-background-alternative">

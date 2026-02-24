@@ -6,7 +6,7 @@ import { useRouter } from "next/navigation";
 import { toast } from "sonner";
 import { deleteCategoryAction } from "@/app/actions/customizationItemsCategory.action";
 import { CustomizationItemsCategoryModel } from "@/data/models/CustomizationItemsCategory";
-import { Trash2, X } from "lucide-react";
+import { Plus, Trash2, X } from "lucide-react";
 import CustomizationItemCategoryModal from "../modals/CustomizationItemCategory";
 import { ToggleCustomizationItemAvailableSwitch } from "../buttons/ToggleCustomizationItemAvailableSwitch";
 import { ItemsCustomizationTypes } from "@/data/types/customization.type";
@@ -14,6 +14,7 @@ import CustomModal from "../modals/CustomModal";
 import { BackButton } from "../buttons/BackButton";
 import { FloatAddButton } from "../buttons/AddButton";
 import { SearchbarInput } from "../inputs/SearchbarInput";
+import { CustomButton } from "../buttons/CustomButton";
 
 interface ManageCustomizationItemCategoryProps {
   categories: CustomizationItemsCategoryModel[];
@@ -72,16 +73,30 @@ export function ManageCustomizationItemCategory({ categories }: ManageCustomizat
 
   return (
     <div className="flex flex-col font-sans h-full overflow-hidden">
-      <div className="flex overflow-y-auto px-6 font-sans scrollbar-hide">
-        <div className="flex w-full items-center justify-center mb-4">
-          <SearchbarInput
-            searchbarPlaceholder="Pesquisar categorias"
-            value={searchText}
-            onChange={(e) => {
-              setSearchText(e.target.value);
-            }}
-            className="bg-white shadow-xs"
-          />
+      <div className="flex overflow-y-auto font-sans scrollbar-hide">
+        <div className="flex w-full items-center justify-center md:gap-3 mb-2 md:mb-4">
+          <div className="grow">
+            <SearchbarInput
+              searchbarPlaceholder="Pesquisar categorias"
+              value={searchText}
+              onChange={(e) => {
+                setSearchText(e.target.value);
+              }}
+              className="bg-white shadow-xs"
+            />
+          </div>
+
+          <div>
+            <CustomButton 
+              onClick={(e: React.MouseEvent) => handleOpenCategoryModal(e)}
+              className={`hidden md:flex lg:flex-row py-2 lg:px-8 rounded-lg shadow-xs
+                bg-primary text-white hover:bg-primary/90 font-bold text-md
+              `}
+            >
+              <Plus className="w-6 h-6" />
+              <span>Adicionar</span>
+            </CustomButton>
+          </div>
           
           {searchText.length > 0 && (
             <button
@@ -95,7 +110,7 @@ export function ManageCustomizationItemCategory({ categories }: ManageCustomizat
           )}
         </div>
         
-        <div className="fixed bottom-25 right-7 z-15">
+        <div className="fixed md:hidden bottom-22 right-5 z-15">
           <FloatAddButton
             pushRoute={'#'}
             onClick={(e: React.MouseEvent) => handleOpenCategoryModal(e)}
@@ -104,7 +119,9 @@ export function ManageCustomizationItemCategory({ categories }: ManageCustomizat
         </div>
       </div>
 
-      <div className="flex-1 flex flex-col gap-2 overflow-y-auto px-6 font-sans scrollbar-hide">
+      <div className={`flex-1 flex flex-col gap-2 overflow-y-auto font-sans scrollbar-hide
+        md:grid md:grid-cols-2 xl:grid-cols-3 md:gap-2`}
+      >
         {filteredData.map((category: CustomizationItemsCategoryModel) => (
           <div 
             key={category.name} 
@@ -114,7 +131,7 @@ export function ManageCustomizationItemCategory({ categories }: ManageCustomizat
             `}
           >
             {category.image_url ? (
-              <div className="relative w-15 h-15 shrink-0">
+              <div className="relative w-15 h-15 md:w-25 md:h-25 shrink-0">
                 <Image
                   src={category.image_url}
                   alt="preview"
@@ -128,7 +145,7 @@ export function ManageCustomizationItemCategory({ categories }: ManageCustomizat
             ) : (
               <div 
                 className={`shrink-0 flex items-center justify-center w-15 h-15 
-                  rounded-lg bg-gray-200
+                  rounded-lg bg-gray-200 md:w-25 md:h-25
                 `}
               >
                 <span className="text-[0.6rem] text-secondary px-2 text-center font-medium">
@@ -137,21 +154,30 @@ export function ManageCustomizationItemCategory({ categories }: ManageCustomizat
               </div>
             )}
             
-            <div className="flex flex-col grow justify-center w-full">
+            <div className="flex flex-col grow justify-between w-full">
               <span className="font-bold text-secondary">
                 {category.name}
               </span>
-            </div>
-
-            <div className="flex w-full items-center justify-end gap-6">
-              <div className="flex flex-col items-center">
+              <div className="hidden md:flex gap-4 items-center">
+                <span className={`font-medium text-sm ${category.available ? 'text-green-600' : 'text-red-500'}`}>
+                  Disponível:
+                </span>
                 <ToggleCustomizationItemAvailableSwitch
                   idProduct={category.id}
                   available={category.available}
                   itemType={ItemsCustomizationTypes.category}
                 />
               </div>
+            </div>
 
+            <div className="flex w-full items-center md:items-end justify-end gap-4">
+              <div className="flex md:hidden gap-4 items-center">
+                <ToggleCustomizationItemAvailableSwitch
+                  idProduct={category.id}
+                  available={category.available}
+                  itemType={ItemsCustomizationTypes.category}
+                />
+              </div>
               <button 
                 type="button"
                 aria-label="Deletar Categoria"
@@ -218,9 +244,9 @@ export function ManageCustomizationItemCategory({ categories }: ManageCustomizat
         </div>
       </CustomModal>
 
-      <div className="shrink-0 mt-auto bg-background-alternative pt-2">
-        <hr className="border-muted-foreground/50 mb-4 mx-6" />
-        <div className="flex mx-6 my-4">
+      <div className="shrink-0 md:hidden mt-auto bg-background-alternative z-10">
+        <hr className="border-muted-foreground/50 my-2" />
+        <div className="flex flex-col gap-4">
           <BackButton backRoute />
         </div>
       </div>

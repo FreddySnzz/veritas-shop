@@ -8,14 +8,14 @@ import ButtonScrollDown from "./buttons/ButtonScrollDown";
 import { CatalogButton } from "./buttons/CatalogButton";
 import { WhatsAppButtonFixed } from "./buttons/WhatsAppButton";
 import UserModel from "@/data/models/User.model";
-import { getAdminInfoAction } from "@/app/actions/users.action";
+import { getCachedAdminInfoAction } from "@/app/actions/cache.actions";
 
 export default function Apresentation() {
   const [user, setUser] = useState<UserModel>();
 
   useEffect(() => {
     const fetchUser = async () => {
-      const user = await getAdminInfoAction();
+      const user = await getCachedAdminInfoAction();
       setUser(user);
     };
     fetchUser();

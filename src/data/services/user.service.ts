@@ -10,6 +10,7 @@ import {
 } from "firebase/firestore";
 import UserModel from "../models/User.model";
 import { Collections } from "../types/collections.enum";
+import { unstable_cache } from "next/cache";
 
 export class UserServiceError extends Error {
   status: number;
@@ -78,3 +79,12 @@ export async function updateUser(
 
   return updatedData;
 };
+
+export const getCachedAdminInfo = unstable_cache(
+  async () => getUserByEmail('root.admin@veritasatelie.com'),
+  ['admin_info'],
+  {
+    revalidate: 86400,
+    tags: ['admin_info'],
+  }
+);

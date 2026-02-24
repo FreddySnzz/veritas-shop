@@ -2,10 +2,12 @@ import { notFound } from "next/navigation";
 import { Header } from "@/components/Header";
 import ProductModel from "@/data/models/Product.model";
 import ProductPageLayout from "@/components/ProductPageLayout";
-import { getCachedProductsAction } from "../actions/cache.actions";
+import { 
+  getCachedAdminInfoAction, 
+  getCachedProductsAction 
+} from "../actions/cache.actions";
 import { mountProductUrl } from "@/data/functions/removeAccentsAndSpaces";
 import Footer from "@/components/Footer";
-import { getAdminInfoAction } from "../actions/users.action";
 
 interface PageProps {
   params: Promise<{
@@ -14,7 +16,7 @@ interface PageProps {
 };
 
 export default async function AddProductCatalogPage({ params }: PageProps) {
-  const { user } = await getAdminInfoAction();
+  const { user } = await getCachedAdminInfoAction();
   const { item } = await params;
   const getProducts = await getCachedProductsAction();
   const availableProducts = getProducts?.filter((product: ProductModel) => product.available);
