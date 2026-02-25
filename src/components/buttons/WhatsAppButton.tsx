@@ -18,10 +18,10 @@ export function WhatsAppButton(props: WhatsAppButtonProps) {
       <button
         type="button"
         aria-label="Finalizar pedido no WhatsApp"
-        className={`w-full py-2 flex items-center justify-center gap-2 px-4
-          bg-linear-to-r from-green-500 to-green-600 
+        className={`flex items-center justify-center w-full px-4 py-3 gap-2 
+          bg-linear-to-r from-green-500 to-green-600 lg:text-lg
           text-white hover:from-green-600/90 hover:to-green-700/90
-          cursor-pointer transition-colors shadow-lg rounded-lg font-sans font-bold text-lg
+          cursor-pointer transition-colors shadow-lg rounded-lg font-sans font-bold 
         `}
       >
         <FaWhatsapp className="w-6 h-6" />

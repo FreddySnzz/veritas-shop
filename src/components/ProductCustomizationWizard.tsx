@@ -117,6 +117,7 @@ export default function ProductCustomizerWizard({
     isOpenImageHelperModal, 
     setIsOpenImageHelperModal
   ] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
   const router = useRouter();
 
   const wizardSteps = useMemo(() => {
@@ -217,7 +218,6 @@ export default function ProductCustomizerWizard({
   };
 
   const handleStepClick = (step: Step) => {
-    console.log(step);
     setCurrentStepIndex(wizardSteps.findIndex(
       s => s.id === step.id
     ));
@@ -252,23 +252,32 @@ export default function ProductCustomizerWizard({
   };
 
   const handleAddToCart = async () => {
-    if (!checkCompletion()) {
-      toast.error("Por favor, preencha todos os itens obrigatórios. (*)");
-      return;
+    setIsLoading(true);
+
+    try {
+      if (!checkCompletion()) {
+        toast.error("Por favor, preencha todos os itens obrigatórios. (*)");
+        return;
+      };
+  
+      const finalPrice = await calculateCustomizationPrice(baseProduct, customization);
+  
+      addItem({
+        id: baseProduct.id,
+        name: baseProduct.name,
+        price: baseProduct.initial_price,
+        customizationPrice: finalPrice || 0,
+        image: baseProduct?.images_url?.[0] || "",
+        customizable: true
+      }, customization);
+  
+      toast.success("Produto adicionado ao carrinho!");
+    } catch (error) {
+      console.log(error);
+      toast.error("Erro ao adicionar produto ao carrinho!");
+    } finally {
+      setIsLoading(false);
     };
-
-    const finalPrice = await calculateCustomizationPrice(baseProduct, customization);
-
-    addItem({
-      id: baseProduct.id,
-      name: baseProduct.name,
-      price: baseProduct.initial_price,
-      customizationPrice: finalPrice || 0,
-      image: baseProduct?.images_url?.[0] || "",
-      customizable: true
-    }, customization);
-
-    toast.success("Produto adicionado ao carrinho!");
   };
 
   const getItemsForCurrentStep = () => {
@@ -298,14 +307,13 @@ export default function ProductCustomizerWizard({
       return (
         <div className="flex flex-col gap-2 mt-4">
           <div className="bg-white py-3 px-4 rounded-lg text-xs text-primary font-medium">
-            <p>Dica¹: Caso adicione mais de uma palavra, será incluso um VALOR EXTRA.</p>
-
-          </div>
-          <div className="bg-white py-3 px-4 rounded-lg text-xs text-primary font-bold">
-            <p>Dica²: O máximo de letras por mistério é 10.</p>
+            <p>{`Dica¹: Dependendo da quantidade de letras/palavras, poderá ser cobrado um VALOR EXTRA.`}</p>
           </div>
           <div className="bg-white py-3 px-4 rounded-lg text-xs text-primary font-medium">
-            <p>Dica³: Dependendo da quantidade de letras/palavras será acrescido um valor ao valor final.</p>
+            <p>{`Dica²: 1 (uma) palavra com até 10 letras não afetará o VALOR FINAL.`}</p>
+          </div>
+          <div className="bg-white py-3 px-4 rounded-lg text-xs text-primary font-bold">
+            <p>{`Dica³: O máximo de letras por mistério é 10.`}</p>
           </div>
           <MultiTextInput />
         </div>
@@ -342,10 +350,11 @@ export default function ProductCustomizerWizard({
               className={`flex w-full md:w-1/2 items-center justify-center px-4 py-3 transition-colors
                 bg-primary text-white rounded-xl font-bold gap-3 shadow-lg hover:bg-primary/90 
                 ${!completed ? 'cursor-not-allowed' : 'cursor-pointer'}
+                ${isLoading ? 'cursor-wait' : ''}
               `}
             >
               <ShoppingCart className="w-5 h-5" />
-              <span>Adicionar ao Carrinho</span>
+              <span>{isLoading ? 'Adicionando...' : 'Adicionar ao Carrinho'}</span>
             </button>
           )}
         </div>

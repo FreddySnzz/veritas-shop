@@ -11,7 +11,7 @@ import { CustomButton } from "./buttons/CustomButton";
 import { formatAndCapitalize } from "@/data/functions/formatAndCapitalize";
 import ClearCartModal from "./modals/ClearCart";
 import DeleteItemCartModal from "./modals/DeleteItemCart";
-import CartAlert from "./CartAlert";
+import Alert from "./Alert";
 
 export default function Sidebar() {
   const { isSidebarOpen, closeSidebar } = useApp();
@@ -124,7 +124,10 @@ export default function Sidebar() {
             ) : (
               <>
                 <div className="space-y-8">
-                  <CartAlert />
+                  <Alert
+                    title="Os produtos no carrinho não estão reservados."
+                    subtitle="Finalize seu pedido antes que o estoque acabe."
+                  />
 
                   {items.map((item) => (
                     <div key={item.cartId} className="flex flex-col gap-2">
@@ -245,7 +248,7 @@ export default function Sidebar() {
         </div>
 
         {!isCartEmpty && (
-          <div className="shrink-0 border-t border-gray-200 bg-white p-4 space-y-3">
+          <div className="shrink-0 border-t border-gray-200 bg-white px-4 py-1 space-y-3">
             <div className="flex items-center justify-between py-2 px-3">
               <CustomButton
                 type="button"

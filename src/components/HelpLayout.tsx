@@ -13,19 +13,19 @@ export default function HelpLayout({ whatsappNumber }: HelpLayoutProps) {
       id={'about'} 
       className="w-full h-full font-sans"
     >
-      <div className="flex flex-col">
+      <div className="flex flex-col items-between">
         <section id="faq">
-          <h1 className="font-bold text-secondary text-3xl">
+          <h1 className="font-bold text-secondary text-2xl md:text-3xl">
             Dúvidas Frequentes (FAQ)
           </h1>
 
           <div className="flex flex-col mt-4 gap-4">
             <ItemCollapse 
               title="Como realizar uma compra no site?"
-              titleClassName="text-lg"
+              titleClassName="md:text-lg text-start"
             >
-              <ItemContent>
-                <div className="flex flex-col text-gray-500 text-sm gap-2">
+              <ItemContent className="mt-1 mb-4">
+                <div className="flex flex-col text-gray-500 text-xs md:text-sm gap-2">
                   <span>
                     {`É muito simples realizar uma compra na loja online Veritas Ateliê. Basta seguir os passos abaixo:`}
                   </span>
@@ -67,10 +67,10 @@ export default function HelpLayout({ whatsappNumber }: HelpLayoutProps) {
 
             <ItemCollapse 
               title="Escolhi um produto que aceita imagem personalizada. Como enviar a imagem?"
-              titleClassName="text-lg"
+              titleClassName="md:text-lg text-start mb-1"
             >
-              <ItemContent>
-                <span className="text-gray-500 text-sm">
+              <ItemContent className="mt-1 mb-4">
+                <span className="flex text-gray-500 text-xs md:text-sm">
                   {`Caso tenha escolhido por um produto ou personalização que aceite imagem personalizada, 
                   você deve informar qual imagem deseja ao suporte na finalização do pedido, ou enviar o arquivo de imagem pelo WhatsApp.`}
                 </span>
@@ -79,10 +79,10 @@ export default function HelpLayout({ whatsappNumber }: HelpLayoutProps) {
 
             <ItemCollapse 
               title="É possível alterar um pedido após o fechamento?"
-              titleClassName="text-lg"
+              titleClassName="md:text-lg text-start mb-1"
             >
-              <ItemContent>
-                <span className="text-gray-500 text-sm">
+              <ItemContent className="mt-1 mb-4">
+                <span className="flex text-gray-500 text-xs md:text-sm">
                   {`Como os produtos são fabricados de forma exclusiva, 
                   não aceitamos devoluções ou cancelamentos por arrependimento após a conclusão da produção do mesmo, 
                   nem por erros cometidos pelo cliente no envio das informações (como tamanho errado ou erro de digitação).`}
@@ -92,11 +92,24 @@ export default function HelpLayout({ whatsappNumber }: HelpLayoutProps) {
 
             <ItemCollapse 
               title="Não tenho WhatsApp. Como faço para entrar em contato com o suporte?"
-              titleClassName="text-lg"
+              titleClassName="md:text-lg text-start mb-1"
             >
-              <ItemContent>
-                <span className="text-gray-500 text-sm">
+              <ItemContent className="mt-1 mb-4">
+                <span className="flex text-gray-500 text-xs md:text-sm">
                   {`Caso não tenha WhatsApp, entre em contato com o suporte diretamente pelo número ${whatsappNumber}.`}
+                </span>
+              </ItemContent>
+            </ItemCollapse>
+
+            <ItemCollapse 
+              title="Por que os valores mostrados no carrinho não são corretos?"
+              titleClassName="md:text-lg text-start mb-1"
+            >
+              <ItemContent className="mt-1 mb-4">
+                <span className="flex text-gray-500 text-xs md:text-sm">
+                  {`Os valores mostrados no carrinho são apenas uma estimativa, mas só para produtos que podem ser personalizados. 
+                  Ao finalizar o pedido, nossa equipe irá validar manualmente os itens que você escolheu e calcular o valor final com base nas informações fornecidas.
+                  Assim que confirmado, o valor real será informado para você no CHAT DE ATENDIMENTO (WhatsApp).`}
                 </span>
               </ItemContent>
             </ItemCollapse>
@@ -109,7 +122,7 @@ export default function HelpLayout({ whatsappNumber }: HelpLayoutProps) {
             title="Termos e Condições"
             href={`/ajuda/termos-e-condicoes`}
           >
-            <span className="font-bold text-lg hover:underline">
+            <span className="font-bold text-2xl hover:underline">
               Termos e Condições
             </span>
           </Link>

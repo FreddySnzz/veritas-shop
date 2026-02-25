@@ -18,10 +18,11 @@ import {
   formatAndCapitalize, 
   formatCurrency 
 } from "@/data/functions/formatAndCapitalize";
-import CartAlert from "./CartAlert";
 import SeeMoreProducts from "./SeeMoreProducts";
 import ProductModel from "@/data/models/Product.model";
 import { SupportButton } from "./buttons/SupportButton";
+import Alert from "./Alert";
+import Link from "next/link";
 
 interface CartProps extends React.HTMLAttributes<HTMLElement> {
   whatsappNumber?: string;
@@ -103,7 +104,7 @@ export default function Cart({
 
       Object.entries(customization || {}).forEach(([key, value]) => {
         if (!key || !value) return;
-        mensagem += `• ${renderCustomizationDesc(key, value)}`;
+        mensagem += `${renderCustomizationDesc(key, value)}`;
       });
 
       mensagem += `\n`;
@@ -144,16 +145,19 @@ export default function Cart({
           ) : (
             <>
               <div className="mt-2 mb-4">
-                <CartAlert />
+                <Alert
+                  title="Os produtos no carrinho não estão reservados."
+                  subtitle="Finalize seu pedido antes que o estoque acabe."
+                />
               </div>
 
               <div className="flex">
-                <div className="w-full lg:w-2/3 space-y-2">
+                <div className="w-full lg:w-2/3 space-y-4">
                   {items.map((item) => (
                     <div 
                       key={item.cartId} 
                       className={`flex flex-col gap-2 w-full
-                        bg-white rounded-lg p-4 border border-gray-100
+                        bg-white rounded-lg px-4 lg:px-6 py-3 border border-gray-100
                       `}
                     >
                       <span className="font-bold ">
@@ -289,6 +293,11 @@ export default function Cart({
                       <hr className="border-dashed border-gray-300 w-full" />
                       <span>{calculeTotalCartValue()}</span>
                     </div>
+                    <Alert 
+                      title="Lembre-se que o valor mostrado é apenas uma estimativa."
+                      subtitle="O valor real será confirmado na finalização do pedido com nosso atendimento."
+                      className="flex font-medium mt-4"
+                    />
                   </div>
 
                   <div className="shrink-0 mt-auto">
@@ -305,7 +314,20 @@ export default function Cart({
                         <span>Limpar Carrinho</span>
                       </button>
                     </div>
-                    <hr className="md:hidden border-muted-foreground/50 my-2" />
+                    <Alert className="flex font-medium mb-4">
+                      <span>{`Ao clicar em "Finalizar Pedido", você declara que leu e concorda com nossos `} 
+                        <Link 
+                          href="/ajuda/termos-e-condicoes"
+                          className="font-bold hover:underline"
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          aria-label="Ver Termos e Condições"
+                          title="Ver Termos e Condições"
+                        >
+                          <span> Termos e Condições.</span>
+                        </Link>
+                      </span>
+                    </Alert>
                     <WhatsAppButton message={generateWhatsAppMessage(items)} />
                     <SupportButton messageToSupport="Olá, estou tendo problemas no meu carrinho!" />
                   </div>
@@ -384,9 +406,28 @@ export default function Cart({
               <hr className="border-dashed border-gray-300 w-full" />
               <span>{calculeTotalCartValue()}</span>
             </div>
+            <Alert 
+              title="Lembre-se que o valor mostrado é apenas uma estimativa."
+              subtitle="O valor real será confirmado na finalização do pedido com nosso atendimento."
+              className="flex font-medium my-2"
+            />
+            <Alert className="flex font-medium my-2">
+              <span>{`Ao clicar em "Finalizar Pedido", você declara que leu e concorda com nossos `}
+                <Link 
+                  href="/ajuda/termos-e-condicoes"
+                  className="font-bold hover:underline"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  aria-label="Ver Termos e Condições"
+                  title="Ver Termos e Condições"
+                >
+                  <span> Termos e Condições.</span>
+                </Link>
+              </span>
+            </Alert>
             <SupportButton 
               messageToSupport="Olá, estou tendo problemas no meu carrinho!"
-              className="mb-4"
+              className="my-2"
             />
           </div>
         </div>
