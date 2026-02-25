@@ -2,6 +2,7 @@ import { Header } from "@/components/Header";
 import Footer from "@/components/Footer";
 import DynamicBreadcrumb from "@/components/DynamicBreadcrumb";
 import { getCachedAdminInfoAction } from "@/app/actions/cache.actions";
+import TermsAndConditionsLayout from "@/components/TermsAndConditionsLayout";
 
 export default async function TermsAndConditionsPage() {
   const { user } = await getCachedAdminInfoAction();
@@ -14,7 +15,7 @@ export default async function TermsAndConditionsPage() {
           <DynamicBreadcrumb className="mt-14 py-4 md:mt-16 md:py-6" />
           <hr className="border-muted-foreground/50" />
         </div>
-        termos e condicoes
+        <TermsAndConditionsLayout />
       </main>
       <Footer 
         whatsappNumber={user?.phone || '5586994379414'}

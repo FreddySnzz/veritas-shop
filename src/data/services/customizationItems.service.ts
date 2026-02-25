@@ -50,13 +50,13 @@ export async function getCustomizationItemById(
   return data;
 };
 
-export async function getCustomizationItemByName(
-  name: string
+export async function getCustomizationItemByRef(
+  ref: string
 ): Promise<CustomizationItemsModel[]> {
-  const categoryRef = collection(db, Collections.CUSTOMIZATION_ITEMS_COLLECTION);
+  const customizationItemRef = collection(db, Collections.CUSTOMIZATION_ITEMS_COLLECTION);
 
-  const nameQuery = query(categoryRef, where("name", "==", name));
-  const refSnap = await getDocs(nameQuery);
+  const refQuery = query(customizationItemRef, where("ref", "==", ref));
+  const refSnap = await getDocs(refQuery);
 
   return refSnap.docs.map((doc) => ({
     id: doc.id,

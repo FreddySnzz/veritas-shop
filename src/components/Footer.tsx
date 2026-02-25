@@ -105,19 +105,19 @@ export default function Footer({
                 </p>
 
                 <Link 
-                  aria-label="Ajuda"
-                  title="Ajuda"
-                  href={`/ajuda`}
-                >
-                  <span className="hover:underline">Podemos ajudar?</span>
-                </Link>
-
-                <Link 
                   aria-label="Sobre nós"
                   title="Sobre nós"
                   href={`/ajuda/sobre`}
                 >
                   <span className="hover:underline">Sobre nós</span>
+                </Link>
+
+                <Link 
+                  aria-label="Ajuda"
+                  title="Ajuda"
+                  href={`/ajuda`}
+                >
+                  <span className="hover:underline">Podemos ajudar?</span>
                 </Link>
 
                 <Link 
@@ -134,6 +134,18 @@ export default function Footer({
                   href={`/ajuda/termos-e-condicoes`}
                 >
                   <span className="hover:underline">Termos e Condições</span>
+                </Link>
+
+                <Link 
+                  aria-label="Relatar Problema"
+                  title="Relatar Problema"
+                  rel="noopener noreferrer"
+                  target="_blank"
+                  href={`https://wa.me/${whatsappNumber || 
+                    "5586994379414"}?text=${encodeURIComponent("Olá, gostaria de informar um problema que encontrei na Veritas Ateliê!")}
+                  `}
+                >
+                  <span className="hover:underline">Relatar Problema</span>
                 </Link>
 
                 <Link 

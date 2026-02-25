@@ -22,6 +22,7 @@ export interface BaseProduct {
   id: string;
   name: string;
   price: number;
+  customizationPrice: number;
   image: string;
   customizable: boolean;
 };

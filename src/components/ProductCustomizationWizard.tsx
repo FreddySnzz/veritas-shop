@@ -31,6 +31,7 @@ import {
 } from '@/data/types/customization.type';
 import CustomModal from './modals/CustomModal';
 import WizardStepsBreadcrumb from './WizardStepsBreadcrumb';
+import { calculateCustomizationPrice } from '@/data/functions/calculateCustomizationPrice';
 
 const slideVariants = {
   enter: (direction: number) => ({
@@ -250,16 +251,19 @@ export default function ProductCustomizerWizard({
     return isComplete(mandatoryKeys, []);
   };
 
-  const handleAddToCart = () => {
+  const handleAddToCart = async () => {
     if (!checkCompletion()) {
       toast.error("Por favor, preencha todos os itens obrigatórios. (*)");
       return;
     };
 
+    const finalPrice = await calculateCustomizationPrice(baseProduct, customization);
+
     addItem({
       id: baseProduct.id,
       name: baseProduct.name,
       price: baseProduct.initial_price,
+      customizationPrice: finalPrice || 0,
       image: baseProduct?.images_url?.[0] || "",
       customizable: true
     }, customization);

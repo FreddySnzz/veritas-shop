@@ -232,10 +232,10 @@ export function ProductForm({
       <form 
         id="product-catalog-form"
         onSubmit={handleSubmit} 
-        className="flex-1 flex flex-col gap-4 overflow-y-auto px-6 pb-2 scrollbar-hide"
+        className="flex-1 flex flex-col gap-4 overflow-y-auto scrollbar-hide"
       >
-        <div className="flex flex-col gap-4">
-          <div className="flex flex-col gap-2">
+        <div className="flex flex-col w-full lg:flex-row gap-4 lg:gap-8">
+          <div className="flex flex-col gap-2 w-full">
             <Label htmlFor="name" className="text-sm">
               Nome *
             </Label>
@@ -250,21 +250,8 @@ export function ProductForm({
               disabled={isLoading}
             />
           </div>
-
-          <div className="flex flex-col gap-2">
-            <Label htmlFor="desc" className="text-sm">Descrição (Opcional)</Label>
-            <Textarea
-              id="description"
-              placeholder="Descrição do Produto"
-              onChange={(e) => setDesc(e.target.value)}
-              value={desc}
-              rows={4}
-              className="bg-white focus-visible:ring-0 text-secondary overflow-y-auto"
-              disabled={isLoading}
-            />
-          </div>
-
-          <div className="flex flex-col gap-2">
+          
+          <div className="flex flex-col gap-2 w-full">
             <Label htmlFor="initialPrice" className="text-sm">
               Preço *
             </Label>
@@ -282,135 +269,154 @@ export function ProductForm({
               />
             </div>
           </div>
+        </div>
 
-          <div className="flex flex-col">
-            <div className="flex items-center justify-between">
-              <Label htmlFor="image" className="text-sm">
-                Galeria de Imagens (Opcional)
-              </Label>
-              <span className="text-xs text-gray-400">*.jpg / *.png - máx 10MB</span>
+        <div className="flex flex-col w-full lg:flex-row gap-4 lg:gap-8">
+          <div className="flex flex-col gap-2 w-full">
+            <Label htmlFor="desc" className="text-sm">Descrição (Opcional)</Label>
+            <Textarea
+              id="description"
+              placeholder="Descrição do Produto"
+              onChange={(e) => setDesc(e.target.value)}
+              value={desc}
+              rows={4}
+              className="bg-white focus-visible:ring-0 text-secondary overflow-y-auto"
+              disabled={isLoading}
+            />
+          </div>
+        </div>
+
+        <div className="flex flex-col w-full">
+          <div className="flex items-center justify-between">
+            <Label htmlFor="image" className="text-sm">
+              Galeria de Imagens (Opcional)
+            </Label>
+            <span className="text-xs text-gray-400">*.jpg / *.png - máx 10MB</span>
+          </div>
+
+          <Input
+            id="image"
+            type="file"
+            accept="image/*"
+            multiple
+            ref={fileInputRef}
+            onChange={handleFileSelect}
+            className="hidden"
+          />
+
+          <button
+            type="button"
+            onClick={handleButtonClick}
+            disabled={isLoading}
+            className={`flex gap-2 items-center justify-center px-4 py-2 font-medium cursor-pointer mt-2
+              bg-gray-100 hover:bg-gray-200 text-secondary rounded-lg 
+              transition-all border border-dashed border-gray-300
+            `}
+          >
+            <Images className="w-4 h-4 text-secondary" />
+            <span>Adicionar Imagens</span>
+          </button>
+
+          {(existingImages.length > 0 || newFiles.length > 0) && (
+            <div className={`grid grid-cols-2 sm:grid-cols-3 xl:grid-cols-4 gap-4 mt-4 
+              bg-gray-50 p-4 rounded-xl border border-gray-100`}
+            >
+              {existingImages.map((url, index) => (
+                <div 
+                  key={`existing-${index}`} 
+                  className="relative aspect-square group w-40 h-40 md:w-60 md:h-60"
+                >
+                  <Image
+                    src={url}
+                    alt={`Produto imagem ${index + 1}`}
+                    fill
+                    loading="eager"
+                    className="object-cover rounded-lg border border-gray-200"
+                    sizes="(max-width: 768px) 50vw, 33vw"
+                  />
+
+                  <div className={cn(`absolute inset-0 flex items-center justify-center 
+                    transition-opacity rounded-lg bg-black/40 opacity-0 group-hover:opacity-100`, 
+                    isTouchDevice && `bg-black/20 opacity-100`)
+                  }>
+                    <button
+                      type="button"
+                      aria-label="Remover imagem"
+                      title="Remover imagem"
+                      onClick={() => handleRemoveExistingImage(url)}
+                      className={`bg-white/90 p-2 text-red-500 hover:bg-white hover:scale-110 
+                        transition-all cursor-pointer rounded-full
+                      `}
+                    >
+                      <Trash className="w-4 h-4" />
+                    </button>
+                  </div>
+                  <span className="absolute bottom-1 right-1 bg-black/60 text-white text-[10px] px-1.5 rounded">
+                    Salva
+                  </span>
+                </div>
+              ))}
+
+              {newFilesPreviews.map((previewUrl, index) => (
+                <div 
+                  key={`new-${index}`} 
+                  className="relative aspect-square group w-40 h-40 md:w-60 md:h-60"
+                >
+                  <Image
+                    src={previewUrl}
+                    alt={`Nova imagem ${index + 1}`}
+                    fill
+                    className="object-cover rounded-lg border-2 border-primary/50"
+                    sizes="(max-width: 768px) 50vw, 33vw"
+                  />
+
+                  <div className={`flex items-center justify-center absolute inset-0 
+                    bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity rounded-lg`}
+                  >
+                    <button
+                      type="button"
+                      aria-label="Cancelar upload"
+                      title="Cancelar upload"
+                      onClick={() => handleRemoveNewFile(index)}
+                      className={`bg-white/90 p-2 rounded-full text-red-500 
+                        hover:bg-white hover:scale-110 transition-all cursor-pointer
+                      `}
+                    >
+                      <X className="w-4 h-4" />
+                    </button>
+                  </div>
+                  <span className="absolute bottom-1 right-1 bg-primary text-white text-[10px] px-1.5 rounded">
+                    Nova
+                  </span>
+                </div>
+              ))}
+            </div>
+          )}
+        </div>
+
+        <div className="flex flex-col gap-4">
+          <div className="flex flex-col w-full lg:flex-row gap-4 lg:gap-8">
+            <div className="flex items-center w-full justify-between px-4 py-3 bg-white rounded-lg border">
+              <Label htmlFor="available">Produto Disponível no Estoque?</Label>
+              <Switch 
+                id="available" 
+                checked={available}
+                onCheckedChange={setAvailable}
+                disabled={isLoading}
+                className="cursor-pointer"
+              />
             </div>
 
-            <Input
-              id="image"
-              type="file"
-              accept="image/*"
-              multiple
-              ref={fileInputRef}
-              onChange={handleFileSelect}
-              className="hidden"
-            />
-
-            <button
-              type="button"
-              onClick={handleButtonClick}
-              disabled={isLoading}
-              className={`flex gap-2 items-center justify-center px-4 py-2 font-medium cursor-pointer mt-2
-                bg-gray-100 hover:bg-gray-200 text-secondary rounded-lg 
-                transition-all border border-dashed border-gray-300
-              `}
-            >
-              <Images className="w-4 h-4 text-secondary" />
-              <span>Adicionar Imagens</span>
-            </button>
-
-            {(existingImages.length > 0 || newFiles.length > 0) && (
-              <div className={`grid grid-cols-2 sm:grid-cols-3 gap-4 mt-4 
-                bg-gray-50 p-4 rounded-xl border border-gray-100`}
-              >
-                {existingImages.map((url, index) => (
-                  <div 
-                    key={`existing-${index}`} 
-                    className="relative aspect-square w-full group"
-                  >
-                    <Image
-                      src={url}
-                      alt={`Produto imagem ${index + 1}`}
-                      fill
-                      loading="eager"
-                      className="object-cover rounded-lg border border-gray-200"
-                      sizes="(max-width: 768px) 50vw, 33vw"
-                    />
-
-                    <div className={cn(`absolute inset-0 flex items-center justify-center 
-                      transition-opacity rounded-lg bg-black/40 opacity-0 group-hover:opacity-100`, 
-                      isTouchDevice && `bg-black/20 opacity-100`)
-                    }>
-                      <button
-                        type="button"
-                        aria-label="Remover imagem"
-                        title="Remover imagem"
-                        onClick={() => handleRemoveExistingImage(url)}
-                        className={`bg-white/90 p-2 text-red-500 hover:bg-white hover:scale-110 
-                          transition-all cursor-pointer rounded-full
-                        `}
-                      >
-                        <Trash className="w-4 h-4" />
-                      </button>
-                    </div>
-                    <span className="absolute bottom-1 right-1 bg-black/60 text-white text-[10px] px-1.5 rounded">
-                      Salva
-                    </span>
-                  </div>
-                ))}
-
-                {newFilesPreviews.map((previewUrl, index) => (
-                  <div 
-                    key={`new-${index}`} 
-                    className="relative aspect-square w-full group"
-                  >
-                    <Image
-                      src={previewUrl}
-                      alt={`Nova imagem ${index + 1}`}
-                      fill
-                      className="object-cover rounded-lg border-2 border-primary/50"
-                      sizes="(max-width: 768px) 50vw, 33vw"
-                    />
-
-                    <div className={`flex items-center justify-center absolute inset-0 
-                      bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity rounded-lg`}
-                    >
-                      <button
-                        type="button"
-                        aria-label="Cancelar upload"
-                        title="Cancelar upload"
-                        onClick={() => handleRemoveNewFile(index)}
-                        className={`bg-white/90 p-2 rounded-full text-red-500 
-                          hover:bg-white hover:scale-110 transition-all cursor-pointer
-                        `}
-                      >
-                        <X className="w-4 h-4" />
-                      </button>
-                    </div>
-                    <span className="absolute bottom-1 right-1 bg-primary text-white text-[10px] px-1.5 rounded">
-                      Nova
-                    </span>
-                  </div>
-                ))}
-              </div>
-            )}
-          </div>
-
-          <div className="flex items-center w-full justify-between px-4 py-3 bg-white rounded-lg border">
-            <Label htmlFor="available">Produto Disponível no Estoque?</Label>
-            <Switch 
-              id="available" 
-              checked={available}
-              onCheckedChange={setAvailable}
-              disabled={isLoading}
-              className="cursor-pointer"
-            />
-          </div>
-
-          <div className="flex items-center w-full justify-between px-4 py-3 bg-white rounded-lg border">
-            <Label htmlFor="customizable">Produto Customizável?</Label>
-            <Switch 
-              id="customizable"
-              checked={customizable}
-              onCheckedChange={handleMainSwitchChange}
-              disabled={isLoading}
-              className="cursor-pointer"
-            />
+            <div className="flex items-center w-full justify-between px-4 py-3 bg-white rounded-lg border">
+              <Label htmlFor="customizable">Produto Customizável?</Label>
+              <Switch 
+                id="customizable"
+                checked={customizable}
+                onCheckedChange={handleMainSwitchChange}
+                disabled={isLoading}
+                className="cursor-pointer"
+              />
+            </div>
           </div>
 
           {customizable && (
@@ -491,28 +497,29 @@ export function ProductForm({
       </form>
 
       <div className="shrink-0 mt-auto bg-background-alternative pt-2">
-        <hr className="border-muted-foreground/50 mb-4 mx-6" />
-        <div className="flex mx-6 my-4 gap-4">
-          <BackButton backRoute />
-
-          <button 
-            type="submit" 
-            aria-label={isEditMode ? "Salvar Alterações" : "Criar Produto"}
-            form="product-catalog-form"
-            className={`flex w-full px-4 py-3 rounded-lg font-medium
-              bg-primary text-white items-center justify-center hover:bg-primary/90 
-              cursor-pointer transition-colors
-            `}
-            disabled={isLoading}
-          >
-            {isLoading ? (
-              <div className="flex justify-center items-center gap-2"> 
-                <span>Salvando...</span>
-              </div>
-            ) : (
-              isEditMode ? "Salvar Alterações" : "Criar Produto"
-            )}
-          </button>
+        <hr className="border-muted-foreground/50 mb-2 lg:hidden" />
+        <div className="flex lg:justify-end">
+          <div className="flex gap-4 w-full lg:w-1/2 xl:w-1/3">
+            <BackButton backRoute />
+            <button 
+              type="submit" 
+              aria-label={isEditMode ? "Salvar Alterações" : "Criar Produto"}
+              form="product-catalog-form"
+              className={`flex w-full px-4 py-3 rounded-lg font-medium
+                bg-primary text-white items-center justify-center hover:bg-primary/90 
+                cursor-pointer transition-colors
+              `}
+              disabled={isLoading}
+            >
+              {isLoading ? (
+                <div className="flex justify-center items-center gap-2"> 
+                  <span>Salvando...</span>
+                </div>
+              ) : (
+                isEditMode ? "Salvar Alterações" : "Criar Produto"
+              )}
+            </button>
+          </div>
         </div>
       </div>
     </div>

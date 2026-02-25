@@ -1,7 +1,6 @@
 'use client';
 
 import { useCart } from "@/data/context/CartContext";
-import { useCustomization } from "@/data/context/CustomizationContext";
 import { useLockBodyScroll } from "@/data/hook/useBodyLockScroll";
 import { toast } from "sonner";
 
@@ -15,13 +14,11 @@ export default function ClearCartModal({
   onClose 
 }: ClearCartProps) {
   const { clearCart } = useCart();
-  const { resetCustomization } = useCustomization()
   useLockBodyScroll(modalOpen);
 
   const handleDelete = () => {
     try {
       clearCart();
-      resetCustomization();
       toast.success("Carrinho limpo com sucesso!");
     } catch (error) {
       console.error("Erro ao limpar carrinho:", error);

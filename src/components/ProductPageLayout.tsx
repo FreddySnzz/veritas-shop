@@ -53,7 +53,8 @@ export default function ProductPageLayout({
       name: product.name,
       price: product.initial_price,
       image: product?.images_url?.[0] || "",
-      customizable: false
+      customizable: false,
+      customizationPrice: 0,
     });
     
     toast.success("Produto adicionado ao carrinho!", { duration: 1500 });
@@ -219,7 +220,7 @@ export default function ProductPageLayout({
                 </div>
               )}
 
-              <div className="hidden lg:flex flex-col gap-4 pt-6 w-md">
+              <div className="hidden lg:flex flex-col gap-4 pt-6 lg:w-lg xl:w-full">
                 <span className="font-bold text-sm">Descrição do Produto</span>
                 <span className="font-medium text-sm text-gray-500">
                   {product.desc}

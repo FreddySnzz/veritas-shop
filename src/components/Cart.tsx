@@ -59,7 +59,14 @@ export default function Cart({
   };
 
   const calculeTotalCartValue = () => {
-    const total = items.reduce((acc, item) => acc + item.quantity * item.product.price, 0);
+    const total = items.reduce(
+      (acc, item) => (
+        item.product.customizationPrice > 0 ? 
+        acc + item.quantity * (item.product.price + item.product.customizationPrice) : 
+        acc + item.quantity * item.product.price
+      ), 0
+    );
+
     return formatCurrency(total);
   };
 
@@ -84,12 +91,14 @@ export default function Cart({
     
     items.forEach((item: CartProductItem, index: number) => {
       const { product, quantity, customization } = item;
-      const subtotal = product.price * quantity;
+      if (!product.customizationPrice) product.customizationPrice = 0;
+      const subtotal = (product.price + product.customizationPrice) * quantity;
       totalGeral += subtotal;
       
       mensagem += `----------------------------------------------------\n`;
       mensagem += `*ITEM ${index + 1}: ${product.name}*\n`;
       mensagem += `Quantidade: ${quantity} (${formatCurrency(product.price)} / und)\n`;
+      if (product.customizationPrice > 0) mensagem += `Personalização: (${formatCurrency(product.customizationPrice)} / item)\n`;
       mensagem += `----------------------------------------------------\n`;
 
       Object.entries(customization || {}).forEach(([key, value]) => {
@@ -229,9 +238,12 @@ export default function Cart({
                             </button>
                           </div>
                         </div>
-                        <span className="text-sm text-gray-400 font-medium">
-                          {item.quantity} x {formatCurrency(item.product.price)}
-                        </span>
+                        
+                        <div className="flex flex-col text-gray-400 justify-end items-end text-xs">
+                          <span className="text-sm font-medium">
+                            {item.quantity} x {formatCurrency(item.product.price)}
+                          </span>
+                        </div>
                       </div>
                     </div>
                   ))}
@@ -243,18 +255,38 @@ export default function Cart({
                       Resumo do Pedido
                     </span>
 
-                    <div className="flex justify-between mt-8">
-                      <span>{cartCount} {cartCount > 1 ? "itens" : "item"}</span>
-                      <span>{calculeTotalCartValue()}</span>
+                    <div className="flex flex-col mt-2 gap-2">
+                      {items.map((item) => (
+                        <div 
+                          key={item.cartId}
+                          className="flex flex-col"
+                        >
+                          <div className="flex justify-between w-full gap-2 items-baseline">
+                            <span className="text-nowrap">
+                              {item.quantity} {item.quantity > 1 ? "itens" : "item"}
+                            </span>
+                            <hr className="border-dashed border-gray-300 w-full" />
+                            <span>{formatCurrency(item.product.price * item.quantity)}</span>
+                          </div>
+                          {item.product.customizationPrice > 0 && (
+                            <div className="flex justify-between text-xs text-gray-400 font-medium">
+                              <span>Personalização</span>
+                              <span>
+                                + {formatCurrency(item.product.customizationPrice * item.quantity)}
+                              </span>
+                            </div>
+                          )}
+                        </div>
+                      ))}
                     </div>
-
-                    <div className="flex justify-between">
-                      <span>Entrega</span>
-                      <span>A combinar</span>
+                    <div className="flex justify-between mt-2 w-full gap-2 items-baseline">
+                      <span className="text-nowrap">Entrega</span>
+                      <hr className="border-dashed border-gray-300 w-full" />
+                      <span className="text-nowrap">A combinar</span>
                     </div>
-
-                    <div className="flex font-bold justify-between mt-6">
-                      <span>Total</span>
+                    <div className="flex font-bold justify-between mt-6 w-full gap-2 items-baseline">
+                      <span className="text-nowrap">Total</span>
+                      <hr className="border-dashed border-gray-300 w-full" />
                       <span>{calculeTotalCartValue()}</span>
                     </div>
                   </div>
@@ -273,7 +305,7 @@ export default function Cart({
                         <span>Limpar Carrinho</span>
                       </button>
                     </div>
-                    <hr className="border-muted-foreground/50 my-2" />
+                    <hr className="md:hidden border-muted-foreground/50 my-2" />
                     <WhatsAppButton message={generateWhatsAppMessage(items)} />
                     <SupportButton messageToSupport="Olá, estou tendo problemas no meu carrinho!" />
                   </div>
@@ -310,30 +342,51 @@ export default function Cart({
       </div>
 
       <div className="shrink-0 mt-auto md:hidden">
-        <div className="flex flex-col md:hidden w-full lg:w-1/3">
-          <hr className="border-muted-foreground/50 my-2" />
+        <div className="flex flex-col w-full mt-2">
           <div className="flex-1 flex-col">
             <span className="font-bold text-lg text-secondary uppercase">
               Resumo do Pedido
             </span>
 
-            <div className="flex justify-between mt-8">
-              <span>{cartCount} {cartCount > 1 ? "itens" : "item"}</span>
-              <span>{calculeTotalCartValue()}</span>
+            <div className="flex flex-col mt-2 gap-2">
+              {items.map((item) => (
+                <div 
+                  key={item.cartId}
+                  className="flex flex-col"
+                >
+                  <div className="flex justify-between w-full gap-2 items-baseline">
+                    <span className="text-nowrap">
+                      {item.quantity} {item.quantity > 1 ? "itens" : "item"}
+                    </span>
+                    <hr className="border-dashed border-gray-300 w-full" />
+                    <span>{formatCurrency(item.product.price * item.quantity)}</span>
+                  </div>
+                  {item.product.customizationPrice > 0 && (
+                    <div className="flex justify-between text-xs text-gray-400 font-medium">
+                      <span>Personalização</span>
+                      <span>
+                        + {formatCurrency(item.product.customizationPrice * item.quantity)}
+                      </span>
+                    </div>
+                  )}
+                </div>
+              ))}
             </div>
 
-            <div className="flex justify-between">
-              <span>Entrega</span>
-              <span>A combinar</span>
+            <div className="flex justify-between w-full gap-2 items-baseline">
+              <span className="text-nowrap">Entrega</span>
+              <hr className="border-dashed border-gray-300 w-full" />
+              <span className="text-nowrap">A combinar</span>
             </div>
 
-            <div className="flex font-bold justify-between mt-6">
-              <span>Total</span>
+            <div className="flex font-bold justify-between mt-6 w-full gap-2 items-baseline">
+              <span className="text-nowrap">Total</span>
+              <hr className="border-dashed border-gray-300 w-full" />
               <span>{calculeTotalCartValue()}</span>
             </div>
             <SupportButton 
               messageToSupport="Olá, estou tendo problemas no meu carrinho!"
-              className="mb-2"
+              className="mb-4"
             />
           </div>
         </div>
