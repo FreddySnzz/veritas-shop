@@ -26,11 +26,11 @@ export default async function Home() {
         search 
         data={availableProducts}
       />
-      <main className="flex-1 flex flex-col">
+      <main className={`flex-1 flex flex-col ${availableImages.length === 0 && 'mt-16'}`}>
         <PageFadeInAnimationWrapper>
           <CatalogCarrousel 
             images={availableImages}
-            className="mt-14 md:h-[60vh]"
+            className={`${availableImages.length === 0 && 'hidden'} mt-14 md:h-[60vh]`}
           />
           <div className="px-6 md:px-12 lg:px-32">
             <CatalogLayout products={availableProducts} />
