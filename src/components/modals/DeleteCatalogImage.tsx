@@ -2,6 +2,7 @@
 
 import { deleteCatalogImageAction } from "@/app/actions/catalogImages.action";
 import { useLockBodyScroll } from "@/data/hook/useBodyLockScroll";
+import { useState } from "react";
 import { toast } from "sonner";
 
 interface DeleteCatalogImageProps extends React.HTMLAttributes<HTMLElement> {
@@ -15,9 +16,11 @@ export default function DeleteCatalogImageModal({
   modalOpen, 
   onClose 
 }: DeleteCatalogImageProps) {
+  const [isLoading, setIsLoading] = useState(false);
   useLockBodyScroll(modalOpen);
 
   const handleDelete = async (id: string) => {
+    setIsLoading(true);
     try {
       await deleteCatalogImageAction(id);
       toast.success("Imagem apagada com sucesso!");
@@ -25,6 +28,7 @@ export default function DeleteCatalogImageModal({
       console.error("Erro ao apagar imagem:", error);
       toast.error("Erro ao apagar imagem.");
     } finally {
+      setIsLoading(false);
       onClose?.();
       window.location.reload();
     };
@@ -62,7 +66,13 @@ export default function DeleteCatalogImageModal({
               bg-primary text-white hover:bg-primary/90 transition-colors
             `}
           >
-            <span>Confirmar</span>
+            {isLoading ? (
+              <span className="animate-spin">
+                <span className="sr-only">Deletando...</span>
+              </span>
+            ) : (
+              <span>Deletar</span>
+            )}
           </div>
         </div>
       </div>

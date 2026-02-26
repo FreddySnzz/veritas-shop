@@ -119,78 +119,93 @@ export function ManageCustomizationItemCategory({ categories }: ManageCustomizat
         </div>
       </div>
 
-      <div className={`flex-1 flex flex-col gap-2 overflow-y-auto font-sans scrollbar-hide
-        md:grid md:grid-cols-2 xl:grid-cols-3 md:gap-2`}
-      >
-        {filteredData.map((category: CustomizationItemsCategoryModel) => (
-          <div 
-            key={category.name} 
-            onClick={() => handleEditCategory(category)}
-            className={`flex justify-between gap-4 w-full cursor-pointer
-              bg-white rounded-xl p-4 border border-gray-100
-            `}
+      {categories.length === 0 ? (
+        <div className={`flex flex-col w-full h-[55vh] gap-4 
+          items-center justify-center text-gray-400`}
+        >
+          <div className="flex flex-col items-center justify-center">
+            <span>Nenhuma categoria encontrada.</span>
+            <span className="font-bold text-sm">
+              {`Adicione uma nova categoria no botão "Adicionar".`}
+            </span>
+          </div>
+        </div>
+      ) : (
+        <>
+          <div className={`flex-1 flex flex-col gap-2 overflow-y-auto font-sans scrollbar-hide
+            md:grid md:grid-cols-2 xl:grid-cols-3 md:gap-2`}
           >
-            {category.image_url ? (
-              <div className="relative w-15 h-15 md:w-25 md:h-25 shrink-0">
-                <Image
-                  src={category.image_url}
-                  alt="preview"
-                  draggable="false"
-                  fill
-                  loading="eager"
-                  className="aspect-square rounded-lg object-cover shadow-sm"
-                  sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-                />
-              </div>
-            ) : (
+            {filteredData.map((category: CustomizationItemsCategoryModel) => (
               <div 
-                className={`shrink-0 flex items-center justify-center w-15 h-15 
-                  rounded-lg bg-gray-200 md:w-25 md:h-25
+                key={category.name} 
+                onClick={() => handleEditCategory(category)}
+                className={`flex justify-between gap-4 w-full cursor-pointer
+                  bg-white rounded-xl p-4 border border-gray-100
                 `}
               >
-                <span className="text-[0.6rem] text-secondary px-2 text-center font-medium">
-                  Sem Imagem
-                </span>
-              </div>
-            )}
-            
-            <div className="flex flex-col grow justify-between w-full">
-              <span className="font-bold text-secondary">
-                {category.name}
-              </span>
-              <div className="hidden md:flex gap-4 items-center">
-                <span className={`font-medium text-sm ${category.available ? 'text-green-600' : 'text-red-500'}`}>
-                  Disponível:
-                </span>
-                <ToggleCustomizationItemAvailableSwitch
-                  idProduct={category.id}
-                  available={category.available}
-                  itemType={ItemsCustomizationTypes.category}
-                />
-              </div>
-            </div>
+                {category.image_url ? (
+                  <div className="relative w-15 h-15 md:w-25 md:h-25 shrink-0">
+                    <Image
+                      src={category.image_url}
+                      alt="preview"
+                      draggable="false"
+                      fill
+                      loading="eager"
+                      className="aspect-square rounded-lg object-cover shadow-sm"
+                      sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                    />
+                  </div>
+                ) : (
+                  <div 
+                    className={`shrink-0 flex items-center justify-center w-15 h-15 
+                      rounded-lg bg-gray-200 md:w-25 md:h-25
+                    `}
+                  >
+                    <span className="text-[0.6rem] text-secondary px-2 text-center font-medium">
+                      Sem Imagem
+                    </span>
+                  </div>
+                )}
+                
+                <div className="flex flex-col grow justify-between w-full">
+                  <span className="font-bold text-secondary">
+                    {category.name}
+                  </span>
+                  <div className="hidden md:flex gap-4 items-center">
+                    <span className={`font-medium text-sm ${category.available ? 'text-green-600' : 'text-red-500'}`}>
+                      Disponível:
+                    </span>
+                    <ToggleCustomizationItemAvailableSwitch
+                      idProduct={category.id}
+                      available={category.available}
+                      itemType={ItemsCustomizationTypes.category}
+                    />
+                  </div>
+                </div>
 
-            <div className="flex w-full items-center md:items-end justify-end gap-4">
-              <div className="flex md:hidden gap-4 items-center">
-                <ToggleCustomizationItemAvailableSwitch
-                  idProduct={category.id}
-                  available={category.available}
-                  itemType={ItemsCustomizationTypes.category}
-                />
+                <div className="flex w-full items-center md:items-end justify-end gap-4">
+                  <div className="flex md:hidden gap-4 items-center">
+                    <ToggleCustomizationItemAvailableSwitch
+                      idProduct={category.id}
+                      available={category.available}
+                      itemType={ItemsCustomizationTypes.category}
+                    />
+                  </div>
+                  <button 
+                    type="button"
+                    aria-label="Deletar Categoria"
+                    title="Deletar Categoria"
+                    onClick={(e) => handleOpenDeleteModal(e, category)}
+                    className="flex items-center hover:text-red-500 transition-colors cursor-pointer"
+                  >
+                    <Trash2 className="w-5 h-5" />
+                  </button>
+                </div>
               </div>
-              <button 
-                type="button"
-                aria-label="Deletar Categoria"
-                title="Deletar Categoria"
-                onClick={(e) => handleOpenDeleteModal(e, category)}
-                className="flex items-center hover:text-red-500 transition-colors cursor-pointer"
-              >
-                <Trash2 className="w-5 h-5" />
-              </button>
-            </div>
+            ))}
           </div>
-        ))}
-      </div>
+        </>
+      )}
 
       <CustomizationItemCategoryModal 
         mode={categoryToModify ? 'editar' : 'adicionar'}

@@ -17,7 +17,9 @@ interface ManageCatalogInventoryProps {
   products: ProductModel[];
 };
 
-export default function ManageCatalogInventory({ products }: ManageCatalogInventoryProps) {
+export default function ManageCatalogInventory({ 
+  products 
+}: ManageCatalogInventoryProps) {
   const [searchText, setSearchText] = useState('');
 
   const filteredData = useMemo(() => {
@@ -69,7 +71,7 @@ export default function ManageCatalogInventory({ products }: ManageCatalogInvent
       </div>
 
       <div className={`flex-1 min-h-0 grid grid-cols-1 lg:grid-cols-3 xl:grid-cols-4
-        gap-2 overflow-y-auto content-start scrollbar-hide`}
+        gap-2 overflow-y-auto content-start scrollbar-hide ${products?.length === 0 && 'xl:block'}`}
       >
         <div className="fixed md:hidden bottom-25 right-7 md:bottom-10 z-15">
           <FloatAddButton
@@ -78,63 +80,78 @@ export default function ManageCatalogInventory({ products }: ManageCatalogInvent
           />
         </div>
 
-        {filteredData && filteredData?.length > 0 ? filteredData?.map((product: ProductModel) => (
-          <CardButton 
-            key={product.id}
-            pushRoute={`/admin/estoques/catalogo/editar/${product.id}`}
-            className="bg-white h-full"
+        {products?.length === 0 ? (
+          <div className={`flex flex-col w-full h-[55vh] gap-4 
+            items-center justify-center text-gray-400`}
           >
-            <div>
-              {product.images_url ? (
-                <div className="relative w-35 h-35 shrink-0">
-                  <Image
-                    src={product.images_url[0]}
-                    alt="preview"
-                    draggable="false"
-                    fill
-                    loading="eager"
-                    className="aspect-square rounded-2xl object-cover shadow-sm"
-                    sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-                  />
-                </div>
-              ) : (
-                <div className="flex items-center justify-center w-35 h-35 bg-gray-200 rounded-2xl shrink-0">
-                  <span className="text-sm text-secondary px-2 text-center font-medium">
-                    Sem Imagem
-                  </span>
-                </div>
-              )}
+            <div className="flex flex-col items-center justify-center">
+              <span>Nenhum produto encontrado.</span>
+              <span className="font-bold text-sm">
+                {`Adicione um novo produto no botão "Adicionar".`}
+              </span>
             </div>
-
-            <div className="flex flex-col ml-4 gap-1 w-full overflow-hidden">
-              <p className="text-sm font-bold truncate text-secondary">
-                {product.name}
-              </p>
-              <p className="text-xs text-gray-400 mt-1 line-clamp-2">
-                {product.desc}
-              </p>
-              <p className="text-xs mt-1 text-secondary font-medium">
-                {formatCurrency(product.initial_price)}
-              </p>
-              <div className="flex flex-col mt-1">
-                <p className={`text-xs font-medium ${product.available ? 'text-green-600' : 'text-red-500'}`}>
-                  Disponível: {product.available ? 'Sim' : 'Não'}
-                </p>
-                <p className={`text-xs font-medium ${product.customizable ? 'text-green-600' : 'text-red-500'}`}>
-                  Customizável: {product.customizable ? 'Sim' : 'Não'}
-                </p>
-              </div>
-            </div>
-
-            <div className="absolute bottom-3.5 right-2">
-              <DeleteButton idProduct={product.id} />
-            </div>
-          </CardButton>
-        )) : (
-          <div className="flex w-full h-[55vh] items-center justify-center text-gray-400">
-            <span>Nenhum produto encontrado com</span>
-            <span className="font-bold ml-1">&quot;{searchText}&quot;.</span>
           </div>
+        ) : (
+          <>
+            {filteredData && filteredData?.length > 0 ? filteredData?.map((product: ProductModel) => (
+              <CardButton 
+                key={product.id}
+                pushRoute={`/admin/estoques/catalogo/editar/${product.id}`}
+                className="bg-white h-full"
+              >
+                <div>
+                  {product.images_url ? (
+                    <div className="relative w-35 h-35 shrink-0">
+                      <Image
+                        src={product.images_url[0]}
+                        alt="preview"
+                        draggable="false"
+                        fill
+                        loading="eager"
+                        className="aspect-square rounded-2xl object-cover shadow-sm"
+                        sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                      />
+                    </div>
+                  ) : (
+                    <div className="flex items-center justify-center w-35 h-35 bg-gray-200 rounded-2xl shrink-0">
+                      <span className="text-sm text-secondary px-2 text-center font-medium">
+                        Sem Imagem
+                      </span>
+                    </div>
+                  )}
+                </div>
+
+                <div className="flex flex-col ml-4 gap-1 w-full overflow-hidden">
+                  <p className="text-sm font-bold truncate text-secondary">
+                    {product.name}
+                  </p>
+                  <p className="text-xs text-gray-400 mt-1 line-clamp-2">
+                    {product.desc}
+                  </p>
+                  <p className="text-xs mt-1 text-secondary font-medium">
+                    {formatCurrency(product.initial_price)}
+                  </p>
+                  <div className="flex flex-col mt-1">
+                    <p className={`text-xs font-medium ${product.available ? 'text-green-600' : 'text-red-500'}`}>
+                      Disponível: {product.available ? 'Sim' : 'Não'}
+                    </p>
+                    <p className={`text-xs font-medium ${product.customizable ? 'text-green-600' : 'text-red-500'}`}>
+                      Customizável: {product.customizable ? 'Sim' : 'Não'}
+                    </p>
+                  </div>
+                </div>
+
+                <div className="absolute bottom-3.5 right-2">
+                  <DeleteButton idProduct={product.id} />
+                </div>
+              </CardButton>
+            )) : (
+              <div className="flex w-full h-[55vh] items-center justify-center text-gray-400">
+                <span>Nenhum produto encontrado com</span>
+                <span className="font-bold ml-1">&quot;{searchText}&quot;.</span>
+              </div>
+            )}
+          </>
         )}
       </div>
 

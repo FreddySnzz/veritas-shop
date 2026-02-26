@@ -2,6 +2,7 @@
 
 import { useCart } from "@/data/context/CartContext";
 import { useLockBodyScroll } from "@/data/hook/useBodyLockScroll";
+import { useState } from "react";
 import { toast } from "sonner";
 
 interface DeleteItemCartProps extends React.HTMLAttributes<HTMLElement> {
@@ -15,10 +16,12 @@ export default function DeleteItemCartModal({
   modalOpen, 
   onClose 
 }: DeleteItemCartProps) {
+  const [isLoading, setIsLoading] = useState(false);
   const { removeItem } = useCart();
   useLockBodyScroll(modalOpen);
 
   const handleDelete = (cartId: string) => {
+    setIsLoading(true);
     try {
       removeItem(cartId);
       toast.success("Item removido com sucesso!");
@@ -26,6 +29,7 @@ export default function DeleteItemCartModal({
       console.error("Erro ao remover item:", error);
       toast.error("Erro ao remover item.");
     } finally {
+      setIsLoading(false);
       onClose?.();
     };
   };
@@ -67,7 +71,13 @@ export default function DeleteItemCartModal({
               bg-primary text-white hover:bg-primary/90 transition-colors font-medium
             `}
           >
-            <span>Confirmar</span>
+            {isLoading ? (
+              <span className="animate-spin">
+                <span className="sr-only">Deletando...</span>
+              </span>
+            ) : (
+              <span>Deletar</span>
+            )}
           </div>
         </div>
       </div>

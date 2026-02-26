@@ -3,6 +3,7 @@
 import { deleteProductAction } from "@/app/actions/products.action";
 import { useLockBodyScroll } from "@/data/hook/useBodyLockScroll";
 import { useRouter } from "next/navigation";
+import { useState } from "react";
 import { toast } from "sonner";
 
 interface DeleteProductItemProps extends React.HTMLAttributes<HTMLElement> {
@@ -16,10 +17,12 @@ export default function DeleteProductItemModal({
   modalOpen, 
   onClose 
 }: DeleteProductItemProps) {
+  const [isLoading, setIsLoading] = useState(false);
   const router = useRouter();
   useLockBodyScroll(modalOpen);
 
   const handleDelete = async (productId: string) => {
+    setIsLoading(true);
     try {
       await deleteProductAction(productId);
       toast.success("Produto removido com sucesso!");
@@ -27,8 +30,10 @@ export default function DeleteProductItemModal({
       console.error("Erro ao remover produto:", error);
       toast.error("Erro ao remover produto.");
     } finally {
+      setIsLoading(false);
       onClose?.();
       router.refresh();
+      window.location.reload();
     };
   };
 
@@ -69,7 +74,11 @@ export default function DeleteProductItemModal({
               bg-primary text-white hover:bg-primary/90 transition-colors font-medium
             `}
           >
-            <span>Confirmar</span>
+            {isLoading ? (
+              <span>Deletando...</span>
+            ) : (
+              <span>Deletar</span>
+            )}
           </div>
         </div>
       </div>

@@ -96,82 +96,97 @@ export default function ManageCustomizationItemsLayout({
           )}
         </div>
 
-        <div className="flex flex-col gap-4">
-          {groupedItems.map((group) => {
-            if (!group) return null;
-            
-            const renderGroupedCategories = group.items?.map((item: CustomizationItemsModel) => (
-              <ItemContent key={item.id}> 
-                <CardButton 
-                  className="bg-white"
-                  pushRoute={`/admin/estoques/itens-personalizacao/editar/${item.id}`}
-                >
-                  {item.image_url ? (
-                    <div className="relative w-25 h-25 shrink-0">
-                      <Image
-                        src={item.image_url}
-                        alt="preview"
-                        draggable="false"
-                        fill
-                        loading="eager"
-                        className="aspect-square rounded-2xl object-cover shadow-sm"
-                        sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-                      />
-                    </div>
-                  ) : (
-                    <div 
-                      className={`shrink-0 flex items-center justify-center w-25 h-25 rounded-2xl bg-gray-200`}
-                      style={{ backgroundColor: item.metadata?.color }}
+        {customizationItems.length === 0 ? (
+          <div className={`flex flex-col w-full h-[55vh] gap-4 
+            items-center justify-center text-gray-400`}
+          >
+            <div className="flex flex-col items-center justify-center">
+              <span>Nenhum item de personalização encontrado.</span>
+              <span className="font-bold text-sm">
+                {`Adicione um novo item no botão "Adicionar".`}
+              </span>
+            </div>
+          </div>
+        ) : (
+          <>
+            <div className="flex flex-col gap-4">
+              {groupedItems.map((group) => {
+                if (!group) return null;
+                
+                const renderGroupedCategories = group.items?.map((item: CustomizationItemsModel) => (
+                  <ItemContent key={item.id}> 
+                    <CardButton 
+                      className="bg-white"
+                      pushRoute={`/admin/estoques/itens-personalizacao/editar/${item.id}`}
                     >
-                      <span className="text-sm text-secondary px-2 text-center font-medium">
-                        Sem Imagem
-                      </span>
-                    </div>
-                  )}
-    
-                  <div className="flex flex-col ml-4 gap-1 w-full overflow-hidden">
-                    <p className="text-sm font-bold truncate text-secondary">
-                      <span>{item?.name}</span>
-                      { item?.metadata?.style && <span> - {item?.metadata?.style}</span> }
-                    </p>
-                    <p className="text-xs text-gray-400 mt-1 line-clamp-3">
-                      Ref: {item.ref}
-                    </p>
-                    <p className="text-xs text-gray-400 line-clamp-3">
-                      Categoria: {item.category}
-                    </p>
-                    <div className="flex items-center gap-3">
-                      <span className={`font-medium  ${item.available ? 'text-green-600' : 'text-red-500'}`}>
-                        Disponível:
-                      </span>
-                      <ToggleCustomizationItemAvailableSwitch
-                        idProduct={item.id}
-                        available={item.available}
-                        itemType={ItemsCustomizationTypes.customizationItem}
-                      />
-                    </div>
-                  </div>
-                </CardButton>
-              </ItemContent>
-            ));
+                      {item.image_url ? (
+                        <div className="relative w-25 h-25 shrink-0">
+                          <Image
+                            src={item.image_url}
+                            alt="preview"
+                            draggable="false"
+                            fill
+                            loading="eager"
+                            className="aspect-square rounded-2xl object-cover shadow-sm"
+                            sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                          />
+                        </div>
+                      ) : (
+                        <div 
+                          className={`shrink-0 flex items-center justify-center w-25 h-25 rounded-2xl bg-gray-200`}
+                          style={{ backgroundColor: item.metadata?.color }}
+                        >
+                          <span className="text-sm text-secondary px-2 text-center font-medium">
+                            Sem Imagem
+                          </span>
+                        </div>
+                      )}
+        
+                      <div className="flex flex-col ml-4 gap-1 w-full overflow-hidden">
+                        <p className="text-sm font-bold truncate text-secondary">
+                          <span>{item?.name}</span>
+                          { item?.metadata?.style && <span> - {item?.metadata?.style}</span> }
+                        </p>
+                        <p className="text-xs text-gray-400 mt-1 line-clamp-3">
+                          Ref: {item.ref}
+                        </p>
+                        <p className="text-xs text-gray-400 line-clamp-3">
+                          Categoria: {item.category}
+                        </p>
+                        <div className="flex items-center gap-3">
+                          <span className={`font-medium  ${item.available ? 'text-green-600' : 'text-red-500'}`}>
+                            Disponível:
+                          </span>
+                          <ToggleCustomizationItemAvailableSwitch
+                            idProduct={item.id}
+                            available={item.available}
+                            itemType={ItemsCustomizationTypes.customizationItem}
+                          />
+                        </div>
+                      </div>
+                    </CardButton>
+                  </ItemContent>
+                ));
 
-            return (
-              <div 
-                key={group.category} 
-                className="flex flex-col gap-2"
-              >
-                <ItemCollapse 
-                  title={formatAndCapitalize(group.category)}
-                  className={`flex flex-col mt-2 gap-2
-                    md:grid md:grid-cols-2 lg:grid-cols-3
-                  `}
-                >
-                  {renderGroupedCategories}
-                </ItemCollapse>
-              </div>
-            );
-          })}
-        </div>
+                return (
+                  <div 
+                    key={group.category} 
+                    className="flex flex-col gap-2"
+                  >
+                    <ItemCollapse 
+                      title={formatAndCapitalize(group.category)}
+                      className={`flex flex-col mt-2 gap-2
+                        md:grid md:grid-cols-2 lg:grid-cols-3
+                      `}
+                    >
+                      {renderGroupedCategories}
+                    </ItemCollapse>
+                  </div>
+                );
+              })}
+            </div>
+          </>
+        )}
       </div>
 
       <div className="shrink-0 md:hidden mt-auto bg-background-alternative z-10">

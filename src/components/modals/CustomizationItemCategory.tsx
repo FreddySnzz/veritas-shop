@@ -286,11 +286,11 @@ export default function CustomizationItemCategoryModal({
             disabled={isLoading}
           >
             {isLoading ? (
-              <div className="flex justify-center items-center gap-2"> 
+              <div className="flex justify-center items-center"> 
                 <span>Salvando...</span>
               </div>
             ) : 
-              <div className="flex justify-center items-center gap-2"> 
+              <div className="flex justify-center items-center"> 
                 <span>Salvar</span>
               </div>
             }
