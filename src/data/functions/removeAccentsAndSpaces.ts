@@ -1,5 +1,3 @@
-import ProductModel from "../models/Product.model";
-
 export function removeAccentsAndSpaces(str: string) {
   return str
     .normalize("NFD")
@@ -21,9 +19,12 @@ export function removeAccentsAndSpacesToURL(str: string) {
 };
 
 export function mountProductUrl(
-  product: ProductModel,
+  productName: string,
+  available: boolean
 ): string {
-  const str = `${removeAccentsAndSpacesToURL(product.name)}-${product.available ? 'available' : 'out-of-stock'}`;
+  const str = `${removeAccentsAndSpacesToURL(
+    productName)}-${available ? 'available' : 'out-of-stock'}
+  `;
 
   return str;
 };

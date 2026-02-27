@@ -23,6 +23,7 @@ import ProductModel from "@/data/models/Product.model";
 import { SupportButton } from "./buttons/SupportButton";
 import Alert from "./Alert";
 import Link from "next/link";
+import { mountProductUrl } from "@/data/functions/removeAccentsAndSpaces";
 
 interface CartProps extends React.HTMLAttributes<HTMLElement> {
   whatsappNumber?: string;
@@ -160,9 +161,15 @@ export default function Cart({
                         bg-white rounded-lg px-4 lg:px-6 py-3 border border-gray-100
                       `}
                     >
-                      <span className="font-bold ">
-                        {item.product.name}
-                      </span>
+                      <Link
+                        aria-label="Ir para Página do Produto"
+                        title="Ir para Página do Produto"
+                        href={mountProductUrl(item.product.name, true)}
+                      >
+                        <span className="font-bold hover:underline">
+                          {item.product.name}
+                        </span>
+                      </Link>
                       <div className="flex">
                         {item.product.image ? (
                           <div className="relative w-35 h-35 shrink-0">

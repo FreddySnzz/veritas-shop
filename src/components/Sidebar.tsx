@@ -12,6 +12,8 @@ import { formatAndCapitalize } from "@/data/functions/formatAndCapitalize";
 import ClearCartModal from "./modals/ClearCart";
 import DeleteItemCartModal from "./modals/DeleteItemCart";
 import Alert from "./Alert";
+import Link from "next/link";
+import { mountProductUrl } from "@/data/functions/removeAccentsAndSpaces";
 
 export default function Sidebar() {
   const { isSidebarOpen, closeSidebar } = useApp();
@@ -131,9 +133,15 @@ export default function Sidebar() {
 
                   {items.map((item) => (
                     <div key={item.cartId} className="flex flex-col gap-2">
-                      <span className="font-bold ">
-                        {item.product.name}
-                      </span>
+                      <Link
+                        aria-label="Ir para Página do Produto"
+                        title="Ir para Página do Produto"
+                        href={mountProductUrl(item.product.name, true)}
+                      >
+                        <span className="font-bold hover:underline">
+                          {item.product.name}
+                        </span>
+                      </Link>
                       <div className="flex">
                         {item.product.image ? (
                           <div className="relative w-25 h-25 shrink-0">

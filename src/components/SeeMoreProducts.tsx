@@ -44,7 +44,7 @@ export default function SeeMoreProducts({
             <motion.div
               aria-label={!isTouchDevice ? `Arraste para ver mais` : `Ver mais ${product.name}`}
               title={!isTouchDevice ? `Arraste para ver mais` : `Ver mais ${product.name}`}
-              onClick={!isTouchDevice ? undefined : () => router.push(`/${mountProductUrl(product)}`)}
+              onClick={!isTouchDevice ? undefined : () => router.push(`/${mountProductUrl(product.name, product.available)}`)}
               whileHover={{ scale: 1.02 }}
               transition={{ type: "spring", stiffness: 500, damping: 30 }}
               className={`group flex flex-col rounded-lg w-60 h-70 cursor-pointer overflow-hidden
@@ -79,7 +79,7 @@ export default function SeeMoreProducts({
                 type="button"
                 aria-label={`Ver ${product.name}`}
                 title={`Ver ${product.name}`}
-                onClick={() => router.push(`/${mountProductUrl(product)}`)}
+                onClick={() => router.push(`/${mountProductUrl(product.name, product.available)}`)}
                 className="flex-1 flex flex-col px-3 py-3 w-full cursor-pointer"
               >
                 <div className="flex flex-col gap-1 items-start">

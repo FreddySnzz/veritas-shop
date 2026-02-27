@@ -10,7 +10,7 @@ interface HelpLayoutProps extends React.HTMLAttributes<HTMLDivElement> {
 export default function HelpLayout({ whatsappNumber }: HelpLayoutProps) {
   return (
     <section 
-      id={'about'} 
+      id={'help'} 
       className="w-full h-full font-sans"
     >
       <div className="flex flex-col items-between">
@@ -37,7 +37,7 @@ export default function HelpLayout({ whatsappNumber }: HelpLayoutProps) {
                   </span>
                   <span>
                     {`3. Na tela do produto haverá duas opções dependendo do tipo de produto: "Personalizar Agora" ou "Adicionar ao Carrinho". 
-                    Cada produto é único, podendo ser personalizado (ou não) com diferentes itens conforme seu interesse;`}
+                    Cada produto é único, podendo ser personalizável (ou não) com diferentes itens conforme seu interesse;`}
                   </span>
                   <span className="ml-3">
                     {`3.1. Se o produto for personalizável, na tela de personalização será possível escolher os itens de acordo com o que o produto permite. 
@@ -72,7 +72,7 @@ export default function HelpLayout({ whatsappNumber }: HelpLayoutProps) {
               <ItemContent className="mt-1 mb-4">
                 <span className="flex text-gray-500 text-xs md:text-sm">
                   {`Caso tenha escolhido por um produto ou personalização que aceite imagem personalizada, 
-                  você deve informar qual imagem deseja ao suporte na finalização do pedido, ou enviar o arquivo de imagem pelo WhatsApp.`}
+                  você pode informar o nome da imagem desejada ao suporte, na finalização do pedido, ou enviar o arquivo de imagem no chat pelo WhatsApp.`}
                 </span>
               </ItemContent>
             </ItemCollapse>
@@ -102,7 +102,7 @@ export default function HelpLayout({ whatsappNumber }: HelpLayoutProps) {
             </ItemCollapse>
 
             <ItemCollapse 
-              title="Por que os valores mostrados no carrinho não são corretos?"
+              title="Por que os valores mostrados no carrinho não são exatos?"
               titleClassName="md:text-lg text-start mb-1"
             >
               <ItemContent className="mt-1 mb-4">
@@ -118,6 +118,15 @@ export default function HelpLayout({ whatsappNumber }: HelpLayoutProps) {
 
         <div className="flex flex-col mt-12 gap-4">
           <Link
+            aria-label="Orações"
+            title="Orações"
+            href={`/ajuda/oracoes`}
+          >
+            <span className="font-bold text-2xl hover:underline">
+              Orações
+            </span>
+          </Link>
+          <Link
             aria-label="Termos e Condições"
             title="Termos e Condições"
             href={`/ajuda/termos-e-condicoes`}
@@ -126,7 +135,7 @@ export default function HelpLayout({ whatsappNumber }: HelpLayoutProps) {
               Termos e Condições
             </span>
           </Link>
-
+          
           <SupportButton
             title="Relatar problema ou falar com suporte"
             messageToSupport={`Olá, gostaria de informar um problema que encontrei na Veritas Ateliê!`}
