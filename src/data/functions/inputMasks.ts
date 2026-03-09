@@ -7,10 +7,9 @@ export function maskPhone(value: string) {
 };
 
 export function onlyNumbers(value: string) {
-  return value
-    .replace(/\D/g, "")
-};
+  return value.replace(/[^0-9.,]/g, "");
+}
+
 export function onlyLetters(value: string) {
-  return value
-    .replace(/[^a-zA-Z]/g, "");
+  return value.replace(/[^a-zA-Z]/g, "");
 };
