@@ -266,7 +266,13 @@ export default function Cart({
                       Resumo do Pedido
                     </span>
 
-                    <div className="flex flex-col mt-2 gap-2">
+                    <Alert 
+                      title="Lembre-se que o valor mostrado é apenas uma estimativa."
+                      subtitle="O valor real será confirmado na finalização do pedido com nosso atendimento."
+                      className="flex font-medium my-2"
+                    />
+
+                    <div className="flex flex-col mt-4 gap-2">
                       {items.map((item) => (
                         <div 
                           key={item.cartId}
@@ -300,11 +306,6 @@ export default function Cart({
                       <hr className="border-dashed border-gray-300 w-full" />
                       <span>{calculeTotalCartValue()}</span>
                     </div>
-                    <Alert 
-                      title="Lembre-se que o valor mostrado é apenas uma estimativa."
-                      subtitle="O valor real será confirmado na finalização do pedido com nosso atendimento."
-                      className="flex font-medium mt-4"
-                    />
                   </div>
 
                   <div className="shrink-0 mt-auto">
@@ -446,20 +447,22 @@ export default function Cart({
         </div>
       </div>
 
-      <div className="hidden md:flex flex-col pt-6 md:-mx-14 lg:-mx-16">
-        <div className="flex ml-4">
-          <span className="font-bold uppercase ml-12">
-            Veja também
-          </span>
+      {catalogProducts.length > 0 && (
+        <div className="hidden md:flex flex-col pt-6 md:-mx-14 lg:-mx-16">
+          <div className="flex ml-4">
+            <span className="font-bold uppercase ml-12">
+              Veja também
+            </span>
+          </div>
+          <div className="overflow-hidden">
+            <SeeMoreProducts 
+              atualProductId={items[0].product.id} 
+              cachedProducts={catalogProducts}
+              className="ml-12"
+            />
+          </div>
         </div>
-        <div className="overflow-hidden">
-          <SeeMoreProducts 
-            atualProductId={items[0].product.id} 
-            cachedProducts={catalogProducts}
-            className="ml-12"
-          />
-        </div>
-      </div>
+      )}
     </div>
   );
 };

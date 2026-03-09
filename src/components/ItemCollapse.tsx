@@ -7,14 +7,16 @@ import { FaAngleDown } from "react-icons/fa6";
 interface ItemCollapseProps {
   title: string;
   children: React.ReactNode;
-  className?: string;
+  collapseClassName?: string;
+  insideClassName?: string;
   titleClassName?: string;
 };
 
 export default function ItemCollapse({ 
   title, 
   children,
-  className,
+  collapseClassName,
+  insideClassName,
   titleClassName,
 }: ItemCollapseProps) {
   const [expanded, setExpanded] = useState(false);
@@ -24,7 +26,7 @@ export default function ItemCollapse({
     <div className="w-full">
       <button
         onClick={toggleExpanded}
-        className="flex w-full items-center justify-between cursor-pointer focus:outline-none"
+        className={`flex w-full items-center justify-between cursor-pointer focus:outline-none ${collapseClassName}`}
         aria-expanded={expanded}
       >
         <span className={`font-bold text-secondary ${titleClassName}`}>
@@ -50,7 +52,7 @@ export default function ItemCollapse({
               collapsed: { opacity: 0, height: 0 },
             }}
             transition={{ duration: 0.3, ease: "easeInOut" }}
-            className={className}
+            className={insideClassName}
           >
             {children}
           </motion.div>

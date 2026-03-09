@@ -13,7 +13,7 @@ export default function HelpLayout({ whatsappNumber }: HelpLayoutProps) {
       id={'help'} 
       className="w-full h-full font-sans"
     >
-      <div className="flex flex-col items-between">
+      <div className="flex flex-col">
         <section id="faq">
           <h1 className="font-bold text-secondary text-2xl md:text-3xl">
             Dúvidas Frequentes (FAQ)
@@ -123,7 +123,7 @@ export default function HelpLayout({ whatsappNumber }: HelpLayoutProps) {
             href={`/ajuda/oracoes`}
           >
             <span className="font-bold text-2xl hover:underline">
-              Orações
+              Aprenda a Rezar
             </span>
           </Link>
           <Link

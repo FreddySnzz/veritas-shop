@@ -175,7 +175,7 @@ export default function ManageCustomizationItemsLayout({
                   >
                     <ItemCollapse 
                       title={formatAndCapitalize(group.category)}
-                      className={`flex flex-col mt-2 gap-2
+                      insideClassName={`flex flex-col mt-2 gap-2
                         md:grid md:grid-cols-2 lg:grid-cols-3
                       `}
                     >

@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { 
   commonPrayers, 
-  rosary, 
+  various, 
   specificPrayers 
 } from "@/data/constants/prayers";
 
@@ -59,14 +59,14 @@ export default function PrayersLayout() {
         </section>
 
         <section 
-          id="rosary"
+          id="various"
           className="flex flex-col gap-2"
         >
           <h1 className="font-bold text-secondary text-2xl md:text-3xl">
             Diversas
           </h1>
           <div className="flex flex-col">
-            {rosary.map((prayer, index) => (
+            {various.map((prayer, index) => (
               <Link
                 key={index}
                 aria-label={prayer.title}
