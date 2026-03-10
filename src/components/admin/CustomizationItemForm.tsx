@@ -33,7 +33,12 @@ import {
 import { generateRefNumber } from "@/data/functions/generateRefForItem";
 import { CustomizationItemsCategoryModel } from "@/data/models/CustomizationItemsCategory";
 import { CustomizationItemsModel } from "@/data/models/CustomizationItems.model";
-import { onlyNumbers } from "@/data/functions/inputMasks";
+import { 
+  centsToPriceString, 
+  normalizePriceInput, 
+  onlyNumbers, 
+  priceStringToCents 
+} from "@/data/functions/inputMasks";
 import { BackButton } from "../buttons/BackButton";
 
 interface CustomizationItemFormProps {
@@ -65,7 +70,7 @@ export function CustomizationItemForm({
   const [currentImageUrl, setCurrentImageUrl] = useState<string>(() => initialData?.image_url || "");
   const [available, setAvailable] = useState<boolean>(true);
   const [priceAddon, setPriceAddon] = useState<string>(
-    initialData?.price_addon !== undefined ? String(initialData.price_addon) : ""
+    centsToPriceString(initialData?.price_addon)
   );
   const [sizeHeight, setSizeHeight] = useState<string>(() => 
     initialData?.metadata?.size_height !== undefined ? String(initialData.metadata.size_height) : ""
@@ -136,7 +141,7 @@ export function CustomizationItemForm({
         category: categoryKey,
         image_url: finalUrlToSave,
         metadata,
-        price_addon: priceAddon ? Number(priceAddon) : 0,
+        price_addon: priceStringToCents(priceAddon),
         updated_at: new Date(),
       };
 
@@ -384,10 +389,12 @@ export function CustomizationItemForm({
                   id="priceAddon"
                   type="text"
                   inputMode="decimal"
-                  onChange={(e) => setPriceAddon(onlyNumbers(e.target.value))}
+                  onChange={(e) => {
+                    const formatted = normalizePriceInput(e.target.value);
+                    setPriceAddon(formatted);
+                  }}
                   value={priceAddon}
                   placeholder="0.00"
-                  min="0"
                   className="pl-10 bg-white focus-visible:ring-0 truncate text-secondary"
                   disabled={isLoading}
                 />

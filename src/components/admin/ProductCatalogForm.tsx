@@ -21,8 +21,12 @@ import { CustomizationItemConfig } from "@/data/types/customization.type";
 import { toast } from "sonner";
 import { BackButton } from "../buttons/BackButton";
 import { useIsTouchDevice } from "@/data/hook/useMouseDrag";
+import { 
+  centsToPriceString, 
+  normalizePriceInput, 
+  priceStringToCents 
+} from "@/data/functions/inputMasks";
 import { cn } from "@/lib/utils";
-import { centsToPriceString, normalizePriceInput, priceStringToCents } from "@/data/functions/inputMasks";
 
 interface ProductFormProps {
   initialData?: ProductModel | null

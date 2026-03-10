@@ -75,7 +75,7 @@ export function ManageCustomizationItemCategory({ categories }: ManageCustomizat
     <div className="flex flex-col font-sans h-full overflow-hidden">
       <div className="flex overflow-y-auto font-sans scrollbar-hide">
         <div className="flex w-full items-center justify-center md:gap-3 mb-2 md:mb-4">
-          <div className="grow">
+          <div className="relative flex items-center grow">
             <SearchbarInput
               searchbarPlaceholder="Pesquisar categorias"
               value={searchText}
@@ -84,6 +84,17 @@ export function ManageCustomizationItemCategory({ categories }: ManageCustomizat
               }}
               className="bg-white shadow-xs"
             />
+
+            {searchText.length > 0 && (
+              <button
+                aria-label="Limpar pesquisa"
+                title="Limpar pesquisa"
+                className="absolute right-3 cursor-pointer"
+                onClick={() => setSearchText('')}
+              >
+                <X className="w-6 h-6 text-secondary cursor-pointer" />
+              </button>
+            )}
           </div>
 
           <div>
@@ -97,17 +108,6 @@ export function ManageCustomizationItemCategory({ categories }: ManageCustomizat
               <span>Adicionar</span>
             </CustomButton>
           </div>
-          
-          {searchText.length > 0 && (
-            <button
-              aria-label="Limpar pesquisa"
-              title="Limpar pesquisa"
-              className="fixed right-8 cursor-pointer"
-              onClick={() => setSearchText('')}
-            >
-              <X className="w-6 h-6 text-secondary cursor-pointer" />
-            </button>
-          )}
         </div>
         
         <div className="fixed md:hidden bottom-22 right-5 z-15">

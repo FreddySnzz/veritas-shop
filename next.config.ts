@@ -2,6 +2,8 @@ import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
   experimental: {
+    preloadEntriesOnStart: false,
+    webpackMemoryOptimizations: true, 
     serverActions: {
       bodySizeLimit: '10mb',
     },

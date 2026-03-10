@@ -98,8 +98,8 @@ export default function ManageCustomizationItemsLayout({
           />
         </div>
 
-        <div className="flex w-full items-center justify-center md:gap-3 mb-2 md:mb-4">
-          <div className="grow">
+        <div className="flex w-full items-center justify-center md:gap-3 mb-2">
+          <div className="relative flex items-center grow">
             <SearchbarInput
               searchbarPlaceholder="Pesquise por nome, estilo, categoria ou referência"
               value={searchText}
@@ -108,7 +108,19 @@ export default function ManageCustomizationItemsLayout({
               }}
               className="bg-white shadow-xs"
             />
-          </div>
+
+            {searchText.length > 0 && (
+              <button
+                aria-label="Limpar pesquisa"
+                title="Limpar pesquisa"
+                className="absolute right-3 cursor-pointer"
+                onClick={() => setSearchText('')}
+              >
+                <X className="w-6 h-6 text-secondary cursor-pointer" />
+              </button>
+            )}
+            </div>
+
           <div>
             <CustomButton 
               onClick={() => router.push('/admin/estoques/itens-personalizacao/adicionar')}
@@ -120,17 +132,6 @@ export default function ManageCustomizationItemsLayout({
               <span>Adicionar</span>
             </CustomButton>
           </div>
-          
-          {searchText.length > 0 && (
-            <button
-              aria-label="Limpar pesquisa"
-              title="Limpar pesquisa"
-              className="relative pl-2 md:pl-0 cursor-pointer"
-              onClick={() => setSearchText('')}
-            >
-              <X className="w-6 h-6 text-secondary cursor-pointer" />
-            </button>
-          )}
         </div>
 
         {customizationItems.length === 0 ? (

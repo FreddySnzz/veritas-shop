@@ -36,7 +36,7 @@ export default function ManageCatalogInventory({
   return (
     <div className="flex flex-col font-sans h-full overflow-hidden">
       <div className="flex w-full items-center justify-center md:gap-3 mb-2 md:mb-4">
-        <div className="grow">
+        <div className="relative flex items-center grow">
           <SearchbarInput
             searchbarPlaceholder="Pesquisar produtos"
             value={searchText}
@@ -45,7 +45,19 @@ export default function ManageCatalogInventory({
             }}
             className="bg-white shadow-xs"
           />
+
+          {searchText.length > 0 && (
+            <button
+              aria-label="Limpar pesquisa"
+              title="Limpar pesquisa"
+              onClick={() => setSearchText('')}
+              className="absolute right-3 cursor-pointer"
+            >
+              <X className="w-6 h-6 text-secondary cursor-pointer" />
+            </button>
+          )}
         </div>
+        
         <div>
           <CustomButton 
             onClick={() => router.push('/admin/estoques/catalogo/adicionar')}
@@ -57,17 +69,6 @@ export default function ManageCatalogInventory({
             <span>Adicionar</span>
           </CustomButton>
         </div>
-        
-        {searchText.length > 0 && (
-          <button
-            aria-label="Limpar pesquisa"
-            title="Limpar pesquisa"
-            className="fixed right-8 cursor-pointer"
-            onClick={() => setSearchText('')}
-          >
-            <X className="w-6 h-6 text-secondary cursor-pointer" />
-          </button>
-        )}
       </div>
 
       <div className={`flex-1 min-h-0 grid grid-cols-1 lg:grid-cols-3 xl:grid-cols-4
@@ -146,7 +147,7 @@ export default function ManageCatalogInventory({
                 </div>
               </CardButton>
             )) : (
-              <div className="flex w-full h-[55vh] items-center justify-center text-gray-400">
+              <div className="flex w-[90vw] h-[55vh] items-center justify-center-safe text-gray-400">
                 <span>Nenhum produto encontrado com</span>
                 <span className="font-bold ml-1">&quot;{searchText}&quot;.</span>
               </div>
