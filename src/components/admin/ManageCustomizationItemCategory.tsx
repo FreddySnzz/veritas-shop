@@ -172,7 +172,9 @@ export function ManageCustomizationItemCategory({ categories }: ManageCustomizat
                     {category.name}
                   </span>
                   <div className="hidden md:flex gap-4 items-center">
-                    <span className={`font-medium text-sm ${category.available ? 'text-green-600' : 'text-red-500'}`}>
+                    <span className={`font-medium text-sm ${category.available 
+                      ? 'text-green-600' : 'text-red-500'}`}
+                    >
                       Disponível:
                     </span>
                     <ToggleCustomizationItemAvailableSwitch

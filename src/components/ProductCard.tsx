@@ -13,8 +13,8 @@ interface ProductCardProps extends React.HTMLAttributes<HTMLElement> {
 
 export default function ProductCard({ product, mode }: ProductCardProps) {
   const mainImage = product.images_url?.[0] || null;
-  const productUrl = `/${mountProductUrl(product.name, product.available)}`;
-
+  const productUrl = `/${mountProductUrl(product.name, product.id)}`;
+  console.log('product', product);
   return (
     <article className="flex flex-1 flex-col font-sans h-full">
       <Link

@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import { FaAngleDown } from "react-icons/fa6";
+import { cn } from "@/lib/utils";
 
 interface ItemCollapseProps {
   title: string;
@@ -29,7 +30,7 @@ export default function ItemCollapse({
         className={`flex w-full items-center justify-between cursor-pointer focus:outline-none ${collapseClassName}`}
         aria-expanded={expanded}
       >
-        <span className={`font-bold text-secondary ${titleClassName}`}>
+        <span className={cn(`font-bold text-secondary ${titleClassName}`)}>
           {title}
         </span>
         <motion.div

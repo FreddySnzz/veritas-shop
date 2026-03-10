@@ -56,18 +56,14 @@ export default function DynamicBreadcrumb({
         </BreadcrumbItem>
 
         {breadcrumbList.length > 0 && breadcrumbList.length <= 4 && (
-          <BreadcrumbSeparator>
-            /
-          </BreadcrumbSeparator>
+          <BreadcrumbSeparator>/</BreadcrumbSeparator>
         )}
 
-        { breadcrumbList.map((link, index) => {
+        {breadcrumbList.map((link, index) => {
           const href = `/${breadcrumbList.slice(0, index + 1).join('/')}`;
-          
           const isLast = index === breadcrumbList.length - 1;
-
           let formattedLink = link.charAt(0).toUpperCase() + link.slice(1).replace(/-/g, ' ');
-          
+
           if (formattedLink.includes('Itens personalizacao')) {
             formattedLink = 'Itens';
           } else if (formattedLink.includes('Catalogo')) {

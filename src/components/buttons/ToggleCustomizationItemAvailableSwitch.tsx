@@ -30,8 +30,9 @@ export function ToggleCustomizationItemAvailableSwitch({
   available, 
   itemType 
 }: ToggleProps) {
-  const router = useRouter()
+  const router = useRouter();
   const [isPending, startTransition] = useTransition();
+  const [isLoading, setIsLoading] = useState(false);
   const [availableState, setAvailableState] = useState<boolean>(available);
 
   useEffect(() => {
@@ -39,6 +40,9 @@ export function ToggleCustomizationItemAvailableSwitch({
   }, [available]);
 
   const handleUpdate = (checked: boolean) => {
+    if (isLoading) return;
+
+    setIsLoading(true);
     const updateAction = ACTION_MAP[itemType];
 
     if (!updateAction) {
@@ -64,6 +68,8 @@ export function ToggleCustomizationItemAvailableSwitch({
         console.error(`Erro ao atualizar ${itemType}:`, error);
         toast.error(`Erro ao atualizar o status do item.`);
         setAvailableState(!checked);
+      } finally {
+        setIsLoading(false);
       };
     });
   };
@@ -76,7 +82,7 @@ export function ToggleCustomizationItemAvailableSwitch({
       <Switch
         checked={availableState}
         onCheckedChange={handleUpdate}
-        disabled={isPending}
+        disabled={isPending || isLoading}
         className="cursor-pointer data-[state=checked]:bg-green-600"
       />
     </div>

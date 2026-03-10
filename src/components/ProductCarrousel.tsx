@@ -172,9 +172,15 @@ export default function ProductCarrousel({
               `}
             >
               {isExpanded ? (
-                <>Ver menos <ChevronUp className="w-4 h-4" /></>
+                <>
+                  Ver menos 
+                  <ChevronUp className="w-4 h-4" />
+                </>
               ) : (
-                <>Ver mais ({availableImages.length - 4}) <ChevronDown className="w-4 h-4" /></>
+                <>
+                  Ver mais ({availableImages.length - 4}) 
+                  <ChevronDown className="w-4 h-4" />
+                </>
               )}
             </button>
           </div>

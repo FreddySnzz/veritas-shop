@@ -26,28 +26,65 @@ export default function ManageCustomizationItemsLayout({
   const [searchText, setSearchText] = useState('');
   const router = useRouter();
 
-  const filteredData = useMemo(() => {
-    if (!searchText) return customizationItems;
-    
-    const lowerSearch = searchText.toLowerCase();
-    return customizationItems.filter((item) => {
-      const name = item.name.toLowerCase();
-      const category = item.category.toLowerCase();
-      const ref = item.ref.toLowerCase();
-      const style = item.metadata?.style?.toLowerCase();
-      
-      return name.includes(lowerSearch) || 
-        category.includes(lowerSearch) || 
-        style?.includes(lowerSearch) ||
-        ref.includes(lowerSearch);
-    });
-  }, [searchText, customizationItems]);
+  const groupedItems = useMemo(() => {
+    const lowerSearch = searchText.toLowerCase().trim();
 
-  const groups = Object.groupBy(filteredData, (item) => item.category);
-  const groupedItems = Object.entries(groups).map(([category, items]) => ({
-    category,
-    items
-  }));
+    const filteredData = !lowerSearch
+      ? customizationItems
+      : customizationItems.filter((item) => {
+        const name = item.name.toLowerCase();
+        const category = item.category.toLowerCase();
+        const ref = item.ref.toLowerCase();
+        const style = item.metadata?.style?.toLowerCase() || '';
+
+        return (
+          name.includes(lowerSearch) ||
+          category.includes(lowerSearch) ||
+          style.includes(lowerSearch) ||
+          ref.includes(lowerSearch)
+        );
+      });
+
+    const grouped = filteredData.reduce(
+      (
+        acc: Record<
+          string,
+          {
+            category: string;
+            styles: Record<string, CustomizationItemsModel[]>;
+          }
+        >,
+        item
+      ) => {
+        const category = item.category || 'Sem categoria';
+        const style = item.metadata?.style || 'Outros';
+
+        if (!acc[category]) {
+          acc[category] = {
+            category,
+            styles: {},
+          };
+        }
+
+        if (!acc[category].styles[style]) {
+          acc[category].styles[style] = [];
+        }
+
+        acc[category].styles[style].push(item);
+
+        return acc;
+      },
+      {}
+    );
+
+    return Object.values(grouped).map((group) => ({
+      category: group.category,
+      styles: Object.entries(group.styles).map(([style, items]) => ({
+        style,
+        items,
+      })),
+    }));
+  }, [searchText, customizationItems]);
 
   return (
     <div className="flex flex-col font-sans h-full overflow-hidden">
@@ -88,7 +125,7 @@ export default function ManageCustomizationItemsLayout({
             <button
               aria-label="Limpar pesquisa"
               title="Limpar pesquisa"
-              className="fixed right-8 cursor-pointer"
+              className="relative pl-2 md:pl-0 cursor-pointer"
               onClick={() => setSearchText('')}
             >
               <X className="w-6 h-6 text-secondary cursor-pointer" />
@@ -112,74 +149,98 @@ export default function ManageCustomizationItemsLayout({
             <div className="flex flex-col gap-4">
               {groupedItems.map((group) => {
                 if (!group) return null;
-                
-                const renderGroupedCategories = group.items?.map((item: CustomizationItemsModel) => (
-                  <ItemContent key={item.id}> 
-                    <CardButton 
-                      className="bg-white"
-                      pushRoute={`/admin/estoques/itens-personalizacao/editar/${item.id}`}
-                    >
-                      {item.image_url ? (
-                        <div className="relative w-25 h-25 shrink-0">
-                          <Image
-                            src={item.image_url}
-                            alt="preview"
-                            draggable="false"
-                            fill
-                            loading="eager"
-                            className="aspect-square rounded-2xl object-cover shadow-sm"
-                            sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-                          />
-                        </div>
-                      ) : (
-                        <div 
-                          className={`shrink-0 flex items-center justify-center w-25 h-25 rounded-2xl bg-gray-200`}
-                          style={{ backgroundColor: item.metadata?.color }}
-                        >
-                          <span className="text-sm text-secondary px-2 text-center font-medium">
-                            Sem Imagem
-                          </span>
-                        </div>
-                      )}
-        
-                      <div className="flex flex-col ml-4 gap-1 w-full overflow-hidden">
-                        <p className="text-sm font-bold truncate text-secondary">
-                          <span>{item?.name}</span>
-                          { item?.metadata?.style && <span> - {item?.metadata?.style}</span> }
-                        </p>
-                        <p className="text-xs text-gray-400 mt-1 line-clamp-3">
-                          Ref: {item.ref}
-                        </p>
-                        <p className="text-xs text-gray-400 line-clamp-3">
-                          Categoria: {item.category}
-                        </p>
-                        <div className="flex items-center gap-3">
-                          <span className={`font-medium  ${item.available ? 'text-green-600' : 'text-red-500'}`}>
-                            Disponível:
-                          </span>
-                          <ToggleCustomizationItemAvailableSwitch
-                            idProduct={item.id}
-                            available={item.available}
-                            itemType={ItemsCustomizationTypes.customizationItem}
-                          />
-                        </div>
-                      </div>
-                    </CardButton>
-                  </ItemContent>
-                ));
 
                 return (
-                  <div 
-                    key={group.category} 
+                  <div
+                    key={group.category}
                     className="flex flex-col gap-2"
                   >
-                    <ItemCollapse 
+                    <ItemCollapse
                       title={formatAndCapitalize(group.category)}
-                      insideClassName={`flex flex-col mt-2 gap-2
-                        md:grid md:grid-cols-2 lg:grid-cols-3
-                      `}
+                      insideClassName="flex flex-col mt-2 gap-4"
                     >
-                      {renderGroupedCategories}
+                      {group.styles.map((styleGroup) => (
+                        <ItemCollapse
+                          key={styleGroup.style}
+                          title={formatAndCapitalize(styleGroup.style)}
+                          insideClassName="flex flex-col mt-2 gap-4"
+                          titleClassName="text-sm font-semibold text-gray-500 px-1"
+                        >
+                          <div className="flex flex-col gap-2">
+                            <div
+                              className="
+                                flex flex-col gap-2
+                                md:grid md:grid-cols-2 lg:grid-cols-3
+                              "
+                            >
+                              {styleGroup.items.map((item: CustomizationItemsModel) => (
+                                <ItemContent key={item.id}>
+                                  <CardButton
+                                    className="bg-white"
+                                    pushRoute={`/admin/estoques/itens-personalizacao/editar/${item.id}`}
+                                  >
+                                    {item.image_url ? (
+                                      <div className="relative w-25 h-25 shrink-0">
+                                        <Image
+                                          src={item.image_url}
+                                          alt="preview"
+                                          draggable="false"
+                                          fill
+                                          loading="eager"
+                                          className="aspect-square rounded-2xl object-cover shadow-sm"
+                                          sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                                        />
+                                      </div>
+                                    ) : (
+                                      <div
+                                        className="shrink-0 flex items-center justify-center w-25 h-25 rounded-2xl bg-gray-200"
+                                        style={{ backgroundColor: item.metadata?.color }}
+                                      >
+                                        <span className="text-sm text-secondary px-2 text-center font-medium">
+                                          Sem Imagem
+                                        </span>
+                                      </div>
+                                    )}
+
+                                    <div className="flex flex-col ml-4 gap-1 w-full overflow-hidden">
+                                      <p className="text-sm font-bold truncate text-secondary">
+                                        <span>{item.name}</span>
+                                        {item.metadata?.style && (
+                                          <span> - {item.metadata.style}</span>
+                                        )}
+                                      </p>
+
+                                      <p className="text-xs text-gray-400 mt-1 line-clamp-3">
+                                        Ref: {item.ref}
+                                      </p>
+
+                                      <p className="text-xs text-gray-400 line-clamp-3">
+                                        Categoria: {item.category}
+                                      </p>
+
+                                      <div className="flex items-center gap-3">
+                                        <span
+                                          className={`font-medium ${
+                                            item.available ? 'text-green-600' : 'text-red-500'
+                                          }`}
+                                        >
+                                          Disponível:
+                                        </span>
+
+                                        <ToggleCustomizationItemAvailableSwitch
+                                          idProduct={item.id}
+                                          available={item.available}
+                                          itemType={ItemsCustomizationTypes.customizationItem}
+                                        />
+                                      </div>
+                                    </div>
+                                  </CardButton>
+                                </ItemContent>
+                              ))}
+                            </div>
+                          </div>
+                        </ItemCollapse>
+                      ))}
                     </ItemCollapse>
                   </div>
                 );

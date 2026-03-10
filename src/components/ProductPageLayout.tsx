@@ -64,7 +64,11 @@ export default function ProductPageLayout({
     <div className="flex flex-col font-sans h-full">
       <div>
         <div className="shrink-0 px-8 lg:px-12">
-          <DynamicBreadcrumb className="mt-14 py-4 lg:mt-16 lg:py-6" />
+          <DynamicBreadcrumb 
+            mode={"user"} 
+            product={product}
+            className="mt-14 py-4 lg:mt-16 lg:py-6" 
+          />
           <hr className="lg:hidden border-muted-foreground/50" />
         </div>
 
@@ -105,10 +109,18 @@ export default function ProductPageLayout({
         </div>
 
         <div className="flex shrink-0 mt-8 lg:mt-0">
-          <ProductCarrousel 
-            product={product}
-            gridMode={isMdUp}
-          />
+          {product.images_url?.length ? (
+            <ProductCarrousel 
+              product={product}
+              gridMode={isMdUp}
+            />
+          ) : (
+            <div className="flex flex-col items-center justify-center h-60 gap-4 w-full">
+              <span className="text-gray-400 text-sm">
+                Produto Sem Imagens
+              </span>
+            </div>
+          )}
 
           <div className="hidden lg:flex lg:grow w-full flex-col h-full">
             <div className="hidden lg:flex flex-col px-6">

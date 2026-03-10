@@ -20,11 +20,9 @@ export function removeAccentsAndSpacesToURL(str: string) {
 
 export function mountProductUrl(
   productName: string,
-  available: boolean
+  productId: string
 ): string {
-  const str = `${removeAccentsAndSpacesToURL(
-    productName)}-${available ? 'available' : 'out-of-stock'}
-  `;
+  const str = `${removeAccentsAndSpacesToURL(productName)}-${productId}`;
 
   return str;
 };

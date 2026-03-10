@@ -44,15 +44,17 @@ export default function SeeMoreProducts({
             <motion.div
               aria-label={!isTouchDevice ? `Arraste para ver mais` : `Ver mais ${product.name}`}
               title={!isTouchDevice ? `Arraste para ver mais` : `Ver mais ${product.name}`}
-              onClick={!isTouchDevice ? undefined : () => router.push(`/${mountProductUrl(product.name, product.available)}`)}
+              onClick={!isTouchDevice ? undefined : () => router.push(`/${mountProductUrl(product.name, product.id)}`)}
               whileHover={{ scale: 1.02 }}
               transition={{ type: "spring", stiffness: 500, damping: 30 }}
               className={`group flex flex-col rounded-lg w-60 h-70 cursor-pointer overflow-hidden
                 bg-white shadow-md transition-all duration-300 text-start 
               `}
             >
-              {product.images_url ? (
-                <div className="relative w-full h-50 aspect-square overflow-hidden shrink-0 cursor-grab active:cursor-grabbing">
+              {product.images_url?.length ? (
+                <div className="relative w-full h-50 aspect-square overflow-hidden 
+                  shrink-0 cursor-grab active:cursor-grabbing"
+                >
                   <Image
                     src={product?.images_url?.[0] || ""}
                     alt={product.id}
@@ -64,13 +66,11 @@ export default function SeeMoreProducts({
                   />
                 </div>
               ) : (
-                <div 
-                  className={`shrink-0 flex items-center justify-center w-25 h-25 rounded-2xl 
-                    bg-gray-200 cursor-grab active:cursor-grabbing
-                  `}
+                <div className={`relative flex items-center justify-center w-full h-50 overflow-hidden  
+                  cursor-grab active:cursor-grabbing bg-gray-200 shrink-0 aspect-square`}
                 >
                   <span className="text-sm text-secondary px-2 text-center font-medium">
-                    Sem Imagem
+                    Produto Sem Imagem
                   </span>
                 </div>
               )}
@@ -79,7 +79,7 @@ export default function SeeMoreProducts({
                 type="button"
                 aria-label={`Ver ${product.name}`}
                 title={`Ver ${product.name}`}
-                onClick={() => router.push(`/${mountProductUrl(product.name, product.available)}`)}
+                onClick={() => router.push(`/${mountProductUrl(product.name, product.id)}`)}
                 className="flex-1 flex flex-col px-3 py-3 w-full cursor-pointer"
               >
                 <div className="flex flex-col gap-1 items-start">

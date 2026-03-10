@@ -22,6 +22,7 @@ import { toast } from "sonner";
 import { BackButton } from "../buttons/BackButton";
 import { useIsTouchDevice } from "@/data/hook/useMouseDrag";
 import { cn } from "@/lib/utils";
+import { centsToPriceString, normalizePriceInput, priceStringToCents } from "@/data/functions/inputMasks";
 
 interface ProductFormProps {
   initialData?: ProductModel | null
@@ -34,8 +35,8 @@ export function ProductForm({
 }: ProductFormProps) {
   const [name, setName] = useState<string>(initialData?.name || "");
   const [desc, setDesc] = useState<string>(initialData?.desc || "");
-  const [initialPrice, setInitialPrice] = useState<number>((initialData?.initial_price && 
-    Number(initialData.initial_price / 100)) || 0
+  const [initialPrice, setInitialPrice] = useState<string>(
+    centsToPriceString(initialData?.initial_price)
   );
   const [available, setAvailable] = useState<boolean>(initialData?.available || false);
   const [customizable, setCustomizable] = useState<boolean>(initialData?.customizable || false);
@@ -126,7 +127,7 @@ export function ProductForm({
     setIsLoading(true);
     
     try {
-      if (initialPrice <= 0) {
+      if (!initialPrice) {
         toast.error("O valor do produto não pode ser R$0,00");
         setIsLoading(false);
         return;
@@ -163,11 +164,11 @@ export function ProductForm({
         available,
         customizable,
         customization_items: customizationItems,
-        initial_price: initialPrice * 100,
+        initial_price: priceStringToCents(initialPrice),
         images_url: finalImagesUrl,
         updated_at: new Date(),
       };
-
+      
       if (isEditMode && productId) {
         await updateProductAction(productId, dataToSubmit);
       } else {
@@ -259,11 +260,14 @@ export function ProductForm({
               <span className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground">R$</span>
               <Input
                 id="initialPrice"
-                type="number"
-                onChange={(e) => setInitialPrice(Number(e.target.value) || 0)}
-                value={initialPrice > 0 ? initialPrice : ''}
+                type="text"
+                inputMode="decimal"
+                onChange={(e) => {
+                  const formatted = normalizePriceInput(e.target.value);
+                  setInitialPrice(formatted);
+                }}
+                value={initialPrice}
                 placeholder="0.00"
-                min="1"
                 className="pl-10 bg-white focus-visible:ring-0 truncate text-secondary"
                 disabled={isLoading}
               />

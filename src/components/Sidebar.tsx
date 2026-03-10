@@ -136,7 +136,7 @@ export default function Sidebar() {
                       <Link
                         aria-label="Ir para Página do Produto"
                         title="Ir para Página do Produto"
-                        href={mountProductUrl(item.product.name, true)}
+                        href={mountProductUrl(item.product.name, item.product.id)}
                       >
                         <span className="font-bold hover:underline">
                           {item.product.name}

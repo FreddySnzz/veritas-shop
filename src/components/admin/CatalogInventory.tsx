@@ -100,7 +100,7 @@ export default function ManageCatalogInventory({
                 className="bg-white h-full"
               >
                 <div>
-                  {product.images_url ? (
+                  {product.images_url?.length ? (
                     <div className="relative w-35 h-35 shrink-0">
                       <Image
                         src={product.images_url[0]}

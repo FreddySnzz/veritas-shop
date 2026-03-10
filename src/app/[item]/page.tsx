@@ -21,7 +21,7 @@ export default async function AddProductCatalogPage({ params }: PageProps) {
   const getProducts = await getCachedProductsAction();
   const availableProducts = getProducts?.filter((product: ProductModel) => product.available);
   const product = getProducts.find(
-    (product: ProductModel) => mountProductUrl(product.name, product.available) === item
+    (product: ProductModel) => mountProductUrl(product.name, product.id) === item
   );
 
   if (!product) {
