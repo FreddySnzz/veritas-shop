@@ -213,7 +213,7 @@ export function CustomizationItemForm({
           <div className="flex flex-col gap-2 w-full">
             <Label className="text-sm">Categoria do Item *</Label>
             <Select 
-              disabled={isEditMode || isLoading}
+              disabled={isLoading}
               value={categoryKey} 
               onValueChange={(value) => setCategoryKey(value)}
             >

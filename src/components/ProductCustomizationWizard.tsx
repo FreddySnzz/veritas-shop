@@ -14,7 +14,8 @@ import {
   ChevronRight, 
   Check, 
   X, 
-  ShoppingCart 
+  ShoppingCart, 
+  Trash
 } from 'lucide-react';
 import CardCustomization from './CardCustomization';
 import MultiTextInput from './inputs/MultiTexts';
@@ -369,10 +370,10 @@ export default function ProductCustomizerWizard({
         aria-label="Pular"
         title="Pular"
         onClick={() => handleSelectAndAdvance(currentStep.id, null)}
-        className={`w-full p-3 border-2 border-dashed mb-4
+        className={`w-full px-3 py-2 border-2 border-dashed mb-4
           border-gray-300 rounded-xl text-gray-500 font-medium 
           hover:border-gray-400 hover:bg-gray-50 transition-colors 
-          flex items-center justify-center gap-2 cursor-pointer
+          flex items-center justify-center gap-2 cursor-pointer text-sm
         `}
       >
         <span>Prefiro sem {currentStep.title} (Pular)</span>
@@ -482,7 +483,7 @@ export default function ProductCustomizerWizard({
             key={currentStep?.title}
             initial={{ opacity: 0, x: -10 }}
             animate={{ opacity: 1, x: 0 }}
-            className="text-2xl font-bold text-gray-900 mt-2"
+            className="text-xl md:text-2xl font-bold text-gray-900 mt-2"
           >
             {currentStep?.title} {currentStep?.isOptional ? '' : '*'}
           </motion.h2>
@@ -494,7 +495,7 @@ export default function ProductCustomizerWizard({
             transition={{ delay: 0.1 }}
             className="text-gray-500 text-sm"
           >
-            <div className='flex items-center gap-1'>
+            <div className='flex text-xs md:text-sm items-center gap-1'>
               <span>{currentStep?.subtitle}</span>
               {currentStep.imageHelper && (
                 <button 
@@ -534,31 +535,49 @@ export default function ProductCustomizerWizard({
       </main>
 
       <footer 
-        className={`shrink-0 flex justify-between gap-4 z-10
-          border-t border-gray-200 bg-white p-4 w-full
+        className={`shrink-0 flex justify-end z-10
+          border-t border-gray-200 bg-white p-3 w-full
         `}
       >
-        <button
-          onClick={handleBack}
-          className={`flex flex-1 items-center justify-center gap-1 px-4 py-3 rounded-xl font-medium 
-            text-gray-700 bg-gray-100 hover:bg-gray-200 cursor-pointer transition-colors 
-          `}
-        >
-          <ChevronLeft size={18} />
-          <span>Voltar</span>
-        </button>
-
-        {currentStepIndex < wizardSteps.length - 1 && (
+        <div className='flex justify-end gap-4 w-full lg:w-1/2'>
           <button
-            onClick={handleNext}
-            className={`flex flex-1 items-center justify-center gap-1 px-4 py-3 rounded-xl font-medium 
-              text-white bg-secondary hover:bg-secondary/90 shadow-sm cursor-pointer transition-colors 
+            onClick={() => {
+              resetCustomization();
+              setCurrentStepIndex(0);
+              toast.success("Sua personalização foi limpa com sucesso.");
+            }}
+            className={`flex flex-1 items-center justify-center gap-2 sm:px-4 sm:py-3 rounded-xl font-medium 
+              text-white bg-red-400 hover:bg-red-500 cursor-pointer transition-colors 
             `}
           >
-            <span>Próximo</span>
-            <ChevronRight size={18} />
+            <Trash size={18} />
+            <span className='hidden sm:block'>
+              Limpar
+            </span>
           </button>
-        )}
+
+          <button
+            onClick={handleBack}
+            className={`flex flex-1 items-center justify-center gap-1 px-4 py-3 rounded-xl font-medium 
+              text-gray-700 bg-gray-100 hover:bg-gray-200 cursor-pointer transition-colors 
+            `}
+          >
+            <ChevronLeft size={18} />
+            <span>Voltar</span>
+          </button>
+
+          {currentStepIndex < wizardSteps.length - 1 && (
+            <button
+              onClick={handleNext}
+              className={`flex flex-1 items-center justify-center gap-1 px-4 py-3 rounded-xl font-medium 
+                text-white bg-secondary hover:bg-secondary/90 shadow-sm cursor-pointer transition-colors 
+              `}
+            >
+              <span>Próximo</span>
+              <ChevronRight size={18} />
+            </button>
+          )}
+        </div>
       </footer>
 
       <CustomModal

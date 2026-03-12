@@ -31,7 +31,7 @@ export default function CustomModal({
     >
       <div 
         onClick={(e) => e.stopPropagation()}
-        className={`flex flex-col gap-4 p-6 w-full max-w-md 
+        className={`flex flex-col gap-2 p-6 w-full max-w-md 
           bg-white rounded-lg shadow-xl ${className}
         `}
       >

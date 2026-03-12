@@ -24,6 +24,7 @@ import { SupportButton } from "./buttons/SupportButton";
 import Alert from "./Alert";
 import Link from "next/link";
 import { mountProductUrl } from "@/data/functions/removeAccentsAndSpaces";
+import { centsToPriceString } from "@/data/functions/inputMasks";
 
 interface CartProps extends React.HTMLAttributes<HTMLElement> {
   whatsappNumber?: string;
@@ -61,13 +62,13 @@ export default function Cart({
   };
 
   const calculeTotalCartValue = () => {
-    const total = items.reduce(
-      (acc, item) => (
-        item.product.customizationPrice > 0 ? 
-        acc + item.quantity * (item.product.price + item.product.customizationPrice) : 
-        acc + item.quantity * item.product.price
-      ), 0
-    );
+    const total = items.reduce((acc, item) => {
+      const price = Number(item.product.price) || 0;
+      const customizationPrice = Number(centsToPriceString(item.product.customizationPrice)) || 0;
+      const quantity = Number(item.quantity) || 0;
+
+      return acc + (price + customizationPrice) * quantity;
+    }, 0);
 
     return formatCurrency(total);
   };
@@ -289,7 +290,7 @@ export default function Cart({
                             <div className="flex justify-between text-xs text-gray-400 font-medium">
                               <span>Personalização</span>
                               <span>
-                                + {formatCurrency(item.product.customizationPrice * item.quantity)}
+                                + {formatCurrency(Number(centsToPriceString(item.product.customizationPrice * item.quantity)))}
                               </span>
                             </div>
                           )}
@@ -395,7 +396,7 @@ export default function Cart({
                     <div className="flex justify-between text-xs text-gray-400 font-medium">
                       <span>Personalização</span>
                       <span>
-                        + {formatCurrency(item.product.customizationPrice * item.quantity)}
+                        + {formatCurrency(Number(centsToPriceString(item.product.customizationPrice * item.quantity)))}
                       </span>
                     </div>
                   )}
@@ -449,18 +450,22 @@ export default function Cart({
 
       {catalogProducts.length > 0 && (
         <div className="hidden md:flex flex-col pt-6 md:-mx-14 lg:-mx-16">
-          <div className="flex ml-4">
-            <span className="font-bold uppercase ml-12">
-              Veja também
-            </span>
-          </div>
-          <div className="overflow-hidden">
-            <SeeMoreProducts 
-              atualProductId={items[0].product.id} 
-              cachedProducts={catalogProducts}
-              className="ml-12"
-            />
-          </div>
+          {items.length > 0 && (
+            <>
+              <div className="flex ml-4">
+                <span className="font-bold uppercase ml-12">
+                  Veja também
+                </span>
+              </div>
+              <div className="overflow-hidden">
+                <SeeMoreProducts 
+                  atualProductId={items[0].product.id} 
+                  cachedProducts={catalogProducts}
+                  className="ml-12"
+                />
+              </div>
+            </>
+          )}
         </div>
       )}
     </div>
