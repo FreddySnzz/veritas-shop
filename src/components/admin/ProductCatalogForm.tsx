@@ -22,7 +22,6 @@ import { toast } from "sonner";
 import { BackButton } from "../buttons/BackButton";
 import { useIsTouchDevice } from "@/data/hook/useMouseDrag";
 import { 
-  centsToPriceString, 
   normalizePriceInput, 
   priceStringToCents 
 } from "@/data/functions/inputMasks";
@@ -39,9 +38,7 @@ export function ProductForm({
 }: ProductFormProps) {
   const [name, setName] = useState<string>(initialData?.name || "");
   const [desc, setDesc] = useState<string>(initialData?.desc || "");
-  const [initialPrice, setInitialPrice] = useState<string>(
-    centsToPriceString(initialData?.initial_price)
-  );
+  const [initialPrice, setInitialPrice] = useState<string>((initialData?.initial_price)?.toString() || "");
   const [available, setAvailable] = useState<boolean>(initialData?.available || false);
   const [customizable, setCustomizable] = useState<boolean>(initialData?.customizable || false);
   const [customizationItems, setCustomizationItems] = useState<CustomizationItemConfig[]>(

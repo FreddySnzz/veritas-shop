@@ -24,11 +24,11 @@ export async function calculateCustomizationPrice(
       letras = customization.frase.join("");
     };
   
-    if (letras?.length > 10) price += 2;
-    if (letras?.length > 20) price += 1;
-    if (letras?.length > 30) price += 1;
-    if (letras?.length > 40) price += 1;
-    if (letras?.length == 50) price += 1;
+    if (letras?.length > 10) price += 200;
+    if (letras?.length > 20) price += 100;
+    if (letras?.length > 30) price += 100;
+    if (letras?.length > 40) price += 100;
+    if (letras?.length > 50) price += 100;
   };
   
   return price;

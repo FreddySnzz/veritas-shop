@@ -34,7 +34,6 @@ import { generateRefNumber } from "@/data/functions/generateRefForItem";
 import { CustomizationItemsCategoryModel } from "@/data/models/CustomizationItemsCategory";
 import { CustomizationItemsModel } from "@/data/models/CustomizationItems.model";
 import { 
-  centsToPriceString, 
   normalizePriceInput, 
   onlyNumbers, 
   priceStringToCents 
@@ -69,9 +68,7 @@ export function CustomizationItemForm({
   const [color, setColor] = useState<string>(initialData?.metadata?.color || "#000000");
   const [currentImageUrl, setCurrentImageUrl] = useState<string>(() => initialData?.image_url || "");
   const [available, setAvailable] = useState<boolean>(true);
-  const [priceAddon, setPriceAddon] = useState<string>(
-    centsToPriceString(initialData?.price_addon)
-  );
+  const [priceAddon, setPriceAddon] = useState<string>((initialData?.price_addon)?.toString() || "");
   const [sizeHeight, setSizeHeight] = useState<string>(() => 
     initialData?.metadata?.size_height !== undefined ? String(initialData.metadata.size_height) : ""
   );

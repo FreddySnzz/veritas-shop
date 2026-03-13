@@ -88,6 +88,161 @@ export default function Cart({
     return `• ${key}: ${value}\n`;
   };
 
+  const renderOrderSummaryDesktop = () => {
+    return (
+      <div className="hidden md:flex flex-col w-full lg:w-1/3 pl-16">
+      <div className="flex-1 flex-col">
+        <span className="font-bold text-2xl text-secondary uppercase">
+          Resumo do Pedido
+        </span>
+
+        <Alert 
+          title="Lembre-se que o valor mostrado é apenas uma estimativa."
+          subtitle="O valor real será confirmado na finalização do pedido com nosso atendimento."
+          className="flex font-medium my-2"
+        />
+
+        <div className="flex flex-col mt-4 gap-2">
+          {items.map((item) => (
+            <div 
+              key={item.cartId}
+              className="flex flex-col"
+            >
+              <div className="flex justify-between w-full gap-2 items-baseline">
+                <span className="text-nowrap">
+                  {item.quantity} {item.quantity > 1 ? "itens" : "item"}
+                </span>
+                <hr className="border-dashed border-gray-300 w-full" />
+                <span>{formatCurrency(item.product.price * item.quantity)}</span>
+              </div>
+              {item.product.customizationPrice > 0 && (
+                <div className="flex justify-between text-xs text-gray-400 font-medium">
+                  <span>Personalização</span>
+                  <span>
+                    + {formatCurrency(Number(centsToPriceString(item.product.customizationPrice * item.quantity)))}
+                  </span>
+                </div>
+              )}
+            </div>
+          ))}
+        </div>
+        <div className="flex justify-between mt-2 w-full gap-2 items-baseline">
+          <span className="text-nowrap">Entrega</span>
+          <hr className="border-dashed border-gray-300 w-full" />
+          <span className="text-nowrap">A combinar</span>
+        </div>
+        <div className="flex font-bold justify-between mt-6 w-full gap-2 items-baseline">
+          <span className="text-nowrap">Total</span>
+          <hr className="border-dashed border-gray-300 w-full" />
+          <span>{calculeTotalCartValue()}</span>
+        </div>
+      </div>
+
+      <div className="shrink-0 mt-auto">
+        <div className="hidden md:flex w-full items-center justify-center">
+          <button 
+            type="button"
+            aria-label="Limpar carrinho"
+            onClick={() => setIsClearCartModalOpen(true)}
+            className={`flex items-center justify-center gap-2 px-5 py-3 
+              text-red-500/80 hover:text-red-600 transition-colors font-medium cursor-pointer
+            `}
+          >
+            <Trash2 className="w-4 h-4" />
+            <span>Limpar Carrinho</span>
+          </button>
+        </div>
+        <Alert className="flex font-medium mb-4">
+          <span>{`Ao clicar em "Finalizar Pedido", você declara que leu e concorda com nossos `} 
+            <Link 
+              href="/ajuda/termos-e-condicoes"
+              className="font-bold hover:underline"
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label="Ver Termos e Condições"
+              title="Ver Termos e Condições"
+            >
+              <span> Termos e Condições.</span>
+            </Link>
+          </span>
+        </Alert>
+        <WhatsAppButton message={generateWhatsAppMessage(items)} />
+        <SupportButton messageToSupport="Olá, estou tendo problemas no meu carrinho!" />
+      </div>
+    </div>
+    )
+  };
+
+  const renderOrderSummaryMobile = () => {
+    return (
+      <div className="flex-1 flex-col">
+        <span className="font-bold text-lg text-secondary uppercase">
+          Resumo do Pedido
+        </span>
+
+        <div className="flex flex-col mt-2 gap-2">
+          {items.map((item) => (
+            <div 
+              key={item.cartId}
+              className="flex flex-col"
+            >
+              <div className="flex justify-between w-full gap-2 items-baseline">
+                <span className="text-nowrap">
+                  {item.quantity} {item.quantity > 1 ? "itens" : "item"}
+                </span>
+                <hr className="border-dashed border-gray-300 w-full" />
+                <span>{formatCurrency(item.product.price * item.quantity)}</span>
+              </div>
+              {item.product.customizationPrice > 0 && (
+                <div className="flex justify-between text-xs text-gray-400 font-medium">
+                  <span>Personalização</span>
+                  <span>
+                    + {formatCurrency(Number(centsToPriceString(item.product.customizationPrice * item.quantity)))}
+                  </span>
+                </div>
+              )}
+            </div>
+          ))}
+        </div>
+
+        <div className="flex justify-between w-full gap-2 items-baseline">
+          <span className="text-nowrap">Entrega</span>
+          <hr className="border-dashed border-gray-300 w-full" />
+          <span className="text-nowrap">A combinar</span>
+        </div>
+
+        <div className="flex font-bold justify-between mt-6 w-full gap-2 items-baseline">
+          <span className="text-nowrap">Total</span>
+          <hr className="border-dashed border-gray-300 w-full" />
+          <span>{calculeTotalCartValue()}</span>
+        </div>
+        <Alert 
+          title="Lembre-se que o valor mostrado é apenas uma estimativa."
+          subtitle="O valor real será confirmado na finalização do pedido com nosso atendimento."
+          className="flex font-medium my-2"
+        />
+        <Alert className="flex font-medium my-2">
+          <span>{`Ao clicar em "Finalizar Pedido", você declara que leu e concorda com nossos `}
+            <Link 
+              href="/ajuda/termos-e-condicoes"
+              className="font-bold hover:underline"
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label="Ver Termos e Condições"
+              title="Ver Termos e Condições"
+            >
+              <span> Termos e Condições.</span>
+            </Link>
+          </span>
+        </Alert>
+        <SupportButton 
+          messageToSupport="Olá, estou tendo problemas no meu carrinho!"
+          className="my-2"
+        />
+      </div>
+    )
+  };
+
   const generateWhatsAppMessage = (items: CartProductItem[]) => {
     let mensagem = `Olá! Gostaria de finalizar o seguinte pedido:\n\n`;
     let totalGeral = 0;
@@ -263,86 +418,7 @@ export default function Cart({
                   ))}
                 </div>
 
-                <div className="hidden md:flex flex-col w-full lg:w-1/3 pl-16">
-                  <div className="flex-1 flex-col">
-                    <span className="font-bold text-2xl text-secondary uppercase">
-                      Resumo do Pedido
-                    </span>
-
-                    <Alert 
-                      title="Lembre-se que o valor mostrado é apenas uma estimativa."
-                      subtitle="O valor real será confirmado na finalização do pedido com nosso atendimento."
-                      className="flex font-medium my-2"
-                    />
-
-                    <div className="flex flex-col mt-4 gap-2">
-                      {items.map((item) => (
-                        <div 
-                          key={item.cartId}
-                          className="flex flex-col"
-                        >
-                          <div className="flex justify-between w-full gap-2 items-baseline">
-                            <span className="text-nowrap">
-                              {item.quantity} {item.quantity > 1 ? "itens" : "item"}
-                            </span>
-                            <hr className="border-dashed border-gray-300 w-full" />
-                            <span>{formatCurrency(item.product.price * item.quantity)}</span>
-                          </div>
-                          {item.product.customizationPrice > 0 && (
-                            <div className="flex justify-between text-xs text-gray-400 font-medium">
-                              <span>Personalização</span>
-                              <span>
-                                + {formatCurrency(Number(centsToPriceString(item.product.customizationPrice * item.quantity)))}
-                              </span>
-                            </div>
-                          )}
-                        </div>
-                      ))}
-                    </div>
-                    <div className="flex justify-between mt-2 w-full gap-2 items-baseline">
-                      <span className="text-nowrap">Entrega</span>
-                      <hr className="border-dashed border-gray-300 w-full" />
-                      <span className="text-nowrap">A combinar</span>
-                    </div>
-                    <div className="flex font-bold justify-between mt-6 w-full gap-2 items-baseline">
-                      <span className="text-nowrap">Total</span>
-                      <hr className="border-dashed border-gray-300 w-full" />
-                      <span>{calculeTotalCartValue()}</span>
-                    </div>
-                  </div>
-
-                  <div className="shrink-0 mt-auto">
-                    <div className="hidden md:flex w-full items-center justify-center">
-                      <button 
-                        type="button"
-                        aria-label="Limpar carrinho"
-                        onClick={() => setIsClearCartModalOpen(true)}
-                        className={`flex items-center justify-center gap-2 px-5 py-3 
-                          text-red-500/80 hover:text-red-600 transition-colors font-medium cursor-pointer
-                        `}
-                      >
-                        <Trash2 className="w-4 h-4" />
-                        <span>Limpar Carrinho</span>
-                      </button>
-                    </div>
-                    <Alert className="flex font-medium mb-4">
-                      <span>{`Ao clicar em "Finalizar Pedido", você declara que leu e concorda com nossos `} 
-                        <Link 
-                          href="/ajuda/termos-e-condicoes"
-                          className="font-bold hover:underline"
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          aria-label="Ver Termos e Condições"
-                          title="Ver Termos e Condições"
-                        >
-                          <span> Termos e Condições.</span>
-                        </Link>
-                      </span>
-                    </Alert>
-                    <WhatsAppButton message={generateWhatsAppMessage(items)} />
-                    <SupportButton messageToSupport="Olá, estou tendo problemas no meu carrinho!" />
-                  </div>
-                </div>
+                <>{renderOrderSummaryDesktop()}</>
 
                 <DeleteItemCartModal
                   cartId={itemCartIdToDelete}
@@ -374,85 +450,23 @@ export default function Cart({
         </div>
       </div>
 
-      <div className="shrink-0 mt-auto md:hidden">
-        <div className="flex flex-col w-full mt-2">
-          <div className="flex-1 flex-col">
-            <span className="font-bold text-lg text-secondary uppercase">
-              Resumo do Pedido
-            </span>
-
-            <div className="flex flex-col mt-2 gap-2">
-              {items.map((item) => (
-                <div 
-                  key={item.cartId}
-                  className="flex flex-col"
-                >
-                  <div className="flex justify-between w-full gap-2 items-baseline">
-                    <span className="text-nowrap">
-                      {item.quantity} {item.quantity > 1 ? "itens" : "item"}
-                    </span>
-                    <hr className="border-dashed border-gray-300 w-full" />
-                    <span>{formatCurrency(item.product.price * item.quantity)}</span>
-                  </div>
-                  {item.product.customizationPrice > 0 && (
-                    <div className="flex justify-between text-xs text-gray-400 font-medium">
-                      <span>Personalização</span>
-                      <span>
-                        + {formatCurrency(Number(centsToPriceString(item.product.customizationPrice * item.quantity)))}
-                      </span>
-                    </div>
-                  )}
-                </div>
-              ))}
-            </div>
-
-            <div className="flex justify-between w-full gap-2 items-baseline">
-              <span className="text-nowrap">Entrega</span>
-              <hr className="border-dashed border-gray-300 w-full" />
-              <span className="text-nowrap">A combinar</span>
-            </div>
-
-            <div className="flex font-bold justify-between mt-6 w-full gap-2 items-baseline">
-              <span className="text-nowrap">Total</span>
-              <hr className="border-dashed border-gray-300 w-full" />
-              <span>{calculeTotalCartValue()}</span>
-            </div>
-            <Alert 
-              title="Lembre-se que o valor mostrado é apenas uma estimativa."
-              subtitle="O valor real será confirmado na finalização do pedido com nosso atendimento."
-              className="flex font-medium my-2"
-            />
-            <Alert className="flex font-medium my-2">
-              <span>{`Ao clicar em "Finalizar Pedido", você declara que leu e concorda com nossos `}
-                <Link 
-                  href="/ajuda/termos-e-condicoes"
-                  className="font-bold hover:underline"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  aria-label="Ver Termos e Condições"
-                  title="Ver Termos e Condições"
-                >
-                  <span> Termos e Condições.</span>
-                </Link>
-              </span>
-            </Alert>
-            <SupportButton 
-              messageToSupport="Olá, estou tendo problemas no meu carrinho!"
-              className="my-2"
-            />
+      {!isCartEmpty && (
+        <div className="shrink-0 mt-auto md:hidden">
+          <div className="flex flex-col w-full mt-2">
+            {renderOrderSummaryMobile()}
+          </div>
+          
+          <hr className="border-muted-foreground/50" />
+          <div className="flex flex-col my-2 gap-2">
+            <WhatsAppButton message={generateWhatsAppMessage(items)} />
+            <BackButton backRoute />
           </div>
         </div>
-        
-        <hr className="border-muted-foreground/50" />
-        <div className="flex flex-col my-2 gap-2">
-          <WhatsAppButton message={generateWhatsAppMessage(items)} />
-          <BackButton backRoute />
-        </div>
-      </div>
+      )}
 
-      {catalogProducts.length > 0 && (
+      {catalogProducts.length > 1 && (
         <div className="hidden md:flex flex-col pt-6 md:-mx-14 lg:-mx-16">
-          {items.length > 0 && (
+          {items.length > 1 && (
             <>
               <div className="flex ml-4">
                 <span className="font-bold uppercase ml-12">

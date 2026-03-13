@@ -2,7 +2,6 @@ import Image from "next/image";
 import { CustomizationItemsModel } from "@/data/models/CustomizationItems.model";
 import { Check } from "lucide-react";
 import { formatCurrency } from "@/data/functions/formatAndCapitalize";
-import { centsToPriceString } from "@/data/functions/inputMasks";
 
 interface CardCustomizationProps {
   item: CustomizationItemsModel;
@@ -62,7 +61,7 @@ export default function CardCustomization({
           </span>
           <span className="font-bold text-primary">
             {item?.price_addon ? (
-              <span>+ {formatCurrency(Number(centsToPriceString(item?.price_addon)))}</span>
+              <span>+ {formatCurrency(item?.price_addon)}</span>
             ) : null}
           </span>
         </div>

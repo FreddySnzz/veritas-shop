@@ -15,7 +15,6 @@ import { CustomButton } from "../buttons/CustomButton";
 import { useRouter } from "next/navigation";
 import { DesktopSidePanel } from "../DesktopSidePanel";
 import { CustomizationItemsFilters } from "../CustomizationItemsFilters";
-import { centsToPriceString } from "@/data/functions/inputMasks";
 import CustomModal from "../modals/CustomModal";
 
 interface ManageCustomizationItemsLayoutProps {
@@ -289,7 +288,7 @@ export default function ManageCustomizationItemsLayout({
                         <span className="truncate">Categoria: {formatAndCapitalize(item.category)}</span>
                         {item?.price_addon ? (
                           <span className="truncate">
-                            Preço adicional: {formatCurrency(Number(centsToPriceString(item?.price_addon)))}
+                            Preço adicional: {formatCurrency(item?.price_addon)}
                           </span>
                         ) : ' '}
                       </div>

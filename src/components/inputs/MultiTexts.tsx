@@ -4,15 +4,28 @@ import { useState } from 'react';
 import { PlusCircle, MinusCircle } from 'lucide-react';
 import { useCustomization } from "@/data/context/CustomizationContext";
 import { onlyLetters } from '@/data/functions/inputMasks';
+import ProductModel from '@/data/models/Product.model';
+import { removeAccentsAndSpaces } from '@/data/functions/removeAccentsAndSpaces';
 
-export default function MultiTextInput() {
+interface MultiTextInputProps {
+  product: ProductModel;
+};
+
+export default function MultiTextInput({ product }: MultiTextInputProps) {
   const { customization, updateCustomization } = useCustomization();
   const [texts, setTexts] = useState<string[]>(customization.frase || ['']);
-
+  const textLimit = removeAccentsAndSpaces((product.name).toLowerCase()).includes('rosario') ? 20 : 5;
+  
   const handleAdd = () => {
-    if (texts.length < 5) {
-      setTexts([...texts, ""]);
-    }
+    if (textLimit === 20) {
+      if (texts.length < 20) {
+        setTexts([...texts, ""]);
+      }
+    } else {
+      if (texts.length < 5) {
+        setTexts([...texts, ""]);
+      }
+    };
   };
 
   const handleRemove = (indexToRemove: number) => {
@@ -66,7 +79,7 @@ export default function MultiTextInput() {
           </div>
         ))}
 
-        {texts.length < 5 && (
+        {texts.length < textLimit && (
           <div className={`flex ${texts.length === 0 ? 
             'justify-center' : 'justify-center'} mt-1`}
           >
@@ -82,9 +95,9 @@ export default function MultiTextInput() {
           </div>
         )}
         
-        {texts.length === 5 && (
+        {texts.length === textLimit && (
           <span className="text-xs text-red-400 font-bold text-center">
-            Limite máximo de 5 textos atingido.
+            Limite máximo de {textLimit} textos atingido.
           </span>
         )}
       </div>

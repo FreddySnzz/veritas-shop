@@ -149,7 +149,7 @@ export default function CustomizationItemCategoryModal({
     >
       <div 
         onClick={(e) => e.stopPropagation()}
-        className="flex flex-col gap-4 w-full max-w-md h-full overflow-y-auto scrollbar-hide
+        className="flex flex-col gap-4 w-full max-w-md overflow-y-auto scrollbar-hide
          bg-white text-secondary p-6 rounded-lg shadow-xl"
       >
         <div className="flex justify-between items-center border-b border-gray-100 pb-4">
@@ -170,6 +170,7 @@ export default function CustomizationItemCategoryModal({
         <form 
           id="add-category"
           onSubmit={handleSubmit}
+          className="h-dvh"
         >
           <div className="flex flex-col gap-4">
             <div className="flex flex-col gap-2">

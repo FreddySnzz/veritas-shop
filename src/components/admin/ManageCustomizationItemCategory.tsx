@@ -171,7 +171,7 @@ export function ManageCustomizationItemCategory({ categories }: ManageCustomizat
                   <span className="font-bold text-secondary">
                     {category.name}
                   </span>
-                  <span className="text-xs text-gray-400 truncate">
+                  <span className="text-xs text-gray-400">
                     {category?.description}
                   </span>
                   <div className="flex pt-2 gap-3 items-center">

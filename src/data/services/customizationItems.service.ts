@@ -28,6 +28,7 @@ export async function getAllCustomizationItems(): Promise<CustomizationItemsMode
     return {
       id: doc.id,
       ...data,
+      price_addon: data.price_addon / 100
     } as CustomizationItemsModel;
   });
 };

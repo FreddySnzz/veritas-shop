@@ -1259,7 +1259,7 @@ export const various = [
             title="Mistérios Gozosos (Segundas, Sábados e Domingos do Advento)"
             collapseClassName="text-start"
           >
-            <ItemContent className="flex flex-col">
+            <ItemContent className="flex flex-col mt-4">
               <div className="flex flex-col">
                 <p>No <strong>Primeiro Mistério</strong> Gozoso contemplamos a Anunciação do Anjo a Nossa Senhora.</p>
                 <div className="flex flex-col mt-2 mb-4">
@@ -1506,7 +1506,7 @@ export const various = [
             title="Mistérios Dolorosos (Terças, Sextas e Domingos da Quaresma até a Páscoa)"
             collapseClassName="text-start"
           >
-            <ItemContent className="flex flex-col">
+            <ItemContent className="flex flex-col mt-4">
               <div className="flex flex-col">
                 <span>No <strong>Primeiro Mistério</strong> Doloroso contemplamos a Agonia de Jesus no Horto das Oliveiras.</span>
                 <div className="flex flex-col mt-2 mb-4">
@@ -1753,7 +1753,7 @@ export const various = [
             title="Mistérios Gloriosos (Quartas e Domingos da Páscoa até ao Advento)"
             collapseClassName="text-start"
           >
-            <ItemContent className="flex flex-col">
+            <ItemContent className="flex flex-col mt-4">
               <div className="flex flex-col">
                 <span>No <strong>Primeiro Mistério</strong> Glorioso contemplamos a Ressurreição de Jesus Cristo.</span>
                 <div className="flex flex-col mt-2 mb-4">
@@ -2000,7 +2000,7 @@ export const various = [
             title="Mistérios Luminosos (Quinta-feira)"
             collapseClassName="text-start"
           >
-            <ItemContent className="flex flex-col">
+            <ItemContent className="flex flex-col mt-4">
               <div className="flex flex-col">
                 <span>No <strong>Primeiro Mistério</strong> Luminoso contemplamos o Batismo de Jesus.</span>
                 <div className="flex flex-col mt-2 mb-4">

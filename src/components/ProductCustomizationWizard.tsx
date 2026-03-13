@@ -342,7 +342,7 @@ export default function ProductCustomizerWizard({
           <div className="bg-white py-3 px-4 rounded-lg text-xs text-primary font-bold">
             <p>{`Dica³: O máximo de letras por mistério é 10.`}</p>
           </div>
-          <MultiTextInput />
+          <MultiTextInput product={baseProduct} />
         </div>
       );
     };
