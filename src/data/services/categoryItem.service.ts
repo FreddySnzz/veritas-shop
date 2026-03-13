@@ -218,6 +218,7 @@ export const getCachedCustomizationItemsCategories = unstable_cache(
     return categories?.map((category) => ({
       id: category.id,
       name: category.name,
+      description: category.description,
       category_name: category.category_name,
       image_url: category?.image_url,
       available: category.available,

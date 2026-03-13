@@ -94,14 +94,16 @@ export default function Cart({
     
     items.forEach((item: CartProductItem, index: number) => {
       const { product, quantity, customization } = item;
-      if (!product.customizationPrice) product.customizationPrice = 0;
-      const subtotal = (product.price + product.customizationPrice) * quantity;
+      let customizationPrice = Number(centsToPriceString(product.customizationPrice));
+      
+      if (!customizationPrice) customizationPrice = 0;
+      const subtotal = (product.price + customizationPrice) * quantity;
       totalGeral += subtotal;
       
       mensagem += `----------------------------------------------------\n`;
-      mensagem += `*ITEM ${index + 1}: ${product.name}*\n`;
+      mensagem += `*ITEM ${index + 1}: ${formatAndCapitalize(product.name)}*\n`;
       mensagem += `Quantidade: ${quantity} (${formatCurrency(product.price)} / und)\n`;
-      if (product.customizationPrice > 0) mensagem += `Personalização: (${formatCurrency(product.customizationPrice)} / item)\n`;
+      if (customizationPrice > 0) mensagem += `Personalização: (${formatCurrency(customizationPrice)} / item)\n`;
       mensagem += `----------------------------------------------------\n`;
 
       Object.entries(customization || {}).forEach(([key, value]) => {
@@ -168,7 +170,7 @@ export default function Cart({
                         href={mountProductUrl(item.product.name, item.product.id)}
                       >
                         <span className="font-bold hover:underline">
-                          {item.product.name}
+                          {formatAndCapitalize(item.product.name)}
                         </span>
                       </Link>
                       <div className="flex">
@@ -211,7 +213,7 @@ export default function Cart({
                           </div>
                         </div>
                         
-                        <div className="flex flex-col justify-center">
+                        <div className="flex flex-col justify-center pl-2">
                           <button 
                             type="button"
                             aria-label="Remover item do carrinho"

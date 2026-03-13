@@ -33,6 +33,7 @@ import {
 import CustomModal from './modals/CustomModal';
 import WizardStepsBreadcrumb from './WizardStepsBreadcrumb';
 import { calculateCustomizationPrice } from '@/data/functions/calculateCustomizationPrice';
+import { removeAccentsAndSpaces } from '@/data/functions/removeAccentsAndSpaces';
 
 const slideVariants = {
   enter: (direction: number) => ({
@@ -66,22 +67,22 @@ interface UIMetadata {
 
 const UI_METADATA: Record<string, UIMetadata> = {
   'crucifixos': { 
-    subtitle: 'Escolha o modelo do Crucifixo', 
+    subtitle: 'Escolha o modelo do Crucifixo.', 
     isGrouped: true 
   },
   'entremeios': { 
-    subtitle: 'Escolha um modelo de Entremeio', 
+    subtitle: 'Escolha um modelo de Entremeio.', 
     isGrouped: true, 
   },
   'letras': {
-    subtitle: 'Escolha o design das letras',
+    subtitle: 'Escolha o design das letras.',
     isGrouped: true,
   },
   'cordoes': { 
-    subtitle: 'Escolha a cor do Cordão' 
+    subtitle: 'Escolha a cor do Cordão.' 
   },
   'contas': { 
-    subtitle: 'Escolha a cor das Contas (Ave Maria)'
+    subtitle: 'Escolha a cor das Contas (Ave Maria).'
   },
   'contas_talhadas': { 
     subtitle: 'Escolha o estilo das Contas Talhadas (Podem ser usadas como contas maiores ou menores).',
@@ -90,8 +91,11 @@ const UI_METADATA: Record<string, UIMetadata> = {
   'texto_personalizado': { 
     subtitle: 'Escreva o nome ou palavra desejada para criar uma personalização única.' 
   },
+  'embalagens': { 
+    subtitle: 'Precisa de embalagem para presente? Escolha a opção desejada.' 
+  },
   'final': { 
-    subtitle: 'Confira seu pedido antes de finalizar' 
+    subtitle: 'Confira seu pedido antes de finalizar.' 
   },
 };
 
@@ -122,12 +126,34 @@ export default function ProductCustomizerWizard({
   const router = useRouter();
 
   const wizardSteps = useMemo(() => {
-    const productConfigItems = baseProduct.customization_items && 
-      baseProduct.customization_items
-        .filter((item) => item.available)
-        .sort(
-          (a, b) => a.category_name.localeCompare(b.category_name)
-        ) || [];
+    const isCordao = (name: string) => {
+      const normalized = removeAccentsAndSpaces(name);
+      return normalized.includes('cordao') || normalized.includes('cordoes');
+    };
+
+    const isEmbalagem = (name: string) => {
+      const normalized = removeAccentsAndSpaces(name);
+      return normalized.includes('embalagem') || normalized.includes('embalagens');
+    };
+
+    const productConfigItems = baseProduct.customization_items?.filter(
+      (item) => item.available).sort((a, b) => {
+        const nameA = a.category_name || '';
+        const nameB = b.category_name || '';
+
+        const aIsCordao = isCordao(nameA);
+        const bIsCordao = isCordao(nameB);
+
+        const aIsEmbalagem = isEmbalagem(nameA);
+        const bIsEmbalagem = isEmbalagem(nameB);
+
+        if (aIsCordao && !bIsCordao) return -1;
+        if (!aIsCordao && bIsCordao) return 1;
+        if (aIsEmbalagem && !bIsEmbalagem) return 1;
+        if (!aIsEmbalagem && bIsEmbalagem) return -1;
+        
+        return nameA.localeCompare(nameB, 'pt-BR', { sensitivity: 'base' });
+      }) || [];
     
     const steps = productConfigItems.map((configItem) => {
       const categoryData = categories.find(
@@ -137,8 +163,8 @@ export default function ProductCustomizerWizard({
       const uiData = UI_METADATA[configItem.category];
       const displayName = categoryData?.name || 
         configItem.category.charAt(0).toUpperCase() + configItem.category.slice(1);
-      const displaySubtitle = uiData?.subtitle || 
-        `Selecione uma opção de ${displayName}`;
+      const displaySubtitle = categoryData?.description ||
+        uiData?.subtitle || `Selecione uma opção de ${displayName}.`;
 
       return {
         id: configItem.category,
@@ -540,21 +566,23 @@ export default function ProductCustomizerWizard({
         `}
       >
         <div className='flex justify-end gap-4 w-full lg:w-1/2'>
-          <button
-            onClick={() => {
-              resetCustomization();
-              setCurrentStepIndex(0);
-              toast.success("Sua personalização foi limpa com sucesso.");
-            }}
-            className={`flex flex-1 items-center justify-center gap-2 sm:px-4 sm:py-3 rounded-xl font-medium 
-              text-white bg-red-400 hover:bg-red-500 cursor-pointer transition-colors 
-            `}
-          >
-            <Trash size={18} />
-            <span className='hidden sm:block'>
-              Limpar
-            </span>
-          </button>
+          {Object.keys(customization).length > 0 && (
+            <button
+              onClick={() => {
+                resetCustomization();
+                setCurrentStepIndex(0);
+                toast.success("Sua personalização foi limpa com sucesso.");
+              }}
+              className={`flex flex-1 items-center justify-center gap-2 sm:px-4 sm:py-3 rounded-xl font-medium 
+                text-white bg-red-400 hover:bg-red-500 cursor-pointer transition-colors 
+              `}
+            >
+              <Trash size={18} />
+              <span className='hidden sm:block'>
+                Limpar
+              </span>
+            </button>
+          )}
 
           <button
             onClick={handleBack}

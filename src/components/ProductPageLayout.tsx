@@ -341,7 +341,8 @@ export default function ProductPageLayout({
         </div>
       </div>
 
-      <div className="flex flex-col pt-6">
+      {cachedProducts?.length > 1 ? (
+        <div className="flex flex-col pt-6">
         <div className="flex ml-8 lg:ml-12">
           <span className="font-bold uppercase">
             Mais Produtos
@@ -355,6 +356,7 @@ export default function ProductPageLayout({
           />
         </div>
       </div>
+      ) : null}
     </div>
   );
 };

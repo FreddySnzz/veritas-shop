@@ -139,7 +139,7 @@ export default function Sidebar() {
                         href={mountProductUrl(item.product.name, item.product.id)}
                       >
                         <span className="font-bold hover:underline">
-                          {item.product.name}
+                          {formatAndCapitalize(item.product.name)}
                         </span>
                       </Link>
                       <div className="flex">
@@ -210,7 +210,7 @@ export default function Sidebar() {
                           </div>
                         </div>
 
-                        <div className="flex flex-col justify-center">
+                        <div className="flex flex-col justify-center pl-2">
                           <button 
                             type="button"
                             aria-label="Remover item do carrinho"

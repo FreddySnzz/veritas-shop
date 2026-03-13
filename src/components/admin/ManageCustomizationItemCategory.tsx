@@ -171,9 +171,12 @@ export function ManageCustomizationItemCategory({ categories }: ManageCustomizat
                   <span className="font-bold text-secondary">
                     {category.name}
                   </span>
-                  <div className="hidden md:flex gap-4 items-center">
-                    <span className={`font-medium text-sm ${category.available 
-                      ? 'text-green-600' : 'text-red-500'}`}
+                  <span className="text-xs text-gray-400 truncate">
+                    {category?.description}
+                  </span>
+                  <div className="flex pt-2 gap-3 items-center">
+                    <span className={`font-medium text-sm ${category.available ? 
+                      'text-green-600' : 'text-red-500'}`}
                     >
                       Disponível:
                     </span>
@@ -185,14 +188,7 @@ export function ManageCustomizationItemCategory({ categories }: ManageCustomizat
                   </div>
                 </div>
 
-                <div className="flex w-full items-center md:items-end justify-end gap-4">
-                  <div className="flex md:hidden gap-4 items-center">
-                    <ToggleCustomizationItemAvailableSwitch
-                      idProduct={category.id}
-                      available={category.available}
-                      itemType={ItemsCustomizationTypes.category}
-                    />
-                  </div>
+                <div className="flex">
                   <button 
                     type="button"
                     aria-label="Deletar Categoria"

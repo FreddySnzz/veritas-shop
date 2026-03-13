@@ -18,6 +18,7 @@ export interface Customization {
 
 export type CustomizationItemConfig = {
   category_name: string;
+  description?: string;
   category: string;
   required: boolean;
   available: boolean;

@@ -14,6 +14,7 @@ import { Input } from "../ui/input";
 import { toast } from "sonner";
 import { ArrowBigUpDash, Images, Trash, X } from "lucide-react";
 import { useLockBodyScroll } from "@/data/hook/useBodyLockScroll";
+import { Textarea } from "../ui/textarea";
 
 interface CustomizationItemCategoryProps extends React.HTMLAttributes<HTMLElement> {
   mode: 'editar' | 'adicionar';
@@ -29,6 +30,7 @@ export default function CustomizationItemCategoryModal({
   onClose 
 }: CustomizationItemCategoryProps) {
   const [name, setName] = useState<string>('');
+  const [description, setDescription] = useState<string>('');
   const [imageUrl, setImageUrl] = useState<string>('');
   const [isLoading, setIsLoading] = useState<boolean>(false);
 
@@ -39,9 +41,11 @@ export default function CustomizationItemCategoryModal({
     if (modalOpen) {
       if (mode === 'editar' && initialData) {
         setName(initialData.name);
+        setDescription(initialData.description || '');
         setImageUrl(initialData.image_url || '');
       } else {
         setName('');
+        setDescription('');
         setImageUrl('');
       }
       setSelectedFile(null);
@@ -96,6 +100,7 @@ export default function CustomizationItemCategoryModal({
       const dataSubmit = {
         name: name,
         category_name: removeAccentsAndSpaces(name),
+        description: description,
         image_url: finalUrlToSave,
         available: true,
         updated_at: new Date(),
@@ -126,10 +131,11 @@ export default function CustomizationItemCategoryModal({
       toast.error("Erro ao processar requisição.");
     } finally {
       setName("");
+      setDescription("");
       setImageUrl("");
       setIsLoading(false);
       setTimeout(() => {
-         window.location.reload();
+        window.location.reload();
       }, 500);
     };
   };
@@ -143,7 +149,8 @@ export default function CustomizationItemCategoryModal({
     >
       <div 
         onClick={(e) => e.stopPropagation()}
-        className="flex flex-col gap-4 w-full max-w-md bg-white text-secondary p-6 rounded-lg shadow-xl"
+        className="flex flex-col gap-4 w-full max-w-md h-full overflow-y-auto scrollbar-hide
+         bg-white text-secondary p-6 rounded-lg shadow-xl"
       >
         <div className="flex justify-between items-center border-b border-gray-100 pb-4">
           <h2 className="text-xl font-bold text-gray-800">
@@ -177,7 +184,7 @@ export default function CustomizationItemCategoryModal({
                 placeholder="Ex: Cordões"
                 onChange={(e) => setName(e.target.value)}
                 value={name}
-                className="bg-gray-50 focus-visible:ring-0 truncate text-secondary font-medium"
+                className="bg-gray-50 focus-visible:ring-0 truncate text-secondary"
                 disabled={isLoading}
               />
 
@@ -186,6 +193,26 @@ export default function CustomizationItemCategoryModal({
                   ATENÇÃO: Alterar o nome da categoria pode causar problemas no sistema.
                 </span>
               )}
+            </div>
+
+            <div className="flex flex-col gap-2">
+              <Label htmlFor="description" className="font-bold">
+                Descrição da Categoria (opcional):
+              </Label>
+              
+              <Textarea
+                id="description"
+                autoComplete="description"
+                placeholder="Ex: Selecione a cor da Conta."
+                onChange={(e) => setDescription(e.target.value)}
+                value={description}
+                className="bg-gray-50 focus-visible:ring-0 text-secondary text-sm"
+                disabled={isLoading}
+              />
+
+              <span className="text-xs text-primary">
+                A descrição da categoria será exibida como subtítulo na página de personalização.
+              </span>
             </div>
 
             <div className="flex flex-col">
