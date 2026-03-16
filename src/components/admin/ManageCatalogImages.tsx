@@ -8,7 +8,7 @@ import { uploadImageAction } from "@/app/actions/cloudinary.actions";
 import { Plus, Trash, Pencil } from "lucide-react";
 import { BackButton } from "../buttons/BackButton";
 import { CustomButton } from "../buttons/CustomButton";
-import { ToggleCustomizationItemAvailableSwitch } from "../buttons/ToggleCustomizationItemAvailableSwitch";
+import { ToggleAvailableSwitch } from "../buttons/ToggleAvailableSwitch";
 import { Label } from "../ui/label";
 import { Input } from "../ui/input";
 import Loading from "@/app/admin/loading";
@@ -239,7 +239,7 @@ export default function ManageCatalogImages({ images, className }: ManageCatalog
 
                     <div className="flex items-center w-full justify-between px-2 py-2 rounded-lg">
                       <Label htmlFor="available">Visível no Catálogo?</Label>
-                      <ToggleCustomizationItemAvailableSwitch
+                      <ToggleAvailableSwitch
                         idProduct={image.id}
                         available={image.available}
                         itemType={ItemsCustomizationTypes.catalogImage}

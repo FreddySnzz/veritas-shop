@@ -170,7 +170,7 @@ export default function CustomizationItemCategoryModal({
         <form 
           id="add-category"
           onSubmit={handleSubmit}
-          className="h-dvh"
+          className="h-dvh md:h-auto"
         >
           <div className="flex flex-col gap-4">
             <div className="flex flex-col gap-2">

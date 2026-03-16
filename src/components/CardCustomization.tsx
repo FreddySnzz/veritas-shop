@@ -48,31 +48,26 @@ export default function CardCustomization({
         )}
       </div>
       
-      <div className="flex flex-col gap-0.5">
+      <div className="flex flex-col">
         <span className={`text-sm font-semibold line-clamp-2 
           ${isSelected ? 'text-primary' : 'text-gray-700'}`}
         >
           {item.name}
         </span>
 
-        <div className="flex justify-between text-[10px] text-gray-400 font-mono gap-1">
-          <span className="">
-            Ref: {item.ref}
+        <div className="flex flex-col text-[10px] my-1 text-gray-400 font-mono">
+          <span className="flex font-bold text-primary">
+            {item?.price_addon ? (<span>+ {formatCurrency(item?.price_addon)}</span>) : null}
           </span>
-          <span className="font-bold text-primary">
-            {item?.price_addon ? (
-              <span>+ {formatCurrency(item?.price_addon)}</span>
-            ) : null}
+          <span>
+            Ref: {item.ref}
           </span>
         </div>
 
         {item?.metadata && (
-          <div className="flex text-[8px] md:text-[10px] text-gray-400 font-mono gap-1">
+          <div className="flex flex-col text-[8px] md:text-[10px] text-gray-400 font-mono">
             {Number(item?.metadata?.size_height) > 0 && (
-              <>
-                <span>Altura: {item?.metadata?.size_height}cm</span>
-                <span>|</span>
-              </>
+              <span>Altura: {item?.metadata?.size_height}cm</span>
             )}
             {Number(item?.metadata?.size_width) > 0 && (
               <span>Largura: {item?.metadata?.size_width}cm</span>

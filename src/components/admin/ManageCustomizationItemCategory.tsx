@@ -8,13 +8,13 @@ import { deleteCategoryAction } from "@/app/actions/customizationItemsCategory.a
 import { CustomizationItemsCategoryModel } from "@/data/models/CustomizationItemsCategory";
 import { Plus, Trash2, X } from "lucide-react";
 import CustomizationItemCategoryModal from "../modals/CustomizationItemCategory";
-import { ToggleCustomizationItemAvailableSwitch } from "../buttons/ToggleCustomizationItemAvailableSwitch";
 import { ItemsCustomizationTypes } from "@/data/types/customization.type";
 import CustomModal from "../modals/CustomModal";
 import { BackButton } from "../buttons/BackButton";
 import { FloatAddButton } from "../buttons/AddButton";
 import { SearchbarInput } from "../inputs/SearchbarInput";
 import { CustomButton } from "../buttons/CustomButton";
+import { ToggleAvailableSwitch } from "../buttons/ToggleAvailableSwitch";
 
 interface ManageCustomizationItemCategoryProps {
   categories: CustomizationItemsCategoryModel[];
@@ -37,6 +37,10 @@ export function ManageCustomizationItemCategory({ categories }: ManageCustomizat
       category.name.toLowerCase().includes(lowerSearch)
     );
   }, [searchText, categories]);
+
+  const handleUpdateStatus = (toggleCallback: boolean) => {
+    setIsLoading(toggleCallback);
+  };
   
   const handleOpenCategoryModal = (e: React.MouseEvent) => {
     e.stopPropagation();
@@ -119,6 +123,12 @@ export function ManageCustomizationItemCategory({ categories }: ManageCustomizat
         </div>
       </div>
 
+      {isLoading && (
+        <span className="text-center w-full mt-2 md:mt-0 mb-4 text-gray-400">
+          Atualizando...
+        </span>
+      )}
+
       {categories.length === 0 ? (
         <div className={`flex flex-col w-full h-[55vh] gap-4 
           items-center justify-center text-gray-400`}
@@ -132,75 +142,76 @@ export function ManageCustomizationItemCategory({ categories }: ManageCustomizat
         </div>
       ) : (
         <>
-          <div className={`flex-1 flex flex-col gap-2 overflow-y-auto font-sans scrollbar-hide
-            md:grid md:grid-cols-2 xl:grid-cols-3 md:gap-2`}
-          >
-            {filteredData.map((category: CustomizationItemsCategoryModel) => (
-              <div 
-                key={category.name} 
-                onClick={() => handleEditCategory(category)}
-                className={`flex justify-between gap-4 w-full cursor-pointer
-                  bg-white rounded-xl p-4 border border-gray-100
-                `}
-              >
-                {category.image_url ? (
-                  <div className="relative w-15 h-15 md:w-25 md:h-25 shrink-0">
-                    <Image
-                      src={category.image_url}
-                      alt="preview"
-                      draggable="false"
-                      fill
-                      loading="eager"
-                      className="aspect-square rounded-lg object-cover shadow-sm"
-                      sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-                    />
-                  </div>
-                ) : (
-                  <div 
-                    className={`shrink-0 flex items-center justify-center w-15 h-15 
-                      rounded-lg bg-gray-200 md:w-25 md:h-25
-                    `}
-                  >
-                    <span className="text-[0.6rem] text-secondary px-2 text-center font-medium">
-                      Sem Imagem
-                    </span>
-                  </div>
-                )}
-                
-                <div className="flex flex-col grow justify-between w-full">
-                  <span className="font-bold text-secondary">
-                    {category.name}
-                  </span>
-                  <span className="text-xs text-gray-400">
-                    {category?.description}
-                  </span>
-                  <div className="flex pt-2 gap-3 items-center">
-                    <span className={`font-medium text-sm ${category.available ? 
-                      'text-green-600' : 'text-red-500'}`}
+          <div className="flex-1 flex flex-col gap-2 overflow-y-auto scrollbar-hide">
+            <div className={`flex flex-col md:grid md:grid-cols-2 xl:grid-cols-3 gap-2`}>
+              {filteredData.map((category: CustomizationItemsCategoryModel) => (
+                <div 
+                  key={category.name} 
+                  onClick={() => handleEditCategory(category)}
+                  className={`flex justify-between gap-4 w-full cursor-pointer
+                    bg-white rounded-xl p-4 border border-gray-100
+                  `}
+                >
+                  {category.image_url ? (
+                    <div className="relative w-15 h-15 md:w-25 md:h-25 shrink-0">
+                      <Image
+                        src={category.image_url}
+                        alt="preview"
+                        draggable="false"
+                        fill
+                        loading="eager"
+                        className="aspect-square rounded-lg object-cover shadow-sm"
+                        sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                      />
+                    </div>
+                  ) : (
+                    <div 
+                      className={`shrink-0 flex items-center justify-center w-15 h-15 
+                        rounded-lg bg-gray-200 md:w-25 md:h-25
+                      `}
                     >
-                      Disponível:
+                      <span className="text-[0.6rem] text-secondary px-2 text-center font-medium">
+                        Sem Imagem
+                      </span>
+                    </div>
+                  )}
+                  
+                  <div className="flex flex-col grow justify-between w-full">
+                    <span className="font-bold text-secondary">
+                      {category.name}
                     </span>
-                    <ToggleCustomizationItemAvailableSwitch
-                      idProduct={category.id}
-                      available={category.available}
-                      itemType={ItemsCustomizationTypes.category}
-                    />
+                    <span className="text-xs text-gray-400">
+                      {category?.description}
+                    </span>
+                    <div className="flex pt-2 gap-3 items-center">
+                      <span className={`font-medium text-sm ${category.available ? 
+                        'text-green-600' : 'text-red-500'}`}
+                      >
+                        Disponível:
+                      </span>
+                      <ToggleAvailableSwitch
+                        idProduct={category.id}
+                        available={category.available}
+                        itemType={ItemsCustomizationTypes.category}
+                        onUpdateStatus={handleUpdateStatus}
+                      />
+                    </div>
+                  </div>
+
+                  <div className="flex">
+                    <button 
+                      type="button"
+                      aria-label="Deletar Categoria"
+                      title="Deletar Categoria"
+                      onClick={(e) => handleOpenDeleteModal(e, category)}
+                      className="flex items-center hover:text-red-500 transition-colors cursor-pointer"
+                    >
+                      <Trash2 className="w-5 h-5" />
+                    </button>
                   </div>
                 </div>
-
-                <div className="flex">
-                  <button 
-                    type="button"
-                    aria-label="Deletar Categoria"
-                    title="Deletar Categoria"
-                    onClick={(e) => handleOpenDeleteModal(e, category)}
-                    className="flex items-center hover:text-red-500 transition-colors cursor-pointer"
-                  >
-                    <Trash2 className="w-5 h-5" />
-                  </button>
-                </div>
-              </div>
-            ))}
+              ))}
+            </div>
           </div>
         </>
       )}

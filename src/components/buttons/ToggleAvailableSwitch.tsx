@@ -13,6 +13,7 @@ interface ToggleProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
   idProduct: string;
   available: boolean;
   itemType: ItemsCustomizationTypes;
+  onUpdateStatus?: (toggleCallback: boolean) => void;
 };
 
 const ACTION_MAP: Record<ItemsCustomizationTypes, (
@@ -25,10 +26,11 @@ const ACTION_MAP: Record<ItemsCustomizationTypes, (
   category: updateCustomizationItemCategoryStatusAction,
 };
 
-export function ToggleCustomizationItemAvailableSwitch({ 
+export function ToggleAvailableSwitch({ 
   idProduct, 
   available, 
-  itemType 
+  itemType,
+  onUpdateStatus
 }: ToggleProps) {
   const router = useRouter();
   const [isPending, startTransition] = useTransition();
@@ -43,6 +45,7 @@ export function ToggleCustomizationItemAvailableSwitch({
     if (isLoading) return;
 
     setIsLoading(true);
+    onUpdateStatus?.(true);
     const updateAction = ACTION_MAP[itemType];
 
     if (!updateAction) {
@@ -57,7 +60,7 @@ export function ToggleCustomizationItemAvailableSwitch({
         const result = await updateAction(idProduct, { available: checked });
 
         if (result instanceof Error) {
-          toast.error("Erro ao atualizar o status do item.");
+          toast.error("Erro na atualização do status do item.");
           setAvailableState(!checked);
           return;
         };
@@ -70,6 +73,7 @@ export function ToggleCustomizationItemAvailableSwitch({
         setAvailableState(!checked);
       } finally {
         setIsLoading(false);
+        onUpdateStatus?.(false);
       };
     });
   };

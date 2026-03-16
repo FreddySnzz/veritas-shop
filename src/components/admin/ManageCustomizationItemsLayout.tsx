@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 import { CustomizationItemsModel } from "@/data/models/CustomizationItems.model";
-import { ToggleCustomizationItemAvailableSwitch } from "../buttons/ToggleCustomizationItemAvailableSwitch";
+import { ToggleAvailableSwitch } from "../buttons/ToggleAvailableSwitch";
 import { ItemsCustomizationTypes } from "@/data/types/customization.type";
 import { BackButton } from "../buttons/BackButton";
 import CardButton from "../buttons/CardButton";
@@ -302,7 +302,7 @@ export default function ManageCustomizationItemsLayout({
                           Disponível:
                         </span>
 
-                        <ToggleCustomizationItemAvailableSwitch
+                        <ToggleAvailableSwitch
                           idProduct={item.id}
                           available={item.available}
                           itemType={ItemsCustomizationTypes.customizationItem}
