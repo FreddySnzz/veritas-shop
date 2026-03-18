@@ -79,20 +79,24 @@ const UI_METADATA: Record<string, UIMetadata> = {
     isGrouped: true,
   },
   'cordoes': { 
-    subtitle: 'Escolha a cor do Cordão.' 
+    subtitle: 'Escolha a cor do Cordão.',
+    isGrouped: true,
   },
   'contas': { 
-    subtitle: 'Escolha a cor das Contas (Ave Maria).'
+    subtitle: 'Escolha a cor das Contas (Ave Maria).',
+    isGrouped: true,
   },
   'contas_talhadas': { 
     subtitle: 'Escolha o estilo das Contas Talhadas (Podem ser usadas como contas maiores ou menores).',
     isGrouped: true,
   },
   'texto_personalizado': { 
-    subtitle: 'Escreva o nome ou palavra desejada para criar uma personalização única.' 
+    subtitle: 'Escreva o nome ou palavra desejada para criar uma personalização única.',
+    isGrouped: true,
   },
   'embalagens': { 
-    subtitle: 'Precisa de embalagem para presente? Escolha a opção desejada.' 
+    subtitle: 'Precisa de embalagem para presente? Escolha a opção desejada.',
+    isGrouped: true,
   },
   'final': { 
     subtitle: 'Confira seu pedido antes de finalizar.' 
@@ -171,7 +175,7 @@ export default function ProductCustomizerWizard({
         imageHelper: categoryData?.image_url,
         title: displayName,
         subtitle: displaySubtitle,
-        isGrouped: uiData?.isGrouped || false,
+        isGrouped: true,
         isOptional: !configItem.required, 
         isVirtual: false
       };
