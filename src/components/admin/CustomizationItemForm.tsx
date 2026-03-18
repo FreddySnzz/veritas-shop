@@ -67,7 +67,7 @@ export function CustomizationItemForm({
   const [style, setStyle] = useState<string>(initialData?.metadata?.style || "");
   const [color, setColor] = useState<string>(initialData?.metadata?.color || "#000000");
   const [currentImageUrl, setCurrentImageUrl] = useState<string>(() => initialData?.image_url || "");
-  const [available, setAvailable] = useState<boolean>(true);
+  const [available, setAvailable] = useState<boolean>(initialData?.available || false);
   const [priceAddon, setPriceAddon] = useState<string>((initialData?.price_addon)?.toString() || "");
   const [sizeHeight, setSizeHeight] = useState<string>(() => 
     initialData?.metadata?.size_height !== undefined ? String(initialData.metadata.size_height) : ""
