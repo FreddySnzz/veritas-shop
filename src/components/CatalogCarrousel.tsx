@@ -95,7 +95,7 @@ export default function CatalogCarrousel({
   };
 
   return (
-    <div className={`w-full h-[40vh] ${className}`}>
+    <div className={`w-full h-[30vh] ${className}`}>
       <div 
         ref={containerRef}
         className={`relative w-full h-full overflow-hidden ${rounded ? 'rounded-2xl' : ''}`}

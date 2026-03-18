@@ -1,3 +1,4 @@
+import Image from "next/image";
 import FlowerIcon from "./icons/FlowerIcon";
 
 interface TypographyProps {
@@ -84,14 +85,37 @@ export function LogoHorizontal() {
           height={40} 
           color="var(--color-secondary)"
         />
-          <h1 className="text-2xl font-playfair-display font-black text-secondary">
-            VERITAS
-          </h1>
+        <h1 className="text-2xl font-playfair-display font-black text-secondary">
+          VERITAS
+        </h1>
       </div>
       <div className="absolute top-[0.8rem] left-40 ">
         <h1 className="font-sans font-medium text-secondary">
           ATELIÊ
         </h1>
+      </div>
+    </div>
+  )
+}
+
+export function LogoHorizontalSvg() {
+  return (
+    <div className="relative flex gap-2">
+      <div className="flex items-center gap-2">
+        <FlowerIcon
+          width={40} 
+          height={40} 
+          color="var(--color-secondary)"
+        />
+        <div className="absolute left-12 top-2">
+          <Image
+            src="/logo-w.svg"
+            alt="Logo Veritas"
+            width={140}
+            height={60}
+            className="object-contain"
+          />
+        </div>
       </div>
     </div>
   )

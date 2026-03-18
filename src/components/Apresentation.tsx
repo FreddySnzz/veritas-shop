@@ -3,12 +3,13 @@
 import { useEffect, useState } from "react";
 import * as motion from "motion/react-client"
 import About from "./About";
-import { SlogganTypography, Typography } from "./Typography";
+import { SlogganTypography } from "./Typography";
 import ButtonScrollDown from "./buttons/ButtonScrollDown";
 import { CatalogButton } from "./buttons/CatalogButton";
 import { WhatsAppButtonFixed } from "./buttons/WhatsAppButton";
 import UserModel from "@/data/models/User.model";
 import { getCachedAdminInfoAction } from "@/app/actions/cache.actions";
+import Image from "next/image";
 
 export default function Apresentation() {
   const [user, setUser] = useState<UserModel>();
@@ -38,7 +39,13 @@ export default function Apresentation() {
               whileHover={{ scale: 1.3 }}
               transition={{ type: "spring", stiffness: 500, damping: 30 }}
             >
-              <Typography size={"lg"} />
+              <Image
+                src="/logo-h.svg"
+                alt="Logo Veritas"
+                width={240}
+                height={240}
+                className="object-contain"
+              />
             </motion.div>
           </div>
           <SlogganTypography />

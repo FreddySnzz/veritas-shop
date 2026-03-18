@@ -9,8 +9,8 @@ import CardButton from "../buttons/CardButton";
 import { formatAndCapitalize, formatCurrency } from "@/data/functions/formatAndCapitalize";
 import { FloatAddButton } from "../buttons/AddButton";
 import { SearchbarInput } from "../inputs/SearchbarInput";
-import { useMemo, useState } from "react";
-import { BookCopy, ListFilter, Plus, X } from "lucide-react";
+import { startTransition, useEffect, useMemo, useState } from "react";
+import { BookCopy, ListFilter, Plus, Trash, X } from "lucide-react";
 import { CustomButton } from "../buttons/CustomButton";
 import { useRouter } from "next/navigation";
 import { DesktopSidePanel } from "../DesktopSidePanel";
@@ -26,7 +26,8 @@ import {
 } from "../ui/select";
 import { Label } from "../ui/label";
 import { toast } from "sonner";
-import { copyCustomizationItemsAction } from "@/app/actions/customizationItems.action";
+import { copyCustomizationItemsAction, deleteCustomizationItemAction } from "@/app/actions/customizationItems.action";
+import { Input } from "../ui/input";
 
 interface ManageCustomizationItemsLayoutProps {
   customizationItems: CustomizationItemsModel[];
@@ -36,15 +37,59 @@ export default function ManageCustomizationItemsLayout({
   customizationItems 
 }: ManageCustomizationItemsLayoutProps) {
   const [searchText, setSearchText] = useState('');
+  const [selectedItems, setSelectedItems] = useState<string[]>([]);
   const [selectedCategories, setSelectedCategories] = useState<string[]>([]);
   const [selectedStyles, setSelectedStyles] = useState<string[]>([]);
   const [showAvailableOnly, setShowAvailableOnly] = useState(false);
   const [isOpenFilterModal, setIsOpenFilterModal] = useState(false);
   const [isOpenCopyModal, setIsOpenCopyModal] = useState(false);
+  const [isOpenDeleteModal, setIsOpenDeleteModal] = useState(false);
   const [selectedCategory, setSelectedCategory] = useState<string>('');
   const [selectedCategoryToCopy, setSelectedCategoryToCopy] = useState<string>('');
   const [isLoading, setIsLoading] = useState(false);
+  const [hasHydratedFilters, setHasHydratedFilters] = useState(false);
   const router = useRouter();
+
+  useEffect(() => {
+    const savedFilters = sessionStorage.getItem('customizationItems-filters');
+
+    if (savedFilters) {
+      try {
+        const parsedFilters = JSON.parse(savedFilters);
+
+        setSearchText(parsedFilters.searchText ?? '');
+        setSelectedCategories(parsedFilters.selectedCategories ?? []);
+        setSelectedStyles(parsedFilters.selectedStyles ?? []);
+        setShowAvailableOnly(parsedFilters.showAvailableOnly ?? false);
+      } catch {
+        sessionStorage.removeItem('customizationItems-filters');
+      };
+    };
+
+    setHasHydratedFilters(true);
+  }, []);
+
+  useEffect(() => {
+    if (!hasHydratedFilters) return;
+
+    const filters = {
+      searchText,
+      selectedCategories,
+      selectedStyles,
+      showAvailableOnly,
+    };
+
+    sessionStorage.setItem(
+      'customizationItems-filters',
+      JSON.stringify(filters)
+    );
+  }, [
+    hasHydratedFilters,
+    searchText,
+    selectedCategories,
+    selectedStyles,
+    showAvailableOnly
+  ]);
 
   const normalizedItems = useMemo(() => {
     return customizationItems.map((item) => {
@@ -75,7 +120,12 @@ export default function ManageCustomizationItemsLayout({
       selectedStyles.length > 0 ||
       showAvailableOnly
     );
-  }, [searchText, selectedCategories, selectedStyles, showAvailableOnly]);
+  }, [
+    searchText, 
+    selectedCategories, 
+    selectedStyles, 
+    showAvailableOnly
+  ]);
 
   const categories = useMemo(() => {
     const uniqueCategories = Array.from(
@@ -118,6 +168,18 @@ export default function ManageCustomizationItemsLayout({
     setSelectedCategories([]);
     setSelectedStyles([]);
     setShowAvailableOnly(false);
+
+    sessionStorage.removeItem('customizationItems-filters');
+  };
+
+  const handleToggleItem = (id: string) => {
+    const itemIndex = selectedItems.indexOf(id);
+
+    if (itemIndex === -1) {
+      setSelectedItems([...selectedItems, id]);
+    } else {
+      setSelectedItems(selectedItems.filter((item) => item !== id));
+    }
   };
 
   const handleCopyItems = async () => {
@@ -135,6 +197,28 @@ export default function ManageCustomizationItemsLayout({
       toast.error("Erro ao copiar itens.");
     } finally {
       setIsLoading(false);
+    };
+  };
+
+  const handleDeleteItems = async (ids: string[]) => {
+    setIsLoading(true);
+
+    try {
+      startTransition(() => {
+        ids.forEach(async (id) => {
+          await deleteCustomizationItemAction(id);
+        });
+      });
+    } catch (error) {
+      console.error("Erro ao deletar itens:", error);
+      toast.error("Erro ao deletar itens.");
+    } finally {
+      startTransition(() => {
+        setIsLoading(false);
+        clearFilters();
+        setSelectedItems([]);
+        toast.success("Itens deletados com sucesso!");
+      });
     };
   };
 
@@ -180,7 +264,7 @@ export default function ManageCustomizationItemsLayout({
           <CustomButton 
             onClick={() => router.push('/admin/estoques/itens-personalizacao/adicionar')}
             className={`hidden lg:flex lg:flex-row py-2 lg:px-8 rounded-lg shadow-xs
-              bg-primary text-white hover:bg-primary/90 font-bold text-md
+              bg-primary text-white hover:bg-primary/90 font-bold text-base
             `}
           >
             <Plus className="w-6 h-6" />
@@ -192,8 +276,18 @@ export default function ManageCustomizationItemsLayout({
             className={`hidden lg:flex lg:flex-row py-2 lg:px-8 rounded-lg shadow-xs
             bg-gray-300 text-secondary hover:bg-gray-400/60 font-bold text-sm border`}
           >
-            <BookCopy className="w-6 h-6" />
+            <BookCopy className="w-5 h-5" />
             <span>Copiar Itens de Personalização</span>
+          </CustomButton>
+
+          <CustomButton
+            onClick={() => setIsOpenDeleteModal(true)}
+            className={`hidden ${selectedItems.length > 0 && 'lg:flex'} lg:flex-row items-center py-2 lg:px-8 rounded-lg font-medium gap-2
+              bg-red-400 text-white hover:bg-red-500 transition-colors
+            `}
+          >
+            <Trash className="w-4 h-4" />
+            <span>{isLoading ? 'Deletando' : 'Deletar'} {selectedItems.length} {selectedItems.length > 1 ? 'itens' : 'item'}</span>
           </CustomButton>
           
           <DesktopSidePanel 
@@ -221,7 +315,7 @@ export default function ManageCustomizationItemsLayout({
         <div className={`flex flex-col flex-1 min-h-0 
           gap-4 overflow-y-auto scrollbar-hide content-start pb-4`}
         >
-          <div className="fixed md:hidden bottom-22 right-5 z-15">
+          <div className={`fixed md:hidden bottom-22 right-5 z-15`}>
             <FloatAddButton
               pushRoute={'/admin/estoques/itens-personalizacao/adicionar'}
               className="p-3"
@@ -261,11 +355,33 @@ export default function ManageCustomizationItemsLayout({
               <ListFilter className="w-6 h-6 text-secondary" />
             </button>
 
+            <button
+              type="button"
+              aria-label="Copiar Itens"
+              title="Copiar Itens"
+              onClick={() => setIsOpenCopyModal(true)}
+              className="bg-white rounded-lg shadow-xs cursor-pointer h-9 w-12 flex items-center justify-center"
+            >
+              <BookCopy className="w-6 h-6 text-secondary" />
+            </button>
+
+            <div className={`hidden ${selectedItems.length > 0 && 'md:flex'}`}>
+              <button
+                type="button"
+                aria-label="Deletar Itens"
+                title="Deletar Itens"
+                onClick={() => setIsOpenDeleteModal(true)}
+                className="bg-red-400 rounded-lg shadow-xs cursor-pointer h-9 w-12 flex items-center justify-center"
+              >
+                <Trash className="w-6 h-6 text-white" />
+              </button>
+            </div>
+
             <div className="hidden md:flex">
               <CustomButton 
                 onClick={() => router.push('/admin/estoques/itens-personalizacao/adicionar')}
                 className={`hidden md:flex lg:flex-row py-2 lg:px-8 rounded-lg shadow-xs
-                  bg-primary text-white hover:bg-primary/90 font-bold text-md
+                  bg-primary text-white hover:bg-primary/90 font-bold text-base
                 `}
               >
                 <Plus className="w-6 h-6" />
@@ -335,9 +451,9 @@ export default function ManageCustomizationItemsLayout({
                         ) : ' '}
                       </div>
 
-                      <div className="flex items-center mt-2 gap-2">
+                      <div className="flex items-center gap-2">
                         <span
-                          className={`font-medium xl:text-xs ${
+                          className={`font-medium text-sm ${
                             item.available ? 'text-green-600' : 'text-red-500'
                           }`}
                         >
@@ -349,6 +465,19 @@ export default function ManageCustomizationItemsLayout({
                           available={item.available}
                           itemType={ItemsCustomizationTypes.customizationItem}
                         />
+                      </div>
+
+                      <div className="relative">
+                        <div className="absolute bottom-[-7] right-0">
+                          <Input
+                            id={`item-${item.id}`}
+                            type="checkbox"
+                            checked={selectedItems.includes(item.id)}
+                            onClick={(e) => e.stopPropagation()}
+                            onChange={() => handleToggleItem(item.id)}
+                            className={`h-4 w-4 cursor-pointer accent-primary`}
+                          />
+                        </div>
                       </div>
                     </div>
                   </CardButton>
@@ -465,7 +594,7 @@ export default function ManageCustomizationItemsLayout({
             <CustomButton
               onClick={handleCopyItems}
               disabled={isLoading}
-              className={`flex w-full px-4 py-5 rounded-lg items-center justify-center font-medium cursor-pointer
+              className={`flex w-full px-4 py-2 lg:py-5 rounded-lg items-center justify-center font-medium cursor-pointer
                 bg-primary text-white hover:bg-primary/90 disabled:opacity-70 disabled:cursor-not-allowed
               `}
             >
@@ -481,9 +610,62 @@ export default function ManageCustomizationItemsLayout({
         </div>
       </CustomModal>
 
+      <CustomModal
+        modalOpen={isOpenDeleteModal}
+        onClose={() => setIsOpenDeleteModal(false)}
+      >
+        <div className="flex flex-col items-center justify-center p-2">
+          <span className="font-bold text-center">
+            Tem certeza que deseja remover {selectedItems.length > 1 ? 'estes' : 'este' } {selectedItems.length > 1 ? 'itens' : 'item'}?
+          </span>
+          <span className="text-xs font-light text-red-600">
+            Essa ação não pode ser desfeita.
+          </span>
+        </div>
+
+        <div className="grid grid-cols-2 gap-4">
+          <button 
+            type="button"
+            aria-label="Cancelar"
+            onClick={() => setIsOpenDeleteModal(false)}
+            className={`flex gap-2 items-center justify-center px-4 py-2 rounded-lg cursor-pointer
+              bg-gray-100 text-secondary hover:bg-gray-200 transition-colors font-medium
+              disabled:opacity-50
+            `}
+            disabled={isLoading}
+          >
+            <span>Cancelar</span>
+          </button>
+
+          <button 
+            type="button"
+            aria-label="Confirmar"
+            onClick={() => handleDeleteItems(selectedItems)}
+            className={`flex gap-2 items-center justify-center px-4 py-2 rounded-lg cursor-pointer
+              bg-primary text-white hover:bg-primary/90 transition-colors font-medium
+              disabled:opacity-50
+            `}
+            disabled={isLoading}
+          >
+            <span>{isLoading ? 'Deletando...' : 'Sim, deletar'}</span>
+          </button>
+        </div>
+      </CustomModal>
+
       <div className="shrink-0 md:hidden mt-auto bg-background-alternative z-10">
         <hr className="border-muted-foreground/50 my-2" />
         <div className="flex flex-col gap-4">
+          <div className={`${selectedItems.length === 0 && 'hidden'} transition-all`}>
+            <CustomButton
+              onClick={() => setIsOpenDeleteModal(true)}
+              className={`flex items-center px-4 py-3 rounded-lg font-medium gap-2
+                bg-red-400 text-white hover:bg-red-500 transition-colors
+              `}
+            >
+              <Trash className="w-4 h-4" />
+              <span>{isLoading ? 'Deletando' : 'Deletar'} {selectedItems.length} {selectedItems.length > 1 ? 'itens' : 'item'}</span>
+            </CustomButton>
+          </div>
           <BackButton backRoute />
         </div>
       </div>

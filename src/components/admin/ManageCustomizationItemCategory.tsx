@@ -6,7 +6,7 @@ import { useRouter } from "next/navigation";
 import { toast } from "sonner";
 import { deleteCategoryAction } from "@/app/actions/customizationItemsCategory.action";
 import { CustomizationItemsCategoryModel } from "@/data/models/CustomizationItemsCategory";
-import { Plus, Trash2, X } from "lucide-react";
+import { Plus, Trash, X } from "lucide-react";
 import CustomizationItemCategoryModal from "../modals/CustomizationItemCategory";
 import { ItemsCustomizationTypes } from "@/data/types/customization.type";
 import CustomModal from "../modals/CustomModal";
@@ -105,7 +105,7 @@ export function ManageCustomizationItemCategory({ categories }: ManageCustomizat
             <CustomButton 
               onClick={(e: React.MouseEvent) => handleOpenCategoryModal(e)}
               className={`hidden md:flex lg:flex-row py-2 lg:px-8 rounded-lg shadow-xs
-                bg-primary text-white hover:bg-primary/90 font-bold text-md
+                bg-primary text-white hover:bg-primary/90 font-bold text-base
               `}
             >
               <Plus className="w-6 h-6" />
@@ -198,16 +198,18 @@ export function ManageCustomizationItemCategory({ categories }: ManageCustomizat
                     </div>
                   </div>
 
-                  <div className="flex">
-                    <button 
-                      type="button"
-                      aria-label="Deletar Categoria"
-                      title="Deletar Categoria"
-                      onClick={(e) => handleOpenDeleteModal(e, category)}
-                      className="flex items-center hover:text-red-500 transition-colors cursor-pointer"
-                    >
-                      <Trash2 className="w-5 h-5" />
-                    </button>
+                  <div className="relative">
+                    <div className="absolute bottom-0 right-0">
+                      <button 
+                        type="button"
+                        aria-label="Deletar Categoria"
+                        title="Deletar Categoria"
+                        onClick={(e) => handleOpenDeleteModal(e, category)}
+                        className="flex items-center hover:text-red-500 transition-colors cursor-pointer"
+                      >
+                        <Trash className="text-secondary w-4 h-4" />
+                      </button>
+                    </div>
                   </div>
                 </div>
               ))}

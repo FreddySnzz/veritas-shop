@@ -62,7 +62,7 @@ export default function ManageCatalogInventory({
           <CustomButton 
             onClick={() => router.push('/admin/estoques/catalogo/adicionar')}
             className={`hidden md:flex lg:flex-row py-2 lg:px-8 rounded-lg shadow-xs
-              bg-primary text-white hover:bg-primary/90 font-bold text-md
+              bg-primary text-white hover:bg-primary/90 font-bold text-base
             `}
           >
             <Plus className="w-6 h-6" />

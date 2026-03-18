@@ -8,6 +8,7 @@ import { LogoutButton } from "./buttons/LogoutButton";
 import { useAuth } from "@/data/context/AuthContext";
 import { useApp } from "@/data/context/AppContext";
 import Searchbar from "./Searchbar";
+import Image from "next/image";
 
 interface HeaderProps {
   mode: 'admin' | 'user' | 'cart';
@@ -35,14 +36,13 @@ export function Header({ mode, search, data }: HeaderProps) {
               height={40} 
               color="var(--color-secondary)"
             />
-              <h1 className="text-2xl font-playfair-display font-black text-secondary">
-                VERITAS
-              </h1>
-          </div>
-          <div className="absolute right-[-55] top-[0.8rem] ">
-            <h1 className="font-sans font-medium text-secondary">
-              ATELIÊ
-            </h1>
+            <Image
+              src="/logo-w.svg"
+              alt="Logo Veritas"
+              width={130}
+              height={40}
+              className="object-contain"
+            />
           </div>
         </Link>
 
@@ -52,18 +52,18 @@ export function Header({ mode, search, data }: HeaderProps) {
             <Moon className="w-6 h-6 text-secondary" />
           </div> */}
 
-          { search && data &&
+          {search && data &&
             <Searchbar
               searchbarPlaceholder="Pesquisar produtos"
               data={data}
             />
           }
 
-          { mode === 'user' && 
+          {mode === 'user' && 
             <CartButton isOpen={toggleSidebar} />
           }
 
-          { mode === 'admin' && 
+          {mode === 'admin' && 
             <LogoutButton onClick={() => logout()} /> 
           }
         </div>

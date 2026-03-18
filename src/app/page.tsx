@@ -12,6 +12,7 @@ import ProductModel from "@/data/models/Product.model";
 import CatalogImageModel from "@/data/models/CatalogImage.model";
 import Footer from "../components/Footer";
 import CatalogPrayerCard from "@/components/CatalogPrayerCard";
+import CatalogRosaryReconstructionCard from "@/components/CatalogRosaryReconstructionCard";
 
 export default async function Home() {
   const { user } = await getCachedAdminInfoAction();
@@ -35,6 +36,11 @@ export default async function Home() {
           />
           <div className="px-6 md:px-12 lg:px-32">
             <CatalogLayout products={availableProducts} />
+          </div>
+          <div className="mt-8">
+            <CatalogRosaryReconstructionCard 
+              whatsappNumber={user?.phone || '5586994379414'}
+            />
           </div>
           <div className="mt-8">
             <CatalogPrayerCard />

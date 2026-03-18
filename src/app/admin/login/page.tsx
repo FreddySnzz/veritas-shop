@@ -11,7 +11,7 @@ import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 import { PasswordInput } from "@/components/ui/password-input";
 import { login } from "@/data/services/auth.service";
-import { LogoHorizontal } from "@/components/Typography";
+import { LogoHorizontalSvg } from "@/components/Typography";
 
 export default function Login() {
   const searchParams = useSearchParams();
@@ -76,7 +76,7 @@ export default function Login() {
     <main className="flex justify-center min-h-screen items-center font-sans bg-background-alternative">
       <div className="m-10 w-full sm:w-1/2 lg:w-1/3">
         <div className="w-full mb-8">
-          <LogoHorizontal />
+          <LogoHorizontalSvg />
         </div>
         <form onSubmit={handleLogin} className="space-y-6 xl:p-4">
           <div className="">

@@ -4,7 +4,7 @@ import { CircleArrowRight } from "lucide-react";
 
 export default function CatalogPrayerCard() {
   return (
-    <div className="relative flex w-full bg-primary/80 font-sans text-white overflow-hidden">
+    <div className="relative flex w-full justify-end bg-secondary/80 font-sans text-white overflow-hidden">
       <div className="p-8 md:p-12 lg:px-24 xl:px-32 z-10">
         <div className="flex flex-col">
           <span className="text-4xl font-black">
@@ -14,7 +14,7 @@ export default function CatalogPrayerCard() {
             Ou fazer aquela oração específica?
           </span>
           <span className="mt-4">
-            Não se preocupe, nós temos um catálogo de orações para você aprender a rezar.
+            Não se preocupe, nós temos um catálogo completo com orações para te ajudar a rezar.
           </span>
         </div>
 
@@ -31,9 +31,9 @@ export default function CatalogPrayerCard() {
         </Link>
       </div>
 
-      <div className="absolute top-5 right-[-200] md:top-2 md:right-[-100] pointer-events-none z-0">
+      <div className="absolute top-5 right-[100] md:top-2 md:left-[-120] pointer-events-none z-0">
         <FlowerIcon 
-          color="#af996a42"
+          color="#41414142"
           className="h-70 md:h-60" 
         />
       </div>

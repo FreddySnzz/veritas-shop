@@ -94,10 +94,21 @@ export default function HelpLayout({ whatsappNumber }: HelpLayoutProps) {
               title="Não tenho WhatsApp. Como faço para entrar em contato com o suporte?"
               titleClassName="md:text-lg text-start mb-1"
             >
-              <ItemContent className="mt-1 mb-4">
-                <span className="flex text-gray-500 text-xs md:text-sm">
-                  {`Caso não tenha WhatsApp, entre em contato com o suporte diretamente pelo número ${whatsappNumber}.`}
-                </span>
+              <ItemContent className="mt-1 mb-4 overflow-hidden">
+                <p className="text-gray-500 text-xs md:text-sm">
+                  Caso não tenha WhatsApp, você pode entrar em contato pela nossa
+                  <Link 
+                    href={`https://ig.me/m/veritas_atelie`}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    aria-label="Ir para a Direct no Instagram do Veritas Ateliê"
+                    title="Ir para a Direct no Instagram do Veritas Ateliê"
+                    className="font-medium hover:underline hover:italic px-1"
+                  >
+                    direct do Instagram (@veritas_atelie)
+                  </Link> 
+                  ou diretamente pelo número {whatsappNumber}.
+                </p>
               </ItemContent>
             </ItemCollapse>
 

@@ -2,9 +2,10 @@
 
 import Link from "next/link";
 import { FaInstagram, FaWhatsapp } from "react-icons/fa6";
-import { SlogganTypography, Typography } from "./Typography";
+import { SlogganTypography } from "./Typography";
 import { PhraseSloganAlternative } from "./Phrases";
 import { useMediaQuery } from "@/data/hook/useMediaQuery";
+import Image from "next/image";
 
 interface FooterProps extends React.HTMLAttributes<HTMLDivElement> {
   className?: string;
@@ -30,10 +31,12 @@ export default function Footer({
             title="Voltar para a página inicial"
             href={`/`}
           >
-            <Typography 
-              className="text-center font-playfair-display" 
-              titleColor="text-stone-300" 
-              size={"sm"} 
+            <Image
+              src="/logo-h-alt.svg"
+              alt="Logo Veritas"
+              width={140}
+              height={140}
+              className="object-contain text-stone-300"
             />
           </Link>
 

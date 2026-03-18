@@ -18,7 +18,7 @@ export function DesktopSidePanel({
   return (
     <aside
       aria-label='Painel lateral'
-      className={`flex shrink-0 flex-col lg:max-w-60 xl:max-w-full ${className}`}
+      className={`flex shrink-0 flex-col lg:max-w-80 xl:max-w-100 ${className}`}
     >
       <div className={`sticky top-0 flex flex-col gap-4`}>
         <div className={`bg-white rounded-xl ${contentClassName}`}>
