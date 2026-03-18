@@ -4,6 +4,7 @@
 import { serializeFirestoreData } from "@/data/functions/firebaseSerialize";
 import { refreshCacheAction } from "./cache.actions";
 import { 
+  copyCustomizationItems,
   createCustomizationItem, 
   deleteCustomizationItem, 
   getAllCustomizationItems, 
@@ -64,6 +65,18 @@ export async function updateCustomizationItemAction(id: string, data: any) {
     return serializeFirestoreData(customizationItem);
   } catch (error) {
     console.error("Erro ao atualizar item de personalização:", error);
+    return error;
+  };
+};
+
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export async function copyCustomizationItemsAction(data: any) {
+  try {
+    const customizationItems = await copyCustomizationItems(data);
+    await refreshCacheAction('customization_items');
+    return serializeFirestoreData(customizationItems);
+  } catch (error) {
+    console.error("Erro ao copiar itens de personalização:", error);
     return error;
   };
 };

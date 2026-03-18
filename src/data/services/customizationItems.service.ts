@@ -14,6 +14,7 @@ import { unstable_cache } from "next/cache";
 import { Collections } from "../types/collections.enum";
 import { ProductServiceError } from "./product.service";
 import { CustomizationItemsModel } from "../models/CustomizationItems.model";
+import { generateRefNumber } from "../functions/generateRefForItem";
 
 export async function getAllCustomizationItems(): Promise<CustomizationItemsModel[] | null> {
   const q = query(collection(
@@ -65,10 +66,26 @@ export async function getCustomizationItemByRef(
   })) as CustomizationItemsModel[];
 };
 
+export async function getCustomizationItemByCategory(
+  category: string
+): Promise<CustomizationItemsModel[]> {
+  const customizationItemCategory = collection(db, Collections.CUSTOMIZATION_ITEMS_COLLECTION);
+
+  const categoryQuery = query(customizationItemCategory, where("category", "==", category));
+  const categorySnap = await getDocs(categoryQuery);
+
+  return categorySnap.docs.map((doc) => ({
+    id: doc.id,
+    ...doc.data()
+  })) as CustomizationItemsModel[];
+};
+
 export async function createCustomizationItem(
   data: CustomizationItemsModel
 ): Promise<CustomizationItemsModel> {
-  const docRef = await addDoc(collection(db, Collections.CUSTOMIZATION_ITEMS_COLLECTION), data);
+  const docRef = await addDoc(
+    collection(db, Collections.CUSTOMIZATION_ITEMS_COLLECTION), data
+  );
 
   return { 
     ...data, 
@@ -95,6 +112,37 @@ export async function updateCustomizationItem(
   await updateDoc(docRef, updatedData);
 
   return updatedData;
+};
+
+export async function copyCustomizationItems(data: { category: string, categoryToCopy: string }) {
+  const { category, categoryToCopy } = data;
+
+  const allItems = await getAllCustomizationItems();
+  const customizationItems = await getCustomizationItemByCategory(category);
+
+  const itemsForRef = [...(allItems as CustomizationItemsModel[])];
+
+  const newCustomizationItems = customizationItems.map((item) => {
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    const { id, ...itemWithoutId } = item;
+    const newItem = {
+      ...itemWithoutId,
+      category: categoryToCopy,
+      ref: generateRefNumber(itemsForRef, categoryToCopy),
+    };
+
+    itemsForRef.push(newItem as CustomizationItemsModel);
+
+    return newItem;
+  });
+
+  const createdItems = await Promise.all(
+    newCustomizationItems.map((item) =>
+      createCustomizationItem(item as CustomizationItemsModel)
+    )
+  );
+
+  return createdItems;
 };
 
 export async function deleteCustomizationItem(id: string) {

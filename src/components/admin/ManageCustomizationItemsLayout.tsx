@@ -10,12 +10,23 @@ import { formatAndCapitalize, formatCurrency } from "@/data/functions/formatAndC
 import { FloatAddButton } from "../buttons/AddButton";
 import { SearchbarInput } from "../inputs/SearchbarInput";
 import { useMemo, useState } from "react";
-import { ListFilter, Plus, X } from "lucide-react";
+import { BookCopy, ListFilter, Plus, X } from "lucide-react";
 import { CustomButton } from "../buttons/CustomButton";
 import { useRouter } from "next/navigation";
 import { DesktopSidePanel } from "../DesktopSidePanel";
 import { CustomizationItemsFilters } from "../CustomizationItemsFilters";
 import CustomModal from "../modals/CustomModal";
+import { 
+  Select, 
+  SelectContent, 
+  SelectGroup, 
+  SelectItem, 
+  SelectTrigger, 
+  SelectValue 
+} from "../ui/select";
+import { Label } from "../ui/label";
+import { toast } from "sonner";
+import { copyCustomizationItemsAction } from "@/app/actions/customizationItems.action";
 
 interface ManageCustomizationItemsLayoutProps {
   customizationItems: CustomizationItemsModel[];
@@ -29,6 +40,10 @@ export default function ManageCustomizationItemsLayout({
   const [selectedStyles, setSelectedStyles] = useState<string[]>([]);
   const [showAvailableOnly, setShowAvailableOnly] = useState(false);
   const [isOpenFilterModal, setIsOpenFilterModal] = useState(false);
+  const [isOpenCopyModal, setIsOpenCopyModal] = useState(false);
+  const [selectedCategory, setSelectedCategory] = useState<string>('');
+  const [selectedCategoryToCopy, setSelectedCategoryToCopy] = useState<string>('');
+  const [isLoading, setIsLoading] = useState(false);
   const router = useRouter();
 
   const normalizedItems = useMemo(() => {
@@ -105,6 +120,24 @@ export default function ManageCustomizationItemsLayout({
     setShowAvailableOnly(false);
   };
 
+  const handleCopyItems = async () => {
+    setIsLoading(true);
+
+    try {
+      await copyCustomizationItemsAction({
+        category: selectedCategory,
+        categoryToCopy: selectedCategoryToCopy,
+      });
+
+      toast.success("Itens copiados com sucesso!");
+    } catch (error) {
+      console.error("Erro ao copiar itens:", error);
+      toast.error("Erro ao copiar itens.");
+    } finally {
+      setIsLoading(false);
+    };
+  };
+
   const filteredItems = useMemo(() => {
     const lowerSearch = searchText.toLowerCase().trim();
 
@@ -152,6 +185,15 @@ export default function ManageCustomizationItemsLayout({
           >
             <Plus className="w-6 h-6" />
             <span>Adicionar item</span>
+          </CustomButton>
+
+          <CustomButton
+            onClick={() => setIsOpenCopyModal(true)}
+            className={`hidden lg:flex lg:flex-row py-2 lg:px-8 rounded-lg shadow-xs
+            bg-gray-300 text-secondary hover:bg-gray-400/60 font-bold text-sm border`}
+          >
+            <BookCopy className="w-6 h-6" />
+            <span>Copiar Itens de Personalização</span>
           </CustomButton>
           
           <DesktopSidePanel 
@@ -339,6 +381,104 @@ export default function ManageCustomizationItemsLayout({
             hasActiveFilters={hasActiveFilters}
           />
         </DesktopSidePanel>
+      </CustomModal>
+
+      <CustomModal
+        title="Copiar Itens"
+        modalOpen={isOpenCopyModal}
+        onClose={() => setIsOpenCopyModal(false)}
+      >
+        <div className="flex flex-col w-full">
+          <p className="text-xs text-gray-400">
+            Copiar itens de personalização de uma categoria para outra.
+          </p>
+
+          <div className="flex flex-col mt-4">
+            <Label
+              htmlFor="copy-category-id"
+              className="block text-xs font-semibold text-gray-500"
+            >
+              Categoria de Origem
+            </Label>
+            <Select 
+              disabled={isLoading}
+              value={selectedCategory} 
+              onValueChange={(value) => setSelectedCategory(value)}
+            >
+              <SelectTrigger 
+                className={`flex w-full items-center justify-between gap-2 rounded-lg px-4 mt-2
+                  bg-white text-sm text-secondary transition-colors hover:bg-gray-50 
+                  focus-visible:ring-0 focus-visible:ring-offset-transparent focus-visible:ring-primary`}
+                >
+                <SelectValue placeholder="Selecione uma categoria" />
+              </SelectTrigger>
+              <SelectContent position="item-aligned">
+                <SelectGroup className="font-sans">
+                  {categories?.map((category, index) => (
+                    <SelectItem 
+                      key={index}
+                      value={category}
+                    >
+                      {formatAndCapitalize(category)}
+                    </SelectItem>
+                  ))}
+                </SelectGroup>
+              </SelectContent>
+            </Select>
+          </div>
+
+          <div className="flex flex-col mt-4">
+            <Label
+              htmlFor="copy-category-id"
+              className="block text-xs font-semibold text-gray-500"
+            >
+              Categoria de Destino
+            </Label>
+            <Select 
+              disabled={isLoading}
+              value={selectedCategoryToCopy} 
+              onValueChange={(value) => setSelectedCategoryToCopy(value)}
+            >
+              <SelectTrigger 
+                className={`flex w-full items-center justify-between gap-2 rounded-lg px-4 mt-2
+                  bg-white text-sm text-secondary transition-colors hover:bg-gray-50 
+                  focus-visible:ring-0 focus-visible:ring-offset-transparent focus-visible:ring-primary`}
+                >
+                <SelectValue placeholder="Selecione uma categoria" />
+              </SelectTrigger>
+              <SelectContent position="item-aligned">
+                <SelectGroup className="font-sans">
+                  {categories?.map((category, index) => (
+                    <SelectItem 
+                      key={index}
+                      value={category}
+                    >
+                      {formatAndCapitalize(category)}
+                    </SelectItem>
+                  ))}
+                </SelectGroup>
+              </SelectContent>
+            </Select>
+          </div>
+
+          <div className="flex mt-8">
+            <CustomButton
+              onClick={handleCopyItems}
+              disabled={isLoading}
+              className={`flex w-full px-4 py-5 rounded-lg items-center justify-center font-medium cursor-pointer
+                bg-primary text-white hover:bg-primary/90 disabled:opacity-70 disabled:cursor-not-allowed
+              `}
+            >
+              {isLoading ? (
+                <div className="flex justify-center items-center gap-2 animate-pulse">
+                  <span>Copiando...</span>
+                </div>
+              ) : (
+                "Copiar Itens"
+              )}
+            </CustomButton>
+          </div>
+        </div>
       </CustomModal>
 
       <div className="shrink-0 md:hidden mt-auto bg-background-alternative z-10">
