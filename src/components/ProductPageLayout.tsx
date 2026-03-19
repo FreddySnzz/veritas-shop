@@ -1,7 +1,8 @@
 'use client';
 
 import Link from "next/link";
-import { useMemo } from "react";
+import ReactMarkdown from 'react-markdown';
+import { useEffect, useMemo, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
 import { useCart } from "@/data/context/CartContext";
 import ProductCarrousel from "./ProductCarrousel";
@@ -28,6 +29,10 @@ export default function ProductPageLayout({
   cachedProducts 
 }: ProductPageLayoutProps) {
   const { addItem } = useCart();
+  const [descExpanded, setDescExpanded] = useState(false);
+  const [showReadMore, setShowReadMore] = useState(false);
+  const contentRef = useRef<HTMLDivElement>(null);
+
   const router = useRouter();
 
   const isMdUp = useMediaQuery("(min-width: 768px)");
@@ -59,6 +64,15 @@ export default function ProductPageLayout({
     
     toast.success("Produto adicionado ao carrinho!", { duration: 1500 });
   };
+
+  useEffect(() => {
+    const el = contentRef.current
+    if (!el) return
+
+    setShowReadMore(el.scrollHeight > 160)
+  }, [product.desc]);
+
+  if (!product.desc) return null;
 
   return (
     <div className="flex flex-col font-sans h-full">
@@ -324,12 +338,45 @@ export default function ProductPageLayout({
           )}
 
           <div className="flex flex-col lg:hidden gap-4 pt-6">
-            <span className="font-bold text-sm">Descrição do Produto</span>
-            <span className="font-medium text-sm text-gray-500">
-              {product.desc}
-            </span>
-          </div>
+            <p className="font-bold text-sm">Descrição do Produto</p>
 
+            <div className="relative">
+              <div
+                ref={contentRef}
+                className={`relative overflow-hidden transition-all duration-300 ${
+                  descExpanded ? 'max-h-250' : 'max-h-40'
+                }`}
+              >
+                <div className="prose prose-sm max-w-none font-medium text-sm text-gray-500 whitespace-pre-line">
+                  <ReactMarkdown>{product.desc}</ReactMarkdown>
+                </div>
+
+                {showReadMore && !descExpanded && (
+                  <div className={`absolute inset-x-0 bottom-0 h-16 pointer-events-none
+                    bg-linear-to-t from-background-alternative to-transparent `}
+                  />
+                )}
+              </div>
+
+              {showReadMore && (
+                <div
+                  className={`absolute inset-x-0 flex justify-center ${
+                    descExpanded ? 'mt-2 static' : 'bottom-0 pb-2'
+                  }`}
+                >
+                  <button
+                    type="button"
+                    onClick={() => setDescExpanded((prev) => !prev)}
+                    className={`z-10 rounded-full px-4 py-1 text-sm font-medium text-secondary 
+                      bg-white/90 shadow-sm backdrop-blur-sm transition-colors hover:text-primary
+                    `}
+                  >
+                    {descExpanded ? 'Ler menos' : 'Ler mais'}
+                  </button>
+                </div>
+              )}
+            </div>
+          </div>
 
           <div className="lg:hidden">
             <hr className="border-muted-foreground/50 my-4" />

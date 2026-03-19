@@ -279,7 +279,10 @@ export function ProductForm({
 
         <div className="flex flex-col w-full lg:flex-row gap-4 lg:gap-8">
           <div className="flex flex-col gap-2 w-full">
-            <Label htmlFor="desc" className="text-sm">Descrição (Opcional)</Label>
+            <div className="flex flex-col items-baseline">
+              <Label htmlFor="desc" className="text-sm">Descrição (Opcional)</Label>
+              <span className="text-[0.65rem] text-gray-400">{`Suporta Markdown`}</span>
+            </div>
             <Textarea
               id="description"
               placeholder="Descrição do Produto"
