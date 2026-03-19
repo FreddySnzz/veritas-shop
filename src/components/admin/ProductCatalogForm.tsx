@@ -299,7 +299,7 @@ export function ProductForm({
                   `}
                 >
                   {viewMarkdown ? (
-                    <EyeOff className="w-4 h-4 text-secondary" />
+                    <EyeOff className="w-4 h-4 text-secondary bg-green-50" />
                   ) : (
                     <Eye className="w-4 h-4 text-secondary" />
                   )}
@@ -308,7 +308,7 @@ export function ProductForm({
               <div 
                 className={`${viewMarkdown ? '' : 'hidden'} w-full h-full text-sm
                   bg-green-50 overflow-y-auto rounded-tr-none rounded-lg 
-                  px-3 py-2 mb-2 text-secondary border shadow-xs
+                  px-3 py-2 mb-2 text-secondary border shadow-xs whitespace-pre-line
                 `}
               >
                 <article className="prose prose-sm max-w-none">

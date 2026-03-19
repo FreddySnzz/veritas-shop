@@ -276,7 +276,7 @@ export default function ProductPageLayout({
                       descExpanded ? 'max-h-250' : 'max-h-40'
                     }`}
                   >
-                    <div className="prose prose-sm max-w-none font-medium text-sm text-gray-500">
+                    <div className="prose prose-sm max-w-none font-medium text-sm text-gray-500 whitespace-pre-line">
                       <ReactMarkdown remarkPlugins={[remarkGfm]}>
                         {product.desc}
                       </ReactMarkdown>
