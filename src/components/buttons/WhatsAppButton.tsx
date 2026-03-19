@@ -1,5 +1,6 @@
 'use client';
 
+import { useDraggableButton } from "@/data/hook/useDraggableButton";
 import * as motion from "motion/react-client"
 import Link from "next/link";
 import { FaWhatsapp } from "react-icons/fa6";
@@ -32,6 +33,16 @@ export function WhatsAppButton(props: WhatsAppButtonProps) {
 };
 
 export function WhatsAppButtonFixed(props: WhatsAppButtonProps) {
+  const {
+    buttonRef,
+    position,
+    dragging,
+    onTouchStart,
+    onMouseDown,
+  } = useDraggableButton({
+    margin: 12,
+  });
+
   return (
     <Link
       href={props.message}
@@ -45,11 +56,23 @@ export function WhatsAppButtonFixed(props: WhatsAppButtonProps) {
         aria-label="Falar com suporte"
         title="Falar com suporte"
         type="button"
-        className={`fixed z-40 cursor-pointer top-[91%] left-[84%] md:left-[92%] xl:left-[95%] 
+        ref={buttonRef}
+        onTouchStart={onTouchStart}
+        onMouseDown={onMouseDown}
+        className={`cursor-pointer p-3 items-center justify-center
           bg-linear-to-r from-green-500 to-green-600 
           text-white hover:from-green-600/90 hover:to-green-600/90
-          rounded-full transition-colors shadow-lg p-3 items-center justify-center 
+          rounded-full transition-colors shadow-lg  
         `}
+        style={{
+          position: 'fixed',
+          left: `${position.x}px`,
+          top: `${position.y}px`,
+          zIndex: 9999,
+          transition: dragging ? 'none' : 'left 0.2s ease, top 0.2s ease',
+          touchAction: 'none',
+          userSelect: 'none'
+        }}
       >
         <FaWhatsapp className="w-6 h-6" />
       </motion.button>

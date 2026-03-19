@@ -2,7 +2,8 @@
 
 import Link from "next/link";
 import ReactMarkdown from 'react-markdown';
-import { useEffect, useMemo, useRef, useState } from "react";
+import remarkGfm from "remark-gfm";
+import { useLayoutEffect, useMemo, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
 import { useCart } from "@/data/context/CartContext";
 import ProductCarrousel from "./ProductCarrousel";
@@ -67,13 +68,29 @@ export default function ProductPageLayout({
     toast.success("Produto adicionado ao carrinho!", { duration: 1500 });
   };
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     const desktopEl = contentDesktopRef.current;
     const mobileEl = contentMobileRef.current;
 
-    setShowReadMoreMobile(!!mobileEl && mobileEl.scrollHeight > 160);
-    setShowReadMoreDesktop(!!desktopEl && desktopEl.scrollHeight > 160);
-  }, [product.desc, isMdUp]);
+    if (!desktopEl && !mobileEl) return;
+
+    const update = () => {
+      const nextMobile = !!mobileEl && mobileEl.scrollHeight > 160;
+      const nextDesktop = !!desktopEl && desktopEl.scrollHeight > 160;
+
+      setShowReadMoreMobile(prev => (prev !== nextMobile ? nextMobile : prev));
+      setShowReadMoreDesktop(prev => (prev !== nextDesktop ? nextDesktop : prev));
+    };
+
+    update();
+
+    const observer = new ResizeObserver(update);
+
+    if (desktopEl) observer.observe(desktopEl);
+    if (mobileEl) observer.observe(mobileEl);
+
+    return () => observer.disconnect();
+  }, []);
 
   if (!product.desc) return null;
 
@@ -259,8 +276,10 @@ export default function ProductPageLayout({
                       descExpanded ? 'max-h-250' : 'max-h-40'
                     }`}
                   >
-                    <div className="prose prose-sm max-w-none font-medium text-sm text-gray-500 whitespace-pre-line">
-                      <ReactMarkdown>{product.desc}</ReactMarkdown>
+                    <div className="prose prose-sm max-w-none font-medium text-sm text-gray-500">
+                      <ReactMarkdown remarkPlugins={[remarkGfm]}>
+                        {product.desc}
+                      </ReactMarkdown>
                     </div>
 
                     {showReadMoreDesktop && !descExpanded && (
@@ -386,7 +405,9 @@ export default function ProductPageLayout({
                 }`}
               >
                 <div className="prose prose-sm max-w-none font-medium text-sm text-gray-500 whitespace-pre-line">
-                  <ReactMarkdown>{product.desc}</ReactMarkdown>
+                  <ReactMarkdown remarkPlugins={[remarkGfm]}>
+                    {product.desc}
+                  </ReactMarkdown>
                 </div>
 
                 {showReadMoreMobile && !descExpanded && (

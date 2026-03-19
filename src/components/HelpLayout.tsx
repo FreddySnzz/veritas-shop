@@ -72,7 +72,8 @@ export default function HelpLayout({ whatsappNumber }: HelpLayoutProps) {
               <ItemContent className="mt-1 mb-4">
                 <span className="flex text-gray-500 text-xs md:text-sm">
                   {`Caso tenha escolhido por um produto ou personalização que aceite imagem personalizada, 
-                  você pode informar o nome da imagem desejada ao suporte, na finalização do pedido, ou enviar o arquivo de imagem no chat pelo WhatsApp.`}
+                  você pode informar o nome da imagem desejada ao suporte, na finalização do pedido, 
+                  ou enviar o arquivo de imagem no chat pelo WhatsApp ou no nosso Direct do Instagram (@veritas_atelie).`}
                 </span>
               </ItemContent>
             </ItemCollapse>
@@ -120,7 +121,7 @@ export default function HelpLayout({ whatsappNumber }: HelpLayoutProps) {
                 <span className="flex text-gray-500 text-xs md:text-sm">
                   {`Os valores mostrados no carrinho são apenas uma estimativa, mas só para produtos que podem ser personalizados. 
                   Ao finalizar o pedido, nossa equipe irá validar manualmente os itens que você escolheu e calcular o valor final com base nas informações fornecidas.
-                  Assim que confirmado, o valor real será informado para você no CHAT DE ATENDIMENTO (WhatsApp).`}
+                  Assim que confirmado, o valor real será informado para você no CHAT DE ATENDIMENTO (WhatsApp ou Instagram).`}
                 </span>
               </ItemContent>
             </ItemCollapse>

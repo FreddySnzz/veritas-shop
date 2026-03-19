@@ -3,6 +3,8 @@
 import { useState, useEffect, useRef } from "react";
 import { usePathname, useRouter } from "next/navigation";
 import Image from "next/image";
+import ReactMarkdown from "react-markdown";
+import remarkGfm from "remark-gfm";
 import { verifyFirebaseId } from "@/data/functions/verifyFirebaseId";
 import { uploadImageAction } from "@/app/actions/cloudinary.actions"; 
 import { 
@@ -10,7 +12,7 @@ import {
   getAllProductsAction, 
   updateProductAction 
 } from "@/app/actions/products.action";
-import { Images, Trash, X } from "lucide-react";
+import { Eye, EyeOff, Images, Trash, X } from "lucide-react";
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 import { Switch } from "@/components/ui/switch";
@@ -52,6 +54,7 @@ export function ProductForm({
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   const [isEditMode, setIsEditMode] = useState(!!initialData);
+  const [viewMarkdown, setViewMarkdown] = useState<boolean>(false);
   const [isLoading, setIsLoading] = useState<boolean>(false);
    
   const router = useRouter();
@@ -280,18 +283,52 @@ export function ProductForm({
         <div className="flex flex-col w-full lg:flex-row gap-4 lg:gap-8">
           <div className="flex flex-col gap-2 w-full">
             <div className="flex flex-col items-baseline">
-              <Label htmlFor="desc" className="text-sm">Descrição (Opcional)</Label>
-              <span className="text-[0.65rem] text-gray-400">{`Suporta Markdown`}</span>
+              <Label htmlFor="description" className="text-sm">Descrição (Opcional)</Label>
+              <span className="text-[0.65rem] text-gray-400">{`Suporte à Markdown *`}</span>
             </div>
-            <Textarea
-              id="description"
-              placeholder="Descrição do Produto"
-              onChange={(e) => setDesc(e.target.value)}
-              value={desc}
-              rows={4}
-              className="bg-white focus-visible:ring-0 text-secondary overflow-y-auto"
-              disabled={isLoading}
-            />
+            <div className="relative flex w-full">
+              <div className="absolute top-[-25] right-0">
+                <button
+                  type="button"
+                  aria-label="Ver Markdown"
+                  title="Ver Markdown"
+                  onClick={() => setViewMarkdown(!viewMarkdown)}
+                  className={`flex items-center justify-center px-1 py-1 font-medium cursor-pointer
+                    bg-white hover:bg-gray-50 text-secondary rounded-t-lg 
+                    transition-all border border-gray-200
+                  `}
+                >
+                  {viewMarkdown ? (
+                    <EyeOff className="w-4 h-4 text-secondary" />
+                  ) : (
+                    <Eye className="w-4 h-4 text-secondary" />
+                  )}
+                </button>
+              </div>
+              <div 
+                className={`${viewMarkdown ? '' : 'hidden'} w-full h-full text-sm
+                  bg-green-50 overflow-y-auto rounded-tr-none rounded-lg 
+                  px-3 py-2 mb-2 text-secondary border shadow-xs
+                `}
+              >
+                <article className="prose prose-sm max-w-none">
+                  <ReactMarkdown remarkPlugins={[remarkGfm]}>
+                    {desc}
+                  </ReactMarkdown>
+                </article>
+              </div>
+              <Textarea
+                id="description"
+                placeholder="Descrição do Produto"
+                onChange={(e) => setDesc(e.target.value)}
+                value={desc}
+                rows={4}
+                className={`${viewMarkdown ? 'hidden' : ''} bg-white 
+                  focus-visible:ring-0 text-secondary overflow-y-auto rounded-tr-none
+                `}
+                disabled={isLoading}
+              />
+            </div>
           </div>
         </div>
 
