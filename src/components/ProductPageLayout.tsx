@@ -31,7 +31,8 @@ export default function ProductPageLayout({
   const { addItem } = useCart();
   const [descExpanded, setDescExpanded] = useState(false);
   const [showReadMore, setShowReadMore] = useState(false);
-  const contentRef = useRef<HTMLDivElement>(null);
+  const contentDesktopRef = useRef<HTMLDivElement>(null);
+  const contentMobileRef = useRef<HTMLDivElement>(null);
 
   const router = useRouter();
 
@@ -66,7 +67,7 @@ export default function ProductPageLayout({
   };
 
   useEffect(() => {
-    const el = contentRef.current
+    const el = contentDesktopRef.current || contentMobileRef.current;
     if (!el) return
 
     setShowReadMore(el.scrollHeight > 160)
@@ -247,11 +248,46 @@ export default function ProductPageLayout({
               )}
 
               <div className="hidden lg:flex flex-col gap-4 pt-6 lg:w-lg xl:w-full">
-                <span className="font-bold text-sm">Descrição do Produto</span>
-                <span className="font-medium text-sm text-gray-500">
-                  {product.desc}
-                </span>
+                <p className="font-bold text-sm">Descrição do Produto</p>
+
+                <div className="relative">
+                  <div
+                    ref={contentDesktopRef}
+                    className={`relative overflow-hidden transition-all duration-300 ${
+                      descExpanded ? 'max-h-250' : 'max-h-40'
+                    }`}
+                  >
+                    <div className="prose prose-sm max-w-none font-medium text-sm text-gray-500 whitespace-pre-line">
+                      <ReactMarkdown>{product.desc}</ReactMarkdown>
+                    </div>
+
+                    {showReadMore && !descExpanded && (
+                      <div className={`absolute inset-x-0 bottom-0 h-16 pointer-events-none
+                        bg-linear-to-t from-background-alternative to-transparent `}
+                      />
+                    )}
+                  </div>
+
+                  {showReadMore && (
+                    <div
+                      className={`absolute inset-x-0 flex justify-center ${
+                        descExpanded ? 'mt-2 static' : 'bottom-0 pb-2'
+                      }`}
+                    >
+                      <button
+                        type="button"
+                        onClick={() => setDescExpanded((prev) => !prev)}
+                        className={`z-10 rounded-full px-4 py-1 text-sm font-medium text-secondary 
+                          bg-white/90 shadow-sm backdrop-blur-sm transition-colors hover:text-primary
+                        `}
+                      >
+                        {descExpanded ? 'Ler menos' : 'Ler mais'}
+                      </button>
+                    </div>
+                  )}
+                </div>
               </div>
+              
               <SupportButton 
                 title="Relatar problema ou falar com suporte"
                 messageToSupport={`Olá, encontrei um erro no seu produto "${product.name}" na Veritas Ateliê!`} 
@@ -342,7 +378,7 @@ export default function ProductPageLayout({
 
             <div className="relative">
               <div
-                ref={contentRef}
+                ref={contentMobileRef}
                 className={`relative overflow-hidden transition-all duration-300 ${
                   descExpanded ? 'max-h-250' : 'max-h-40'
                 }`}
