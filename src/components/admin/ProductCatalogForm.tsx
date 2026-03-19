@@ -294,12 +294,12 @@ export function ProductForm({
                   title="Ver Markdown"
                   onClick={() => setViewMarkdown(!viewMarkdown)}
                   className={`flex items-center justify-center px-1 py-1 font-medium cursor-pointer
-                    bg-white hover:bg-gray-50 text-secondary rounded-t-lg 
+                    ${viewMarkdown ? 'bg-green-50' : 'bg-white'} hover:bg-gray-50 text-secondary rounded-t-lg 
                     transition-all border border-gray-200
                   `}
                 >
                   {viewMarkdown ? (
-                    <EyeOff className="w-4 h-4 text-secondary bg-green-50" />
+                    <EyeOff className="w-4 h-4 text-secondary" />
                   ) : (
                     <Eye className="w-4 h-4 text-secondary" />
                   )}
