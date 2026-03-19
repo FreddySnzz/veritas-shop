@@ -86,10 +86,10 @@ html {
 }
 
 :root {
-  --primary: oklch(0.21 0.006 285.885);
-  --secondary: oklch(0.967 0.001 286.375);
+  --primary: #c3aa73;
+  --secondary: #323232;
   --radius: 0.625rem;
-  --background: oklch(1 0 0);
+  --background: #f3f1ef;
 
   --background-alternative: #f3f1ef;
   --background-alternative-v2: #f4f1ea;
