@@ -30,7 +30,8 @@ export default function ProductPageLayout({
 }: ProductPageLayoutProps) {
   const { addItem } = useCart();
   const [descExpanded, setDescExpanded] = useState(false);
-  const [showReadMore, setShowReadMore] = useState(false);
+  const [showReadMoreDesktop, setShowReadMoreDesktop] = useState(false);
+  const [showReadMoreMobile, setShowReadMoreMobile] = useState(false);
   const contentDesktopRef = useRef<HTMLDivElement>(null);
   const contentMobileRef = useRef<HTMLDivElement>(null);
 
@@ -67,10 +68,11 @@ export default function ProductPageLayout({
   };
 
   useEffect(() => {
-    const el = contentDesktopRef.current || contentMobileRef.current;
-    if (!el) return
+    const desktopEl = contentDesktopRef.current;
+    const mobileEl = contentMobileRef.current;
 
-    setShowReadMore(el.scrollHeight > 160)
+    setShowReadMoreMobile(!!mobileEl && mobileEl.scrollHeight > 160);
+    setShowReadMoreDesktop(!!desktopEl && desktopEl.scrollHeight > 160);
   }, [product.desc]);
 
   if (!product.desc) return null;
@@ -261,14 +263,14 @@ export default function ProductPageLayout({
                       <ReactMarkdown>{product.desc}</ReactMarkdown>
                     </div>
 
-                    {showReadMore && !descExpanded && (
+                    {showReadMoreDesktop && !descExpanded && (
                       <div className={`absolute inset-x-0 bottom-0 h-16 pointer-events-none
                         bg-linear-to-t from-background-alternative to-transparent `}
                       />
                     )}
                   </div>
 
-                  {showReadMore && (
+                  {showReadMoreDesktop && (
                     <div
                       className={`absolute inset-x-0 flex justify-center ${
                         descExpanded ? 'mt-2 static' : 'bottom-0 pb-2'
@@ -387,14 +389,14 @@ export default function ProductPageLayout({
                   <ReactMarkdown>{product.desc}</ReactMarkdown>
                 </div>
 
-                {showReadMore && !descExpanded && (
+                {showReadMoreMobile && !descExpanded && (
                   <div className={`absolute inset-x-0 bottom-0 h-16 pointer-events-none
                     bg-linear-to-t from-background-alternative to-transparent `}
                   />
                 )}
               </div>
 
-              {showReadMore && (
+              {showReadMoreMobile && (
                 <div
                   className={`absolute inset-x-0 flex justify-center ${
                     descExpanded ? 'mt-2 static' : 'bottom-0 pb-2'
