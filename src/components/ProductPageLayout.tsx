@@ -73,7 +73,7 @@ export default function ProductPageLayout({
 
     setShowReadMoreMobile(!!mobileEl && mobileEl.scrollHeight > 160);
     setShowReadMoreDesktop(!!desktopEl && desktopEl.scrollHeight > 160);
-  }, [product.desc]);
+  }, [product.desc, isMdUp]);
 
   if (!product.desc) return null;
 
