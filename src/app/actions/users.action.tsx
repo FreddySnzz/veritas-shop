@@ -9,7 +9,7 @@ export async function getAdminInfoAction() {
     return serializeFirestoreData(admin);
   } catch (error) {
     console.error("Erro ao carregar informações do admin:", error);
-    return error;
+    throw error;
   };
 };
 
@@ -20,6 +20,6 @@ export async function updateUserAction(id: string, data: any) {
     return serializeFirestoreData(user);
   } catch (error) {
     console.error("Erro ao atualizar usuário:", error);
-    return error;
+    throw error;
   };
 };

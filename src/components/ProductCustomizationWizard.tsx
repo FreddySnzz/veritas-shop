@@ -33,7 +33,6 @@ import {
 import CustomModal from './modals/CustomModal';
 import WizardStepsBreadcrumb from './WizardStepsBreadcrumb';
 import { calculateCustomizationPrice } from '@/data/functions/calculateCustomizationPrice';
-import { removeAccentsAndSpaces } from '@/data/functions/removeAccentsAndSpaces';
 
 const slideVariants = {
   enter: (direction: number) => ({
@@ -130,79 +129,102 @@ export default function ProductCustomizerWizard({
   const router = useRouter();
 
   const wizardSteps = useMemo(() => {
-    const isCordao = (name: string) => {
-      const normalized = removeAccentsAndSpaces(name);
-      return normalized.includes('cordao') || normalized.includes('cordoes');
+    const defaultCategoryOrder: Record<string, number> = {
+      'contas_menores_(ave-maria)': 1,
+      'contas_maiores_(pai_nosso)': 2,
+      entremeios: 3,
+      crucifixos: 4,
+      letras: 5,
+      'micangas_p/_acabamentos': 6,
+      cordoes: 7,
+      embalagens: 999,
     };
 
-    const isEmbalagem = (name: string) => {
-      const normalized = removeAccentsAndSpaces(name);
-      return normalized.includes('embalagem') || normalized.includes('embalagens');
-    };
+    const categoriesMap = new Map(
+      categories.map((category) => [category.category_name, category])
+    );
 
-    const productConfigItems = baseProduct.customization_items?.filter(
-      (item) => item.available).sort((a, b) => {
-        const nameA = a.category_name || '';
-        const nameB = b.category_name || '';
+    const productConfigItems = [...(baseProduct.customization_items ?? [])]
+      .filter((item) => item.available)
+      .sort((a, b) => {
+        const categoryA = categoriesMap.get(a.category);
+        const categoryB = categoriesMap.get(b.category);
 
-        const aIsCordao = isCordao(nameA);
-        const bIsCordao = isCordao(nameB);
+        const orderA =
+          categoryA?.display_order ??
+          defaultCategoryOrder[a.category] ??
+          1000;
 
-        const aIsEmbalagem = isEmbalagem(nameA);
-        const bIsEmbalagem = isEmbalagem(nameB);
+        const orderB =
+          categoryB?.display_order ??
+          defaultCategoryOrder[b.category] ??
+          1000;
 
-        if (aIsCordao && !bIsCordao) return -1;
-        if (!aIsCordao && bIsCordao) return 1;
-        if (aIsEmbalagem && !bIsEmbalagem) return 1;
-        if (!aIsEmbalagem && bIsEmbalagem) return -1;
-        
-        return nameA.localeCompare(nameB, 'pt-BR', { sensitivity: 'base' });
-      }) || [];
-    
-    const steps = productConfigItems.map((configItem) => {
-      const categoryData = categories.find(
-        category => category.category_name === configItem.category
-      );
+        if (orderA !== orderB) {
+          return orderA - orderB;
+        }
+
+        return (a.category_name || a.category).localeCompare(
+          b.category_name || b.category,
+          'pt-BR',
+          { sensitivity: 'base' }
+        );
+      });
+
+    const steps = productConfigItems.flatMap((configItem) => {
+      const categoryData = categoriesMap.get(configItem.category);
 
       const uiData = UI_METADATA[configItem.category];
-      const displayName = categoryData?.name || 
-        configItem.category.charAt(0).toUpperCase() + configItem.category.slice(1);
-      const displaySubtitle = categoryData?.description ||
-        uiData?.subtitle || `Selecione uma opção de ${displayName}.`;
 
-      return {
+      const fallbackDisplayName =
+        configItem.category_name ||
+        configItem.category
+          .replaceAll('_', ' ')
+          .replace(/\b\w/g, (char) => char.toUpperCase());
+
+      const displayName = categoryData?.name ?? fallbackDisplayName;
+
+      const displaySubtitle =
+        categoryData?.description ??
+        uiData?.subtitle ??
+        `Selecione uma opção de ${displayName}.`;
+
+      const currentStep = {
         id: configItem.category,
-        imageHelper: categoryData?.image_url,
+        imageHelper: categoryData?.image_url ?? '',
         title: displayName,
         subtitle: displaySubtitle,
         isGrouped: true,
-        isOptional: !configItem.required, 
-        isVirtual: false
+        isOptional: !configItem.required,
+        isVirtual: false,
       };
+
+      if (configItem.category === 'letras') {
+        return [
+          {
+            id: 'texto_personalizado',
+            imageHelper: '',
+            title: 'Personalização',
+            subtitle: UI_METADATA['texto_personalizado']?.subtitle ?? '',
+            isGrouped: false,
+            isOptional: true,
+            isVirtual: true,
+          },
+          currentStep,
+        ];
+      }
+
+      return [currentStep];
     });
 
-    const letrasIndex = steps.findIndex(step => step.id === 'letras');
-
-    if (letrasIndex !== -1) {
-      steps.splice(letrasIndex, 0, { 
-        id: 'texto_personalizado', 
-        imageHelper: '',
-        title: 'Personalização', 
-        subtitle: UI_METADATA['texto_personalizado'].subtitle || '',
-        isGrouped: false,
-        isOptional: true,
-        isVirtual: true
-      });
-    };
-
-    steps.push({ 
-      id: 'final', 
+    steps.push({
+      id: 'final',
       imageHelper: '',
-      title: 'Revisão', 
-      subtitle: UI_METADATA['final'].subtitle || '',
-      isGrouped: false, 
+      title: 'Revisão',
+      subtitle: UI_METADATA['final']?.subtitle ?? '',
+      isGrouped: false,
       isOptional: false,
-      isVirtual: true
+      isVirtual: true,
     });
 
     return steps;

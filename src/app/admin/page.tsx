@@ -2,10 +2,14 @@ import { Header } from "@/components/Header";
 import DynamicBreadcrumb from "@/components/DynamicBreadcrumb";
 import PanelLayout from "@/components/admin/PanelLayout";
 import Footer from "@/components/Footer";
-import { getCachedAdminInfoAction } from "../actions/cache.actions";
+import { 
+  getCachedAdminInfoAction, 
+  getCachedCustomizationItemsCategoriesAction 
+} from "../actions/cache.actions";
 
 export default async function AdminPanel() {
-  const { user } = await getCachedAdminInfoAction();
+  const user  = await getCachedAdminInfoAction();
+  const categories = await getCachedCustomizationItemsCategoriesAction();
 
   return (
     <div className="flex flex-col h-dvh overflow-y-auto bg-background-alternative">
@@ -18,7 +22,10 @@ export default async function AdminPanel() {
             <DynamicBreadcrumb className="mt-16 py-4" />
             <hr className="border-muted-foreground/50" />
           </div>
-          <PanelLayout className="flex-1 overflow-hidden" />
+          <PanelLayout 
+            categories={categories}
+            className="flex-1 overflow-hidden" 
+          />
         </main>
       </div>
       <div className="hidden lg:block shrink-0">

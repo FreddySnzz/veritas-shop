@@ -4,7 +4,6 @@ import ProductCustomizerWizard from "@/components/ProductCustomizationWizard";
 import ProductModel from "@/data/models/Product.model";
 import { 
   getCachedAdminInfoAction,
-  // getCachedCustomizationItemsAction, 
   getCachedCustomizationItemsCategoriesAction, 
   getCachedProductsAction 
 } from "@/app/actions/cache.actions";
@@ -12,7 +11,6 @@ import {
   removeAccentsAndSpacesToURL 
 } from "@/data/functions/removeAccentsAndSpaces";
 import Footer from "@/components/Footer";
-import { CustomizationItemsModel } from "@/data/models/CustomizationItems.model";
 import { getAllCustomizationItemsAction } from "@/app/actions/customizationItems.action";
 
 interface PageProps {
@@ -38,16 +36,6 @@ export default async function Customization({ params }: PageProps) {
 
   const product = products?.find(
     (p: ProductModel) => removeAccentsAndSpacesToURL(p.name) === item
-  );
-
-  console.log('products:', products?.length);
-  console.log('customizationItems:', customizationItems?.length);
-  console.log('categories:', categories?.length);
-  console.log('product customization categories:', 
-    product?.customization_items?.map((item: CustomizationItemsModel) => item.category)
-  );
-  console.log('items categories:', 
-    [...new Set(customizationItems?.map((item: CustomizationItemsModel) => item.category))]
   );
   
   if (!product || !product.customizable || !product.available) {

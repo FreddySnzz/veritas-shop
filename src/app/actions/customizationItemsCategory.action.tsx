@@ -7,10 +7,12 @@ import {
   deleteCategory,
   createCategory,
   updateCategory,
-  updateCategoryStatus, 
+  updateCategoryStatus,
+  saveCustomizationOrder, 
 } from "@/data/services/categoryItem.service";
 import { serializeFirestoreData } from "@/data/functions/firebaseSerialize";
 import { refreshCacheAction } from "./cache.actions";
+import { CustomizationItemsCategoryModel } from "@/data/models/CustomizationItemsCategory";
 
 export async function getAllCategoriesAction() {
   try {
@@ -18,7 +20,7 @@ export async function getAllCategoriesAction() {
     return serializeFirestoreData(categories);
   } catch (error) {
     console.error("Erro ao buscar todas as categorias:", error);
-    return error;
+    throw error;
   };
 };
 
@@ -28,7 +30,7 @@ export async function getCategoryByIdAction(id: string) {
     return serializeFirestoreData(category);
   } catch (error) {
     console.error("Erro ao buscar categoria por id:", error);
-    return error;
+    throw error;
   };
 };
 
@@ -38,7 +40,7 @@ export async function getCategoryByNameAction(name: string) {
     return serializeFirestoreData(category);
   } catch (error) {
     console.error("Erro ao buscar categoria por name:", error);
-    return error;
+    throw error;
   };
 };
 
@@ -50,7 +52,7 @@ export async function createCustomizationItemCategoryAction(data: any) {
     return serializeFirestoreData(category);
   } catch (error) {
     console.error("Erro ao criar categoria:", error);
-    return error;
+    throw error;
   };
 };
 
@@ -65,7 +67,7 @@ export async function updateCustomizationItemCategoryAction(
     return serializeFirestoreData(category);
   } catch (error) {
     console.error("Erro ao atualizar categoria:", error);
-    return error;
+    throw error;
   };
 };
 
@@ -84,7 +86,19 @@ export async function updateCustomizationItemCategoryStatusAction(
     return category;
   } catch (error) {
     console.error("Erro ao atualizar categoria:", error);
-    return error;
+    throw error;
+  };
+};
+
+export async function saveCustomizationOrderAction(
+  categories: CustomizationItemsCategoryModel[],
+) {
+  try {
+    await saveCustomizationOrder(categories);
+    await refreshCacheAction('customization_items_categories');
+  } catch (error) {
+    console.error("Erro ao salvar ordem:", error);
+    throw error;
   };
 };
 

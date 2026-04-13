@@ -11,6 +11,7 @@ import {
   query,
   updateDoc,
   where,
+  writeBatch,
 } from "firebase/firestore";
 import { unstable_cache } from "next/cache";
 import { Collections } from "../types/collections.enum";
@@ -103,6 +104,26 @@ export async function updateCategory(
   await updateDoc(docRef, updatedData);
 
   return updatedData;
+};
+
+export async function saveCustomizationOrder(
+  categories: CustomizationItemsCategoryModel[],
+) {
+  const batch = writeBatch(db);
+
+  categories.forEach((category) => {
+    const docRef = doc(
+      db, 
+      Collections.CUSTOMIZATION_ITEMS_CATEGORIES_COLLECTION, 
+      category.id
+    );
+
+    batch.update(docRef, {
+      display_order: category.display_order,
+    });
+  });
+
+  await batch.commit();
 };
 
 export async function updateCategoryStatus(
@@ -220,6 +241,7 @@ export const getCachedCustomizationItemsCategories = unstable_cache(
       name: category.name,
       description: category.description,
       category_name: category.category_name,
+      display_order: category.display_order,
       image_url: category?.image_url,
       available: category.available,
     } as CustomizationItemsCategoryModel));

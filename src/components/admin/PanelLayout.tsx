@@ -5,11 +5,11 @@ import { useAuth } from "@/data/context/AuthContext";
 import { useRouter } from "next/navigation";
 import { refreshCacheAction } from "@/app/actions/cache.actions";
 import { updateUserAction } from "@/app/actions/users.action";
-import { CustomButton } from "../buttons/CustomButton"
 import { 
   ClipboardPenLine, 
   Eye, 
   Image as ImageIcon, 
+  ListOrdered, 
   RefreshCw, 
   X 
 } from "lucide-react";
@@ -19,14 +19,19 @@ import { FaWhatsapp } from "react-icons/fa6";
 import CustomModal from "../modals/CustomModal";
 import { Input } from "../ui/input";
 import { onlyNumbers } from "@/data/functions/inputMasks";
+import ManageStepsOrderModal from "../modals/ManageStepsOrder";
+import { CustomizationItemsCategoryModel } from "@/data/models/CustomizationItemsCategory";
+import ActionCard from "../CardAdminPanel";
 
 interface PanelLayoutProps {
+  categories?: CustomizationItemsCategoryModel[];
   className?: string
 };
 
-export default function PanelLayout({ className }: PanelLayoutProps) {
+export default function PanelLayout({ categories, className }: PanelLayoutProps) {
   const { user, setUser } = useAuth();
   const [whatsappNumber, setWhatsappNumber] = useState<string>(user?.phone || '');
+  const [isOpenOrderStepsModal, setIsOpenOrderStepsModal] = useState(false);
   const [isOpenWhatsAppModal, setIsOpenWhatsAppModal] = useState(false);
   const [loading, setLoading] = useState(false);
   const router = useRouter();
@@ -63,60 +68,76 @@ export default function PanelLayout({ className }: PanelLayoutProps) {
     };
   };
 
+  const actions = [
+    {
+      key: 'refresh',
+      title: loading ? 'Atualizando...' : 'Atualizar Catálogo',
+      icon: <RefreshCw className={`h-6 w-6 ${loading ? 'animate-spin' : ''}`} />,
+      onClick: handleUpdateCatalog,
+      disabled: loading,
+      highlight: true,
+    },
+    {
+      key: 'stocks',
+      title: 'Gerenciar Estoques',
+      icon: <ClipboardPenLine className="h-6 w-6" />,
+      onClick: () => router.push('/admin/estoques'),
+    },
+    {
+      key: 'steps',
+      title: 'Ordenar Passos de Personalização',
+      icon: <ListOrdered className="h-6 w-6" />,
+      onClick: () => setIsOpenOrderStepsModal(true),
+    },
+    {
+      key: 'carousel',
+      title: 'Editar Carrossel do Catálogo',
+      icon: <ImageIcon className="h-6 w-6" />,
+      onClick: () => router.push('/admin/editar-carrossel'),
+    },
+    {
+      key: 'whatsapp',
+      title: 'Mudar número do WhatsApp',
+      icon: <FaWhatsapp className="h-6 w-6" />,
+      onClick: () => setIsOpenWhatsAppModal(true),
+    },
+    {
+      key: 'orders',
+      title: 'Ver Pedidos',
+      icon: <Eye className="h-6 w-6" />,
+      onClick: () => toast.warning('Em breve!'),
+    },
+  ];
+
   return (
     <div className={`flex flex-col font-sans h-full ${className}`}>
-      <div className={`flex-1 flex flex-col gap-4 overflow-y-auto
-        lg:grid lg:grid-cols-4 xl:grid-cols-5`}
+      <div className={`grid flex-1 grid-cols-1 gap-4 overflow-y-auto 
+        sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5`}
       >
-        <button
-          onClick={handleUpdateCatalog}
-          disabled={loading}
-          className={`flex lg:flex-col gap-2 shrink-0 w-full lg:max-h-1/2 xl:max-h-1/3 py-4 
-            rounded-2xl font-bold text-secondary cursor-pointer transition-colors items-center justify-center
-            ${loading ? 'cursor-not-allowed' : 'bg-white hover:bg-gray-50 text-secondary'}
-          `}
-        >
-          <RefreshCw 
-            className={`w-6 h-6 ${loading && 'animate-spin'}`} 
+        {actions.map((action) => (
+          <ActionCard
+            key={action.key}
+            title={action.title}
+            icon={action.icon}
+            onClick={action.onClick}
+            disabled={action.disabled}
+            highlight={action.highlight}
           />
-          {loading ? 'Atualizando...' : 'Atualizar Catálogo'}
-        </button>
-
-        <CustomButton
-          onClick={() => router.push('/admin/estoques')}
-        >
-          <ClipboardPenLine className="w-6 h-6" />
-          <span>Gerenciar Estoques</span>
-        </CustomButton>
-
-        <CustomButton
-          onClick={() => router.push('/admin/editar-carrossel')}
-        >
-          <ImageIcon className="w-6 h-6" />
-          <span>Editar Carrossel do Catálogo</span>
-        </CustomButton>
-
-        <CustomButton
-          onClick={() => setIsOpenWhatsAppModal(true)}
-        >
-          <FaWhatsapp className="w-6 h-6" />
-          <span>Mudar número do WhatsApp</span>
-        </CustomButton>
-
-        <CustomButton
-          onClick={() => toast.warning("Em breve!")}
-        >
-          <Eye className="w-6 h-6" />
-          <span>Ver Pedidos</span>
-        </CustomButton>
+        ))}
       </div>
+
+      <ManageStepsOrderModal 
+        categories={categories || []}
+        modalOpen={isOpenOrderStepsModal} 
+        onClose={() => setIsOpenOrderStepsModal(false)}
+      />
 
       <CustomModal
         modalOpen={isOpenWhatsAppModal}
         onClose={() => setIsOpenWhatsAppModal(false)}
       >
         <div className="flex flex-col items-center justify-center p-2 gap-4">
-          <div className="flex flex-col justify-center">
+          <div className="flex flex-col justify-center w-full">
             <div className="flex justify-between items-center border-b border-gray-100 pb-4">
               <h2 className="text-lg font-bold text-gray-800">
                 Atualizar Número do WhatsApp
@@ -174,7 +195,7 @@ export default function PanelLayout({ className }: PanelLayoutProps) {
       </CustomModal>
       
       <div className="shrink-0 mt-auto bg-background-alternative md:hidden">
-        <hr className="border-muted-foreground/50 mb-2" />
+        <hr className="border-muted-foreground/50 my-2" />
         <div className="flex flex-col">
           <BackButton pushRoute="/" />
         </div>

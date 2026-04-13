@@ -221,6 +221,7 @@ export function ManageCustomizationItemCategory({ categories }: ManageCustomizat
       <CustomizationItemCategoryModal 
         mode={categoryToModify ? 'editar' : 'adicionar'}
         initialData={categoryToModify || undefined}
+        cachedCategories={categories}
         modalOpen={categoryModalOpen} 
         onClose={() => {
           setCategoryToModify(null);

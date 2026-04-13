@@ -19,6 +19,7 @@ import { Textarea } from "../ui/textarea";
 interface CustomizationItemCategoryProps extends React.HTMLAttributes<HTMLElement> {
   mode: 'editar' | 'adicionar';
   initialData?: CustomizationItemsCategoryModel;
+  cachedCategories: CustomizationItemsCategoryModel[];
   modalOpen: boolean
   onClose?: () => void
 };
@@ -26,6 +27,7 @@ interface CustomizationItemCategoryProps extends React.HTMLAttributes<HTMLElemen
 export default function CustomizationItemCategoryModal({ 
   mode,
   initialData,
+  cachedCategories,
   modalOpen, 
   onClose 
 }: CustomizationItemCategoryProps) {
@@ -102,6 +104,7 @@ export default function CustomizationItemCategoryModal({
         category_name: removeAccentsAndSpaces(name),
         description: description,
         image_url: finalUrlToSave,
+        display_order: cachedCategories.length + 1,
         available: true,
         updated_at: new Date(),
       };

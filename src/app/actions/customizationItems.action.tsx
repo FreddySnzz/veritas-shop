@@ -19,7 +19,7 @@ export async function getAllCustomizationItemsAction() {
     return serializeFirestoreData(customizationItems);
   } catch (error) {
     console.error("Erro ao buscar todos os itens de personalização:", error);
-    return error;
+    throw error;
   };
 };
 
@@ -29,7 +29,7 @@ export async function getCustomizationItemByIdAction(id: string) {
     return serializeFirestoreData(customizationItem);
   } catch (error) {
     console.error("Erro ao buscar item de personalização por id:", error);
-    return error;
+    throw error;
   };
 };
 
@@ -41,7 +41,7 @@ export async function getCustomizationItemByRefAction(ref: string) {
     return serializeFirestoreData(customizationItem);
   } catch (error) {
     console.error("Erro ao buscar item de personalização por ref:", error);
-    return error;
+    throw error;
   };
 };
 
@@ -53,7 +53,7 @@ export async function createCustomizationItemAction(data: any) {
     return serializeFirestoreData(customizationItem);
   } catch (error) {
     console.error("Erro ao criar item de personalização:", error);
-    return error;
+    throw error;
   };
 };
 
@@ -65,7 +65,7 @@ export async function updateCustomizationItemAction(id: string, data: any) {
     return serializeFirestoreData(customizationItem);
   } catch (error) {
     console.error("Erro ao atualizar item de personalização:", error);
-    return error;
+    throw error;
   };
 };
 
@@ -77,7 +77,7 @@ export async function copyCustomizationItemsAction(data: any) {
     return serializeFirestoreData(customizationItems);
   } catch (error) {
     console.error("Erro ao copiar itens de personalização:", error);
-    return error;
+    throw error;
   };
 };
 
