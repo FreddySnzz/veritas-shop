@@ -10,8 +10,7 @@ export async function calculateCustomizationPrice(
 
   if (baseProduct.customizable) {
     for (const [key, value] of Object.entries(customization)) {
-      if (!key) return;
-
+      if (!key || !value) return;
       const item = await getCustomizationItemByRefAction(value as string);
 
       if (!item || !item.length) continue;
