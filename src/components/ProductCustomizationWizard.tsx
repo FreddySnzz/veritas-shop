@@ -118,6 +118,10 @@ export default function ProductCustomizerWizard({
   const [currentStepIndex, setCurrentStepIndex] = useState(0);
   const [direction, setDirection] = useState(0);
   const [
+    isPendingCustomizationModalOpen, 
+    setPendingCustomizationModalOpen
+  ] = useState(Object.keys(customization).length > 0 && true);
+  const [
     isDeleteCustomizationModalOpen, 
     setDeleteCustomizationModalOpen
   ] = useState(false);
@@ -504,7 +508,7 @@ export default function ProductCustomizerWizard({
   };
 
   const progressPercentage = ((currentStepIndex + 1) / wizardSteps.length) * 100;
-  
+
   return (
     <div 
       className={`flex flex-col font-sans overflow-hidden rounded-xl
@@ -709,6 +713,50 @@ export default function ProductCustomizerWizard({
               `}
             >
               <span>Salvar</span>
+            </button>
+          </div>
+        </div>
+      </CustomModal>
+
+      <CustomModal
+        modalOpen={isPendingCustomizationModalOpen}
+        onClose={() => setPendingCustomizationModalOpen(false)}
+      >
+        <div className="flex flex-col items-center justify-center p-2 gap-4">
+          <div className="flex flex-col items-center justify-center">
+            <p className="font-bold text-lg">
+              Já existe uma personalização pendente. 
+            </p>
+            <span className="font-medium text-sm text-secondary">
+              Deseja usar os itens anteriores na sua nova personalização?
+            </span>
+          </div>
+
+          <div className="flex w-full items-center justify-end gap-2">
+            <button 
+              type="button"
+              aria-label="Não"
+              onClick={() => {
+                setPendingCustomizationModalOpen(false);
+                resetCustomization();
+              }}
+              className={`flex w-full px-4 py-2 rounded-lg items-center justify-center 
+                bg-gray-100 hover:bg-gray-200 font-medium cursor-pointer
+              `}
+            >
+              <span>Não</span>
+            </button>
+            <button 
+              type="button"
+              aria-label="Sim"
+              onClick={() => {
+                setPendingCustomizationModalOpen(false);
+              }}
+              className={`flex w-full px-4 py-2 rounded-lg items-center justify-center
+                bg-primary hover:bg-primary/90 text-white font-medium cursor-pointer 
+              `}
+            >
+              <span>Sim</span>
             </button>
           </div>
         </div>
