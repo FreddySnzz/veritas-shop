@@ -75,16 +75,16 @@ export default function Sidebar() {
         `}
       />
       <aside
-        className={`fixed top-0 right-0 h-full w-full sm:w-100 md:w-112.5 lg:w-125 bg-white font-sans
-          transform transition-transform duration-300 ease-in-out z-50 shadow-2xl flex flex-col 
+        className={`fixed top-0 right-0 h-full w-full sm:w-100 md:w-112.5 lg:w-125 bg-white dark:bg-zinc-900 font-sans
+          transform transition-transform duration-300 ease-in-out z-50 shadow-2xl flex flex-col dark:text-zinc-200
           ${ isSidebarOpen ? "translate-x-0" : "translate-x-full"}
         `}
       >
-        <div className="shrink-0 border-b border-gray-200 font-sans">
+        <div className="shrink-0 border-b border-gray-200 dark:border-background-dark font-sans">
           <div className="flex items-center justify-between p-4">
             <div className="flex flex-col">
               <div className="flex items-baseline gap-1">
-                <span className="text-xl font-bold text-secondary">
+                <span className="text-xl font-bold text-secondary dark:text-zinc-200">
                   Meu Carrinho
                 </span>
                 <span className="text-xs font-medium text-gray-400">
@@ -108,7 +108,7 @@ export default function Sidebar() {
               onClick={closeSidebar} 
               className="p-2 transition-colors ml-auto cursor-pointer"
             >
-              <X className="text-secondary text-xl hover:text-secondary/70" />
+              <X className="text-secondary dark:text-zinc-200 text-xl hover:text-secondary/70 dark:hover:text-zinc-200/80" />
             </button>
           </div>
         </div>
@@ -168,7 +168,7 @@ export default function Sidebar() {
                             </span>
 
                             {item.product.customizable && (
-                              <div className="flex text-[0.6rem] text-gray-500 mt-1">
+                              <div className="flex text-[0.6rem] text-gray-500 dark:text-zinc-300  mt-1">
                                 <div className="grid grid-cols-2">
                                   {Object.entries(item.customization || {}).map(([key, value]) => (
                                     <span 
@@ -183,7 +183,7 @@ export default function Sidebar() {
                             )}
                             
                             <div className="flex mt-2">
-                              <div className="flex border border-gray-200 gap-3 px-3 py-2 rounded">
+                              <div className="flex border border-gray-200 dark:border-background-dark gap-3 px-3 py-2 rounded">
                                 <button 
                                   type="button"
                                   aria-label="Diminuir quantidade"
@@ -238,7 +238,8 @@ export default function Sidebar() {
                     aria-label="Limpar carrinho"
                     onClick={() => setIsClearCartModalOpen(true)}
                     className={`flex items-center justify-center gap-2 px-5 py-3 
-                      text-red-500/80 hover:text-red-600 transition-colors font-medium cursor-pointer
+                      text-red-500/80 hover:text-red-600 dark:text-red-400 dark:hover:text-red-500 
+                      transition-colors font-medium cursor-pointer
                     `}
                   >
                     <Trash2 className="w-4 h-4" />
@@ -256,13 +257,13 @@ export default function Sidebar() {
         </div>
 
         {!isCartEmpty && (
-          <div className="shrink-0 border-t border-gray-200 bg-white px-4 py-1 space-y-3">
+          <div className="shrink-0 border-t border-gray-200 dark:border-background-dark bg-white dark:bg-zinc-900  px-4 py-1 space-y-3">
             <div className="flex items-center justify-between py-2 px-3">
               <CustomButton
                 type="button"
                 aria-label="Ir para página do carrinho"
                 onClick={handleGoToCart}
-                className="bg-primary hover:bg-primary/90 text-white"
+                className="bg-primary hover:bg-primary/90 dark:hover:bg-background-dark/80 text-white"
               >
                 Ir para página do carrinho
               </CustomButton>

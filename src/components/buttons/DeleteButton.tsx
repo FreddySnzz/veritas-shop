@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { Trash } from "lucide-react";
 import DeleteProductItemModal from "../modals/DeleteProductItem";
+import { cn } from "@/lib/utils";
 
 interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
   idProduct: string;
@@ -19,9 +20,10 @@ export function DeleteButton({ className, idProduct }: ButtonProps) {
           e.stopPropagation();
           setIsDeleteModalOpen(true);
         }}
-        className={`flex items-center justify-center 
-          hover:text-gray-600 text-secondary/70 transition-all cursor-pointer mr-2 ${className}
-        `}
+        className={cn("flex items-center justify-center transition-all cursor-pointer mr-2",
+          "text-secondary/70  hover:text-gray-600 dark:hover:text-red-400",
+          className
+        )}
       >
         <Trash className="w-4 h-4" />
       </button>

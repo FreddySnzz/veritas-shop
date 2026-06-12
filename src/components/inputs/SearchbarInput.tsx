@@ -28,7 +28,8 @@ export function SearchbarInput({
         onChange={onChange}
         className={cn(
           "w-full pl-4 pr-10 py-2 text-sm font-medium text-secondary",
-          "bg-background-alternative rounded-lg ring-0",
+          "bg-background-alternative-v2 rounded-lg ring-0",
+          "dark:bg-input/40 dark:text-zinc-200",
           "focus:outline-none transition-all", className
         )}
       />

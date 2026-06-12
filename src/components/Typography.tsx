@@ -1,5 +1,6 @@
 import Image from "next/image";
 import FlowerIcon from "./icons/FlowerIcon";
+import { useTheme } from "next-themes";
 
 interface TypographyProps {
   flowerColor?: string;
@@ -64,7 +65,7 @@ export function SlogganTypography({
   
   return (
     <div className={`flex flex-col items-center justify-center ${className}`}>
-      <div className={`flex flex-col text-center text-secondary ${subtitleColor}`}>
+      <div className={`flex flex-col text-center text-secondary dark:text-zinc-400  ${subtitleColor}`}>
         <span 
           className="font-sans font-medium"
           style={{ fontSize: `${1 * multiplier}rem` }}
@@ -99,6 +100,8 @@ export function LogoHorizontal() {
 }
 
 export function LogoHorizontalSvg() {
+  const { theme } = useTheme();
+  
   return (
     <div className="relative flex gap-2">
       <div className="flex items-center gap-2">
@@ -109,7 +112,7 @@ export function LogoHorizontalSvg() {
         />
         <div className="absolute left-12 top-2">
           <Image
-            src="/logo-w.svg"
+            src={ theme === 'dark' ? "/logo-w-alt.svg" : "/logo-w.svg" }
             alt="Logo Veritas"
             width={140}
             height={60}

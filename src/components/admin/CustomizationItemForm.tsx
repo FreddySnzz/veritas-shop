@@ -196,7 +196,7 @@ export function CustomizationItemForm({
       >
         <div className="flex flex-col w-full lg:flex-row gap-4 lg:gap-8">
           <div className="flex flex-col gap-2 w-full">
-            <Label htmlFor="name" className="text-sm">Nome de Referência *</Label>
+            <Label htmlFor="name" className="text-sm dark:text-zinc-50">Nome de Referência *</Label>
             <Input
               id="name"
               value={name}
@@ -208,7 +208,7 @@ export function CustomizationItemForm({
           </div>
 
           <div className="flex flex-col gap-2 w-full">
-            <Label className="text-sm">Categoria do Item *</Label>
+            <Label className="text-sm dark:text-zinc-50">Categoria do Item *</Label>
             <Select 
               disabled={isLoading}
               value={categoryKey} 
@@ -241,12 +241,12 @@ export function CustomizationItemForm({
           <div className={`flex flex-col w-full
             ${fileInputRef.current ?? 'lg:w-1/3'}`}
           >
-            <Label htmlFor="image" className="text-sm mb-1">
+            <Label htmlFor="image" className="text-sm mb-1 dark:text-zinc-50">
               Imagem do Item (Opcional)
             </Label>
-            <span className="text-xs text-gray-400 mb-2">
+            <p className="text-xs text-gray-400 dark:text-zinc-500 mb-2">
               *.jpg / *.jpeg / *.png - tam. limite de 10MB
-            </span>
+            </p>
             
             <input
               ref={fileInputRef}
@@ -262,7 +262,8 @@ export function CustomizationItemForm({
               onClick={handleButtonClick}
               disabled={isLoading}
               className={`flex gap-2 items-center justify-center px-4 py-2 font-medium cursor-pointer mt-2 h-full 
-                bg-gray-200 text-secondary rounded-lg transition-all shadow hover:bg-gray-300 disabled:opacity-50
+                bg-gray-200 text-secondary dark:text-zinc-200 rounded-lg transition-all shadow hover:bg-gray-300 disabled:opacity-50
+                dark:bg-input/30 dark:border dark:hover:bg-input/50 dark:border-zinc-600/70
               `}
             >
               {selectedFile || currentImageUrl ? (
@@ -279,7 +280,7 @@ export function CustomizationItemForm({
             </button>
 
             {imagePreview && (
-              <div className="relative w-full mt-4 flex flex-col items-center p-4 border rounded-xl bg-gray-50">
+              <div className="relative w-full mt-4 flex flex-col items-center p-4 border rounded-xl bg-gray-50 dark:bg-input/30 dark:border-input/70">
                 <div className="relative w-40 h-40 md:w-60 md:h-60">
                   <Image
                     src={imagePreview}
@@ -287,7 +288,7 @@ export function CustomizationItemForm({
                     fill
                     loading="eager"
                     draggable={false}
-                    className="object-cover rounded-2xl border border-gray-200 shadow-sm"
+                    className="object-cover rounded-2xl border border-gray-200 dark:border-zinc-900 shadow-sm"
                     sizes="(max-width: 768px) 100vw, 250px"
                   />
                 </div>
@@ -298,6 +299,7 @@ export function CustomizationItemForm({
                   disabled={isLoading}
                   className={`flex items-center mt-3 gap-2 font-medium
                     text-red-500 hover:text-red-700 text-sm cursor-pointer disabled:opacity-50
+                    dark:text-red-400 dark:hover:text-red-500
                   `}
                 >
                   <Trash className="w-4 h-4" />
@@ -309,7 +311,9 @@ export function CustomizationItemForm({
 
           <div className="flex flex-col gap-4 w-full">
             <div className="flex flex-col gap-2">
-              <Label htmlFor="style" className="text-sm">Estilo ou Referência de Cor (Opcional)</Label>
+              <Label htmlFor="style" className="text-sm dark:text-zinc-50">
+                Estilo ou Referência de Cor (Opcional)
+              </Label>
               <Input
                 id="style"
                 value={style}
@@ -321,7 +325,9 @@ export function CustomizationItemForm({
             </div>
 
             <div className="flex flex-col gap-2">
-              <Label htmlFor="color" className="text-sm">Código da Cor (Opcional)</Label>
+              <Label htmlFor="color" className="text-sm dark:text-zinc-50">
+                Código da Cor (Opcional)
+              </Label>
               <div className="flex gap-4 items-center">
                 <Input
                   id="color"
@@ -336,17 +342,21 @@ export function CustomizationItemForm({
                   onChange={(e) => setColor(e.target.value)}
                   placeholder="#000000"
                   maxLength={7}
-                  className="flex-1 bg-white focus-visible:ring-0 truncate text-secondary"
+                  className="flex-1 bg-white focus-visible:ring-0 truncate text-secondary dark:placeholder:text-zinc-500"
                   disabled={isLoading}
                 />
               </div>
             </div>
 
             <div className="flex flex-col gap-2 w-full">
-              <Label className="text-sm">Medidas do item (Opcional) *cm</Label>
+              <Label className="text-sm dark:text-zinc-50">
+                Medidas do item (Opcional) *cm
+              </Label>
               <div className="flex items-center gap-4 md:gap-8">
                 <div className="flex-1 flex items-center gap-2">
-                  <Label htmlFor="sizeHeight" className="text-secondary whitespace-nowrap">Altura:</Label>
+                  <Label htmlFor="sizeHeight" className="text-secondary dark:text-zinc-400 whitespace-nowrap">
+                    Altura:
+                  </Label>
                   <Input
                       id="sizeHeight"
                       type="text"
@@ -360,28 +370,32 @@ export function CustomizationItemForm({
                   />
                 </div>
                 <div className="flex-1 flex items-center gap-2">
-                  <Label htmlFor="sizeWidth" className="text-secondary whitespace-nowrap">Largura:</Label>
+                  <Label htmlFor="sizeWidth" className="text-secondary dark:text-zinc-400 whitespace-nowrap">
+                    Largura:
+                  </Label>
                   <Input
-                      id="sizeWidth"
-                      type="text"
-                      inputMode="decimal"
-                      onChange={(e) => setSizeWidth(onlyNumbers(e.target.value))}
-                      value={sizeWidth}
-                      placeholder="0"
-                      min="0"
-                      className="bg-white focus-visible:ring-0 truncate text-secondary"
-                      disabled={isLoading}
+                    id="sizeWidth"
+                    type="text"
+                    inputMode="decimal"
+                    onChange={(e) => setSizeWidth(onlyNumbers(e.target.value))}
+                    value={sizeWidth}
+                    placeholder="0"
+                    min="0"
+                    className="bg-white focus-visible:ring-0 truncate text-secondary"
+                    disabled={isLoading}
                   />
                 </div>
               </div>
             </div>
 
             <div className="flex flex-col gap-2 w-full">
-              <Label htmlFor="priceAddon" className="text-sm">
+              <Label htmlFor="priceAddon" className="text-sm dark:text-zinc-50">
                 Quanto esse item soma ao preço final? (Opcional)
               </Label>
               <div className="relative">
-                <span className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground">R$</span>
+                <p className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground">
+                  R$
+                </p>
                 <Input
                   id="priceAddon"
                   type="text"
@@ -401,9 +415,11 @@ export function CustomizationItemForm({
         </div>
 
         <div className={`flex items-center w-full justify-between px-4 py-3 
-          bg-white rounded-lg border`}
+          bg-white dark:bg-input/30 rounded-lg border`}
         >
-          <Label htmlFor="available" className="cursor-pointer">Item Disponível no Estoque?</Label>
+          <Label htmlFor="available" className="cursor-pointer">
+            Item Disponível no Estoque?
+          </Label>
           <Switch 
             id="available" 
             checked={available}
@@ -418,7 +434,9 @@ export function CustomizationItemForm({
             <button 
               type="button"
               aria-label="Deletar Item"
-              className="flex items-center gap-2 cursor-pointer hover:text-red-500 transition-colors disabled:opacity-50"
+              className={`flex items-center gap-2 cursor-pointer transition-colors
+                dark:text-red-400 hover:text-red-500 disabled:opacity-50
+              `}
               onClick={() => setIsDeleteModalOpen(true)}
               disabled={isLoading}
             >
@@ -433,7 +451,7 @@ export function CustomizationItemForm({
               onClose={() => setIsDeleteModalOpen(false)}
             >
               <div className="flex flex-col items-center justify-center p-2 gap-4">
-                <p className="font-bold text-center">
+                <p className="font-bold text-center dark:text-zinc-50">
                   Tem certeza que deseja deletar este item?
                 </p>
 
@@ -443,6 +461,7 @@ export function CustomizationItemForm({
                     onClick={() => setIsDeleteModalOpen(false)}
                     className={`flex w-full px-4 py-2 rounded-lg items-center justify-center
                       bg-gray-100 hover:bg-gray-200 font-medium cursor-pointer
+                      dark:bg-zinc-800 dark:hover:bg-zinc-950/15 transition-colors
                     `}
                     disabled={isLoading}
                   >
@@ -452,7 +471,9 @@ export function CustomizationItemForm({
                     type="button"
                     onClick={handleDeleteItem}
                     className={`flex w-full px-4 py-2 rounded-lg items-center justify-center font-medium cursor-pointer
-                      bg-red-500 text-white hover:bg-red-600 disabled:opacity-70`}
+                      bg-red-500 text-white hover:bg-red-600 disabled:opacity-70
+                      dark:bg-red-500 dark:hover:bg-red-600 transition-colors
+                    `}
                     disabled={isLoading}
                   >
                     {isPending ? "Deletando..." : "Confirmar"}
@@ -464,7 +485,7 @@ export function CustomizationItemForm({
         )}
       </form>
 
-      <div className="shrink-0 mt-auto bg-background-alternative pt-2 lg:pt-0">
+      <div className="shrink-0 mt-auto bg-background-alternative dark:bg-input/0 pt-2 lg:pt-0">
         <hr className="border-muted-foreground/50 mb-2 lg:hidden" />
         <div className="flex lg:justify-end">
           <div className="flex gap-4 w-full lg:w-1/2 xl:w-1/3">
@@ -476,6 +497,7 @@ export function CustomizationItemForm({
               className={`flex w-full px-4 py-1 rounded-lg font-medium
                 bg-primary text-white items-center justify-center hover:bg-primary/90 
                 cursor-pointer transition-colors disabled:opacity-70 disabled:cursor-not-allowed
+                dark:bg-details dark:hover:bg-details/80
               `}
               disabled={isLoading}
             >

@@ -73,7 +73,7 @@ export default function Login() {
   };
 
   return (
-    <main className="flex justify-center min-h-screen items-center font-sans bg-background-alternative">
+    <main className="flex justify-center min-h-screen items-center font-sans bg-background-alternative dark:bg-background-dark">
       <div className="m-10 w-full sm:w-1/2 lg:w-1/3">
         <div className="w-full mb-8">
           <LogoHorizontalSvg />
@@ -91,7 +91,7 @@ export default function Login() {
               required
               onChange={(e) => setEmail(e.target.value)}
               value={email}
-              className="h-12 bg-white focus-visible:ring-0"
+              className="h-12 bg-white dark:bg-input/40 dark:placeholder:text-zinc-400 focus-visible:ring-0"
               disabled={isLoading}
             />
           </div>
@@ -108,13 +108,15 @@ export default function Login() {
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               disabled={isLoading}
-              className="h-12 bg-white focus-visible:ring-0"
+              className="h-12 bg-white dark:bg-input/40 dark:placeholder:text-zinc-400 focus-visible:ring-0"
             />
           </div>
 
           <button 
             type="submit" 
-            className="flex w-full px-4 py-3 rounded-lg bg-primary text-white items-center justify-center hover:bg-primary/90 cursor-pointer" 
+            className={`flex w-full px-4 py-3 rounded-lg text-white items-center justify-center
+              bg-primary dark:bg-details dark:hover:bg-details/80 hover:bg-primary/90 cursor-pointer
+            `} 
             disabled={isLoading}
           >
             {isLoading ? 

@@ -87,7 +87,9 @@ export function ToggleAvailableSwitch({
         checked={availableState}
         onCheckedChange={handleUpdate}
         disabled={isPending || isLoading}
-        className="cursor-pointer data-[state=checked]:bg-green-600"
+        className={`cursor-pointer data-[state=checked]:bg-green-600 data-[state=checked]:dark:bg-zinc-800 dark:data-[state=checked]:text-white
+          dark:data-[state=unchecked]:bg-zinc-800 dark:data-[state=unchecked]:text-zinc-50 data-[state=unchecked]:bg-gray-200
+        `}
       />
     </div>
   );

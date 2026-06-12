@@ -20,8 +20,9 @@ export default function ActionCard({
       disabled={disabled}
       className={[
         'flex min-h-32 w-full flex-col items-center justify-center gap-3 rounded-2xl border ',
-        'p-5 text-center transition cursor-pointer',
-        'bg-white hover:bg-gray-50',
+        'p-5 text-center cursor-pointer transition-colors',
+        'bg-white dark:bg-input/50 hover:bg-gray-50 dark:hover:bg-zinc-700',
+        'dark:border-zinc-700',
         'disabled:cursor-not-allowed disabled:opacity-60',
         highlight ? 'border-primary/20 ring-1 ring-primary/10' : 'border-gray-200',
       ].join(' ')}

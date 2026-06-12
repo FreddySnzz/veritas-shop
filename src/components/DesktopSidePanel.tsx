@@ -21,9 +21,9 @@ export function DesktopSidePanel({
       className={`flex shrink-0 flex-col lg:max-w-80 xl:max-w-100 ${className}`}
     >
       <div className={`sticky top-0 flex flex-col gap-4`}>
-        <div className={`bg-white rounded-xl ${contentClassName}`}>
+        <div className={`bg-white dark:bg-input/0 lg:dark:bg-input/50 rounded-xl ${contentClassName}`}>
           {title && (
-            <h2 className="text-sm font-bold text-secondary mb-3">
+            <h2 className="text-sm font-bold text-secondary dark:text-zinc-50 mb-3">
               {title}
             </h2>
           )}

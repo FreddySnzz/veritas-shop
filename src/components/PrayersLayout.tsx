@@ -54,7 +54,7 @@ export default function PrayersLayout() {
             id="commom"
             className="flex flex-col gap-2"
           >
-            <h1 className="font-bold text-secondary text-2xl md:text-3xl">
+            <h1 className="font-bold text-secondary dark:text-zinc-200 text-2xl md:text-3xl">
               Principais
             </h1>
             <div className="flex flex-col">
@@ -65,9 +65,9 @@ export default function PrayersLayout() {
                   title={prayer.title}
                   href={`/ajuda/oracoes${prayer.href}`}
                 >
-                  <span className="font-medium hover:underline ml-2">
+                  <p className="font-medium dark:text-zinc-400 hover:underline ml-2">
                     • {prayer.title}
-                  </span>
+                  </p>
                 </Link>
               ))}
             </div>
@@ -77,7 +77,7 @@ export default function PrayersLayout() {
             id="specific-prayers"
             className="flex flex-col gap-2"
           >
-            <h1 className="font-bold text-secondary text-2xl md:text-3xl">
+            <h1 className="font-bold text-secondary dark:text-zinc-200 text-2xl md:text-3xl">
               Específicas
             </h1>
             <div className="flex flex-col">
@@ -88,9 +88,9 @@ export default function PrayersLayout() {
                   title={prayer.title}
                   href={`/ajuda/oracoes${prayer.href}`}
                 >
-                  <span className="font-medium hover:underline ml-2">
+                  <p className="font-medium dark:text-zinc-400 hover:underline ml-2">
                     • {prayer.title}
-                  </span>
+                  </p>
                 </Link>
               ))}
             </div>
@@ -100,7 +100,7 @@ export default function PrayersLayout() {
             id="various"
             className="flex flex-col gap-2"
           >
-            <h1 className="font-bold text-secondary text-2xl md:text-3xl">
+            <h1 className="font-bold text-secondary dark:text-zinc-200 text-2xl md:text-3xl">
               Diversas
             </h1>
             <div className="flex flex-col">
@@ -111,9 +111,9 @@ export default function PrayersLayout() {
                   title={prayer.title}
                   href={`/ajuda/oracoes${prayer.href}`}
                 >
-                  <span className="font-medium hover:underline ml-2">
+                  <p className="font-medium dark:text-zinc-400 hover:underline ml-2">
                     • {prayer.title}
-                  </span>
+                  </p>
                 </Link>
               ))}
             </div>
@@ -128,7 +128,7 @@ export default function PrayersLayout() {
               title={prayer.title}
               href={`/ajuda/oracoes${prayer.href}`}
             >
-              <span className="font-medium hover:underline ml-2">
+              <span className="font-medium dark:text-zinc-400 hover:underline ml-2">
                 • {prayer.title}
               </span>
             </Link>

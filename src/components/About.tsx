@@ -8,12 +8,12 @@ export default function About() {
     >
       <div className="flex flex-col font-medium">
         <div>
-          <h1 className="font-playfair-display text-secondary font-bold text-2xl">
+          <h1 className="font-playfair-display text-secondary dark:text-zinc-200 font-bold text-2xl">
             Sobre nós
           </h1>
         </div>
         <div className="mt-4">
-          <span className="font-playfair-display text-secondary">
+          <span className="font-playfair-display text-secondary ">
             {`O Veritas Ateliê nasceu do desejo profundo de evangelizar pela simplicidade, 
             tornando cada terço mais do que um trabalho manual: `} 
             <strong>{`É uma oração silenciosa, tecida com fé, amor e devoção.`}</strong>
@@ -21,7 +21,9 @@ export default function About() {
         </div>
 
         <div className="mt-12">
-          <h1 className="font-playfair-display text-secondary font-bold text-2xl">O significado do nome</h1>
+          <h1 className="font-playfair-display text-secondary dark:text-zinc-200 font-bold text-2xl">
+            O significado do nome
+          </h1>
         </div>
         <div className="mt-4">
           <span className="font-playfair-display text-secondary">
@@ -37,7 +39,7 @@ export default function About() {
         </div>
 
         <div className="mt-12">
-          <h1 className="font-playfair-display text-secondary font-bold text-2xl">
+          <h1 className="font-playfair-display text-secondary dark:text-zinc-200 font-bold text-2xl">
             Os benefícios de meditar o Santo Rosário
           </h1>
         </div>
@@ -50,7 +52,7 @@ export default function About() {
 
         <div className="flex justify-end mt-8 p-2">
           <div className="xl:w-8/10">
-            <PhraseNSFatima className="text-end text-xl font-black text-secondary" />
+            <PhraseNSFatima className="text-end text-xl font-black text-secondary dark:text-zinc-200" />
           </div>
         </div>
       </div>

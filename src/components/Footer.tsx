@@ -20,7 +20,7 @@ export default function Footer({
   const isMdUp = useMediaQuery("(min-width: 768px)");
 
   return (
-    <footer className={`w-full bg-secondary font-sans p-8 z-49 
+    <footer className={`w-full bg-secondary dark:bg-zinc-900 font-sans p-8 z-49 
       md:px-12 lg:px-32 md:pb-0 mt-8 ${isSmUp && 'px-16'}
       ${className}`}
     >
@@ -40,7 +40,7 @@ export default function Footer({
             />
           </Link>
 
-          <SlogganTypography className="text-center" />
+          <SlogganTypography className="text-center dark:text-zinc-400 mt-2" />
           <PhraseSloganAlternative 
             divClassName="text-center" 
             className="text-muted-foreground text-sm" 
@@ -53,12 +53,12 @@ export default function Footer({
         
         <div className="flex w-full">
           <div className="flex flex-col w-full h-full">
-            <p className="font-bold uppercase text-gray-500 text-sm mb-2">
+            <p className="font-bold uppercase text-gray-500 dark:text-zinc-200 text-sm mb-2">
               Siga-nos
             </p>
             
             <div className="flex sm:flex-col gap-4">
-              <div className="flex text-primary">
+              <div className="flex text-primary dark:text-zinc-400">
                 <div className={`flex cursor-pointer items-center justify-center 
                   hover:text-blue-400`}
                 >
@@ -78,7 +78,7 @@ export default function Footer({
                 </div>
               </div>
               
-              <div className="flex text-primary">
+              <div className="flex text-primary dark:text-zinc-400">
                 <div className={`flex cursor-pointer items-center justify-center 
                   hover:text-green-500`}
                 >
@@ -101,9 +101,9 @@ export default function Footer({
           </div>
 
           <div className="flex w-full h-full">
-            <div className="flex text-primary font-light text-sm">
+            <div className="flex text-primary dark:text-zinc-400 font-light text-sm">
               <div className="flex flex-col">
-                <p className="font-bold uppercase text-gray-500 text-sm mb-2">
+                <p className="font-bold uppercase text-gray-500 dark:text-zinc-200 text-sm mb-2">
                   Suporte
                 </p>
 
@@ -168,7 +168,7 @@ export default function Footer({
 
       <div className="flex flex-col">
         <div className="text-center">
-          <div className="text-xs font-semibold text-muted-foreground">
+          <div className="text-xs font-semibold text-muted-foreground dark:text-zinc-600">
             <div className="flex items-center justify-center">
               <span className="mr-1">
                 &copy; 2025 |
@@ -177,13 +177,13 @@ export default function Footer({
                 {`Veritas Ateliê — Todos os direitos reservados.`}
               </span>
             </div>
-            <span className="text-xs text-center font-playfair-display text-muted-foreground font-medium">
+            <span className="text-xs text-center font-playfair-display text-muted-foreground dark:text-zinc-600 font-medium">
               São Gonçalo do Piauí - PI
             </span>
           </div>
         </div>
 
-        <div className="text-center text-sm text-muted-foreground/30 mt-4">
+        <div className="text-center text-sm text-muted-foreground/30 dark:text-zinc-700/30 mt-4">
           <span>Desenvolvido com carinho por </span>
           <Link
             aria-label="Ver Portfólio"

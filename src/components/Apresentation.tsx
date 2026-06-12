@@ -10,9 +10,11 @@ import { WhatsAppButtonFixed } from "./buttons/WhatsAppButton";
 import UserModel from "@/data/models/User.model";
 import { getCachedAdminInfoAction } from "@/app/actions/cache.actions";
 import Image from "next/image";
+import { useTheme } from "next-themes";
 
 export default function Apresentation() {
   const [user, setUser] = useState<UserModel>();
+  const { theme } = useTheme();
 
   useEffect(() => {
     const fetchUser = async () => {
@@ -40,7 +42,7 @@ export default function Apresentation() {
               transition={{ type: "spring", stiffness: 500, damping: 30 }}
             >
               <Image
-                src="/logo-h.svg"
+                src={ theme === 'dark' ? "/logo-h-alt.svg" : "/logo-h.svg" }
                 alt="Logo Veritas"
                 width={240}
                 height={240}

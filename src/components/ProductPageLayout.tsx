@@ -68,6 +68,34 @@ export default function ProductPageLayout({
     toast.success("Produto adicionado ao carrinho!", { duration: 1500 });
   };
 
+  const renderProductImages = () => {
+    if (product.images_url) {
+      if (product.images_url.length > 1) {
+        return (
+          <ProductCarrousel 
+            product={product}
+            gridMode={isMdUp}
+          />
+        );
+      };
+
+      return (
+        <ProductCarrousel 
+          product={product}
+          gridMode={false}
+        />
+      );
+    };
+    
+    return (
+      <div className="flex flex-col items-center justify-center h-60 gap-4 w-full">
+        <p className="text-gray-400 text-sm">
+          Produto Sem Imagens
+        </p>
+      </div>
+    );
+  };
+
   useLayoutEffect(() => {
     const desktopEl = contentDesktopRef.current;
     const mobileEl = contentMobileRef.current;
@@ -107,35 +135,35 @@ export default function ProductPageLayout({
         </div>
 
         <div className="flex flex-col lg:hidden mt-4 px-8">
-          <h2 className="text-2xl font-bold">
+          <h2 className="text-2xl font-bold dark:text-zinc-200">
             {product.name}
           </h2>
 
           {product.available ? (
             <div className="flex flex-col">
-              <span className="text-primary font-bold">
+              <p className="text-primary dark:text-details font-bold">
                 Disponível ✓
-              </span>
+              </p>
             </div>
           ) : (
             <div className="flex flex-col">
-              <span className="text-red-500 font-bold">
+              <p className="text-red-500 dark:text-red-400 font-bold">
                 Produto Indisponível ✗
-              </span>
+              </p>
             </div>
           )}
 
           <div className="flex relative shrink-0 mt-auto pt-2 items-end justify-between"> 
             <div className="flex justify-center items-baseline gap-1">
-              <span className="font-bold text-2xl">
+              <p className="font-bold text-2xl">
                 {formatCurrency(product.initial_price)}
-              </span>
+              </p>
             </div>
           </div>
 
           {product.customizable && (
             <div className="flex flex-col">
-              <p className="text-gray-400 text-xs">
+              <p className="text-gray-400 dark:text-zinc-600 text-xs">
                 *Ao personalizar o produto, o preço final poderá ser diferente.
               </p>
             </div>
@@ -143,18 +171,7 @@ export default function ProductPageLayout({
         </div>
 
         <div className="flex shrink-0 mt-8 lg:mt-0">
-          {product.images_url?.length ? (
-            <ProductCarrousel 
-              product={product}
-              gridMode={isMdUp}
-            />
-          ) : (
-            <div className="flex flex-col items-center justify-center h-60 gap-4 w-full">
-              <span className="text-gray-400 text-sm">
-                Produto Sem Imagens
-              </span>
-            </div>
-          )}
+          {renderProductImages()}
 
           <div className="hidden lg:flex lg:grow w-full flex-col h-full">
             <div className="hidden lg:flex flex-col px-6">
@@ -164,25 +181,29 @@ export default function ProductPageLayout({
 
               {product.available ? (
                 <div className="flex flex-col">
-                  <span className="text-primary font-bold">Disponível ✓</span>
+                  <p className="text-primary dark:text-details font-bold">
+                    Disponível ✓
+                  </p>
                 </div>
               ) : (
                 <div className="flex flex-col">
-                  <span className="text-red-500 font-bold">Produto Indisponível ✗</span>
+                  <p className="text-red-500 dark:text-red-400 font-bold">
+                    Produto Indisponível ✗
+                  </p>
                 </div>
               )}
 
               <div className="flex relative shrink-0 mt-auto pt-2 items-end justify-between"> 
                 <div className="flex justify-center items-baseline gap-1">
-                  <span className="font-bold text-2xl">
+                  <p className="font-bold text-2xl">
                     {formatCurrency(product.initial_price)}
-                  </span>
+                  </p>
                 </div>
               </div>
 
               {product.customizable && (
                 <div className="flex flex-col">
-                  <p className="text-gray-400 text-xs">
+                  <p className="text-gray-400 dark:text-zinc-600 text-xs">
                     *Ao personalizar o produto, o preço final poderá ser diferente.
                   </p>
                 </div>
@@ -190,10 +211,10 @@ export default function ProductPageLayout({
             </div>
 
             <div className="hidden lg:flex flex-col px-6 mt-4">
-              <div className="flex items-center justify-center gap-4 w-full mb-6">
-                <span className="font-medium text-sm">
+              <div className="flex items-center justify-center gap-4 w-full mb-6 dark:text-zinc-500">
+                <p className="font-medium text-sm">
                   Compartilhar: 
-                </span>
+                </p>
                 <div className="flex gap-4 items-center">
                   <Link 
                     aria-label="Compartilhar no WhatsApp"
@@ -201,38 +222,38 @@ export default function ProductPageLayout({
                     rel="noopener noreferrer"
                     target="_blank"
                     href={`https://api.whatsapp.com/send?text=*Olha%20só%20esse%20produto%20incrível%20que%20encontrei%20na%20Veritas%20Ateliê!*%0A${window.location.href}`}
-                    className="flex items-center text-sm gap-1 hover:underline"
+                    className="flex items-center text-sm gap-1 hover:underline transition-colors dark:hover:text-emerald-600"
                   >
                     <FaWhatsapp className="w-4 h-4" />
-                    <span>WhatsApp</span>
+                    <p>WhatsApp</p>
                   </Link>
                   <button 
                     type="button"
                     aria-label="Copiar link para a área de transferência"
                     title="Copiar link para a área de transferência"
                     onClick={handleCopyLinkToClipboard}
-                    className="flex items-center text-sm gap-1 cursor-pointer hover:underline"
+                    className="flex items-center text-sm gap-1 cursor-pointer hover:underline transition-colors dark:hover:text-zinc-300"
                   >
                     <IoMdCopy className="w-4 h-4" />
-                    <span>Copiar Link</span>
+                    <p>Copiar Link</p>
                   </button>
                 </div>
               </div>
 
               {product.customizable && (
                 <div className="flex flex-col gap-4">
-                  <span className="font-bold text-sm">
+                  <p className="font-bold text-sm dark:text-zinc-300">
                     Pode ser personalizado com:
-                  </span>
+                  </p>
                   {product.customization_items && (
                     <div className="flex flex-col">
                       {sortedCustomizationItems.map((item, index) => (
                         <div
                           key={index} 
-                          className="flex ml-4 font-medium text-sm text-secondary"
+                          className="flex ml-4 font-medium text-sm text-secondary dark:text-zinc-500"
                         >
-                          <span className="mr-2">•</span>
-                          <span>{item.category_name}</span>
+                          <p className="mr-2">•</p>
+                          <p>{item.category_name}</p>
                         </div>
                       ))}
                     </div>
@@ -246,10 +267,10 @@ export default function ProductPageLayout({
                     type="button"
                     aria-label="Ir para página de personalização"
                     title="Ir para página de personalização"
-                    className="bg-primary hover:bg-primary/90 text-white"
+                    className="bg-primary hover:bg-primary/90 dark:bg-details dark:hover:bg-details/80 text-white transition-colors"
                     onClick={() => router.push(`/personalizar/${removeAccentsAndSpacesToURL(product.name)}`)}
                   >
-                    <span>Personalizar agora</span>
+                    <p>Personalizar agora</p>
                   </CustomButton>
                 </div>
               ) : (
@@ -258,16 +279,18 @@ export default function ProductPageLayout({
                     type="button"
                     aria-label="Adicionar ao carrinho"
                     title="Adicionar ao carrinho"
-                    className="bg-primary hover:bg-primary/90 text-white"
+                    className="bg-primary hover:bg-primary/90 dark:bg-details dark:hover:bg-details/80 text-white transition-colors"
                     onClick={handleAddToCart}
                   >
-                    <span>Adicionar ao Carrinho</span>
+                    <p>Adicionar ao Carrinho</p>
                   </CustomButton>
                 </div>
               )}
 
               <div className="hidden lg:flex flex-col gap-4 pt-6 lg:w-lg xl:w-full">
-                <p className="font-bold text-sm">Descrição do Produto</p>
+                <p className="font-bold text-sm dark:text-zinc-300">
+                  Descrição do Produto
+                </p>
 
                 <div className="relative">
                   <div
@@ -276,7 +299,7 @@ export default function ProductPageLayout({
                       descExpanded ? 'max-h-250' : 'max-h-40'
                     }`}
                   >
-                    <div className="prose prose-sm max-w-none font-medium text-sm text-gray-500 whitespace-pre-line">
+                    <div className="prose prose-sm max-w-none font-medium text-sm text-gray-500 dark:text-zinc-500 whitespace-pre-line">
                       <ReactMarkdown remarkPlugins={[remarkGfm]}>
                         {product.desc}
                       </ReactMarkdown>
@@ -284,7 +307,8 @@ export default function ProductPageLayout({
 
                     {showReadMoreDesktop && !descExpanded && (
                       <div className={`absolute inset-x-0 bottom-0 h-16 pointer-events-none
-                        bg-linear-to-t from-background-alternative to-transparent `}
+                        bg-linear-to-t from-background-alternative  
+                        dark:bg-linear-to-t dark:from-background-dark to-transparent`}
                       />
                     )}
                   </div>
@@ -298,8 +322,9 @@ export default function ProductPageLayout({
                       <button
                         type="button"
                         onClick={() => setDescExpanded((prev) => !prev)}
-                        className={`z-10 rounded-full px-4 py-1 text-sm font-medium text-secondary 
-                          bg-white/90 shadow-sm backdrop-blur-sm transition-colors hover:text-primary
+                        className={`z-10 rounded-full px-4 py-1 text-sm font-medium text-secondary cursor-pointer
+                          bg-white/90 dark:bg-zinc-700 shadow-sm backdrop-blur-sm transition-colors 
+                          hover:text-primary dark:hover:text-zinc-200
                         `}
                       >
                         {descExpanded ? 'Ler menos' : 'Ler mais'}
@@ -317,6 +342,7 @@ export default function ProductPageLayout({
           </div>
         </div>
 
+        {/* Tela mobile */}
         <div className="flex flex-col mt-8 px-8 lg:px-32">
           {product.customizable ? (
             <div className="flex flex-col lg:hidden mb-6">
@@ -324,10 +350,10 @@ export default function ProductPageLayout({
                 type="button"
                 aria-label="Ir para página de personalização"
                 title="Ir para página de personalização"
-                className="bg-primary hover:bg-primary/90 text-white"
+                className="bg-primary hover:bg-primary/90 dark:bg-details dark:hover:bg-details/80 text-white transition-colors"
                 onClick={() => router.push(`/personalizar/${removeAccentsAndSpacesToURL(product.name)}`)}
               >
-                <span>Personalizar agora</span>
+                <p>Personalizar agora</p>
               </CustomButton>
             </div>
           ) : (
@@ -336,18 +362,18 @@ export default function ProductPageLayout({
                 type="button"
                 aria-label="Adicionar ao carrinho"
                 title="Adicionar ao carrinho"
-                className="bg-primary hover:bg-primary/90 text-white"
+                className="bg-primary hover:bg-primary/90 dark:bg-details dark:hover:bg-details/80 text-white transition-colors"
                 onClick={handleAddToCart}
               >
-                <span>Adicionar ao Carrinho</span>
+                <p>Adicionar ao Carrinho</p>
               </CustomButton>
             </div>
           )}
 
-          <div className="flex lg:hidden items-center justify-center gap-4 w-full mb-6">
-            <span className="font-medium text-sm">
+          <div className="flex lg:hidden items-center justify-center gap-4 w-full mb-6 dark:text-zinc-500">
+            <p className="font-medium text-sm">
               Compartilhar: 
-            </span>
+            </p>
             <div className="flex gap-4 items-center">
               <Link 
                 aria-label="Compartilhar no WhatsApp"
@@ -355,38 +381,38 @@ export default function ProductPageLayout({
                 rel="noopener noreferrer"
                 target="_blank"
                 href={`https://api.whatsapp.com/send?text=*Olha%20só%20esse%20produto%20incrível%20que%20encontrei%20na%20Veritas%20Ateliê!*%0A${window.location.href}`}
-                className="flex items-center text-sm gap-1 hover:underline"
+                className="flex items-center text-sm gap-1 hover:underline transition-colors dark:hover:text-emerald-600"
               >
                 <FaWhatsapp className="w-4 h-4" />
-                <span>WhatsApp</span>
+                <p>WhatsApp</p>
               </Link>
               <button 
                 type="button"
                 aria-label="Copiar link para a área de transferência"
                 title="Copiar link para a área de transferência"
                 onClick={handleCopyLinkToClipboard}
-                className="flex items-center text-sm gap-1 cursor-pointer hover:underline"
+                className="flex items-center text-sm gap-1 cursor-pointer hover:underline transition-colors dark:hover:text-zinc-300"
               >
                 <IoMdCopy className="w-4 h-4" />
-                <span>Copiar Link</span>
+                <p>Copiar Link</p>
               </button>
             </div>
           </div>
 
           {product.customizable && (
             <div className="flex flex-col lg:hidden gap-4">
-              <span className="font-bold text-sm">
+              <p className="font-bold text-sm dark:text-zinc-300">
                 Pode ser personalizado com:
-              </span>
+              </p>
               {product.customization_items && (
                 <div className="flex flex-col">
                   {sortedCustomizationItems.map((item, index) => (
                     <div
                       key={index} 
-                      className="flex ml-4 font-medium text-sm text-secondary"
+                      className="flex ml-4 font-medium text-sm text-secondary dark:text-zinc-500"
                     >
-                      <span className="mr-2">•</span>
-                      <span>{item.category_name}</span>
+                      <p className="mr-2">•</p>
+                      <p>{item.category_name}</p>
                     </div>
                   ))}
                 </div>
@@ -395,7 +421,9 @@ export default function ProductPageLayout({
           )}
 
           <div className="flex flex-col lg:hidden gap-4 pt-6">
-            <p className="font-bold text-sm">Descrição do Produto</p>
+            <p className="font-bold text-sm dark:text-zinc-300">
+              Descrição do Produto
+            </p>
 
             <div className="relative">
               <div
@@ -404,7 +432,7 @@ export default function ProductPageLayout({
                   descExpanded ? 'max-h-250' : 'max-h-40'
                 }`}
               >
-                <div className="prose prose-sm max-w-none font-medium text-sm text-gray-500 whitespace-pre-line">
+                <div className="prose prose-sm max-w-none font-medium text-sm text-gray-500 dark:text-zinc-500 whitespace-pre-line">
                   <ReactMarkdown remarkPlugins={[remarkGfm]}>
                     {product.desc}
                   </ReactMarkdown>
@@ -412,7 +440,8 @@ export default function ProductPageLayout({
 
                 {showReadMoreMobile && !descExpanded && (
                   <div className={`absolute inset-x-0 bottom-0 h-16 pointer-events-none
-                    bg-linear-to-t from-background-alternative to-transparent `}
+                    bg-linear-to-t from-background-alternative  
+                    dark:bg-linear-to-t dark:from-background-dark to-transparent`}
                   />
                 )}
               </div>
@@ -426,8 +455,8 @@ export default function ProductPageLayout({
                   <button
                     type="button"
                     onClick={() => setDescExpanded((prev) => !prev)}
-                    className={`z-10 rounded-full px-4 py-1 text-sm font-medium text-secondary 
-                      bg-white/90 shadow-sm backdrop-blur-sm transition-colors hover:text-primary
+                    className={`z-10 rounded-full px-4 py-1 text-sm font-medium text-secondary cursor-pointer
+                      bg-white/90 dark:bg-zinc-700 shadow-sm backdrop-blur-sm transition-colors hover:text-primary dark:hover:text-zinc-400
                     `}
                   >
                     {descExpanded ? 'Ler menos' : 'Ler mais'}
@@ -450,9 +479,9 @@ export default function ProductPageLayout({
       {cachedProducts?.length > 1 ? (
         <div className="flex flex-col pt-6">
         <div className="flex ml-8 lg:ml-12">
-          <span className="font-bold uppercase">
+          <p className="font-bold uppercase dark:text-zinc-200">
             Mais Produtos
-          </span>
+          </p>
         </div>
         <div className="overflow-hidden">
           <SeeMoreProducts 

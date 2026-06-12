@@ -96,7 +96,7 @@ export function ManageCustomizationItemCategory({ categories }: ManageCustomizat
                 className="absolute right-3 cursor-pointer"
                 onClick={() => setSearchText('')}
               >
-                <X className="w-6 h-6 text-secondary cursor-pointer" />
+                <X className="w-6 h-6 text-secondary dark:text-zinc-200 dark:hover:text-red-400 cursor-pointer transition-colors" />
               </button>
             )}
           </div>
@@ -106,6 +106,7 @@ export function ManageCustomizationItemCategory({ categories }: ManageCustomizat
               onClick={(e: React.MouseEvent) => handleOpenCategoryModal(e)}
               className={`hidden md:flex lg:flex-row py-2 lg:px-8 rounded-lg shadow-xs
                 bg-primary text-white hover:bg-primary/90 font-bold text-base
+                dark:bg-details dark:hover:bg-details/80
               `}
             >
               <Plus className="w-6 h-6" />
@@ -129,7 +130,7 @@ export function ManageCustomizationItemCategory({ categories }: ManageCustomizat
         </span>
       )}
 
-      {categories.length === 0 ? (
+      {categories.length === 0 || filteredData.length === 0 ? (
         <div className={`flex flex-col w-full h-[55vh] gap-4 
           items-center justify-center text-gray-400`}
         >
@@ -149,7 +150,7 @@ export function ManageCustomizationItemCategory({ categories }: ManageCustomizat
                   key={category.name} 
                   onClick={() => handleEditCategory(category)}
                   className={`flex justify-between gap-4 w-full cursor-pointer
-                    bg-white rounded-xl p-4 border border-gray-100
+                    bg-white dark:bg-input/50 rounded-xl p-4 border border-gray-100 dark:border-zinc-700
                   `}
                 >
                   {category.image_url ? (
@@ -167,7 +168,7 @@ export function ManageCustomizationItemCategory({ categories }: ManageCustomizat
                   ) : (
                     <div 
                       className={`shrink-0 flex items-center justify-center w-15 h-15 
-                        rounded-lg bg-gray-200 md:w-25 md:h-25
+                        rounded-lg bg-gray-200 dark:bg-input/50 md:w-25 md:h-25
                       `}
                     >
                       <span className="text-[0.6rem] text-secondary px-2 text-center font-medium">
@@ -177,15 +178,15 @@ export function ManageCustomizationItemCategory({ categories }: ManageCustomizat
                   )}
                   
                   <div className="flex flex-col grow justify-between w-full">
-                    <span className="font-bold text-secondary">
+                    <span className="font-bold text-secondary dark:text-zinc-50">
                       {category.name}
                     </span>
-                    <span className="text-xs text-gray-400">
+                    <span className="text-xs text-gray-400 dark:text-zinc-500">
                       {category?.description}
                     </span>
                     <div className="flex pt-2 gap-3 items-center">
                       <span className={`font-medium text-sm ${category.available ? 
-                        'text-green-600' : 'text-red-500'}`}
+                        'text-green-600' : 'text-red-500 dark:text-red-400'}`}
                       >
                         Disponível:
                       </span>
@@ -205,9 +206,10 @@ export function ManageCustomizationItemCategory({ categories }: ManageCustomizat
                         aria-label="Deletar Categoria"
                         title="Deletar Categoria"
                         onClick={(e) => handleOpenDeleteModal(e, category)}
-                        className="flex items-center hover:text-red-500 transition-colors cursor-pointer"
+                        className={`flex items-center transition-colors cursor-pointer
+                          hover:text-red-500`}
                       >
-                        <Trash className="text-secondary w-4 h-4" />
+                        <Trash className="transition-colors text-secondary dark:hover:text-red-400 w-4 h-4" />
                       </button>
                     </div>
                   </div>
@@ -234,10 +236,10 @@ export function ManageCustomizationItemCategory({ categories }: ManageCustomizat
         onClose={() => setDeleteCategoryModalOpen(false)}
       >
         <div className="flex flex-col items-center justify-center p-2">
-          <span className="font-bold text-center">
+          <span className="font-bold text-center dark:text-zinc-50">
             Tem certeza que deseja remover essa categoria?
           </span>
-          <span className="text-xs font-light text-red-600">
+          <span className="text-xs font-light text-red-600 dark:text-red-400">
             Essa ação não pode ser desfeita.
           </span>
         </div>
@@ -249,7 +251,7 @@ export function ManageCustomizationItemCategory({ categories }: ManageCustomizat
             onClick={() => setDeleteCategoryModalOpen(false)}
             className={`flex gap-2 items-center justify-center px-4 py-2 rounded-lg cursor-pointer
               bg-gray-100 text-secondary hover:bg-gray-200 transition-colors font-medium
-              disabled:opacity-50
+              dark:bg-zinc-800 dark:border-0 dark:hover:bg-zinc-950/15 disabled:opacity-50
             `}
             disabled={isLoading}
           >
@@ -262,7 +264,7 @@ export function ManageCustomizationItemCategory({ categories }: ManageCustomizat
             onClick={() => handleDeleteCategory(categoryToModify?.id || '')}
             className={`flex gap-2 items-center justify-center px-4 py-2 rounded-lg cursor-pointer
               bg-primary text-white hover:bg-primary/90 transition-colors font-medium
-              disabled:opacity-50
+              dark:bg-red-500 dark:hover:bg-red-600 disabled:opacity-50
             `}
             disabled={isLoading}
           >
@@ -271,7 +273,7 @@ export function ManageCustomizationItemCategory({ categories }: ManageCustomizat
         </div>
       </CustomModal>
 
-      <div className="shrink-0 md:hidden mt-auto bg-background-alternative z-10">
+      <div className="shrink-0 md:hidden mt-auto bg-background-alternative dark:bg-input/0 z-10">
         <hr className="border-muted-foreground/50 my-2" />
         <div className="flex flex-col gap-4">
           <BackButton backRoute />

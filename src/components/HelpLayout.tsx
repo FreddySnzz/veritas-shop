@@ -2,6 +2,7 @@ import Link from "next/link";
 import ItemCollapse from "./ItemCollapse";
 import ItemContent from "./ItemContent";
 import { SupportButton } from "./buttons/SupportButton";
+import { FaWhatsapp } from "react-icons/fa6";
 
 interface HelpLayoutProps extends React.HTMLAttributes<HTMLDivElement> {
   whatsappNumber?: string;
@@ -15,14 +16,14 @@ export default function HelpLayout({ whatsappNumber }: HelpLayoutProps) {
     >
       <div className="flex flex-col">
         <section id="faq">
-          <h1 className="font-bold text-secondary text-2xl md:text-3xl">
+          <h1 className="font-bold text-secondary dark:text-zinc-200 text-2xl md:text-3xl">
             Dúvidas Frequentes (FAQ)
           </h1>
 
           <div className="flex flex-col mt-4 gap-4">
             <ItemCollapse 
               title="Como realizar uma compra no site?"
-              titleClassName="md:text-lg text-start"
+              titleClassName="md:text-lg text-start dark:text-zinc-400"
             >
               <ItemContent className="mt-1 mb-4">
                 <div className="flex flex-col text-gray-500 text-xs md:text-sm gap-2">
@@ -67,7 +68,7 @@ export default function HelpLayout({ whatsappNumber }: HelpLayoutProps) {
 
             <ItemCollapse 
               title="Escolhi um produto que aceita imagem personalizada. Como enviar a imagem?"
-              titleClassName="md:text-lg text-start mb-1"
+              titleClassName="md:text-lg text-start mb-1 dark:text-zinc-400"
             >
               <ItemContent className="mt-1 mb-4">
                 <span className="flex text-gray-500 text-xs md:text-sm">
@@ -80,7 +81,7 @@ export default function HelpLayout({ whatsappNumber }: HelpLayoutProps) {
 
             <ItemCollapse 
               title="É possível alterar um pedido após o fechamento?"
-              titleClassName="md:text-lg text-start mb-1"
+              titleClassName="md:text-lg text-start mb-1 dark:text-zinc-400"
             >
               <ItemContent className="mt-1 mb-4">
                 <span className="flex text-gray-500 text-xs md:text-sm">
@@ -93,7 +94,7 @@ export default function HelpLayout({ whatsappNumber }: HelpLayoutProps) {
 
             <ItemCollapse 
               title="Não tenho WhatsApp. Como faço para entrar em contato com o suporte?"
-              titleClassName="md:text-lg text-start mb-1"
+              titleClassName="md:text-lg text-start mb-1 dark:text-zinc-400"
             >
               <ItemContent className="mt-1 mb-4 overflow-hidden">
                 <p className="text-gray-500 text-xs md:text-sm">
@@ -115,7 +116,7 @@ export default function HelpLayout({ whatsappNumber }: HelpLayoutProps) {
 
             <ItemCollapse 
               title="Por que os valores mostrados no carrinho não são exatos?"
-              titleClassName="md:text-lg text-start mb-1"
+              titleClassName="md:text-lg text-start mb-1 dark:text-zinc-400"
             >
               <ItemContent className="mt-1 mb-4">
                 <span className="flex text-gray-500 text-xs md:text-sm">

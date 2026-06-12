@@ -12,7 +12,7 @@ export default async function ManageCatalogImagesPage() {
   const images = await getCachedCatalogImagesAction();
 
   return (
-    <div className="flex flex-col h-dvh overflow-y-auto bg-background-alternative">
+    <div className="flex flex-col h-dvh overflow-y-auto bg-background-alternative dark:bg-background-dark">
       <div className="flex flex-col shrink-0 h-dvh">
         <Header mode="admin" />
         <main className={`flex-1 flex flex-col px-4 pb-4 mt-16

@@ -45,9 +45,9 @@ export default function DeleteCatalogImageModal({
     >
       <div 
         onClick={(e) => e.stopPropagation()}
-        className="flex flex-col gap-4 w-full max-w-md bg-white p-6 rounded-lg shadow-xl"
+        className="flex flex-col gap-4 w-full max-w-md bg-white dark:bg-zinc-800 p-6 rounded-lg shadow-xl"
       >
-        <span className="font-bold text-center mb-4">
+        <span className="font-bold text-center mb-4 dark:text-zinc-50">
           Tem certeza que deseja apagar a imagem?
         </span>
         <div className="grid grid-cols-2 gap-4">
@@ -55,6 +55,7 @@ export default function DeleteCatalogImageModal({
             onClick={onClose}
             className={`flex gap-2 items-center justify-center px-4 py-2 rounded-lg cursor-pointer
               bg-gray-100 text-secondary hover:bg-gray-200 transition-colors font-medium
+              dark:bg-zinc-800 dark:hover:bg-zinc-950/15
             `}
           >
             <span>Cancelar</span>
@@ -63,7 +64,7 @@ export default function DeleteCatalogImageModal({
           <div 
             onClick={() => handleDelete(idCatalogImage)}
             className={`flex gap-2 items-center justify-center px-4 py-2 rounded-lg cursor-pointer
-              bg-primary text-white hover:bg-primary/90 transition-colors
+              bg-red-500 text-white hover:bg-red-600/90 transition-colors
             `}
           >
             {isLoading ? (

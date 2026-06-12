@@ -124,11 +124,12 @@ export default function ManageCatalogImages({ images, className }: ManageCatalog
 
   return (
     <div className={`flex flex-col font-sans h-full ${className}`}>
-      <div className="flex justify-end mb-4">
+      <div className="flex justify-end">
         <CustomButton
           onClick={handleOpenAddModal}
           className={`hidden md:flex items-center justify-center gap-2 shrink-0 
-            bg-primary text-white hover:bg-primary/90 lg:flex-row w-full transition-colors
+            bg-primary text-white hover:bg-primary/90 dark:bg-details dark:hover:bg-details/80
+            lg:flex-row w-full transition-colors
             rounded-lg lg:w-1/4 xl:w-1/6 md:py-3 lg:py-5 px-4 text-nowrap
           `}
         >
@@ -169,7 +170,7 @@ export default function ManageCatalogImages({ images, className }: ManageCatalog
               return (
                 <div 
                   key={image.id}
-                  className={`relative flex p-4 rounded-2xl h-fit bg-white`}
+                  className={`relative flex p-4 rounded-2xl h-fit bg-white dark:bg-input/50`}
                 >
                   <div className="flex flex-col gap-2 w-full">
                     <Input
@@ -178,9 +179,9 @@ export default function ManageCatalogImages({ images, className }: ManageCatalog
                       placeholder="Descrição para a imagem (opcional)"
                       onChange={(e) => handleUpdateDescription(e.target.value, image.id)}
                       value={currentDesc || ''}
-                      className={`bg-white truncate text-sm line-clamp-1 font-medium text-secondary border-none 
+                      className={`bg-white dark:bg-input/0 truncate text-sm line-clamp-1 font-medium text-secondary border-none 
+                        focus-visible:ring-0 focus:dark:bg-input/50 focus:rounded-lg focus:border focus:h-6 focus:px-2
                         shadow-none p-0 h-4 rounded-none
-                        focus-visible:ring-0 focus:bg-gray-50 focus:rounded-lg focus:border focus:h-6 focus:px-2
                       `}
                     />
                     
@@ -223,7 +224,7 @@ export default function ManageCatalogImages({ images, className }: ManageCatalog
                               bg-secondary/80 rounded-bl-xl p-2 right-[-2] top-[-2]
                             `}
                           >
-                            <Pencil className="w-5 h-5 text-white" />
+                            <Pencil className="w-5 h-5 text-white dark:text-black" />
                           </div>
                         )}
                       </label>
@@ -249,8 +250,8 @@ export default function ManageCatalogImages({ images, className }: ManageCatalog
                       <button 
                         type="button"
                         onClick={() => handleOpenDeleteModal(image.id)}
-                        className={`flex items-center justify-center gap-2 
-                          text-red-700 hover:text-red-500 transition-colors shrink-0 rounded-2xl 
+                        className={`flex items-center justify-center gap-2 transition-colors shrink-0 rounded-2xl 
+                          text-red-700 dark:text-red-400 hover:text-red-500 dark:hover:text-red-500 
                           font-medium text-xs cursor-pointer
                         `}
                       >
@@ -264,7 +265,7 @@ export default function ManageCatalogImages({ images, className }: ManageCatalog
             })}
           </div>
 
-          <div className="shrink-0 md:hidden mt-auto bg-background-alternative z-10">
+          <div className="shrink-0 md:hidden mt-auto bg-background-alternative dark:bg-input/0 z-10">
             <hr className="border-muted-foreground/50 my-2" />
             <div className="flex flex-col gap-4">
               {hasPendingChanges && (
@@ -288,7 +289,7 @@ export default function ManageCatalogImages({ images, className }: ManageCatalog
         </>
       )}
 
-      <div className={`shrink-0 md:hidden mt-auto bg-background-alternative z-10 
+      <div className={`shrink-0 md:hidden mt-auto bg-background-alternative dark:bg-input/0 z-10 
         ${images.length > 0 && 'hidden'}`}
       >
         <hr className="border-muted-foreground/50 my-2" />

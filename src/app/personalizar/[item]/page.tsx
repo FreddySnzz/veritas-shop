@@ -43,7 +43,7 @@ export default async function Customization({ params }: PageProps) {
   };
 
   return (
-    <div className="flex flex-col h-dvh overflow-y-auto bg-background-alternative">
+    <div className="flex flex-col h-dvh overflow-y-auto bg-background-alternative dark:bg-background-dark">
       <div className="flex flex-col shrink-0 h-dvh">
         <Header mode="user" />
         <main className={`flex-1 flex flex-col px-4 pt-16 pb-4 

@@ -153,10 +153,10 @@ export default function CustomizationItemCategoryModal({
       <div 
         onClick={(e) => e.stopPropagation()}
         className="flex flex-col gap-4 w-full max-w-md overflow-y-auto scrollbar-hide
-         bg-white text-secondary p-6 rounded-lg shadow-xl"
+          bg-white dark:bg-zinc-800 text-secondary p-6 rounded-lg shadow-xl"
       >
-        <div className="flex justify-between items-center border-b border-gray-100 pb-4">
-          <h2 className="text-xl font-bold text-gray-800">
+        <div className="flex justify-between items-center border-b border-gray-100 dark:border-background-dark pb-4">
+          <h2 className="text-xl font-bold text-gray-800 dark:text-zinc-50">
             {mode === 'editar' ? 'Editar Categoria' : 'Nova Categoria'}
           </h2>
           <button 
@@ -177,7 +177,7 @@ export default function CustomizationItemCategoryModal({
         >
           <div className="flex flex-col gap-4">
             <div className="flex flex-col gap-2">
-              <Label htmlFor="name" className="font-bold">
+              <Label htmlFor="name" className="font-bold dark:text-zinc-200">
                 Nome da Categoria (no plural):
               </Label>
               
@@ -193,14 +193,14 @@ export default function CustomizationItemCategoryModal({
               />
 
               {mode === 'editar' && (
-                <span className="text-xs text-primary">
+                <p className="text-xs text-primary dark:text-red-400">
                   ATENÇÃO: Alterar o nome da categoria pode causar problemas no sistema.
-                </span>
+                </p>
               )}
             </div>
 
             <div className="flex flex-col gap-2">
-              <Label htmlFor="description" className="font-bold">
+              <Label htmlFor="description" className="font-bold dark:text-zinc-200">
                 Descrição da Categoria (opcional):
               </Label>
               
@@ -214,18 +214,18 @@ export default function CustomizationItemCategoryModal({
                 disabled={isLoading}
               />
 
-              <span className="text-xs text-primary">
+              <p className="text-xs text-primary dark:text-details">
                 A descrição da categoria será exibida como subtítulo na página de personalização.
-              </span>
+              </p>
             </div>
 
             <div className="flex flex-col">
-              <Label className="font-bold mb-1">
+              <Label className="font-bold mb-1 dark:text-zinc-200">
                 Imagem do Item da Categoria (Opcional)
               </Label>
-              <span className="text-xs text-gray-400 mb-2">
+              <p className="text-xs text-gray-400 dark:text-zinc-500 mb-2">
                 *.jpg / *.jpeg / *.png - tam. limite de 10MB
-              </span>
+              </p>
               
               <Input
                 ref={fileInputRef}
@@ -242,30 +242,31 @@ export default function CustomizationItemCategoryModal({
                 disabled={isLoading}
                 className={`flex gap-2 items-center justify-center px-4 py-2 font-medium cursor-pointer mt-2
                   bg-gray-200 text-secondary rounded-lg transition-all shadow
+                  dark:bg-input/50 dark:hover:bg-input/70 dark:border dark:border-zinc-700
                 `}
               >
                 {selectedFile || imageUrl ? (
                   <> 
                     <Images className="w-4 h-4 text-secondary" />
-                    <span>Alterar Imagem</span>
+                    <p>Alterar Imagem</p>
                   </>
                 ) : (
                   <> 
                     <ArrowBigUpDash className="w-4 h-4" /> 
-                    <span>Selecionar Imagem</span>
+                    <p>Selecionar Imagem</p>
                   </>
                 )}
               </button>
 
               {imagePreview && (
-                <div className="relative mt-4 flex flex-col items-center p-4 border rounded-xl bg-gray-50">
+                <div className="relative mt-4 flex flex-col items-center p-4 border rounded-xl bg-gray-50 dark:bg-input/50 dark:border-input/70">
                   <div className="relative w-30 h-30">
                     <Image
                       src={imagePreview}
                       alt="Preview"
                       fill
                       draggable="false"
-                      className="object-cover rounded-2xl border border-gray-200 shadow-sm"
+                      className="object-cover rounded-2xl border border-gray-200 dark:border-zinc-900 shadow-sm"
                       sizes="(max-width: 768px) 100vw, 250px"
                     />
                   </div>
@@ -274,8 +275,9 @@ export default function CustomizationItemCategoryModal({
                     aria-label="Remover imagem"
                     onClick={handleRemoveImage}
                     disabled={isLoading}
-                    className={`mt-3 flex items-center gap-2 text-red-500 hover:text-red-700 
-                      text-sm font-medium cursor-pointer
+                    className={`mt-3 flex items-center gap-2 text-sm font-medium cursor-pointer
+                      text-red-500 hover:text-red-700 dark:text-red-400 dark:hover:text-red-500
+                      
                     `}
                   >
                     <Trash className="w-4 h-4" />
@@ -284,7 +286,7 @@ export default function CustomizationItemCategoryModal({
                 </div>
               )}
 
-              <span className="text-xs text-primary mt-2">
+              <span className="text-xs text-primary dark:text-details mt-2">
                 Essa imagem servirá para ajudar o usuário a identificar o item no produto final.
               </span>
             </div>
@@ -298,6 +300,7 @@ export default function CustomizationItemCategoryModal({
             onClick={onClose}
             className={`flex w-full items-center justify-center px-4 py-2 rounded-lg font-medium 
               bg-gray-50 text-secondary border border-gray-100 hover:bg-gray-100 
+              dark:bg-zinc-800 dark:border-0 dark:hover:bg-zinc-950/15
               transition-colors disabled:opacity-50 cursor-pointer
             `}
             disabled={isLoading}
@@ -312,6 +315,7 @@ export default function CustomizationItemCategoryModal({
             onClick={handleSubmit}
             className={`flex w-full px-4 py-2 rounded-lg justify-center items-center cursor-pointer 
               bg-primary text-white hover:bg-primary/80 transition-colors font-medium
+              dark:bg-details dark:hover:bg-details/80
               disabled:opacity-50
             `} 
             disabled={isLoading}

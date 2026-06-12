@@ -1,22 +1,31 @@
 'use client';
 
-import { createContext, useContext, useState, ReactNode } from 'react';
+import { createContext, useContext, useState, ReactNode, useEffect } from 'react';
 
 interface AppContextProps {
   isSidebarOpen: boolean;
   toggleSidebar: () => void;
   openSidebar: () => void;
   closeSidebar: () => void;
+  isMenuOpen: boolean;
+  toggleMenu: () => void;
+  openMenu: () => void;
+  closeMenu: () => void;
 };
 
 const AppContext = createContext<AppContextProps | undefined>(undefined);
 
 export function AppProvider({ children }: { children: ReactNode }) {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
-
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
+  
   const toggleSidebar = () => setIsSidebarOpen((prev) => !prev);
   const openSidebar = () => setIsSidebarOpen(true);
   const closeSidebar = () => setIsSidebarOpen(false);
+
+  const toggleMenu = () => setIsMenuOpen((prev) => !prev);
+  const openMenu = () => setIsMenuOpen(true); 
+  const closeMenu = () => setIsMenuOpen(false);
 
   return (
     <AppContext.Provider 
@@ -24,7 +33,11 @@ export function AppProvider({ children }: { children: ReactNode }) {
         isSidebarOpen, 
         toggleSidebar, 
         openSidebar, 
-        closeSidebar 
+        closeSidebar,
+        isMenuOpen, 
+        toggleMenu, 
+        openMenu, 
+        closeMenu,
       }}
     >
       {children}

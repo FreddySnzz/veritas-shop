@@ -48,7 +48,7 @@ export default function MultiTextInput({ product }: MultiTextInputProps) {
   return (
     <section 
       id='texts' 
-      className={`bg-white rounded-xl p-4`}
+      className={`bg-white dark:bg-zinc-600 rounded-xl p-4`}
     >
       <div className={`flex flex-col gap-3 w-full`}>
         {texts.map((text, index) => (
@@ -64,7 +64,7 @@ export default function MultiTextInput({ product }: MultiTextInputProps) {
               maxLength={10}
               title="Por favor, digite apenas letras e números"
               onBlur={handleSubmitText}
-              className={`bg-background-alternative-v2 text-secondary font-bold py-2 px-3 
+              className={`bg-background-alternative-v2 dark:bg-zinc-700 text-secondary dark:text-zinc-200 dark:placeholder:text-zinc-400 font-bold py-2 px-3 
                 rounded-lg cursor-text flex-1 focus:outline-0 w-full
               `}
             />
@@ -74,7 +74,7 @@ export default function MultiTextInput({ product }: MultiTextInputProps) {
               onClick={() => handleRemove(index)}
               className="hover:opacity-75 transition-opacity cursor-pointer"
             >
-              <MinusCircle className="text-red-500 w-6 h-6" />
+              <MinusCircle className="text-red-500 dark:text-red-400 w-6 h-6" />
             </button>
           </div>
         ))}
@@ -85,7 +85,7 @@ export default function MultiTextInput({ product }: MultiTextInputProps) {
           >
             <button 
               onClick={handleAdd} 
-              className={`flex items-center gap-2 text-secondary font-semibold 
+              className={`flex items-center gap-2 text-secondary dark:text-zinc-300 font-semibold 
                 hover:opacity-80 transition-opacity
               `}
             >
@@ -96,7 +96,7 @@ export default function MultiTextInput({ product }: MultiTextInputProps) {
         )}
         
         {texts.length === textLimit && (
-          <span className="text-xs text-red-400 font-bold text-center">
+          <span className="text-xs text-red-400 dark:text-red-300 font-bold text-center">
             Limite máximo de {textLimit} textos atingido.
           </span>
         )}

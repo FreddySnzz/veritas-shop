@@ -138,8 +138,8 @@ export default function PanelLayout({ categories, className }: PanelLayoutProps)
       >
         <div className="flex flex-col items-center justify-center p-2 gap-4">
           <div className="flex flex-col justify-center w-full">
-            <div className="flex justify-between items-center border-b border-gray-100 pb-4">
-              <h2 className="text-lg font-bold text-gray-800">
+            <div className="flex justify-between items-center border-b border-gray-100 dark:border-zinc-700 pb-4">
+              <h2 className="text-lg font-bold text-gray-800 dark:text-zinc-50">
                 Atualizar Número do WhatsApp
               </h2>
               <button 
@@ -149,10 +149,10 @@ export default function PanelLayout({ categories, className }: PanelLayoutProps)
                 onClick={() => setIsOpenWhatsAppModal(false)} 
                 className="cursor-pointer"
               >
-                <X className="w-5 h-5 text-gray-500 hover:text-gray-400 transition-colors" />
+                <X className="w-5 h-5 text-gray-500 dark:text-zinc-300 hover:text-gray-400 transition-colors" />
               </button>
             </div>
-            <span className="text-xs text-gray-400 mt-4">
+            <span className="text-xs text-gray-400 dark:text-zinc-500 mt-4">
               Esse número será usado para enviar mensagens de confirmação de pedidos ou suporte para clientes.
             </span>
           </div>
@@ -165,7 +165,10 @@ export default function PanelLayout({ categories, className }: PanelLayoutProps)
             maxLength={13}
             disabled={loading}
             placeholder="Ex: 5586912345678"
-            className="bg-gray-50 focus-visible:ring-0 truncate text-secondary shadow-none"
+            className={`bg-gray-50 dark:bg-input/30 dark:border-zinc-700
+              dark:placeholder:text-zinc-500 dark:text-zinc-200
+              focus-visible:ring-0 truncate text-secondary shadow-none
+            `}
           />
 
           <div className="flex w-full items-center justify-end gap-2">
@@ -176,7 +179,8 @@ export default function PanelLayout({ categories, className }: PanelLayoutProps)
                 setIsOpenWhatsAppModal(false);
               }}
               className={`flex w-full px-4 py-2 items-center justify-center
-                bg-gray-50 hover:bg-primary/10 font-medium cursor-pointer rounded-lg
+                bg-gray-50 dark:bg-zinc-800 hover:bg-primary/10 dark:hover:bg-zinc-950/20 
+                font-medium cursor-pointer rounded-lg transition-colors
               `}
             >
               <span>Cancelar</span>
@@ -185,7 +189,8 @@ export default function PanelLayout({ categories, className }: PanelLayoutProps)
               type="button"
               onClick={() => handleUpdateWhatsApp(whatsappNumber)}
               className={`flex w-full px-4 py-2 items-center justify-center cursor-pointer
-                bg-primary hover:bg-primary/90 text-white rounded-lg font-medium transition-all
+                bg-primary dark:bg-details hover:bg-primary/90 dark:hover:bg-details/80 
+                text-white rounded-lg font-medium transition-all
               `}
             >
               <span>{loading ? 'Atualizando...' : 'Confirmar'}</span>
@@ -194,7 +199,7 @@ export default function PanelLayout({ categories, className }: PanelLayoutProps)
         </div>
       </CustomModal>
       
-      <div className="shrink-0 mt-auto bg-background-alternative md:hidden">
+      <div className="shrink-0 mt-auto bg-background-alternative dark:bg-input/0 md:hidden">
         <hr className="border-muted-foreground/50 my-2" />
         <div className="flex flex-col">
           <BackButton pushRoute="/" />

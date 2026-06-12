@@ -135,7 +135,7 @@ export default function CatalogCarrousel({
               onClick={handlePrevious}
               disabled={isAnimating}
               className={`absolute left-0 top-1/2 -translate-y-1/2 z-20 
-                bg-linear-to-l from-transparent to-black/30 hover:to-black/60 text-white p-2 sm:p-3 
+                bg-linear-to-l from-transparent to-black/40 hover:to-black/60 text-white p-2 sm:p-3 
                 h-full transition-colors disabled:opacity-50 disabled:cursor-not-allowed group cursor-pointer
               `}
             >
@@ -149,7 +149,7 @@ export default function CatalogCarrousel({
               onClick={handleNext}
               disabled={isAnimating}
               className={`absolute right-0 top-1/2 -translate-y-1/2 z-20 
-                bg-linear-to-r from-transparent to-black/30 hover:to-black/60 text-white p-2 sm:p-3 
+                bg-linear-to-r from-transparent to-black/15 hover:to-black/30 text-white p-2 sm:p-3 
                 h-full transition-colors disabled:opacity-50 disabled:cursor-not-allowed group cursor-pointer
               `}
             >

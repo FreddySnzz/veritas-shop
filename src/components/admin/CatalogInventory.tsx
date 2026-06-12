@@ -43,7 +43,7 @@ export default function ManageCatalogInventory({
             onChange={(e) => {
               setSearchText(e.target.value);
             }}
-            className="bg-white shadow-xs"
+            className="bg-white dark:bg-input/30 shadow-xs"
           />
 
           {searchText.length > 0 && (
@@ -61,8 +61,8 @@ export default function ManageCatalogInventory({
         <div>
           <CustomButton 
             onClick={() => router.push('/admin/estoques/catalogo/adicionar')}
-            className={`hidden md:flex lg:flex-row py-2 lg:px-8 rounded-lg shadow-xs
-              bg-primary text-white hover:bg-primary/90 font-bold text-base
+            className={`hidden md:flex lg:flex-row py-2 lg:px-8 rounded-lg shadow-xs font-bold text-base
+              bg-primary dark:bg-details text-white hover:bg-primary/90 dark:hover:bg-details/80 
             `}
           >
             <Plus className="w-6 h-6" />
@@ -83,7 +83,7 @@ export default function ManageCatalogInventory({
 
         {products?.length === 0 ? (
           <div className={`flex flex-col w-full h-[55vh] gap-4 
-            items-center justify-center text-gray-400`}
+            items-center justify-center text-gray-400 dark:text-zinc-400`}
           >
             <div className="flex flex-col items-center justify-center">
               <span>Nenhum produto encontrado.</span>
@@ -98,7 +98,7 @@ export default function ManageCatalogInventory({
               <CardButton 
                 key={product.id}
                 pushRoute={`/admin/estoques/catalogo/editar/${product.id}`}
-                className="bg-white h-full"
+                className="bg-white dark:bg-input/50 h-full"
               >
                 <div>
                   {product.images_url?.length ? (
@@ -123,20 +123,20 @@ export default function ManageCatalogInventory({
                 </div>
 
                 <div className="flex flex-col ml-4 gap-1 w-full overflow-hidden">
-                  <p className="text-sm font-bold truncate text-secondary">
+                  <p className="text-sm font-bold truncate text-secondary dark:text-zinc-50">
                     {product.name}
                   </p>
-                  <p className="text-xs text-gray-400 mt-1 line-clamp-2">
+                  <p className="text-xs text-gray-400 dark:text-zinc-500 mt-1 line-clamp-2">
                     {product.desc}
                   </p>
-                  <p className="text-xs mt-1 text-secondary font-medium">
+                  <p className="text-xs mt-1 text-secondary dark:text-zinc-50 font-medium dark:font-black">
                     {formatCurrency(product.initial_price)}
                   </p>
                   <div className="flex flex-col mt-1">
-                    <p className={`text-xs font-medium ${product.available ? 'text-green-600' : 'text-red-500'}`}>
+                    <p className={`text-xs font-medium ${product.available ? 'text-green-600' : 'text-red-500 dark:text-red-400'}`}>
                       Disponível: {product.available ? 'Sim' : 'Não'}
                     </p>
-                    <p className={`text-xs font-medium ${product.customizable ? 'text-green-600' : 'text-red-500'}`}>
+                    <p className={`text-xs font-medium ${product.customizable ? 'text-green-600' : 'text-red-500 dark:text-red-400'}`}>
                       Customizável: {product.customizable ? 'Sim' : 'Não'}
                     </p>
                   </div>
@@ -148,15 +148,17 @@ export default function ManageCatalogInventory({
               </CardButton>
             )) : (
               <div className="flex w-[90vw] h-[55vh] items-center justify-center-safe text-gray-400">
-                <span>Nenhum produto encontrado com</span>
-                <span className="font-bold ml-1">&quot;{searchText}&quot;.</span>
+                <p>Nenhum produto encontrado com</p>
+                <p className="font-bold ml-1">
+                  &quot;{searchText}&quot;.
+                </p>
               </div>
             )}
           </>
         )}
       </div>
 
-      <div className="md:hidden shrink-0 mt-auto bg-background-alternative z-10">
+      <div className="md:hidden shrink-0 mt-auto bg-background-alternative dark:bg-input/0 z-10">
         <hr className="border-muted-foreground/50 my-2" />
         <div className="flex flex-col gap-4">
           <BackButton backRoute />

@@ -1,5 +1,6 @@
-import { X } from "lucide-react";
 import { useState } from "react";
+import { cn } from "@/lib/utils";
+import { X } from "lucide-react";
 
 interface AlertProps extends React.HTMLAttributes<HTMLElement> {
   title?: string;
@@ -21,8 +22,8 @@ export default function Alert({
   };
 
   return (
-    <div className={`${alertOpen ? "" : "hidden"} flex justify-between
-      bg-gray-50 rounded-lg transition-colors p-3 ${className}`}
+    <div className={cn("flex justify-between rounded-lg transition-colors bg-gray-50 dark:bg-zinc-800 p-3", className,
+      alertOpen ? "" : "hidden")}
     >
       <div className="flex flex-col text-xs">
         { title || subtitle ? (

@@ -43,7 +43,7 @@ export default function DynamicBreadcrumb({
 
   return (
     <Breadcrumb className={className}>
-      <BreadcrumbList className={`font-sans ${listClassName}`}>
+      <BreadcrumbList className={`font-sans dark:text-zinc-600 ${listClassName}`}>
         <BreadcrumbItem>
           <BreadcrumbLink 
             aria-label="Voltar para a página inicial"
@@ -86,7 +86,10 @@ export default function DynamicBreadcrumb({
               
               {!isLast && (
                 <BreadcrumbSeparator>
-                  <FlowerIcon className='scale-125' />
+                  <FlowerIcon 
+                    color="var(--color-zinc-500)"
+                    className='scale-125' 
+                  />
                 </BreadcrumbSeparator>
               )}
             </React.Fragment>

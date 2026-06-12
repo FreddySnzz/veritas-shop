@@ -14,7 +14,9 @@ export function LogoutButton({ onClick }: LogoutButtonProps) {
         onClick={onClick}
         className="p-2 cursor-pointer"
       >
-        <LogOut className="w-6 h-6 text-secondary hover:text-secondary/70 transition-colors" />
+        <LogOut className={`w-6 h-6 transition-colors
+          text-secondary hover:text-secondary/70 dark:text-background-alternative-v2 dark:hover:text-background-alternative-v2/70`} 
+        />
       </button>
     </div>
   );

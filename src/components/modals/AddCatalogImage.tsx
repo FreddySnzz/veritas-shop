@@ -63,6 +63,8 @@ export default function AddCatalogImageModal({
     try {
       let finalUrlToSave = currentImageUrl;
 
+      if (currentImageUrl === '') throw toast.error("Nenhuma imagem selecionada.");
+
       if (selectedFile) {
         const formData = new FormData();
 
@@ -93,14 +95,14 @@ export default function AddCatalogImageModal({
 
       toast.success("Imagem adicionada ao Catálogo!");
       router.refresh();
+      window.location.reload();
       router.push(`/admin/editar-carrossel`);
     } catch (error) {
       console.error("Erro no processo:", error);
-      toast.error("Erro ao salvar produto.");
+      toast.error("Erro ao salvar imagem.");
     } finally {
       setIsLoading(false);
       onClose?.();
-      window.location.reload();
     };
   };
 
@@ -115,10 +117,10 @@ export default function AddCatalogImageModal({
     >
       <div 
         onClick={(e) => e.stopPropagation()}
-        className="flex flex-col gap-4 w-full max-w-md bg-white p-6 rounded-lg shadow-xl"
+        className="flex flex-col gap-4 w-full max-w-md bg-white dark:bg-zinc-800 p-6 rounded-lg shadow-xl"
       >
-        <div className="flex justify-between items-center border-b border-gray-100 pb-4">
-          <h2 className="text-lg font-bold text-gray-800">
+        <div className="flex justify-between items-center border-b border-gray-100 dark:border-zinc-700 pb-4">
+          <h2 className="text-lg font-bold text-gray-800 dark:text-zinc-50">
             Adicionar Imagem ao Carrossel
           </h2>
           <button 
@@ -128,13 +130,13 @@ export default function AddCatalogImageModal({
             onClick={onClose} 
             className="cursor-pointer"
           >
-            <X className="w-5 h-5 text-gray-500 hover:text-gray-400 transition-colors" />
+            <X className="w-5 h-5 text-gray-500 dark:text-zinc-200 hover:text-gray-400 transition-colors" />
           </button>
         </div>
 
         <form onSubmit={handleSubmit}> 
           <div className="flex flex-col gap-4">
-            <div className="flex flex-col gap-2">
+            <div className="flex flex-col gap-2 dark:text-zinc-50">
               <Label htmlFor="desc" className="text-sm">Descrição (Opcional)</Label>
               <Input
                 id="desc"
@@ -153,8 +155,10 @@ export default function AddCatalogImageModal({
                 Imagem do Item
               </Label>
               <div className="flex flex-col mb-4">
-                <span className="text-xs text-primary">{`Dica: Opte por imagens widescreen (horizontais).`}</span>
-                <span className="text-xs text-gray-400">*.jpg / *.jpeg / *.png - tam. limite de 10MB</span>
+                <p className="text-xs text-primary">{`Dica: Opte por imagens widescreen (horizontais).`}</p>
+                <p className="text-xs text-gray-400 dark:text-zinc-500">
+                  *.jpg / *.jpeg / *.png - tam. limite de 10MB
+                </p>
               </div>
 
               <Input
@@ -170,7 +174,7 @@ export default function AddCatalogImageModal({
                 onClick={handleButtonClick}
                 disabled={isLoading}
                 className={`flex gap-2 items-center justify-center px-4 py-2 font-medium cursor-pointer
-                  bg-gray-100 text-secondary rounded-lg transition-all
+                  bg-gray-100 dark:bg-input/50 dark:border dark:border-zinc-700 dark:hover:bg-input/70 text-secondary rounded-lg transition-all
                 `}
               >
                 {selectedFile ? (
@@ -195,7 +199,7 @@ export default function AddCatalogImageModal({
                       draggable="false"
                       loading="eager"
                       fill
-                      className="object-cover rounded-2xl border border-gray-200 shadow-sm"
+                      className="object-cover rounded-2xl border border-gray-200 dark:border-zinc-900 shadow-sm"
                       sizes="(max-width: 768px) 100vw, 250px"
                     />
                   </div>
@@ -203,10 +207,12 @@ export default function AddCatalogImageModal({
                     type="button"
                     disabled={isLoading}
                     onClick={handleRemoveImage}
-                    className="flex justify-center items-center gap-2 mt-2 cursor-pointer text-secondary"
+                    className={`flex justify-center items-center gap-2 mt-4 cursor-pointer 
+                      text-secondary dark:text-red-400 dark:hover:text-red-500 transition-colors
+                    `}
                   >
                     <Trash className="w-4 h-4" />
-                    <span className="text-sm">Apagar Imagem</span>
+                    <p className="text-sm">Apagar Imagem</p>
                   </button>
                 </div>
               )}
@@ -219,21 +225,23 @@ export default function AddCatalogImageModal({
             onClick={onClose}
             className={`flex w-full items-center justify-center px-4 py-2 rounded-lg font-medium cursor-pointer
               bg-gray-50 text-secondary border border-gray-100 hover:bg-gray-100 transition-colors
+              dark:bg-zinc-800 dark:border-0 dark:hover:bg-zinc-950/15
             `}
           >
-            <span>Fechar</span>
+            <p>Fechar</p>
           </button>
           <button 
             type="submit" 
             onClick={handleSubmit}
             className={`flex w-full px-4 py-2 rounded-lg justify-center items-center cursor-pointer transition-colors font-medium
               bg-primary text-white hover:bg-primary/90
+              dark:bg-details dark:hover:bg-details/80
             `} 
             disabled={isLoading}
           >
             {isLoading ? (
               <div className="flex justify-center items-center"> 
-                <span>Salvando...</span>
+                <p>Salvando...</p>
               </div>
             ) : 'Salvar Imagem'}
           </button>

@@ -84,7 +84,7 @@ export default function Searchbar({
 
         <div className="absolute right-2 flex items-center justify-center">
           {isSearching ? (
-            <Loader2 className="w-5 h-5 text-primary animate-spin" />
+            <Loader2 className="w-5 h-5 text-primary dark:text-zinc-400 animate-spin" />
           ) : searchText.length > 0 || isOpen ? (
             <button
               onClick={handleClear}
@@ -92,16 +92,20 @@ export default function Searchbar({
               title={!isMdUp ? "Limpar pesquisa" : ""}
               className="cursor-pointer"
             >
-              <X className="w-6 h-6 text-secondary cursor-pointer" />
+              <X className={`w-6 h-6 cursor-pointer 
+                text-secondary dark:text-background-alternative-v2`} 
+              />
             </button>
         ) : (
           <button
             aria-label="Abrir pesquisa"
             title={!isMdUp ? "Abrir pesquisa" : ""}
-            className="cursor-pointer"
+            className="cursor-pointer transition-colors"
             onClick={toggleOpenSearchbar}
           >
-            <Search className="w-6 h-6 text-secondary" />
+            <Search className={`w-6 h-6 cursor-pointer transition-colors
+              text-secondary dark:text-background-alternative-v2 dark:hover:text-zinc-400`}
+            />
           </button>
         )}
         </div>
@@ -109,7 +113,7 @@ export default function Searchbar({
 
       {showResults && (
         <div className={cn(`absolute top-10 left-0 w-full overflow-hidden z-50
-          bg-white shadow-[0_60px_50px_15px_rgba(0,0,0,0.3)] rounded-b-xl
+          bg-white dark:bg-zinc-900 shadow-[0_60px_50px_15px_rgba(0,0,0,0.3)] rounded-b-xl
           animate-in fade-in slide-in-from-top-2 duration-200`, 
           !isMdUp && isOpen && "fixed top-14 left-0"
         )}>
@@ -126,7 +130,7 @@ export default function Searchbar({
                 ))}
               </div>
             ) : (!isSearching && (
-                <div className="p-8 text-center text-gray-500">
+                <div className="p-8 text-center text-gray-500 dark:text-gray-400">
                   <span>Nenhum produto encontrado para</span>
                   <span className="font-bold ml-1">&quot;{searchText}&quot;.</span>
                 </div>
@@ -134,7 +138,7 @@ export default function Searchbar({
             )}
           </div>
           {filteredData.length > 0 && (
-            <div className="bg-gray-50 p-2 text-center text-xs text-gray-400 border-t rounded-b-xl">
+            <div className="bg-gray-50 dark:bg-zinc-900 p-2 text-center text-xs text-gray-400 border-t rounded-b-xl">
               <span>Mostrando {filteredData.length} resultados para</span>
               <span className="font-bold ml-1">&quot;{searchText}&quot;.</span>
             </div>
@@ -146,7 +150,7 @@ export default function Searchbar({
         <div className={cn(`fixed flex items-center justify-center top-0 right-22 h-14
           bg-transparent animate-in fade-in slide-in-from-right-2 duration-300`, 
           'w-[73%]',
-          isXsDown && "w-[68%] right-21",
+          isXsDown && "w-[69%] right-21",
           !isSmUp && !isXsDown && "w-[45%]",
           isSmUp && "w-[50%]"
         )}>

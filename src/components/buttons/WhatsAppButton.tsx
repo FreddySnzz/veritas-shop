@@ -22,6 +22,8 @@ export function WhatsAppButton(props: WhatsAppButtonProps) {
         className={`flex items-center justify-center w-full px-4 py-3 gap-2 
           bg-linear-to-r from-green-500 to-green-600 lg:text-lg
           text-white hover:from-green-600/90 hover:to-green-700/90
+          dark:from-green-600 dark:to-green-700
+          dark:hover:from-green-500/90 dark:hover:to-green-600/90
           cursor-pointer transition-colors shadow-lg rounded-lg font-sans font-bold 
         `}
       >

@@ -20,10 +20,10 @@ export default function ProductCard({ product, mode }: ProductCardProps) {
       <Link
         href={productUrl}
         aria-label={`Ver detalhes de ${product.name}`}
-        className="w-full h-full group flex flex-col overflow-hidden rounded-xl 
-          bg-white shadow-md hover:shadow-lg transition-all duration-300 text-start"
+        className={`w-full h-full group flex flex-col overflow-hidden rounded-xl 
+          bg-white dark:bg-input/50 shadow-md hover:shadow-lg transition-all duration-300 text-start`}
       >
-        <div className="relative w-full aspect-square overflow-hidden shrink-0 bg-gray-100">
+        <div className="relative w-full aspect-square overflow-hidden shrink-0 bg-gray-100 dark:bg-input/50">
           {mainImage ? (
             <Image
               src={mainImage}
@@ -43,11 +43,11 @@ export default function ProductCard({ product, mode }: ProductCardProps) {
 
         <div className="flex-1 flex flex-col p-4 w-full">
           <div className="flex flex-col space-y-1">
-            <h3 className="font-bold text-gray-900 line-clamp-2 group-hover:text-primary transition-colors">
+            <h3 className="font-bold text-gray-900 dark:text-gray-200 line-clamp-2 group-hover:text-primary dark:group-hover:text-details transition-colors">
               {product.name}
             </h3>
 
-            <p className="text-xs text-gray-500 line-clamp-2 min-h-[2.5em]">
+            <p className="text-xs text-gray-500 dark:text-gray-300 line-clamp-2 min-h-[2.5em]">
               {product.desc}
             </p>
           </div>
@@ -57,13 +57,13 @@ export default function ProductCard({ product, mode }: ProductCardProps) {
               <span className="text-[0.625rem] text-gray-400 uppercase tracking-wide">
                 a partir de
               </span>
-              <p className="font-bold text-lg text-gray-900 group-hover:text-primary transition-colors">
+              <p className="font-bold text-lg text-gray-900 dark:text-gray-200 group-hover:text-primary dark:group-hover:text-details transition-colors">
                 {formatCurrency(product.initial_price)}
               </p>
             </div>
             
             <span className={`text-xs text-primary font-medium opacity-0 -translate-x-2 
-              group-hover:translate-x-0 group-hover:opacity-100 transition-all duration-300`}
+              group-hover:translate-x-0 group-hover:opacity-100 dark:group-hover:text-details transition-all duration-300`}
             >
               {mode === 'header' ? "" : (
                 <span>Ver mais →</span>

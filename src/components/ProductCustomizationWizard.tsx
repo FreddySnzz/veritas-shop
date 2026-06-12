@@ -363,13 +363,13 @@ export default function ProductCustomizerWizard({
     if (currentStep.id === 'texto_personalizado') {
       return (
         <div className="flex flex-col gap-2 mt-4">
-          <div className="bg-white py-3 px-4 rounded-lg text-xs text-primary font-medium">
+          <div className="bg-white dark:bg-zinc-600 py-3 px-4 rounded-lg text-xs text-primary dark:text-zinc-200 font-medium">
             <p>{`Dica¹: Dependendo da quantidade de letras/palavras, poderá ser cobrado um VALOR EXTRA.`}</p>
           </div>
-          <div className="bg-white py-3 px-4 rounded-lg text-xs text-primary font-medium">
+          <div className="bg-white dark:bg-zinc-600 py-3 px-4 rounded-lg text-xs text-primary dark:text-zinc-200 font-medium">
             <p>{`Dica²: 1 (uma) palavra com até 10 letras não afetará o VALOR FINAL.`}</p>
           </div>
-          <div className="bg-white py-3 px-4 rounded-lg text-xs text-primary font-bold">
+          <div className="bg-white dark:bg-zinc-600 py-3 px-4 rounded-lg text-xs text-primary dark:text-zinc-200 font-bold">
             <p>{`Dica³: O máximo de letras por mistério é 10.`}</p>
           </div>
           <MultiTextInput product={baseProduct} />
@@ -384,17 +384,18 @@ export default function ProductCustomizerWizard({
         <div className="flex flex-col items-center justify-center text-center py-8">
           <div 
             className={`w-20 h-20 rounded-full flex items-center justify-center mb-6 
-              ${completed ? 'bg-green-100 text-green-600' : 'bg-red-100 text-red-600'}
+              ${completed ? 'bg-green-100 dark:bg-input/50 text-green-600' 
+                : 'bg-red-100 dark:bg-zinc-500 text-red-600 dark:text-red-700'}
             `}
           >
             {completed ? <Check size={40} /> : <X size={40} />}
           </div>
 
           <div className="flex flex-col">
-            <p className="text-2xl font-bold text-gray-800 mb-2">
+            <p className="text-2xl font-bold text-gray-800 dark:text-zinc-200 mb-2">
               {completed ? "Tudo pronto!" : "Personalização incompleta"}
             </p>
-            <p className="text-gray-500 mb-8 max-w-xs mx-auto">
+            <p className="text-gray-500 dark:text-zinc-400 mb-8 max-w-xs mx-auto">
               {completed 
                 ? "Sua personalização foi concluída com sucesso." 
                 : "Você precisa selecionar todos os itens obrigatórios (*) para continuar."}
@@ -406,6 +407,7 @@ export default function ProductCustomizerWizard({
               onClick={handleAddToCart}
               className={`flex w-full md:w-1/2 items-center justify-center px-4 py-3 transition-colors
                 bg-primary text-white rounded-xl font-bold gap-3 shadow-lg hover:bg-primary/90 
+                dark:bg-details dark:hover:bg-details/80
                 ${!completed ? 'cursor-not-allowed' : 'cursor-pointer'}
                 ${isLoading ? 'cursor-wait' : ''}
               `}
@@ -427,8 +429,8 @@ export default function ProductCustomizerWizard({
         title="Pular"
         onClick={() => handleSelectAndAdvance(currentStep.id, null)}
         className={`w-full px-3 py-2 border-2 border-dashed mb-4
-          border-gray-300 rounded-xl text-gray-500 font-medium 
-          hover:border-gray-400 hover:bg-gray-50 transition-colors 
+          border-gray-300 dark:border-zinc-600 rounded-xl text-gray-500 dark:text-zinc-500 font-medium 
+          hover:border-gray-400 dark:hover:border-zinc-600 dark:hover:bg-zinc-700/40 hover:bg-gray-50 transition-colors 
           flex items-center justify-center gap-2 cursor-pointer text-sm
         `}
       >
@@ -446,7 +448,7 @@ export default function ProductCustomizerWizard({
           {Object.entries(grouped).map(([style, items]) => (
             <div key={style}>
               <h4 className={`text-xs font-bold mb-3 uppercase
-                text-gray-400 tracking-wider pl-1 border-b pb-1`}
+                text-gray-400 dark:text-zinc-400 tracking-wider pl-1 border-b pb-1`}
               >
                 {style}
               </h4>
@@ -466,7 +468,7 @@ export default function ProductCustomizerWizard({
           ))}
 
           {stepItems.length === 0 && (
-            <p className="text-center text-gray-400 py-10">
+            <p className="text-center text-gray-400 dark:text-zinc-400 py-10">
               Nenhum item disponível nesta categoria.
             </p>
           )}
@@ -512,11 +514,11 @@ export default function ProductCustomizerWizard({
   return (
     <div 
       className={`flex flex-col font-sans overflow-hidden rounded-xl
-        bg-gray-50 border border-gray-100 shadow-sm w-full h-full
+        bg-gray-50 dark:bg-input/50 border border-gray-100 dark:border-background-dark shadow-sm w-full h-full
       `}
     >
-      <header className={`shrink-0 z-10 border-b 
-        border-gray-200 bg-white p-4 w-full`}
+      <header className={`shrink-0 z-10 border-b p-4 w-full
+        border-gray-200 bg-white dark:bg-input/0 dark:border-muted-foreground/50`}
       >
         <div className="hidden lg:block mb-4">
           <WizardStepsBreadcrumb
@@ -527,7 +529,7 @@ export default function ProductCustomizerWizard({
         </div>
         <div className="w-full bg-gray-200 h-1.5 rounded-full overflow-hidden">
           <motion.div 
-            className="h-full bg-primary"
+            className="h-full bg-primary dark:bg-details"
             initial={{ width: 0 }}
             animate={{ width: `${progressPercentage}%` }}
             transition={{ duration: 0.5, ease: "easeInOut" }}
@@ -539,7 +541,7 @@ export default function ProductCustomizerWizard({
             key={currentStep?.title}
             initial={{ opacity: 0, x: -10 }}
             animate={{ opacity: 1, x: 0 }}
-            className="text-xl md:text-2xl font-bold text-gray-900 mt-2"
+            className="text-xl md:text-2xl font-bold text-gray-900 dark:text-zinc-200 mt-2"
           >
             {currentStep?.title} {currentStep?.isOptional ? '' : '*'}
           </motion.h2>
@@ -549,7 +551,7 @@ export default function ProductCustomizerWizard({
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ delay: 0.1 }}
-            className="text-gray-500 text-sm"
+            className="text-gray-500 dark:text-zinc-400 text-sm"
           >
             <div className='flex text-xs md:text-sm items-center gap-1'>
               <span>{currentStep?.subtitle}</span>
@@ -559,7 +561,7 @@ export default function ProductCustomizerWizard({
                   aria-label="Exemplo"
                   title="Veja um exemplo"
                   onClick={() => setIsOpenImageHelperModal(true)}
-                  className={`flex items-center text-primary 
+                  className={`flex items-center text-primary dark:text-zinc-500
                     hover:text-primary/80 text-sm font-medium cursor-pointer
                   `}
                 >
@@ -591,8 +593,8 @@ export default function ProductCustomizerWizard({
       </main>
 
       <footer 
-        className={`shrink-0 flex justify-end z-10
-          border-t border-gray-200 bg-white p-3 w-full
+        className={`shrink-0 flex justify-end z-10 p-3 w-full
+          border-t border-gray-200 bg-white dark:bg-input/0 dark:border-muted-foreground/50 
         `}
       >
         <div className='flex justify-end gap-4 w-full lg:w-1/2'>
@@ -604,20 +606,20 @@ export default function ProductCustomizerWizard({
                 toast.success("Sua personalização foi limpa com sucesso.");
               }}
               className={`flex flex-1 items-center justify-center gap-2 sm:px-4 sm:py-3 rounded-xl font-medium 
-                text-white bg-red-400 hover:bg-red-500 cursor-pointer transition-colors 
+                text-white bg-red-400 dark:bg-red-900 hover:bg-red-500 dark:hover:bg-red-700 cursor-pointer transition-colors 
               `}
             >
               <Trash size={18} />
-              <span className='hidden sm:block'>
+              <p className='hidden sm:block'>
                 Limpar
-              </span>
+              </p>
             </button>
           )}
 
           <button
             onClick={handleBack}
             className={`flex flex-1 items-center justify-center gap-1 px-4 py-3 rounded-xl font-medium 
-              text-gray-700 bg-gray-100 hover:bg-gray-200 cursor-pointer transition-colors 
+              text-gray-700 dark:text-zinc-200 bg-gray-100 dark:bg-zinc-700 hover:bg-gray-200 dark:hover:bg-zinc-600 cursor-pointer transition-colors 
             `}
           >
             <ChevronLeft size={18} />
@@ -628,7 +630,7 @@ export default function ProductCustomizerWizard({
             <button
               onClick={handleNext}
               className={`flex flex-1 items-center justify-center gap-1 px-4 py-3 rounded-xl font-medium 
-                text-white bg-secondary hover:bg-secondary/90 shadow-sm cursor-pointer transition-colors 
+                text-white bg-secondary dark:bg-background-dark hover:bg-secondary/90 dark:hover:bg-zinc-900 shadow-sm cursor-pointer transition-colors 
               `}
             >
               <span>Próximo</span>
@@ -664,7 +666,7 @@ export default function ProductCustomizerWizard({
             <button 
               type="button"
               onClick={() => setIsOpenImageHelperModal(false)}
-              className="flex w-full px-4 py-2 rounded-lg bg-gray-100 items-center justify-center font-medium cursor-pointer"
+              className="flex w-full px-4 py-2 rounded-lg bg-gray-100 dark:bg-background-dark items-center justify-center font-medium cursor-pointer"
             >
               <span>Fechar</span>
             </button>
@@ -695,8 +697,8 @@ export default function ProductCustomizerWizard({
                 resetCustomization();
                 router.back();
               }}
-              className={`flex w-full px-4 py-2 rounded-lg items-center justify-center 
-                bg-gray-100 hover:bg-gray-200 font-medium cursor-pointer
+              className={`flex w-full px-4 py-2 rounded-lg items-center justify-center transition-colors
+                bg-gray-100 dark:bg-background-dark hover:bg-gray-200 dark:hover:bg-zinc-700/30 font-medium cursor-pointer
               `}
             >
               <span>Não</span>
@@ -708,8 +710,8 @@ export default function ProductCustomizerWizard({
                 setDeleteCustomizationModalOpen(false);
                 router.back();
               }}
-              className={`flex w-full px-4 py-2 rounded-lg items-center justify-center
-                bg-primary hover:bg-primary/90 text-white font-medium cursor-pointer 
+              className={`flex w-full px-4 py-2 rounded-lg items-center justify-center transition-colors
+                bg-primary dark:bg-details hover:bg-primary/90 dark:hover:bg-details/80 text-white font-medium cursor-pointer 
               `}
             >
               <span>Salvar</span>
@@ -740,8 +742,8 @@ export default function ProductCustomizerWizard({
                 setPendingCustomizationModalOpen(false);
                 resetCustomization();
               }}
-              className={`flex w-full px-4 py-2 rounded-lg items-center justify-center 
-                bg-gray-100 hover:bg-gray-200 font-medium cursor-pointer
+              className={`flex w-full px-4 py-2 rounded-lg items-center justify-center transition-colors
+                bg-gray-100 dark:bg-background-dark hover:bg-gray-200 dark:hover:bg-zinc-900/50 font-medium cursor-pointer
               `}
             >
               <span>Não</span>
@@ -752,8 +754,8 @@ export default function ProductCustomizerWizard({
               onClick={() => {
                 setPendingCustomizationModalOpen(false);
               }}
-              className={`flex w-full px-4 py-2 rounded-lg items-center justify-center
-                bg-primary hover:bg-primary/90 text-white font-medium cursor-pointer 
+              className={`flex w-full px-4 py-2 rounded-lg items-center justify-center transition-colors
+                bg-primary dark:bg-details hover:bg-primary/90 dark:hover:bg-details/80 text-white font-medium cursor-pointer 
               `}
             >
               <span>Sim</span>

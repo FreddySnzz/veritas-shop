@@ -41,7 +41,7 @@ export function CustomizationItemsFilters({
         <div className="flex justify-between items-baseline gap-2">
           <label
             htmlFor="desktop-search-items"
-            className="block text-xs font-semibold text-gray-500"
+            className="block text-xs font-semibold text-gray-500 dark:text-zinc-200"
           >
             Buscar item
           </label>
@@ -50,7 +50,7 @@ export function CustomizationItemsFilters({
             <button
               type="button"
               onClick={onClearFilters}
-              className="text-xs text-gray-400 hover:text-secondary cursor-pointer"
+              className="text-xs text-gray-400 dark:text-zinc-200 hover:text-secondary dark:hover:text-red-400 cursor-pointer transition-colors"
               aria-label="Limpar todos os filtros"
             >
               Limpar filtros
@@ -77,15 +77,15 @@ export function CustomizationItemsFilters({
               className="absolute right-3 top-1/2 -translate-y-1/2 cursor-pointer"
               onClick={onClearSearch}
             >
-              <X className="w-5 h-5 text-secondary cursor-pointer" />
+              <X className="w-5 h-5 text-secondary dark:text-zinc-200 dark:hover:text-red-400 cursor-pointer transition-colors" />
             </button>
           )}
         </div>
       </div>
 
-      <div id='categoriesCheckbox'>
+      <div id='categoriesCheckbox' className="lg:border-none lg:p-0 dark:border dark:rounded-lg dark:p-2">
         <fieldset className="flex flex-col gap-2">
-          <legend className="text-xs font-semibold text-gray-500 mb-1">
+          <legend className="text-xs font-semibold text-gray-500 dark:text-zinc-200 mb-1">
             Categorias
           </legend>
 
@@ -100,9 +100,9 @@ export function CustomizationItemsFilters({
               return (
                 <label
                   key={category}
-                  className={`flex items-center rounded-lg
-                    border border-gray-200 px-3 py-2 cursor-pointer
-                    hover:bg-background-alternative`}
+                  className={`flex items-center rounded-lg transition-colors
+                    border border-gray-200 dark:border-zinc-600 px-3 py-2 cursor-pointer
+                    hover:bg-background-alternative dark:hover:bg-zinc-900/50`}
                 >
                   <div className="flex items-center gap-3 min-w-0">
                     <input
@@ -110,9 +110,9 @@ export function CustomizationItemsFilters({
                       checked={isSelected}
                       onChange={() => onToggleCategory(category)}
                       aria-label={`Filtrar pela categoria ${category}`}
-                      className="focus:ring-primary cursor-pointer accent-primary"
+                      className="focus:ring-primary cursor-pointer accent-primary dark:accent-details"
                     />
-                    <span className="text-sm text-secondary">
+                    <span className="text-sm text-secondary dark:text-zinc-200">
                       {formatAndCapitalize(category)}
                     </span>
                   </div>
@@ -123,9 +123,9 @@ export function CustomizationItemsFilters({
         </fieldset>
       </div>
 
-      <div id='stylesCheckbox'>
+      <div id='stylesCheckbox' className="lg:border-none lg:p-0 dark:border dark:rounded-lg dark:p-2">
         <fieldset className="flex flex-col gap-2">
-          <legend className="text-xs font-semibold text-gray-500 mb-1">
+          <legend className="text-xs font-semibold text-gray-500 dark:text-zinc-200 mb-1">
             Estilos
           </legend>
 
@@ -140,9 +140,9 @@ export function CustomizationItemsFilters({
               return (
                 <label
                   key={style}
-                  className={`flex items-center rounded-lg
-                    border border-gray-200 px-3 py-2 cursor-pointer
-                    hover:bg-background-alternative`}
+                  className={`flex items-center rounded-lg transition-colors
+                    border border-gray-200 dark:border-zinc-600 px-3 py-2 cursor-pointer
+                    hover:bg-background-alternative dark:hover:bg-zinc-900/50`}
                 >
                   <div className={`flex items-center gap-3 min-w-0`}>
                     <input
@@ -150,7 +150,7 @@ export function CustomizationItemsFilters({
                       checked={isSelected}
                       onChange={() => onToggleStyle(style)}
                       aria-label={`Filtrar pelo estilo ${style}`}
-                      className="focus:ring-primary cursor-pointer accent-primary"
+                      className="focus:ring-primary cursor-pointer accent-primary dark:accent-details"
                     />
                     <span className="text-sm text-secondary">
                       {formatAndCapitalize(style)}
@@ -163,22 +163,23 @@ export function CustomizationItemsFilters({
         </fieldset>
       </div>
 
-      <div id='availableCheckbox'>
+      <div id='availableCheckbox' className="lg:border-none lg:p-0 dark:border dark:rounded-lg dark:p-2">
         <fieldset>
-          <legend className="text-xs font-semibold text-gray-500 mb-2">
+          <legend className="text-xs font-semibold text-gray-500 dark:text-zinc-200 mb-2">
             Disponibilidade
           </legend>
 
           <label 
-            className={`flex items-center gap-3 rounded-lg 
-              border border-gray-200 px-3 py-2 cursor-pointer hover:bg-background-alternative
+            className={`flex items-center gap-3 rounded-lg transition-colors
+              border border-gray-200 dark:border-zinc-600 px-3 py-2 cursor-pointer
+              hover:bg-background-alternative dark:hover:bg-zinc-900/50
             `}
           >
             <input
               type="checkbox"
               checked={showAvailableOnly}
               onChange={onToggleAvailableOnly}
-              className="focus:ring-primary cursor-pointer accent-primary"
+              className="focus:ring-primary cursor-pointer accent-primary dark:accent-details"
               aria-label="Mostrar apenas itens disponíveis"
             />
             <span className="text-sm text-secondary">

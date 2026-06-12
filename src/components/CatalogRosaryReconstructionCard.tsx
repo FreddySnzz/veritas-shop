@@ -10,16 +10,16 @@ interface CatalogRosaryReconstructionCardProps {
 
 export default function CatalogRosaryReconstructionCard({ whatsappNumber }: CatalogRosaryReconstructionCardProps) {
   return (
-    <div className="relative flex w-full bg-primary/80 font-sans text-white overflow-hidden">
+    <div className="relative flex w-full bg-primary/80 dark:bg-zinc-900 font-sans text-white overflow-hidden">
       <div className="p-8 md:p-12 lg:px-24 xl:px-32 z-10">
         <div className="flex flex-col">
-          <span className="text-4xl font-black">
+          <span className="text-4xl font-black dark:text-zinc-200">
             Deseja restaurar seu terço?
           </span>
-          <span className="text-xl font-bold md:mt-[-4]">
+          <span className="text-xl font-bold md:mt-[-4] dark:text-zinc-200">
             Tem algum terço quebrado ou que gostaria de restaurar?
           </span>
-          <span className="mt-4">
+          <span className="mt-4 dark:text-zinc-500">
             Não se preocupe, nós também restauramos seu terço!
           </span>
         </div>
@@ -30,7 +30,7 @@ export default function CatalogRosaryReconstructionCard({ whatsappNumber }: Cata
           rel="noopener noreferrer"
           title="Restaurar meu terço"
           aria-label="Restaurar meu terço"
-          className="flex gap-2 mt-8 text-white hover:underline italic items-center"
+          className="flex gap-2 mt-8 text-white dark:text-zinc-200 hover:underline dark:hover:text-details italic items-center transition-colors"
         >
           <span className="font-medium">
             Quero restaurar meu terço

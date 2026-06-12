@@ -39,13 +39,13 @@ export default function ClearCartModal({
     >
       <div 
         onClick={(e) => e.stopPropagation()}
-        className="flex flex-col gap-4 w-full max-w-md bg-white p-6 rounded-lg shadow-xl"
+        className="flex flex-col gap-4 w-full max-w-md bg-white dark:bg-background-dark p-6 rounded-lg shadow-xl"
       >
         <div className="flex flex-col items-center justify-center mb-4">
           <span className="font-bold text-center">
             Tem certeza que deseja limpar o carrinho?
           </span>
-          <span className="text-xs font-light text-red-600">
+          <span className="text-xs font-light dark:font-normal text-red-600 dark:text-red-500">
             Isso não pode ser desfeito.
           </span>
         </div>
@@ -53,7 +53,8 @@ export default function ClearCartModal({
           <div 
             onClick={onClose}
             className={`flex gap-2 items-center justify-center px-4 py-2 rounded-lg cursor-pointer
-              bg-gray-100 text-secondary hover:bg-gray-200 transition-colors font-medium
+              bg-gray-100 dark:bg-zinc-800 text-secondary dark:text-zinc-200 hover:bg-gray-200 dark:hover:bg-zinc-900/40
+              transition-colors font-medium
             `}
           >
             <span>Cancelar</span>
@@ -62,7 +63,7 @@ export default function ClearCartModal({
           <div 
             onClick={handleDelete}
             className={`flex gap-2 items-center justify-center px-4 py-2 rounded-lg cursor-pointer
-              bg-primary text-white hover:bg-primary/90 transition-colors font-medium
+              bg-primary dark:bg-red-500 text-white hover:bg-primary/90 dark:hover:bg-red-600/80 transition-colors font-medium
             `}
           >
             <span>Confirmar</span>

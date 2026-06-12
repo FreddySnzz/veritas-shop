@@ -13,7 +13,7 @@ export default async function CartPage() {
   const availableProducts = products?.filter((product: ProductModel) => product.available);
 
   return (
-    <div className="flex flex-col h-dvh overflow-y-auto bg-background-alternative">
+    <div className="flex flex-col h-dvh overflow-y-auto bg-background-alternative dark:bg-background-dark">
       <Header mode="cart" />
       <main className="flex-1 flex flex-col px-6 mt-20 md:mt-24 sm:px-14 lg:px-16">
         <Cart 

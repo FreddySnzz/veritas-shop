@@ -4,7 +4,7 @@ export default function TermsAndConditionsLayout() {
       id={'terms-and-conditions'} 
       className="w-full h-full font-sans pb-8 text-justify"
     >
-      <h1 className="font-bold text-secondary text-2xl md:text-3xl">
+      <h1 className="font-bold text-secondary dark:text-zinc-50 text-2xl md:text-3xl">
         {`Termos e Condições de Uso - Veritas Ateliê`}
       </h1>
       <p className="font-medium text-gray-500 pt-4 text-sm md:text-base">
@@ -13,7 +13,7 @@ export default function TermsAndConditionsLayout() {
         Recomendamos a leitura cuidadosa antes de finalizar qualquer pedido de produto personalizado.`}
       </p>
 
-      <h2 className="font-bold text-secondary text-xl md:text-2xl pt-8">
+      <h2 className="font-bold text-secondary dark:text-zinc-50 text-xl md:text-2xl pt-8">
         1. Aceitação dos Termos
       </h2>
       <p className="font-medium text-gray-500 pt-2 text-sm md:text-base">
@@ -23,7 +23,7 @@ export default function TermsAndConditionsLayout() {
         solicitamos que entre em contato com o suporte antes de utilizar nossos serviços.`}
       </p>
 
-      <h2 className="font-bold text-secondary text-xl md:text-2xl pt-8">
+      <h2 className="font-bold text-secondary dark:text-zinc-50 text-xl md:text-2xl pt-8">
         2. Propriedade Intelectual e Material Enviado pelo Usuário
       </h2>
       <div className="font-medium text-gray-500 pt-2 text-sm md:text-base">
@@ -52,7 +52,7 @@ export default function TermsAndConditionsLayout() {
         </ul>
       </div>
 
-      <h2 className="font-bold text-secondary text-xl md:text-2xl pt-8">
+      <h2 className="font-bold text-secondary dark:text-zinc-50 text-xl md:text-2xl pt-8">
         3. Processo de Personalização e Aprovação
       </h2>
       <div className="font-medium text-gray-500 pt-2 text-sm md:text-base">
@@ -89,7 +89,7 @@ export default function TermsAndConditionsLayout() {
         </ul>
       </div>
 
-      <h2 className="font-bold text-secondary text-xl md:text-2xl pt-8">
+      <h2 className="font-bold text-secondary dark:text-zinc-50 text-xl md:text-2xl pt-8">
         4. Política de Cancelamento, Trocas e Devoluções
       </h2>
       <div className="font-medium text-gray-500 pt-2 text-sm md:text-base">
@@ -112,7 +112,7 @@ export default function TermsAndConditionsLayout() {
         </ul>
       </div>
 
-      <h2 className="font-bold text-secondary text-xl md:text-2xl pt-8">
+      <h2 className="font-bold text-secondary dark:text-zinc-50 text-xl md:text-2xl pt-8">
         5. Privacidade e Proteção de Dados
       </h2>
       <div className="font-medium text-gray-500 pt-2 text-sm md:text-base">

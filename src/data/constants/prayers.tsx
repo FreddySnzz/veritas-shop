@@ -1,6 +1,110 @@
 import ItemCollapse from "@/components/ItemCollapse";
 import ItemContent from "@/components/ItemContent";
+import Image from "next/image";
 import Link from "next/link";
+
+const misteriousImages = [
+  {
+    alt: "1º Mistério Gozoso",
+    src: "https://res.cloudinary.com/ddr7pqjmz/image/upload/v1781213182/1-crop_gnr5rs.png",
+    verse: "Lc 1, 26-38",
+  },
+  {
+    alt: "2º Mistério Gozoso",
+    src: "https://res.cloudinary.com/ddr7pqjmz/image/upload/v1781213183/2-crop_lfpe4p.png",
+    verse: "Lc 1, 39-56",
+  },
+  {
+    alt: "3º Mistério Gozoso",
+    src: "https://res.cloudinary.com/ddr7pqjmz/image/upload/v1781213183/3-crop_nhjzzg.png",
+    verse: "Lc 2, 1-20",
+  },
+  {
+    alt: "4º Mistério Gozoso",
+    src: "https://res.cloudinary.com/ddr7pqjmz/image/upload/v1781213183/4-crop_yifrsa.png",
+    verse: "Lc 2, 22-30",
+  },
+  {
+    alt: "5º Mistério Gozoso",
+    src: "https://res.cloudinary.com/ddr7pqjmz/image/upload/v1781213182/5-crop_makc8b.png",
+    verse: "Lc 2, 41-50",
+  },
+  {
+    alt: "1º Mistério Doloroso",
+    src: "https://res.cloudinary.com/ddr7pqjmz/image/upload/v1781237461/6-crop_mcaqtc.png",
+    verse: "Lc 22, 39-42",
+  },
+  {
+    alt: "2º Mistério Doloroso",
+    src: "https://res.cloudinary.com/ddr7pqjmz/image/upload/v1781237462/7-crop_tmv9rw.png",
+    verse: "Mc 15, 1-15",
+  },
+  {
+    alt: "3º Mistério Doloroso",
+    src: "https://res.cloudinary.com/ddr7pqjmz/image/upload/v1781237462/8-crop_jncuxv.png",
+    verse: "Mc 15, 16-20",
+  },
+  {
+    alt: "4º Mistério Doloroso",
+    src: "https://res.cloudinary.com/ddr7pqjmz/image/upload/v1781237462/9-crop_rpw5bu.png",
+    verse: "Lc 23, 26-32",
+  },
+  {
+    alt: "5º Mistério Doloroso",
+    src: "https://res.cloudinary.com/ddr7pqjmz/image/upload/v1781237460/10-crop_l1laqq.png",
+    verse: "Lc 23, 33-46",
+  },
+  {
+    alt: "1º Mistério Glorioso",
+    verse: "Mt 28, 1-7",
+    src: "https://res.cloudinary.com/ddr7pqjmz/image/upload/v1781237437/11-crop_fizvvu.png",
+  },
+  {
+    alt: "2º Mistério Glorioso",
+    verse: "At 1, 6-11",
+    src: "https://res.cloudinary.com/ddr7pqjmz/image/upload/v1781237437/12-crop_pqtacy.png",
+  },
+  {
+    alt: "3º Mistério Glorioso",
+    verse: "At 2, 1-11",
+    src: "https://res.cloudinary.com/ddr7pqjmz/image/upload/v1781237437/13-crop_qrtpwb.png",
+  },
+  {
+    alt: "4º Mistério Glorioso",
+    verse: "Assunção da bem-aventurada Virgem Maria, in: Jacopo de Varazze, Legenda Aurea; CIC 966",
+    src: "https://res.cloudinary.com/ddr7pqjmz/image/upload/v1781237438/14-crop_juigcc.png",
+  },
+  {
+    alt: "5º Mistério Glorioso",
+    verse: "Ap 12, 1",
+    src: "https://res.cloudinary.com/ddr7pqjmz/image/upload/v1781237436/15-crop_ayhsnj.png",
+  },
+  {
+    alt: "1º Mistério Luminoso",
+    verse: "Mt 3, 16-17",
+    src: "https://res.cloudinary.com/ddr7pqjmz/image/upload/v1781237421/16-crop_kxq0un.png",
+  },
+  {
+    alt: "2º Mistério Luminoso",
+    verse: "Jo 2, 1-5; CIC 1613",
+    src: "https://res.cloudinary.com/ddr7pqjmz/image/upload/v1781237421/17-crop_vrbk8t.png",
+  },
+  {
+    alt: "3º Mistério Luminoso",
+    verse: "Mc 1, 15",
+    src: "https://res.cloudinary.com/ddr7pqjmz/image/upload/v1781237421/18-crop_hadgbj.png",
+  },
+  {
+    alt: "4º Mistério Luminoso",
+    verse: "Mt 17, 1-2",
+    src: "https://res.cloudinary.com/ddr7pqjmz/image/upload/v1781237421/19-crop_pi4sqf.png",
+  },
+  {
+    alt: "5º Mistério Luminoso",
+    verse: "Mt 26, 26; CIC 1340",
+    src: "https://res.cloudinary.com/ddr7pqjmz/image/upload/v1781237421/20-crop_w500ah.png",
+  },
+];
 
 export const commonPrayers = [
   {
@@ -1254,15 +1358,32 @@ export const various = [
           </div>
         </div>
 
-        <div className="flex flex-col mt-4 gap-2">
+        <div className="flex flex-col mt-4 gap-6">
           <ItemCollapse 
             title="Mistérios Gozosos (Segundas, Sábados e Domingos do Advento)"
             collapseClassName="text-start"
           >
-            <ItemContent className="flex flex-col mt-4">
-              <div className="flex flex-col">
-                <p>No <strong>Primeiro Mistério</strong> Gozoso contemplamos a Anunciação do Anjo a Nossa Senhora.</p>
-                <div className="flex flex-col mt-2 mb-4">
+            <ItemContent className="flex flex-col mt-4 gap-8 md:gap-16">
+              <div className="flex flex-col md:grid md:grid-cols-[auto_1fr] gap-2 md:gap-4 md:mt-4">
+                <Image
+                  src={misteriousImages[0].src}
+                  alt={misteriousImages[0].alt}
+                  width={350}
+                  height={350}
+                  className="rounded-lg object-cover shadow-lg order-2 md:col-start-1 md:row-start-1 md:row-span-5"
+                  sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                  loading="eager"
+                  objectFit="contain"
+                  draggable="false"
+                  priority
+                />
+                <p className="order-1 md:col-start-2 md:row-start-2">
+                  No <strong>Primeiro Mistério</strong> Gozoso contemplamos a Anunciação do Anjo Gabriel à Nossa Senhora e a Encarnação do Verbo no seio Puríssimo de Maria. 
+                </p>
+                <p className="text-sm text-end sm:text-start dark:text-zinc-200 italic font-bold order-3 md:col-start-2 md:row-start-3">
+                  {misteriousImages[0].verse}
+                </p>
+                <div className="flex flex-col mt-2 order-4 md:col-start-2 md:row-start-4 md:mt-0">
                   <Link
                     href="/ajuda/oracoes/pai-nosso"
                     title="Ir para o Pai Nosso"
@@ -1308,9 +1429,26 @@ export const various = [
                 </div>
               </div>
 
-              <div className="flex flex-col">
-                <p>No <strong>Segundo Mistério</strong> Gozoso contemplamos a Visitação de Nossa Senhora a sua prima Santa Isabel.</p>
-                <div className="flex flex-col mt-2 mb-4">
+              <div className="flex flex-col md:grid md:grid-cols-[1fr] gap-2 md:gap-4">
+                <Image
+                  src={misteriousImages[1].src}
+                  alt={misteriousImages[1].alt}
+                  width={350}
+                  height={350}
+                  className="rounded-lg object-cover shadow-lg order-2 md:col-start-2 md:row-start-1 md:row-span-5"
+                  sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                  loading="eager"
+                  objectFit="contain"
+                  draggable="false"
+                  priority
+                />
+                <p className="order-1 md:col-start-1 md:text-end md:row-start-2">
+                  No <strong>Segundo Mistério</strong> Gozoso contemplamos a Visitação de Nossa Senhora a sua prima Santa Isabel.
+                </p>
+                <p className="text-sm text-end md:text-end sm:text-start dark:text-zinc-200 italic font-bold order-3 md:col-start-1 md:row-start-3">
+                  {misteriousImages[1].verse}
+                </p>
+                <div className="flex flex-col mt-2 order-4 md:col-start-1 md:row-start-4 md:text-end md:mt-0">
                   <Link
                     href="/ajuda/oracoes/pai-nosso"
                     title="Ir para o Pai Nosso"
@@ -1356,9 +1494,26 @@ export const various = [
                 </div>
               </div>
 
-              <div className="flex flex-col">
-                <p>No <strong>Terceiro Mistério</strong> Gozoso contemplamos o Nascimento de Nosso Senhor Jesus Cristo em Belém.</p>
-                <div className="flex flex-col mt-2 mb-4">
+              <div className="flex flex-col md:grid md:grid-cols-[auto_1fr] gap-2 md:gap-4">
+                <Image
+                  src={misteriousImages[2].src}
+                  alt={misteriousImages[2].alt}
+                  width={350}
+                  height={350}
+                  className="rounded-lg object-cover shadow-lg order-2 md:col-start-1 md:row-start-1 md:row-span-5"
+                  sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                  loading="eager"
+                  objectFit="contain"
+                  draggable="false"
+                  priority
+                />
+                <p className="order-1 md:col-start-2 md:row-start-2">
+                  No <strong>Terceiro Mistério</strong> Gozoso contemplamos o Nascimento de Nosso Senhor Jesus Cristo em Belém.
+                </p>
+                <p className="text-sm text-end sm:text-start dark:text-zinc-200 italic font-bold order-3 md:col-start-2 md:row-start-3">
+                  {misteriousImages[2].verse}
+                </p>
+                <div className="flex flex-col mt-2 order-4 md:col-start-2 md:row-start-4 md:mt-0">
                   <Link
                     href="/ajuda/oracoes/pai-nosso"
                     title="Ir para o Pai Nosso"
@@ -1404,9 +1559,26 @@ export const various = [
                 </div>
               </div>
 
-              <div className="flex flex-col">
-                <p>No <strong>Quarto Mistério</strong> Gozoso contemplamos a Apresentação do Menino Jesus no Templo e a Purificação de Nossa Senhora.</p>
-                <div className="flex flex-col mt-2 mb-4">
+              <div className="flex flex-col md:grid md:grid-cols-[1fr] gap-2 md:gap-4">
+                <Image
+                  src={misteriousImages[3].src}
+                  alt={misteriousImages[3].alt}
+                  width={350}
+                  height={350}
+                  className="rounded-lg object-cover shadow-lg order-2 md:col-start-2 md:row-start-1 md:row-span-5"
+                  sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                  loading="eager"
+                  objectFit="contain"
+                  draggable="false"
+                  priority
+                />
+                <p className="order-1 md:col-start-1 md:row-start-2 md:text-end">
+                  No <strong>Quarto Mistério</strong> Gozoso contemplamos a Apresentação do Menino Jesus no Templo e a Purificação de Nossa Senhora.
+                </p>
+                <p className="text-sm text-end md:text-end sm:text-start dark:text-zinc-200 italic font-bold order-3 md:col-start-1 md:row-start-3">
+                  {misteriousImages[3].verse}
+                </p>
+                <div className="flex flex-col mt-2 order-4 md:col-start-1 md:row-start-4 md:text-end md:mt-0">
                   <Link
                     href="/ajuda/oracoes/pai-nosso"
                     title="Ir para o Pai Nosso"
@@ -1452,9 +1624,26 @@ export const various = [
                 </div>
               </div>
 
-              <div className="flex flex-col">
-                <p>No <strong>Quinto Mistério</strong> Gozoso contemplamos a perda e o encontro do Menino Jesus.</p>
-                <div className="flex flex-col mt-2 mb-4">
+              <div className="flex flex-col md:grid md:grid-cols-[auto_1fr] gap-2 md:gap-4">
+                <Image
+                  src={misteriousImages[4].src}
+                  alt={misteriousImages[4].alt}
+                  width={350}
+                  height={350}
+                  className="rounded-lg object-cover shadow-lg order-2 md:col-start-1 md:row-start-1 md:row-span-5"
+                  sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                  loading="eager"
+                  objectFit="contain"
+                  draggable="false"
+                  priority
+                />
+                <p className="order-1 md:col-start-2 md:row-start-2">
+                  No <strong>Quinto Mistério</strong> Gozoso contemplamos a perda e o encontro do Menino Jesus no templo, discutindo com os doutores da Lei.
+                </p>
+                <p className="text-sm text-end sm:text-start dark:text-zinc-200 italic font-bold order-3 md:col-start-2 md:row-start-3">
+                  {misteriousImages[4].verse}
+                </p>
+                <div className="flex flex-col mt-2 order-4 md:col-start-2 md:row-start-4 md:mt-0">
                   <Link
                     href="/ajuda/oracoes/pai-nosso"
                     title="Ir para o Pai Nosso"
@@ -1506,10 +1695,27 @@ export const various = [
             title="Mistérios Dolorosos (Terças, Sextas e Domingos da Quaresma até a Páscoa)"
             collapseClassName="text-start"
           >
-            <ItemContent className="flex flex-col mt-4">
-              <div className="flex flex-col">
-                <span>No <strong>Primeiro Mistério</strong> Doloroso contemplamos a Agonia de Jesus no Horto das Oliveiras.</span>
-                <div className="flex flex-col mt-2 mb-4">
+            <ItemContent className="flex flex-col mt-4 gap-8 md:gap-16">
+              <div className="flex flex-col md:grid md:grid-cols-[auto_1fr] gap-2 md:gap-4 md:mt-4">
+                <Image
+                  src={misteriousImages[5].src}
+                  alt={misteriousImages[5].alt}
+                  width={350}
+                  height={350}
+                  className="rounded-lg object-cover shadow-lg order-2 md:col-start-1 md:row-start-1 md:row-span-5"
+                  sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                  loading="eager"
+                  objectFit="contain"
+                  draggable="false"
+                  priority
+                />
+                <p className="order-1 md:col-start-2 md:row-start-2">
+                  No <strong>Primeiro Mistério</strong> Doloroso contemplamos a Oração e a Agonia de Jesus no Horto das Oliveiras.
+                </p>
+                <p className="text-sm text-end sm:text-start dark:text-zinc-200 italic font-bold order-3 md:col-start-2 md:row-start-3">
+                  {misteriousImages[5].verse}
+                </p>
+                <div className="flex flex-col mt-2 order-4 md:col-start-2 md:row-start-4 md:mt-0">
                   <Link
                     href="/ajuda/oracoes/pai-nosso"
                     title="Ir para o Pai Nosso"
@@ -1555,9 +1761,26 @@ export const various = [
                 </div>
               </div>
 
-              <div className="flex flex-col">
-                <span>No <strong>Segundo Mistério</strong> Doloroso contemplamos a Flagelação de Nosso Senhor Jesus Cristo.</span>
-                <div className="flex flex-col mt-2 mb-4">
+              <div className="flex flex-col md:grid md:grid-cols-[1fr] gap-2 md:gap-4">
+                <Image
+                  src={misteriousImages[6].src}
+                  alt={misteriousImages[6].alt}
+                  width={350}
+                  height={350}
+                  className="rounded-lg object-cover shadow-lg order-2 md:col-start-2 md:row-start-1 md:row-span-5"
+                  sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                  loading="eager"
+                  objectFit="contain"
+                  draggable="false"
+                  priority
+                />
+                <p className="order-1 md:col-start-1 md:text-end md:row-start-2">
+                  No <strong>Segundo Mistério</strong> Doloroso contemplamos a Flagelação de Nosso Senhor Jesus Cristo.
+                </p>
+                <p className="text-sm text-end md:text-end sm:text-start dark:text-zinc-200 italic font-bold order-3 md:col-start-1 md:row-start-3">
+                  {misteriousImages[6].verse}
+                </p>
+                <div className="flex flex-col mt-2 order-4 md:col-start-1 md:row-start-4 md:text-end md:mt-0">
                   <Link
                     href="/ajuda/oracoes/pai-nosso"
                     title="Ir para o Pai Nosso"
@@ -1603,9 +1826,26 @@ export const various = [
                 </div>
               </div>
 
-              <div className="flex flex-col">
-                <span>No <strong>Terceiro Mistério</strong> Doloroso contemplamos a Coroação de espinhos de Nosso Senhor.</span>
-                <div className="flex flex-col mt-2 mb-4">
+              <div className="flex flex-col md:grid md:grid-cols-[auto_1fr] gap-2 md:gap-4">
+                <Image
+                  src={misteriousImages[7].src}
+                  alt={misteriousImages[7].alt}
+                  width={350}
+                  height={350}
+                  className="rounded-lg object-cover shadow-lg order-2 md:col-start-1 md:row-start-1 md:row-span-5"
+                  sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                  loading="eager"
+                  objectFit="contain"
+                  draggable="false"
+                  priority
+                />
+                <p className="order-1 md:col-start-2 md:row-start-2">
+                  No <strong>Terceiro Mistério</strong> Doloroso contemplamos a Coroação de espinhos de Nosso Senhor Jesus Cristo.
+                </p>
+                <p className="text-sm text-end sm:text-start dark:text-zinc-200 italic font-bold order-3 md:col-start-2 md:row-start-3">
+                  {misteriousImages[7].verse}
+                </p>
+                <div className="flex flex-col mt-2 order-4 md:col-start-2 md:row-start-4 md:mt-0">
                   <Link
                     href="/ajuda/oracoes/pai-nosso"
                     title="Ir para o Pai Nosso"
@@ -1651,9 +1891,26 @@ export const various = [
                 </div>
               </div>
 
-              <div className="flex flex-col">
-                <span>No <strong>Quarto Mistério</strong> Doloroso contemplamos Nosso Senhor carregando penosamente a Cruz até o alto do Calvário.</span>
-                <div className="flex flex-col mt-2 mb-4">
+              <div className="flex flex-col md:grid md:grid-cols-[1fr] gap-2 md:gap-4">
+                <Image
+                  src={misteriousImages[8].src}
+                  alt={misteriousImages[8].alt}
+                  width={350}
+                  height={350}
+                  className="rounded-lg object-cover shadow-lg order-2 md:col-start-2 md:row-start-1 md:row-span-5"
+                  sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                  loading="eager"
+                  objectFit="contain"
+                  draggable="false"
+                  priority
+                />
+                <p className="order-1 md:col-start-1 md:text-end md:row-start-2">
+                  No <strong>Quarto Mistério</strong> Doloroso contemplamos Nosso Senhor Jesus Cristo carregando a Cruz nas costas até o alto do Calvário.
+                </p>
+                <p className="text-sm text-end md:text-end sm:text-start dark:text-zinc-200 italic font-bold order-3 md:col-start-1 md:row-start-3">
+                  {misteriousImages[8].verse}
+                </p>
+                <div className="flex flex-col mt-2 order-4 md:col-start-1 md:row-start-4 md:text-end md:mt-0">
                   <Link
                     href="/ajuda/oracoes/pai-nosso"
                     title="Ir para o Pai Nosso"
@@ -1699,9 +1956,26 @@ export const various = [
                 </div>
               </div>
 
-              <div className="flex flex-col">
-                <span>No <strong>Quinto Mistério</strong> Doloroso contemplamos a Crucifixão e morte de Nosso Senhor Jesus Cristo.</span>
-                <div className="flex flex-col mt-2 mb-4">
+              <div className="flex flex-col md:grid md:grid-cols-[auto_1fr] gap-2 md:gap-4">
+                <Image
+                  src={misteriousImages[9].src}
+                  alt={misteriousImages[9].alt}
+                  width={350}
+                  height={350}
+                  className="rounded-lg object-cover shadow-lg order-2 md:col-start-1 md:row-start-1 md:row-span-5"
+                  sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                  loading="eager"
+                  objectFit="contain"
+                  draggable="false"
+                  priority
+                />
+                <p className="order-1 md:col-start-2 md:row-start-2">
+                  No <strong>Quinto Mistério</strong> Doloroso contemplamos a Crucifixão e morte de Nosso Senhor Jesus Cristo.
+                </p>
+                <p className="text-sm text-end sm:text-start dark:text-zinc-200 italic font-bold order-3 md:col-start-2 md:row-start-3">
+                  {misteriousImages[9].verse}
+                </p>
+                <div className="flex flex-col mt-2 order-4 md:col-start-2 md:row-start-4 md:mt-0">
                   <Link
                     href="/ajuda/oracoes/pai-nosso"
                     title="Ir para o Pai Nosso"
@@ -1753,10 +2027,27 @@ export const various = [
             title="Mistérios Gloriosos (Quartas e Domingos da Páscoa até ao Advento)"
             collapseClassName="text-start"
           >
-            <ItemContent className="flex flex-col mt-4">
-              <div className="flex flex-col">
-                <span>No <strong>Primeiro Mistério</strong> Glorioso contemplamos a Ressurreição de Jesus Cristo.</span>
-                <div className="flex flex-col mt-2 mb-4">
+            <ItemContent className="flex flex-col mt-4 gap-8 md:gap-16">
+              <div className="flex flex-col md:grid md:grid-cols-[auto_1fr] gap-2 md:gap-4 md:mt-4">
+                <Image
+                  src={misteriousImages[10].src}
+                  alt={misteriousImages[10].alt}
+                  width={350}
+                  height={350}
+                  className="rounded-lg object-cover shadow-lg order-2 md:col-start-1 md:row-start-1 md:row-span-5"
+                  sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                  loading="eager"
+                  objectFit="contain"
+                  draggable="false"
+                  priority
+                />
+                <p className="order-1 md:col-start-2 md:row-start-2">
+                  No <strong>Primeiro Mistério</strong> Glorioso contemplamos a Ressurreição de Nosso Senhor Jesus Cristo.
+                </p>
+                <p className="text-sm text-end sm:text-start dark:text-zinc-200 italic font-bold order-3 md:col-start-2 md:row-start-3">
+                  {misteriousImages[10].verse}
+                </p>
+                <div className="flex flex-col mt-2 order-4 md:col-start-2 md:row-start-4 md:mt-0">
                   <Link
                     href="/ajuda/oracoes/pai-nosso"
                     title="Ir para o Pai Nosso"
@@ -1802,9 +2093,26 @@ export const various = [
                 </div>
               </div>
 
-              <div className="flex flex-col">
-                <span>No <strong>Segundo Mistério</strong> Glorioso contemplamos a Ascensão de Jesus aos Céus.</span>
-                <div className="flex flex-col mt-2 mb-4">
+              <div className="flex flex-col md:grid md:grid-cols-[1fr] gap-2 md:gap-4">
+                <Image
+                  src={misteriousImages[11].src}
+                  alt={misteriousImages[11].alt}
+                  width={350}
+                  height={350}
+                  className="rounded-lg object-cover shadow-lg order-2 md:col-start-2 md:row-start-1 md:row-span-5"
+                  sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                  loading="eager"
+                  objectFit="contain"
+                  draggable="false"
+                  priority
+                />
+                <p className="order-1 md:col-start-1 md:text-end md:row-start-2">
+                  No <strong>Segundo Mistério</strong> Glorioso contemplamos a Ascensão de Nosso Senhor Jesus Cristo aos Céus.
+                </p>
+                <p className="text-sm text-end md:text-end sm:text-start dark:text-zinc-200 italic font-bold order-3 md:col-start-1 md:row-start-3">
+                  {misteriousImages[11].verse}
+                </p>
+                <div className="flex flex-col mt-2 order-4 md:col-start-1 md:row-start-4 md:text-end md:mt-0">
                   <Link
                     href="/ajuda/oracoes/pai-nosso"
                     title="Ir para o Pai Nosso"
@@ -1850,9 +2158,26 @@ export const various = [
                 </div>
               </div>
 
-              <div className="flex flex-col">
-                <span>No <strong>Terceiro Mistério</strong> Glorioso contemplamos a descida do Espírito Santo sobre Nossa Senhora e os Apóstolos no Cenáculo.</span>
-                <div className="flex flex-col mt-2 mb-4">
+              <div className="flex flex-col md:grid md:grid-cols-[auto_1fr] gap-2 md:gap-4">
+                <Image
+                  src={misteriousImages[12].src}
+                  alt={misteriousImages[12].alt}
+                  width={350}
+                  height={350}
+                  className="rounded-lg object-cover shadow-lg order-2 md:col-start-1 md:row-start-1 md:row-span-5"
+                  sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                  loading="eager"
+                  objectFit="contain"
+                  draggable="false"
+                  priority
+                />
+                <p className="order-1 md:col-start-2 md:row-start-2">
+                  No <strong>Terceiro Mistério</strong> Glorioso contemplamos a descida do Espírito Santo sobre Nossa Senhora e os Apóstolos no Santo Cenáculo.
+                </p>
+                <p className="text-sm text-end sm:text-start dark:text-zinc-200 italic font-bold order-3 md:col-start-2 md:row-start-3">
+                  {misteriousImages[12].verse}
+                </p>
+                <div className="flex flex-col mt-2 order-4 md:col-start-2 md:row-start-4 md:mt-0">
                   <Link
                     href="/ajuda/oracoes/pai-nosso"
                     title="Ir para o Pai Nosso"
@@ -1898,9 +2223,26 @@ export const various = [
                 </div>
               </div>
 
-              <div className="flex flex-col">
-                <span>No <strong>Quarto Mistério</strong> Glorioso contemplamos a Assunção de Nossa Senhora aos Céus.</span>
-                <div className="flex flex-col mt-2 mb-4">
+              <div className="flex flex-col md:grid md:grid-cols-[1fr] gap-2 md:gap-4">
+                <Image
+                  src={misteriousImages[13].src}
+                  alt={misteriousImages[13].alt}
+                  width={350}
+                  height={350}
+                  className="rounded-lg object-cover shadow-lg order-2 md:col-start-2 md:row-start-1 md:row-span-5"
+                  sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                  loading="eager"
+                  objectFit="contain"
+                  draggable="false"
+                  priority
+                />
+                <p className="order-1 md:col-start-1 md:text-end md:row-start-2">
+                  No <strong>Quarto Mistério</strong> Glorioso contemplamos a Assunção de Nossa Senhora aos Céus de corpo e alma.
+                </p>
+                <p className="text-sm text-end md:text-end sm:text-start dark:text-zinc-200 italic font-bold order-3 md:col-start-1 md:row-start-3">
+                  {misteriousImages[13].verse}
+                </p>
+                <div className="flex flex-col mt-2 order-4 md:col-start-1 md:row-start-4 md:text-end md:mt-0">
                   <Link
                     href="/ajuda/oracoes/pai-nosso"
                     title="Ir para o Pai Nosso"
@@ -1946,9 +2288,26 @@ export const various = [
                 </div>
               </div>
 
-              <div className="flex flex-col">
-                <span>No <strong>Quinto Mistério</strong> Glorioso contemplamos a gloriosa coroação de Maria Santíssima como Rainha do Céu e da Terra.</span>
-                <div className="flex flex-col mt-2 mb-4">
+              <div className="flex flex-col md:grid md:grid-cols-[auto_1fr] gap-2 md:gap-4">
+                <Image
+                  src={misteriousImages[14].src}
+                  alt={misteriousImages[14].alt}
+                  width={350}
+                  height={350}
+                  className="rounded-lg object-cover shadow-lg order-2 md:col-start-1 md:row-start-1 md:row-span-5"
+                  sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                  loading="eager"
+                  objectFit="contain"
+                  draggable="false"
+                  priority
+                />
+                <p className="order-1 md:col-start-2 md:row-start-2">
+                  No <strong>Quinto Mistério</strong> Glorioso contemplamos a gloriosa coroação de Nossa Senhora Maria Santíssima como Rainha do Céu e da Terra dos Anjos e dos Homens.
+                </p>
+                <p className="text-sm text-end sm:text-start dark:text-zinc-200 italic font-bold order-3 md:col-start-2 md:row-start-3">
+                  {misteriousImages[14].verse}
+                </p>
+                <div className="flex flex-col mt-2 order-4 md:col-start-2 md:row-start-4 md:mt-0">
                   <Link
                     href="/ajuda/oracoes/pai-nosso"
                     title="Ir para o Pai Nosso"
@@ -2000,10 +2359,27 @@ export const various = [
             title="Mistérios Luminosos (Quinta-feira)"
             collapseClassName="text-start"
           >
-            <ItemContent className="flex flex-col mt-4">
-              <div className="flex flex-col">
-                <span>No <strong>Primeiro Mistério</strong> Luminoso contemplamos o Batismo de Jesus.</span>
-                <div className="flex flex-col mt-2 mb-4">
+            <ItemContent className="flex flex-col mt-4 gap-8 md:gap-16">
+              <div className="flex flex-col md:grid md:grid-cols-[auto_1fr] gap-2 md:gap-4 md:mt-4">
+                <Image
+                  src={misteriousImages[15].src}
+                  alt={misteriousImages[15].alt}
+                  width={350}
+                  height={350}
+                  className="rounded-lg object-cover shadow-lg order-2 md:col-start-1 md:row-start-1 md:row-span-5"
+                  sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                  loading="eager"
+                  objectFit="contain"
+                  draggable="false"
+                  priority
+                />
+                <p className="order-1 md:col-start-2 md:row-start-2">
+                  No <strong>Primeiro Mistério</strong> Luminoso contemplamos o Batismo de Nosso Senhor Jesus Cristo no rio Jordão.
+                </p>
+                <p className="text-sm text-end sm:text-start dark:text-zinc-200 italic font-bold order-3 md:col-start-2 md:row-start-3">
+                  {misteriousImages[15].verse}
+                </p>
+                <div className="flex flex-col mt-2 order-4 md:col-start-2 md:row-start-4 md:mt-0">
                   <Link
                     href="/ajuda/oracoes/pai-nosso"
                     title="Ir para o Pai Nosso"
@@ -2049,9 +2425,26 @@ export const various = [
                 </div>
               </div>
 
-              <div className="flex flex-col">
-                <span>No <strong>Segundo Mistério</strong> Luminoso contemplamos a auto-revelação nas Bodas de Caná.</span>
-                <div className="flex flex-col mt-2 mb-4">
+              <div className="flex flex-col md:grid md:grid-cols-[1fr] gap-2 md:gap-4">
+                <Image
+                  src={misteriousImages[16].src}
+                  alt={misteriousImages[16].alt}
+                  width={350}
+                  height={350}
+                  className="rounded-lg object-cover shadow-lg order-2 md:col-start-2 md:row-start-1 md:row-span-5"
+                  sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                  loading="eager"
+                  objectFit="contain"
+                  draggable="false"
+                  priority
+                />
+                <p className="order-1 md:col-start-1 md:text-end md:row-start-2">
+                  No <strong>Segundo Mistério</strong> Luminoso contemplamos o Primeiro milagre de Nosso Senhor Jesus Cristo transformando a água em vinho nas bodas de Caaná.
+                </p>
+                <p className="text-sm text-end md:text-end sm:text-start dark:text-zinc-200 italic font-bold order-3 md:col-start-1 md:row-start-3">
+                  {misteriousImages[16].verse}
+                </p>
+                <div className="flex flex-col mt-2 order-4 md:col-start-1 md:row-start-4 md:text-end md:mt-0">
                   <Link
                     href="/ajuda/oracoes/pai-nosso"
                     title="Ir para o Pai Nosso"
@@ -2097,9 +2490,26 @@ export const various = [
                 </div>
               </div>
 
-              <div className="flex flex-col">
-                <span>No <strong>Terceiro Mistério</strong> Luminoso contemplamos o Anúncio do Reino de Deus convidando à conversão.</span>
-                <div className="flex flex-col mt-2 mb-4">
+              <div className="flex flex-col md:grid md:grid-cols-[auto_1fr] gap-2 md:gap-4">
+                <Image
+                  src={misteriousImages[17].src}
+                  alt={misteriousImages[17].alt}
+                  width={350}
+                  height={350}
+                  className="rounded-lg object-cover shadow-lg order-2 md:col-start-1 md:row-start-1 md:row-span-5"
+                  sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                  loading="eager"
+                  objectFit="contain"
+                  draggable="false"
+                  priority
+                />
+                <p className="order-1 md:col-start-2 md:row-start-2">
+                  No <strong>Terceiro Mistério</strong> Luminoso contemplamos o Anúncio do Reino de Deus e o convite à conversão.
+                </p>
+                <p className="text-sm text-end sm:text-start dark:text-zinc-200 italic font-bold order-3 md:col-start-2 md:row-start-3">
+                  {misteriousImages[17].verse}
+                </p>
+                <div className="flex flex-col mt-2 order-4 md:col-start-2 md:row-start-4 md:mt-0">
                   <Link
                     href="/ajuda/oracoes/pai-nosso"
                     title="Ir para o Pai Nosso"
@@ -2145,9 +2555,26 @@ export const various = [
                 </div>
               </div>
 
-              <div className="flex flex-col">
-                <span>No <strong>Quarto Mistério</strong> Luminoso contemplamos a Transfiguração de Jesus.</span>
-                <div className="flex flex-col mt-2 mb-4">
+              <div className="flex flex-col md:grid md:grid-cols-[1fr] gap-2 md:gap-4">
+                <Image
+                  src={misteriousImages[18].src}
+                  alt={misteriousImages[18].alt}
+                  width={350}
+                  height={350}
+                  className="rounded-lg object-cover shadow-lg order-2 md:col-start-2 md:row-start-1 md:row-span-5"
+                  sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                  loading="eager"
+                  objectFit="contain"
+                  draggable="false"
+                  priority
+                />
+                <p className="order-1 md:col-start-1 md:text-end md:row-start-2">
+                  No <strong>Quarto Mistério</strong> Luminoso contemplamos a Transfiguração de Nosso Senhor Jesus Cristo no Monte Thabor.
+                </p>
+                <p className="text-sm text-end md:text-end sm:text-start dark:text-zinc-200 italic font-bold order-3 md:col-start-1 md:row-start-3">
+                  {misteriousImages[18].verse}
+                </p>
+                <div className="flex flex-col mt-2 order-4 md:col-start-1 md:row-start-4 md:text-end md:mt-0">
                   <Link
                     href="/ajuda/oracoes/pai-nosso"
                     title="Ir para o Pai Nosso"
@@ -2193,9 +2620,26 @@ export const various = [
                 </div>
               </div>
 
-              <div className="flex flex-col">
-                <span>No <strong>Quinto Mistério</strong> Luminoso contemplamos a instituição da Eucaristia.</span>
-                <div className="flex flex-col mt-2 mb-4">
+              <div className="flex flex-col md:grid md:grid-cols-[auto_1fr] gap-2 md:gap-4">
+                <Image
+                  src={misteriousImages[19].src}
+                  alt={misteriousImages[19].alt}
+                  width={350}
+                  height={350}
+                  className="rounded-lg object-cover shadow-lg order-2 md:col-start-1 md:row-start-1 md:row-span-5"
+                  sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                  loading="eager"
+                  objectFit="contain"
+                  draggable="false"
+                  priority
+                />
+                <p className="order-1 md:col-start-2 md:row-start-2">
+                  No <strong>Quinto Mistério</strong> Luminoso contemplamos a Instituição da Eucaristia na Última Ceia.
+                </p>
+                <p className="text-sm text-end sm:text-start dark:text-zinc-200 italic font-bold order-3 md:col-start-2 md:row-start-3">
+                  {misteriousImages[19].verse}
+                </p>
+                <div className="flex flex-col mt-2 order-4 md:col-start-2 md:row-start-4 md:mt-0">
                   <Link
                     href="/ajuda/oracoes/pai-nosso"
                     title="Ir para o Pai Nosso"
@@ -2244,7 +2688,7 @@ export const various = [
           </ItemCollapse>
         </div>
 
-        <div className="flex flex-col mt-4">
+        <div className="flex flex-col mt-8 dark:text-details dark:font-bold">
           <p>
             {`Infinitas graças vos damos, soberana Rainha, 
             pelos benefícios que recebemos todos os dias de vossas mãos liberais, 
@@ -2254,12 +2698,14 @@ export const various = [
           <Link
             href="/ajuda/oracoes/salve-rainha"
             title="Ir para a Salve Rainha"
-            className="italic hover:underline mt-2"  
+            className="italic hover:underline mt-2 dark:font-black"  
           >
             Salve Rainha...
           </Link>
 
-          <p className="font-medium mt-4">Amém.</p>
+          <p className="font-medium dark:font-bold mt-4">
+            Amém.
+          </p>
         </div>
       </div>
     )

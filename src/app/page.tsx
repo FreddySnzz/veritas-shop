@@ -22,7 +22,7 @@ export default async function Home() {
   const availableImages = images?.filter((img: CatalogImageModel) => img.available);
 
   return (
-    <div className="flex flex-col h-dvh overflow-y-auto bg-background-alternative">
+    <div className="flex flex-col h-dvh overflow-y-auto bg-background-alternative dark:bg-background-dark">
       <Header 
         mode="user" 
         search 

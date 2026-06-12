@@ -11,6 +11,7 @@ import { FloatAddButton } from "../buttons/AddButton";
 import { SearchbarInput } from "../inputs/SearchbarInput";
 import { startTransition, useEffect, useMemo, useState } from "react";
 import { BookCopy, ListFilter, Plus, Trash, X } from "lucide-react";
+import { RiCheckboxMultipleLine } from "react-icons/ri";
 import { CustomButton } from "../buttons/CustomButton";
 import { useRouter } from "next/navigation";
 import { DesktopSidePanel } from "../DesktopSidePanel";
@@ -26,7 +27,10 @@ import {
 } from "../ui/select";
 import { Label } from "../ui/label";
 import { toast } from "sonner";
-import { copyCustomizationItemsAction, deleteCustomizationItemAction } from "@/app/actions/customizationItems.action";
+import { 
+  copyCustomizationItemsAction, 
+  deleteCustomizationItemAction 
+} from "@/app/actions/customizationItems.action";
 import { Input } from "../ui/input";
 
 interface ManageCustomizationItemsLayoutProps {
@@ -182,6 +186,14 @@ export default function ManageCustomizationItemsLayout({
     }
   };
 
+  const toggleSelectAllItems = () => {
+    if (selectedItems.length === filteredItems.length) {
+      setSelectedItems([]);
+    } else {
+      setSelectedItems(filteredItems.map((item) => item.id));
+    };
+  };
+
   const handleCopyItems = async () => {
     setIsLoading(true);
 
@@ -265,6 +277,7 @@ export default function ManageCustomizationItemsLayout({
             onClick={() => router.push('/admin/estoques/itens-personalizacao/adicionar')}
             className={`hidden lg:flex lg:flex-row py-2 lg:px-8 rounded-lg shadow-xs
               bg-primary text-white hover:bg-primary/90 font-bold text-base
+              dark:bg-details dark:hover:bg-details/80
             `}
           >
             <Plus className="w-6 h-6" />
@@ -274,7 +287,9 @@ export default function ManageCustomizationItemsLayout({
           <CustomButton
             onClick={() => setIsOpenCopyModal(true)}
             className={`hidden lg:flex lg:flex-row py-2 lg:px-8 rounded-lg shadow-xs
-            bg-gray-300 text-secondary hover:bg-gray-400/60 font-bold text-sm border`}
+            bg-gray-300 text-secondary hover:bg-gray-400/60 font-bold text-sm border
+            transition-colors dark:bg-zinc-900 dark:border-none
+            `}
           >
             <BookCopy className="w-5 h-5" />
             <span>Copiar Itens de Personalização</span>
@@ -282,12 +297,31 @@ export default function ManageCustomizationItemsLayout({
 
           <CustomButton
             onClick={() => setIsOpenDeleteModal(true)}
-            className={`hidden ${selectedItems.length > 0 && 'lg:flex'} lg:flex-row items-center py-2 lg:px-8 rounded-lg font-medium gap-2
-              bg-red-400 text-white hover:bg-red-500 transition-colors
+            className={`hidden ${selectedItems.length > 0 && 'lg:flex'} 
+              lg:flex-row items-center py-2 lg:px-8 rounded-lg font-medium gap-2
+              bg-red-400 text-white hover:bg-red-500 transition-all
+              dark:bg-red-500 dark:hover:bg-red-600
             `}
           >
             <Trash className="w-4 h-4" />
-            <span>{isLoading ? 'Deletando' : 'Deletar'} {selectedItems.length} {selectedItems.length > 1 ? 'itens' : 'item'}</span>
+            <p>
+              {isLoading ? 'Deletando' : 'Deletar'} {selectedItems.length} {selectedItems.length > 1 ? 'itens' : 'item'}
+            </p>
+          </CustomButton>
+
+          {/* TODO: Add ao mobile */}
+          <CustomButton
+            onClick={() => toggleSelectAllItems()}
+            className={`hidden ${selectedItems.length > 0 && 'lg:flex'}
+              lg:flex-row py-2 lg:px-8 rounded-lg shadow-xs
+              bg-gray-300 text-secondary hover:bg-gray-400/60 font-bold text-sm border
+              transition-all dark:bg-zinc-900 dark:border-none
+            `}
+          >
+            <RiCheckboxMultipleLine className="w-4 h-4" />
+            <p>
+              {selectedItems.length === customizationItems.length ? 'Desmarcar todos os itens' : 'Selecionar todos'}
+            </p>
           </CustomButton>
           
           <DesktopSidePanel 
@@ -312,6 +346,7 @@ export default function ManageCustomizationItemsLayout({
           </DesktopSidePanel>
         </div>
 
+        {/* Tela mobile */}
         <div className={`flex flex-col flex-1 min-h-0 
           gap-4 overflow-y-auto scrollbar-hide content-start pb-4`}
         >
@@ -322,7 +357,7 @@ export default function ManageCustomizationItemsLayout({
             />
           </div>
 
-          <div className="flex lg:hidden w-full items-center justify-end gap-1 md:gap-3 mt-2">
+          <div className="flex lg:hidden w-full items-center justify-end gap-1 md:gap-2 mt-2">
             <div className="relative flex items-center grow gap-2">
               <SearchbarInput
                 searchbarPlaceholder="Pesquise por nome, estilo, categoria ou referência"
@@ -350,7 +385,9 @@ export default function ManageCustomizationItemsLayout({
               aria-label="Filtrar"
               title="Filtrar"
               onClick={() => setIsOpenFilterModal(true)}
-              className="bg-white rounded-lg shadow-xs cursor-pointer h-9 w-12 flex items-center justify-center"
+              className={`bg-white hover:bg-gray-50 dark:bg-input/50 dark:hover:bg-input/70 
+                rounded-lg shadow-xs cursor-pointer h-9 w-12 flex items-center justify-center transition-all
+              `}
             >
               <ListFilter className="w-6 h-6 text-secondary" />
             </button>
@@ -360,10 +397,26 @@ export default function ManageCustomizationItemsLayout({
               aria-label="Copiar Itens"
               title="Copiar Itens"
               onClick={() => setIsOpenCopyModal(true)}
-              className="bg-white rounded-lg shadow-xs cursor-pointer h-9 w-12 flex items-center justify-center"
+              className={`bg-white hover:bg-gray-50 dark:bg-input/50 dark:hover:bg-input/70 
+                rounded-lg shadow-xs cursor-pointer h-9 w-12 flex items-center justify-center transition-all
+              `}
             >
               <BookCopy className="w-6 h-6 text-secondary" />
             </button>
+
+            <div className={`${selectedItems.length < 0 && 'md:hidden'}`}>
+              <button
+                type="button"
+                aria-label="Selecionar todos os itens"
+                title="Selecionar todos os itens"
+                onClick={() => toggleSelectAllItems()}
+                className={`bg-white hover:bg-gray-50 dark:bg-input/50 dark:hover:bg-input/70 
+                  rounded-lg shadow-xs cursor-pointer h-9 w-12 flex items-center justify-center transition-all
+                `}
+              >
+                <RiCheckboxMultipleLine className="w-6 h-6 text-secondary" />
+              </button>
+            </div>
 
             <div className={`hidden ${selectedItems.length > 0 && 'md:flex'}`}>
               <button
@@ -371,7 +424,9 @@ export default function ManageCustomizationItemsLayout({
                 aria-label="Deletar Itens"
                 title="Deletar Itens"
                 onClick={() => setIsOpenDeleteModal(true)}
-                className="bg-red-400 rounded-lg shadow-xs cursor-pointer h-9 w-12 flex items-center justify-center"
+                className={`bg-red-400 hover:bg-red-500 rounded-lg shadow-xs cursor-pointer 
+                  h-9 w-12 flex items-center justify-center transition-all
+                `}
               >
                 <Trash className="w-6 h-6 text-white" />
               </button>
@@ -382,6 +437,7 @@ export default function ManageCustomizationItemsLayout({
                 onClick={() => router.push('/admin/estoques/itens-personalizacao/adicionar')}
                 className={`hidden md:flex lg:flex-row py-2 lg:px-8 rounded-lg shadow-xs
                   bg-primary text-white hover:bg-primary/90 font-bold text-base
+                  dark:bg-details dark:hover:bg-details/80
                 `}
               >
                 <Plus className="w-6 h-6" />
@@ -390,24 +446,34 @@ export default function ManageCustomizationItemsLayout({
             </div>
           </div>
 
-          {customizationItems.length === 0 ? (
+          { hasActiveFilters && filteredItems.length === 0 ? (
             <div className={`flex flex-col w-full h-[55vh] gap-4 
-              items-center justify-center text-gray-400`}
+              items-center justify-center text-gray-400 dark:text-zinc-500`}
             >
-              <div className="flex flex-col items-center justify-center">
-                <span>Nenhum item de personalização encontrado.</span>
-                <span className="font-bold text-sm">
-                  {`Adicione um novo item no botão "Adicionar".`}
-                </span>
+              <div className="flex flex-col text-center items-center justify-center">
+                { hasActiveFilters ? (
+                  <>
+                    <p className="text-sm font-bold">
+                      Nenhum item de personalização encontrado com os filtros atuais.
+                    </p>
+                    <p className="text-sm">
+                      Limpe os filtros ou adicione um novo item.
+                    </p>
+                  </>
+                ) : (
+                  <p className="font-bold text-sm">
+                    Adicione um novo item no botão "Adicionar".
+                  </p>
+                )}
               </div>
             </div>
           ) : (
             <>
-              <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-2">
+              <div className="grid grid-cols-1 md:grid-cols-2 2xl:grid-cols-3 gap-2">
                 {filteredItems.map((item) => (
                   <CardButton
                     key={item.id}
-                    className="bg-white"
+                    className="bg-white dark:bg-input/50 dark:border-zinc-700 dark:hover:bg-input/70 transition-colors"
                     pushRoute={`/admin/estoques/itens-personalizacao/editar/${item.id}`}
                   >
                     {item.image_url ? (
@@ -424,7 +490,7 @@ export default function ManageCustomizationItemsLayout({
                       </div>
                     ) : (
                       <div
-                        className="shrink-0 flex items-center justify-center w-25 h-25 rounded-2xl bg-gray-200"
+                        className="shrink-0 flex items-center justify-center w-25 h-25 rounded-2xl bg-gray-200 dark:bg-input/50"
                         style={{ backgroundColor: item.metadata?.color }}
                       >
                         <span className="text-sm text-secondary px-2 text-center font-medium">
@@ -434,18 +500,22 @@ export default function ManageCustomizationItemsLayout({
                     )}
 
                     <div className="flex flex-col ml-4 gap-1 w-full overflow-hidden">
-                      <p className="text-sm font-bold truncate text-secondary">
+                      <p className="text-sm font-bold truncate text-secondary dark:text-zinc-50">
                         <span>{item.name}</span>
                         {item.metadata?.style && (
                           <span> - {item.metadata.style}</span>
                         )}
                       </p>
 
-                      <div className="flex flex-col text-xs text-gray-400 mt-1">
-                        <span className="truncate">Ref: {item.ref}</span>
-                        <span className="truncate">Categoria: {formatAndCapitalize(item.category)}</span>
+                      <div className="flex flex-col text-xs text-gray-400 dark:text-zinc-400 mt-1">
+                        <p className="truncate">
+                          Ref: {item.ref}
+                        </p>
+                        <p className="truncate">
+                          Categoria: {formatAndCapitalize(item.category)}
+                        </p>
                         {item?.price_addon ? (
-                          <span className="truncate">
+                          <span className="truncate dark:font-bold dark:text-zinc-200">
                             Preço adicional: {formatCurrency(item?.price_addon)}
                           </span>
                         ) : ' '}
@@ -475,7 +545,7 @@ export default function ManageCustomizationItemsLayout({
                             checked={selectedItems.includes(item.id)}
                             onClick={(e) => e.stopPropagation()}
                             onChange={() => handleToggleItem(item.id)}
-                            className={`h-4 w-4 cursor-pointer accent-primary`}
+                            className={`h-4 w-4 cursor-pointer accent-primary dark:accent-details`}
                           />
                         </div>
                       </div>
@@ -515,17 +585,21 @@ export default function ManageCustomizationItemsLayout({
       <CustomModal
         title="Copiar Itens"
         modalOpen={isOpenCopyModal}
-        onClose={() => setIsOpenCopyModal(false)}
+        onClose={() => {
+          setIsOpenCopyModal(false),
+          setSelectedCategoryToCopy('');
+          setSelectedCategory('');
+        }}
       >
         <div className="flex flex-col w-full">
-          <p className="text-xs text-gray-400">
+          <p className="text-xs text-gray-400 dark:text-zinc-500">
             Copiar itens de personalização de uma categoria para outra.
           </p>
 
           <div className="flex flex-col mt-4">
             <Label
               htmlFor="copy-category-id"
-              className="block text-xs font-semibold text-gray-500"
+              className="block text-xs font-semibold text-gray-500 dark:text-zinc-200"
             >
               Categoria de Origem
             </Label>
@@ -536,7 +610,7 @@ export default function ManageCustomizationItemsLayout({
             >
               <SelectTrigger 
                 className={`flex w-full items-center justify-between gap-2 rounded-lg px-4 mt-2
-                  bg-white text-sm text-secondary transition-colors hover:bg-gray-50 
+                  bg-white text-sm text-secondary dark:text-zinc-200 transition-colors hover:bg-gray-50 
                   focus-visible:ring-0 focus-visible:ring-offset-transparent focus-visible:ring-primary`}
                 >
                 <SelectValue placeholder="Selecione uma categoria" />
@@ -559,7 +633,7 @@ export default function ManageCustomizationItemsLayout({
           <div className="flex flex-col mt-4">
             <Label
               htmlFor="copy-category-id"
-              className="block text-xs font-semibold text-gray-500"
+              className="block text-xs font-semibold text-gray-500 dark:text-zinc-200"
             >
               Categoria de Destino
             </Label>
@@ -596,6 +670,7 @@ export default function ManageCustomizationItemsLayout({
               disabled={isLoading}
               className={`flex w-full px-4 py-2 lg:py-5 rounded-lg items-center justify-center font-medium cursor-pointer
                 bg-primary text-white hover:bg-primary/90 disabled:opacity-70 disabled:cursor-not-allowed
+                transition-colors dark:bg-details dark:hover:bg-details/80
               `}
             >
               {isLoading ? (
@@ -615,12 +690,12 @@ export default function ManageCustomizationItemsLayout({
         onClose={() => setIsOpenDeleteModal(false)}
       >
         <div className="flex flex-col items-center justify-center p-2">
-          <span className="font-bold text-center">
+          <p className="font-bold text-center dark:text-zinc-50">
             Tem certeza que deseja remover {selectedItems.length > 1 ? 'estes' : 'este' } {selectedItems.length > 1 ? 'itens' : 'item'}?
-          </span>
-          <span className="text-xs font-light text-red-600">
+          </p>
+          <p className="text-xs font-light text-red-600 dark:text-red-400">
             Essa ação não pode ser desfeita.
-          </span>
+          </p>
         </div>
 
         <div className="grid grid-cols-2 gap-4">
@@ -629,7 +704,8 @@ export default function ManageCustomizationItemsLayout({
             aria-label="Cancelar"
             onClick={() => setIsOpenDeleteModal(false)}
             className={`flex gap-2 items-center justify-center px-4 py-2 rounded-lg cursor-pointer
-              bg-gray-100 text-secondary hover:bg-gray-200 transition-colors font-medium
+              bg-gray-100 text-secondary dark:text-zinc-200 hover:bg-gray-200 transition-colors font-medium
+              dark:bg-zinc-800 dark:border-0 dark:hover:bg-zinc-950/15
               disabled:opacity-50
             `}
             disabled={isLoading}
@@ -643,6 +719,7 @@ export default function ManageCustomizationItemsLayout({
             onClick={() => handleDeleteItems(selectedItems)}
             className={`flex gap-2 items-center justify-center px-4 py-2 rounded-lg cursor-pointer
               bg-primary text-white hover:bg-primary/90 transition-colors font-medium
+              dark:bg-red-500 dark:hover:bg-red-600
               disabled:opacity-50
             `}
             disabled={isLoading}
@@ -652,20 +729,22 @@ export default function ManageCustomizationItemsLayout({
         </div>
       </CustomModal>
 
-      <div className="shrink-0 md:hidden mt-auto bg-background-alternative z-10">
+      <div className="shrink-0 md:hidden mt-auto bg-background-alternative dark:bg-input/0 z-10">
         <hr className="border-muted-foreground/50 my-2" />
-        <div className="flex flex-col gap-4">
+        <div className="flex flex-col gap-2">
           <div className={`${selectedItems.length === 0 && 'hidden'} transition-all`}>
             <CustomButton
               onClick={() => setIsOpenDeleteModal(true)}
               className={`flex items-center px-4 py-3 rounded-lg font-medium gap-2
-                bg-red-400 text-white hover:bg-red-500 transition-colors
+                bg-red-400 text-white hover:bg-red-500 transition-all
+                dark:bg-red-500 dark:hover:bg-red-600
               `}
             >
               <Trash className="w-4 h-4" />
               <span>{isLoading ? 'Deletando' : 'Deletar'} {selectedItems.length} {selectedItems.length > 1 ? 'itens' : 'item'}</span>
             </CustomButton>
           </div>
+
           <BackButton backRoute />
         </div>
       </div>

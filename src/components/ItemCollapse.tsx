@@ -30,7 +30,7 @@ export default function ItemCollapse({
         className={`flex w-full items-center justify-between cursor-pointer focus:outline-none ${collapseClassName}`}
         aria-expanded={expanded}
       >
-        <span className={cn(`font-bold text-secondary ${titleClassName}`)}>
+        <span className={cn(`font-bold text-secondary dark:text-zinc-200 ${titleClassName}`)}>
           {title}
         </span>
         <motion.div

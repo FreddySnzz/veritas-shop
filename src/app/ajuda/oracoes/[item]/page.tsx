@@ -29,7 +29,7 @@ export default async function PrayPage({ params }: PageProps) {
   };
 
   return (
-    <div className="flex flex-col h-dvh overflow-y-auto bg-background-alternative">
+    <div className="flex flex-col h-dvh overflow-y-auto bg-background-alternative dark:bg-background-dark">
       <Header mode="user" />
       <main className="flex-1 flex flex-col px-8 md:px-12 lg:px-32">
         <div className="shrink-0 mb-8">

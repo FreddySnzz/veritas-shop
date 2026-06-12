@@ -45,13 +45,13 @@ export default function DeleteItemCartModal({
     >
       <div 
         onClick={(e) => e.stopPropagation()}
-        className="flex flex-col gap-4 w-full max-w-md bg-white p-6 rounded-lg shadow-xl"
+        className="flex flex-col gap-4 w-full max-w-md bg-white dark:bg-background-dark p-6 rounded-lg shadow-xl"
       >
         <div className="flex flex-col items-center justify-center gap-2 mb-4">
           <span className="font-bold text-center">
             Tem certeza que deseja remover esse item do carrinho?
           </span>
-          <span className="text-xs font-light text-red-600">
+          <span className="text-xs font-light dark:font-normal text-red-600 dark:text-red-500">
             Essa ação não pode ser desfeita.
           </span>
         </div>
@@ -59,7 +59,8 @@ export default function DeleteItemCartModal({
           <div 
             onClick={onClose}
             className={`flex gap-2 items-center justify-center px-4 py-2 rounded-lg cursor-pointer
-              bg-gray-100 text-secondary hover:bg-gray-200 transition-colors font-medium
+              bg-gray-100 dark:bg-zinc-800 text-secondary hover:bg-gray-200 dark:hover:bg-zinc-900/40 
+              dark:text-zinc-200 transition-colors font-medium
             `}
           >
             <span>Cancelar</span>
@@ -68,7 +69,8 @@ export default function DeleteItemCartModal({
           <div 
             onClick={() => handleDelete(cartId)}
             className={`flex gap-2 items-center justify-center px-4 py-2 rounded-lg cursor-pointer
-              bg-primary text-white hover:bg-primary/90 transition-colors font-medium
+              bg-primary dark:bg-red-500 text-white hover:bg-primary/90 dark:hover:bg-red-600/80 
+              transition-colors font-medium
             `}
           >
             {isLoading ? (

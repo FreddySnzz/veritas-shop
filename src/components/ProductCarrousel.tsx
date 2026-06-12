@@ -117,7 +117,7 @@ export default function ProductCarrousel({
         ref={containerRef}
         className={`relative w-full 
           ${gridMode ? 'md:h-auto' : 'h-[50vh]'} 
-          ${!gridMode ? 'h-[50vh]' : ''}
+          ${!gridMode ? 'h-[50vh] lg:h-[75vh]' : ''}
         `}
         onTouchStart={handleTouchStart}
         onTouchMove={handleTouchMove}
@@ -153,7 +153,7 @@ export default function ProductCarrousel({
                   draggable={false}
                   sizes="(max-width: 768px) 100vw, (max-width: 1200px) 25vw, 20vw"
                   className={`object-cover ${gridMode ? 
-                    'md:object-cover' : 'lg:object-contain'} 
+                    'md:object-cover' : 'sm:object-contain'} 
                   `}
                 />
               </div>

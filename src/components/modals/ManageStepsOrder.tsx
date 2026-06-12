@@ -101,7 +101,8 @@ export default function ManageStepsOrderModal({
           {...listeners}
           disabled={loading}
           style={{ touchAction: 'manipulation' }}
-          className={`rounded-full text-gray-700 hover:bg-gray-50/50 
+          className={`rounded-full text-gray-700 dark:text-zinc-500 hover:bg-gray-50/50 
+            dark:hover:bg-zinc-900/50
             cursor-grab active:cursor-grabbing disabled:cursor-not-allowed disabled:opacity-50
           `}
         >
@@ -109,10 +110,12 @@ export default function ManageStepsOrderModal({
         </button>
 
         <div className="flex flex-col">
-          <span className="font-medium text-gray-900">{item.name}</span>
-          <span className="text-xs text-gray-500">
+          <p className="font-medium text-gray-900 dark:text-details dark:font-bold">
+            {item.name}
+          </p>
+          <p className="text-xs text-gray-500 dark:text-zinc-600">
             Ordem/Passo atual: {item.display_order}º
-          </span>
+          </p>
         </div>
       </div>
     );
@@ -159,8 +162,8 @@ export default function ManageStepsOrderModal({
       className="overflow-hidden"
     >
       <div className="shrink-0 flex w-full flex-col justify-center">
-        <div className="flex items-center justify-between border-b border-gray-100 pb-2">
-          <h2 className="text-lg font-bold text-gray-800">
+        <div className="flex items-center justify-between border-b border-gray-100 dark:border-zinc-700 pb-2">
+          <h2 className="text-lg font-bold text-gray-800 dark:text-zinc-50">
             Ordenar Passos na Personalização de Produtos
           </h2>
           <button
@@ -171,11 +174,11 @@ export default function ManageStepsOrderModal({
             disabled={loading}
             className="cursor-pointer disabled:opacity-50"
           >
-            <X className="h-5 w-5 text-gray-500 transition-colors hover:text-gray-400" />
+            <X className="h-5 w-5 text-gray-500 dark:text-zinc-200 transition-colors hover:text-gray-400" />
           </button>
         </div>
 
-        <span className="mt-2 text-xs text-gray-400">
+        <span className="mt-2 text-xs text-gray-400 dark:text-zinc-500">
           Arraste os passos de personalização para definir a ordem exibida.
         </span>
       </div>
@@ -196,7 +199,10 @@ export default function ManageStepsOrderModal({
           >
             <div className="space-y-2">
               {items.map((item) => (
-                <SortableRow key={item.id} item={item} />
+                <SortableRow 
+                  key={item.id}   
+                  item={item} 
+                />
               ))}
             </div>
           </SortableContext>
@@ -210,7 +216,11 @@ export default function ManageStepsOrderModal({
             type="button"
             onClick={onClose}
             disabled={loading}
-            className="flex w-full items-center justify-center rounded-lg bg-gray-50 px-4 py-2 font-medium cursor-pointer hover:bg-primary/10 disabled:opacity-50"
+            className={`flex w-full items-center justify-center rounded-lg 
+              bg-gray-50 px-4 py-2 font-medium cursor-pointer hover:bg-primary/10 
+              dark:bg-zinc-800 dark:hover:bg-zinc-950/15 transition-colors
+              disabled:opacity-50
+            `}
           >
             <span>Cancelar</span>
           </button>
@@ -219,7 +229,10 @@ export default function ManageStepsOrderModal({
             type="button"
             onClick={handleSaveOrder}
             disabled={loading}
-            className="flex w-full items-center justify-center rounded-lg bg-primary px-4 py-2 font-medium text-white cursor-pointer transition-all hover:bg-primary/90 disabled:opacity-50"
+            className={`flex w-full items-center justify-center rounded-lg bg-primary px-4 py-2 font-medium 
+              dark:bg-details dark:hover:bg-details/80
+              text-white cursor-pointer transition-all hover:bg-primary/90 disabled:opacity-50
+            `}
           >
             <span>{loading ? 'Salvando...' : 'Salvar Ordem'}</span>
           </button>

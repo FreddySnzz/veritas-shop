@@ -29,7 +29,7 @@ export default async function AddProductCatalogPage({ params }: PageProps) {
   };
 
   return (
-    <div className="flex flex-col h-dvh overflow-y-auto bg-background-alternative">
+    <div className="flex flex-col h-dvh overflow-y-auto bg-background-alternative dark:bg-background-dark">
       <Header 
         mode="user" 
         search 

@@ -27,7 +27,7 @@ export default function CatalogLayout({
         </div>
       ) : (
         <>
-          <p className={`font-bold text-center text-secondary
+          <p className={`font-bold text-center text-secondary dark:text-zinc-200 
             md:text-start md:uppercase my-4`}
           >
             Confira nossos produtos

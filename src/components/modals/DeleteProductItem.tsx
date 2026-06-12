@@ -48,36 +48,38 @@ export default function DeleteProductItemModal({
     >
       <div 
         onClick={(e) => e.stopPropagation()}
-        className="flex flex-col gap-4 w-full max-w-md bg-white p-6 rounded-lg shadow-xl"
+        className="flex flex-col gap-4 w-full max-w-md bg-white dark:bg-zinc-800 p-6 rounded-lg shadow-xl"
       >
         <div className="flex flex-col items-center justify-center gap-2 mb-4">
-          <span className="font-bold text-center">
+          <p className="font-bold text-center dark:text-zinc-50">
             Tem certeza que deseja remover esse produto do catálogo?
-          </span>
-          <span className="text-xs font-light text-red-600">
+          </p>
+          <p className="text-xs font-light text-red-600 dark:text-red-400">
             Essa ação não pode ser desfeita.
-          </span>
+          </p>
         </div>
         <div className="grid grid-cols-2 gap-4">
           <div 
             onClick={onClose}
             className={`flex gap-2 items-center justify-center px-4 py-2 rounded-lg cursor-pointer
-              bg-gray-100 text-secondary hover:bg-gray-200 transition-colors font-medium
+              bg-gray-100 text-secondary dark:text-zinc-50 hover:bg-gray-200 transition-colors font-medium
+              dark:bg-zinc-800 dark:border-0 dark:hover:bg-zinc-950/15
             `}
           >
-            <span>Cancelar</span>
+            <p>Cancelar</p>
           </div>
 
           <div 
             onClick={() => handleDelete(productId)}
             className={`flex gap-2 items-center justify-center px-4 py-2 rounded-lg cursor-pointer
               bg-primary text-white hover:bg-primary/90 transition-colors font-medium
+              dark:bg-red-500 dark:hover:bg-red-600
             `}
           >
             {isLoading ? (
-              <span>Deletando...</span>
+              <p>Deletando...</p>
             ) : (
-              <span>Deletar</span>
+              <p>Deletar</p>
             )}
           </div>
         </div>

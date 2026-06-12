@@ -92,14 +92,14 @@ export default function Cart({
     return (
       <div className="hidden md:flex flex-col w-full lg:w-1/3 pl-16">
       <div className="flex-1 flex-col">
-        <span className="font-bold text-2xl text-secondary uppercase">
+        <span className="font-bold text-2xl text-secondary dark:text-zinc-50 uppercase">
           Resumo do Pedido
         </span>
 
         <Alert 
           title="Lembre-se que o valor mostrado é apenas uma estimativa."
           subtitle="O valor real será confirmado na finalização do pedido com nosso atendimento."
-          className="flex font-medium my-2"
+          className="flex font-medium my-2 dark:bg-input/50"
         />
 
         <div className="flex flex-col mt-4 gap-2">
@@ -109,32 +109,32 @@ export default function Cart({
               className="flex flex-col"
             >
               <div className="flex justify-between w-full gap-2 items-baseline">
-                <span className="text-nowrap">
+                <p className="text-nowrap">
                   {item.quantity} {item.quantity > 1 ? "itens" : "item"}
-                </span>
+                </p>
                 <hr className="border-dashed border-gray-300 w-full" />
-                <span>{formatCurrency(item.product.price * item.quantity)}</span>
+                <p>{formatCurrency(item.product.price * item.quantity)}</p>
               </div>
               {item.product.customizationPrice > 0 && (
-                <div className="flex justify-between text-xs text-gray-400 font-medium">
-                  <span>Personalização</span>
-                  <span>
+                <div className="flex justify-between text-xs text-gray-400 dark:text-zinc-500 font-medium">
+                  <p>Personalização</p>
+                  <p>
                     + {formatCurrency(Number(centsToPriceString(item.product.customizationPrice * item.quantity)))}
-                  </span>
+                  </p>
                 </div>
               )}
             </div>
           ))}
         </div>
         <div className="flex justify-between mt-2 w-full gap-2 items-baseline">
-          <span className="text-nowrap">Entrega</span>
+          <p className="text-nowrap">Entrega</p>
           <hr className="border-dashed border-gray-300 w-full" />
-          <span className="text-nowrap">A combinar</span>
+          <p className="text-nowrap">A combinar</p>
         </div>
-        <div className="flex font-bold justify-between mt-6 w-full gap-2 items-baseline">
-          <span className="text-nowrap">Total</span>
-          <hr className="border-dashed border-gray-300 w-full" />
-          <span>{calculeTotalCartValue()}</span>
+        <div className="flex font-bold dark:font-black justify-between mt-6 w-full gap-2 items-baseline dark:text-details">
+          <p className="text-nowrap">Total</p>
+          <hr className="border-dashed border-gray-300 dark:border-details w-full" />
+          <p>{calculeTotalCartValue()}</p>
         </div>
       </div>
 
@@ -145,15 +145,15 @@ export default function Cart({
             aria-label="Limpar carrinho"
             onClick={() => setIsClearCartModalOpen(true)}
             className={`flex items-center justify-center gap-2 px-5 py-3 
-              text-red-500/80 hover:text-red-600 transition-colors font-medium cursor-pointer
+              text-red-500/80 dark:text-red-400 hover:text-red-600 dark:hover:text-red-500 transition-colors font-medium cursor-pointer
             `}
           >
             <Trash2 className="w-4 h-4" />
             <span>Limpar Carrinho</span>
           </button>
         </div>
-        <Alert className="flex font-medium mb-4">
-          <span>{`Ao clicar em "Finalizar Pedido", você declara que leu e concorda com nossos `} 
+        <Alert className="flex font-medium mb-4 dark:bg-input/50">
+          <p>{`Ao clicar em "Finalizar Pedido", você declara que leu e concorda com nossos `} 
             <Link 
               href="/ajuda/termos-e-condicoes"
               className="font-bold hover:underline"
@@ -164,7 +164,7 @@ export default function Cart({
             >
               <span> Termos e Condições.</span>
             </Link>
-          </span>
+          </p>
         </Alert>
         <WhatsAppButton message={generateWhatsAppMessage(items)} />
         <SupportButton messageToSupport="Olá, estou tendo problemas no meu carrinho!" />
@@ -176,9 +176,9 @@ export default function Cart({
   const renderOrderSummaryMobile = () => {
     return (
       <div className="flex-1 flex-col">
-        <span className="font-bold text-lg text-secondary uppercase">
+        <p className="font-bold text-lg text-secondary dark:text-zinc-50 uppercase">
           Resumo do Pedido
-        </span>
+        </p>
 
         <div className="flex flex-col mt-2 gap-2">
           {items.map((item) => (
@@ -187,18 +187,18 @@ export default function Cart({
               className="flex flex-col"
             >
               <div className="flex justify-between w-full gap-2 items-baseline">
-                <span className="text-nowrap">
+                <p className="text-nowrap">
                   {item.quantity} {item.quantity > 1 ? "itens" : "item"}
-                </span>
+                </p>
                 <hr className="border-dashed border-gray-300 w-full" />
-                <span>{formatCurrency(item.product.price * item.quantity)}</span>
+                <p>{formatCurrency(item.product.price * item.quantity)}</p>
               </div>
               {item.product.customizationPrice > 0 && (
-                <div className="flex justify-between text-xs text-gray-400 font-medium">
-                  <span>Personalização</span>
-                  <span>
+                <div className="flex justify-between text-xs text-gray-400 dark:text-zinc-500 font-medium">
+                  <p>Personalização</p>
+                  <p>
                     + {formatCurrency(Number(centsToPriceString(item.product.customizationPrice * item.quantity)))}
-                  </span>
+                  </p>
                 </div>
               )}
             </div>
@@ -206,22 +206,22 @@ export default function Cart({
         </div>
 
         <div className="flex justify-between w-full gap-2 items-baseline">
-          <span className="text-nowrap">Entrega</span>
+          <p className="text-nowrap">Entrega</p>
           <hr className="border-dashed border-gray-300 w-full" />
-          <span className="text-nowrap">A combinar</span>
+          <p className="text-nowrap">A combinar</p>
         </div>
 
-        <div className="flex font-bold justify-between mt-6 w-full gap-2 items-baseline">
-          <span className="text-nowrap">Total</span>
-          <hr className="border-dashed border-gray-300 w-full" />
-          <span>{calculeTotalCartValue()}</span>
+        <div className="flex font-bold dark:font-black dark:text-details justify-between mt-6 w-full gap-2 items-baseline">
+          <p className="text-nowrap">Total</p>
+          <hr className="border-dashed border-gray-300 dark:border-details w-full" />
+          <p>{calculeTotalCartValue()}</p>
         </div>
         <Alert 
           title="Lembre-se que o valor mostrado é apenas uma estimativa."
           subtitle="O valor real será confirmado na finalização do pedido com nosso atendimento."
-          className="flex font-medium my-2"
+          className="flex font-medium my-2 dark:bg-input/50"
         />
-        <Alert className="flex font-medium my-2">
+        <Alert className="flex font-medium my-2 dark:bg-input/50">
           <span>{`Ao clicar em "Finalizar Pedido", você declara que leu e concorda com nossos `}
             <Link 
               href="/ajuda/termos-e-condicoes"
@@ -281,10 +281,10 @@ export default function Cart({
     <div className="flex-1 flex flex-col w-full min-h-0 font-sans">
       <div className="flex flex-col">
         <div className="flex items-baseline justify-between">
-          <span className="text-xl lg:text-3xl font-bold text-secondary">
+          <span className="text-xl lg:text-3xl font-bold text-secondary dark:text-zinc-50">
             Meu Carrinho
           </span>
-          <span className="text-sm text-gray-500">
+          <span className="text-sm text-gray-500 dark:text-zinc-200">
             {items.length} {items.length > 1 ? "produtos" : "produto"}
           </span>
         </div>
@@ -307,6 +307,7 @@ export default function Cart({
                 <Alert
                   title="Os produtos no carrinho não estão reservados."
                   subtitle="Finalize seu pedido antes que o estoque acabe."
+                  className="dark:bg-input/50"
                 />
               </div>
 
@@ -316,7 +317,8 @@ export default function Cart({
                     <div 
                       key={item.cartId} 
                       className={`flex flex-col gap-2 w-full
-                        bg-white rounded-lg px-4 lg:px-6 py-3 border border-gray-100
+                        bg-white dark:bg-input/50 rounded-lg px-4 lg:px-6 py-3 
+                        border border-gray-100 dark:border-zinc-700
                       `}
                     >
                       <Link
@@ -324,9 +326,9 @@ export default function Cart({
                         title="Ir para Página do Produto"
                         href={mountProductUrl(item.product.name, item.product.id)}
                       >
-                        <span className="font-bold hover:underline">
+                        <p className="font-bold hover:underline dark:text-zinc-50">
                           {formatAndCapitalize(item.product.name)}
-                        </span>
+                        </p>
                       </Link>
                       <div className="flex">
                         {item.product.image ? (
@@ -349,18 +351,18 @@ export default function Cart({
                         )}
                         
                         <div className="flex flex-col ml-2 md:ml-4 grow">
-                          <div className="flex flex-col h-full justify-between text-xs">
-                            <span>
+                          <div className="flex flex-col h-full justify-between text-xs dark:text-zinc-200">
+                            <p>
                               Quantidade: {item.quantity}
-                            </span>
+                            </p>
 
                             {item.product.customizable && (
-                              <div className="flex text-xs text-gray-500 h-full mt-2">
+                              <div className="flex text-xs text-gray-500 dark:text-zinc-500 h-full mt-2">
                                 <div className="flex grow flex-col">
                                   {Object.entries(item.customization || {}).map(([key, value]) => (
-                                    <span key={key}>
+                                    <p key={key}>
                                       {renderCustomizationDesc(key, value)}
-                                    </span>
+                                    </p>
                                   ))}
                                 </div>
                               </div>
@@ -376,14 +378,14 @@ export default function Cart({
                             onClick={() => handleRemoveItemCart(item.cartId)}
                             className="cursor-pointer"
                           >
-                            <Trash2 className="w-5 h-5 hover:text-secondary/80 transition-colors" />
+                            <Trash2 className="w-5 h-5 dark:text-red-400 hover:text-red-500/80 transition-colors" />
                           </button>
                         </div>
                       </div>
                       
                       <div className="flex gap-4 items-center justify-between">
                         <div className="flex ml-1">
-                          <div className="flex border border-gray-200 gap-3 px-2 py-1 rounded">
+                          <div className="flex border border-gray-200 dark:border-zinc-6wwww00 gap-3 px-2 py-1 rounded">
                             <button 
                               type="button"
                               aria-label="Diminuir quantidade"
@@ -391,11 +393,11 @@ export default function Cart({
                               onClick={() => handleSubtractQuantity(item.cartId)}
                               className="cursor-pointer px-2"
                             >
-                              <Minus className="w-3 h-3 hover:text-secondary/80 transition-colors" />
+                              <Minus className="w-3 h-3 dark:text-zinc-300 hover:text-secondary/80 transition-colors" />
                             </button>
-                            <span className="px-3 cursor-default">
+                            <p className="px-3 cursor-default dark:text-zinc-300">
                               {item.quantity}
-                            </span>
+                            </p>
                             <button 
                               type="button"
                               aria-label="Aumentar quantidade"
@@ -403,15 +405,15 @@ export default function Cart({
                               onClick={() => addQuantity(item.cartId)}
                               className="cursor-pointer px-2"
                             >
-                              <Plus className="w-3 h-3 hover:text-secondary/80 transition-colors" />
+                              <Plus className="w-3 h-3 dark:text-zinc-300 hover:text-secondary/80 transition-colors" />
                             </button>
                           </div>
                         </div>
                         
-                        <div className="flex flex-col text-gray-400 justify-end items-end text-xs">
-                          <span className="text-sm font-medium">
+                        <div className="flex flex-col text-gray-400 dark:text-details justify-end items-end text-xs">
+                          <p className="text-sm font-medium dark:font-bold">
                             {item.quantity} x {formatCurrency(item.product.price)}
-                          </span>
+                          </p>
                         </div>
                       </div>
                     </div>
@@ -426,18 +428,20 @@ export default function Cart({
                   onClose={() => setIsDeleteItemCartModalOpen(false)}
                 />
               </div>
-
+              
+              {/* Tela Mobile */}
               <div className="flex md:hidden w-full items-center justify-center">
                 <button 
                   type="button"
                   aria-label="Limpar carrinho"
                   onClick={() => setIsClearCartModalOpen(true)}
                   className={`flex items-center justify-center gap-2 px-5 py-3 
-                    text-red-500/80 hover:text-red-600 transition-colors font-medium cursor-pointer
+                    text-red-500/80 dark:text-red-400 hover:text-red-600 dark:hover:text-red-500
+                    transition-colors font-medium cursor-pointer
                   `}
                 >
                   <Trash2 className="w-4 h-4" />
-                  <span>Limpar Carrinho</span>
+                  <p>Limpar Carrinho</p>
                 </button>
               </div>
 

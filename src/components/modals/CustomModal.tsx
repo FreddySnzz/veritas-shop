@@ -26,18 +26,18 @@ export default function CustomModal({
     <div 
       onClick={onClose}
       className={`fixed inset-0 z-50 flex flex-col items-center justify-center 
-        bg-black/30 p-4 backdrop-blur-xs transition-all cursor-default
+        bg-black/30 dark:bg-black/50 p-4 backdrop-blur-xs transition-all cursor-default
       `}
     >
       <div 
         onClick={(e) => e.stopPropagation()}
         className={`flex flex-col gap-2 p-6 w-full max-w-md md:max-w-xl
-          bg-white rounded-lg shadow-xl ${className}
+          bg-white dark:bg-background-dark rounded-lg shadow-xl ${className}
         `}
       >
         {title && (
-          <div className="flex justify-between items-center border-b border-gray-100 pb-4">
-            <h2 className="text-lg font-bold text-gray-800">
+          <div className="flex justify-between items-center border-b border-gray-100 dark:border-zinc-700 pb-4">
+            <h2 className="text-lg font-bold text-gray-800 dark:text-zinc-50">
               {title}
             </h2>
             <button 
@@ -47,7 +47,7 @@ export default function CustomModal({
               onClick={onClose} 
               className="cursor-pointer"
             >
-              <X className="w-5 h-5 text-gray-500 hover:text-gray-400 transition-colors" />
+              <X className="w-5 h-5 text-gray-500 dark:text-zinc-200 hover:text-gray-400 transition-colors" />
             </button>
           </div>
         )}

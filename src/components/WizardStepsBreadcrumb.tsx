@@ -13,6 +13,7 @@ import {
 import FlowerIcon from "./icons/FlowerIcon";
 import { FiHome } from "react-icons/fi";
 import { Step } from '@/data/types/customization.type';
+import { useTheme } from 'next-themes';
 
 interface WizardStepsBreadcrumbProps {
   steps: Step[];
@@ -26,6 +27,7 @@ export default function WizardStepsBreadcrumb({
   onStepClick
 }: WizardStepsBreadcrumbProps) {
   const currentIndex = steps.findIndex(s => s.id === currentStep.id);
+  const { theme } = useTheme();
 
   return (
     <Breadcrumb>
@@ -35,7 +37,7 @@ export default function WizardStepsBreadcrumb({
             aria-label="Voltar para a página inicial"
             title="Voltar para a página inicial"
             href={'/'}
-            className="flex items-center hover:text-primary transition-colors"
+            className="flex items-center dark:text-zinc-400 hover:text-primary dark:hover:text-zinc-200 transition-colors"
           >
             <FiHome className="h-3.5 w-3.5" />
           </BreadcrumbLink>
@@ -73,7 +75,7 @@ export default function WizardStepsBreadcrumb({
                       };
                     }}
                     className={`flex items-center gap-1 transition-colors 
-                      text-muted-foreground hover:text-primary italic
+                      text-muted-foreground dark:text-zinc-500 hover:text-primary dark:hover:text-zinc-400 italic
                     `}
                   >
                     {step.title}
@@ -81,7 +83,7 @@ export default function WizardStepsBreadcrumb({
                 )}
 
                 {isFuture && (
-                  <span className="text-muted-foreground/50 cursor-default select-none flex items-center gap-1">
+                  <span className="text-muted-foreground/50 dark:text-zinc-500/50 cursor-default select-none flex items-center gap-1">
                     {step.title}
                   </span>
                 )}
@@ -89,7 +91,10 @@ export default function WizardStepsBreadcrumb({
 
               {!isLast && (
                 <BreadcrumbSeparator className={cn(isFuture ? "opacity-50" : "opacity-100")}>
-                  <FlowerIcon className="scale-125" />
+                  <FlowerIcon 
+                    color={ theme === 'dark' ? "var(--color-zinc-500)" : "var(--color-secondary)" }
+                    className="scale-125" 
+                  />
                 </BreadcrumbSeparator>
               )}
             </React.Fragment>

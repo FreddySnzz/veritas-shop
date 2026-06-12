@@ -22,12 +22,12 @@ export default function CardCustomization({
       onClick={onSelect}
       className={`group relative p-3 rounded-xl border text-left
         md:w-65 cursor-pointer transition-all duration-200
-        ${isSelected ? 'border-primary shadow-sm' : 
-          'border-transparent bg-white shadow-sm'}
+        ${isSelected ? 'border-primary dark:border-details dark:bg-background-dark/60 shadow-sm' : 
+          'border-transparent dark:border-zinc-700 bg-white dark:bg-input/50 shadow-sm'}
       `}
     >
       <div className={`aspect-square relative max-w-70 mb-3 rounded-lg 
-        bg-gray-50 overflow-hidden border`}
+        bg-gray-50 dark:bg-zinc-700 overflow-hidden border`}
       >
         {item.image_url ? (
           <Image 
@@ -49,35 +49,35 @@ export default function CardCustomization({
       </div>
       
       <div className="flex flex-col">
-        <span className={`text-sm font-semibold line-clamp-2 
-          ${isSelected ? 'text-primary' : 'text-gray-700'}`}
+        <p className={`text-sm font-semibold line-clamp-2 
+          ${isSelected ? 'text-primary dark:text-zinc-200' : 'text-gray-700 dark:text-zinc-50'}`}
         >
           {item.name}
-        </span>
+        </p>
 
-        <div className="flex flex-col text-[10px] my-1 text-gray-400 font-mono">
-          <span className="flex font-bold text-primary">
+        <div className="flex flex-col text-[10px] my-1 text-gray-400 dark:text-zinc-400 font-mono">
+          <p className="flex font-bold text-primary dark:text-emerald-500 dark:font-black">
             {item?.price_addon ? (<span>+ {formatCurrency(item?.price_addon)}</span>) : null}
-          </span>
-          <span>
+          </p>
+          <p>
             Ref: {item.ref}
-          </span>
+          </p>
         </div>
 
         {item?.metadata && (
-          <div className="flex flex-col text-[8px] md:text-[10px] text-gray-400 font-mono">
+          <div className="flex flex-col text-[8px] md:text-[10px] text-gray-400 dark:text-zinc-400 font-mono">
             {Number(item?.metadata?.size_height) > 0 && (
-              <span>Altura: {item?.metadata?.size_height}cm</span>
+              <p>Altura: {item?.metadata?.size_height}cm</p>
             )}
             {Number(item?.metadata?.size_width) > 0 && (
-              <span>Largura: {item?.metadata?.size_width}cm</span>
+              <p>Largura: {item?.metadata?.size_width}cm</p>
             )}
           </div>
         )}
       </div>
 
       {isSelected && (
-        <div className={`absolute top-2 right-2 bg-primary 
+        <div className={`absolute top-2 right-2 bg-primary dark:bg-details
           text-white p-1 rounded-full shadow-sm animate-in zoom-in duration-200`}
         >
           <Check size={10} strokeWidth={3} />
