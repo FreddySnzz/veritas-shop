@@ -385,7 +385,7 @@ export default function Cart({
                       
                       <div className="flex gap-4 items-center justify-between">
                         <div className="flex ml-1">
-                          <div className="flex border border-gray-200 dark:border-zinc-6wwww00 gap-3 px-2 py-1 rounded">
+                          <div className="flex border border-gray-200 dark:border-zinc-600 gap-3 px-2 py-1 rounded">
                             <button 
                               type="button"
                               aria-label="Diminuir quantidade"
