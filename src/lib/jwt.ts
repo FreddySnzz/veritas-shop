@@ -16,6 +16,7 @@ export function decodeJWT(token: string): User | null {
       id: data.user?.id || data.id || data.sub,
       name: data.user?.name || data.name,
       email: data.user?.email || data.email,
+      role: data.user?.role || data.role,
     };
   } catch (error) {
     console.error("Failed to decode JWT:", error);

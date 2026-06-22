@@ -2,8 +2,8 @@
 
 import { compare } from "bcrypt";
 import { buildAccessToken } from "@/lib/jwt";
-import { LoginRequest, LoginResponse } from "../types/auth";
-import { getUserByEmail } from "./user.service";
+import { LoginRequest, LoginResponse, UserLoginRequest } from "../types/auth";
+import { getUserByEmail, getUserByPhone } from "./user.service";
 
 export async function login(
   payload: LoginRequest
@@ -27,6 +27,41 @@ export async function login(
         name: user[0].name,
         email: user[0].email,
         phone: user[0].phone,
+        role: user[0].role,
+      },
+      tokens: {
+        access: accessToken,
+      },
+    };
+  } catch (error) {
+    console.error("Login service error:", error);
+    return undefined;
+  };
+};
+
+export async function userLogin(
+  payload: UserLoginRequest
+): Promise<LoginResponse | undefined> {
+  try {
+    const user = await getUserByPhone("55" + payload.phone);
+    
+    if (!user?.length) return;
+
+    const matched = await compare(payload.password, user[0].password);
+
+    if (!matched) {
+      return;
+    };
+
+    const accessToken = buildAccessToken(user[0]);
+
+    return {
+      user: {
+        id: user[0].id,
+        name: user[0].name,
+        email: user[0].email,
+        phone: user[0].phone,
+        role: user[0].role,
       },
       tokens: {
         access: accessToken,
@@ -59,6 +94,8 @@ export async function logout(
         id: user[0].id,
         name: user[0].name,
         email: user[0].email,
+        phone: user[0].phone,
+        role: user[0].role,
       },
       tokens: {
         access: accessToken,

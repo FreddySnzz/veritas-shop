@@ -4,9 +4,9 @@ import Link from "next/link";
 
 export default function NotFound() {
   return (
-    <main className="relative flex min-h-dvh items-center justify-center bg-background text-foreground font-sans">
+    <main className="relative flex min-h-dvh items-center justify-center bg-background dark:bg-background-dark text-foreground font-sans">
       <div aria-hidden className="pointer-events-none select-none absolute inset-0 flex items-center justify-center">
-        <p className="font-black text-[34vw] leading-none text-foreground/5 tracking-tight">
+        <p className="font-black text-[34vw] leading-none text-foreground/10 tracking-tight">
           404
         </p>
       </div>
@@ -15,7 +15,7 @@ export default function NotFound() {
         <h1 className="mb-3 inline-flex items-center justify-center gap-2 text-balance text-2xl font-semibold sm:text-3xl">
           Página não encontrada?
         </h1>
-        <p className="mb-6 text-pretty text-sm text-muted-foreground sm:text-base">
+        <p className="mb-6 text-pretty text-sm text-muted-foreground dark:text-zinc-400 sm:text-base">
           Não conseguimos encontrar a página que você está procurando.
         </p>
 

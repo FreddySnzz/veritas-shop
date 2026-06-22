@@ -116,7 +116,7 @@ export default function CatalogCarrousel({
                 src={image.image_url || ''}
                 alt={`Slide ${index + 1}`}
                 fill 
-                loading="eager"
+                loading={index === 0 ? 'eager' : 'lazy'}
                 className="object-cover lg:object-contain pointer-events-none select-none"
                 priority={index === 0} 
                 draggable={false}

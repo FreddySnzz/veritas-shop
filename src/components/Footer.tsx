@@ -20,7 +20,7 @@ export default function Footer({
   const isMdUp = useMediaQuery("(min-width: 768px)");
 
   return (
-    <footer className={`w-full bg-secondary dark:bg-zinc-900 font-sans p-8 z-49 
+    <footer className={`w-full bg-secondary dark:bg-zinc-950 font-sans p-8 z-49 
       md:px-12 lg:px-32 md:pb-0 mt-8 ${isSmUp && 'px-16'}
       ${className}`}
     >
@@ -183,7 +183,7 @@ export default function Footer({
           </div>
         </div>
 
-        <div className="text-center text-sm text-muted-foreground/30 dark:text-zinc-700/30 mt-4">
+        <div className="text-center text-sm text-muted-foreground/30 dark:text-zinc-700/15 mt-4">
           <span>Desenvolvido com carinho por </span>
           <Link
             aria-label="Ver Portfólio"

@@ -462,7 +462,7 @@ export default function ManageCustomizationItemsLayout({
                   </>
                 ) : (
                   <p className="font-bold text-sm">
-                    Adicione um novo item no botão "Adicionar".
+                    Adicione um novo item no botão &quot;Adicionar&quot;.
                   </p>
                 )}
               </div>

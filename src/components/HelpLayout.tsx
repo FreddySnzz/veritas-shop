@@ -2,7 +2,6 @@ import Link from "next/link";
 import ItemCollapse from "./ItemCollapse";
 import ItemContent from "./ItemContent";
 import { SupportButton } from "./buttons/SupportButton";
-import { FaWhatsapp } from "react-icons/fa6";
 
 interface HelpLayoutProps extends React.HTMLAttributes<HTMLDivElement> {
   whatsappNumber?: string;

@@ -1372,10 +1372,9 @@ export const various = [
                   height={350}
                   className="rounded-lg object-cover shadow-lg order-2 md:col-start-1 md:row-start-1 md:row-span-5"
                   sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-                  loading="eager"
+                  loading="lazy"
                   objectFit="contain"
                   draggable="false"
-                  priority
                 />
                 <p className="order-1 md:col-start-2 md:row-start-2">
                   No <strong>Primeiro Mistério</strong> Gozoso contemplamos a Anunciação do Anjo Gabriel à Nossa Senhora e a Encarnação do Verbo no seio Puríssimo de Maria. 
@@ -1437,10 +1436,9 @@ export const various = [
                   height={350}
                   className="rounded-lg object-cover shadow-lg order-2 md:col-start-2 md:row-start-1 md:row-span-5"
                   sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-                  loading="eager"
+                  loading="lazy"
                   objectFit="contain"
                   draggable="false"
-                  priority
                 />
                 <p className="order-1 md:col-start-1 md:text-end md:row-start-2">
                   No <strong>Segundo Mistério</strong> Gozoso contemplamos a Visitação de Nossa Senhora a sua prima Santa Isabel.
@@ -1502,10 +1500,9 @@ export const various = [
                   height={350}
                   className="rounded-lg object-cover shadow-lg order-2 md:col-start-1 md:row-start-1 md:row-span-5"
                   sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-                  loading="eager"
+                  loading="lazy"
                   objectFit="contain"
                   draggable="false"
-                  priority
                 />
                 <p className="order-1 md:col-start-2 md:row-start-2">
                   No <strong>Terceiro Mistério</strong> Gozoso contemplamos o Nascimento de Nosso Senhor Jesus Cristo em Belém.
@@ -1567,10 +1564,9 @@ export const various = [
                   height={350}
                   className="rounded-lg object-cover shadow-lg order-2 md:col-start-2 md:row-start-1 md:row-span-5"
                   sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-                  loading="eager"
+                  loading="lazy"
                   objectFit="contain"
                   draggable="false"
-                  priority
                 />
                 <p className="order-1 md:col-start-1 md:row-start-2 md:text-end">
                   No <strong>Quarto Mistério</strong> Gozoso contemplamos a Apresentação do Menino Jesus no Templo e a Purificação de Nossa Senhora.
@@ -1632,10 +1628,9 @@ export const various = [
                   height={350}
                   className="rounded-lg object-cover shadow-lg order-2 md:col-start-1 md:row-start-1 md:row-span-5"
                   sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-                  loading="eager"
+                  loading="lazy"
                   objectFit="contain"
                   draggable="false"
-                  priority
                 />
                 <p className="order-1 md:col-start-2 md:row-start-2">
                   No <strong>Quinto Mistério</strong> Gozoso contemplamos a perda e o encontro do Menino Jesus no templo, discutindo com os doutores da Lei.
@@ -1704,10 +1699,9 @@ export const various = [
                   height={350}
                   className="rounded-lg object-cover shadow-lg order-2 md:col-start-1 md:row-start-1 md:row-span-5"
                   sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-                  loading="eager"
+                  loading="lazy"
                   objectFit="contain"
                   draggable="false"
-                  priority
                 />
                 <p className="order-1 md:col-start-2 md:row-start-2">
                   No <strong>Primeiro Mistério</strong> Doloroso contemplamos a Oração e a Agonia de Jesus no Horto das Oliveiras.
@@ -1769,10 +1763,9 @@ export const various = [
                   height={350}
                   className="rounded-lg object-cover shadow-lg order-2 md:col-start-2 md:row-start-1 md:row-span-5"
                   sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-                  loading="eager"
+                  loading="lazy"
                   objectFit="contain"
                   draggable="false"
-                  priority
                 />
                 <p className="order-1 md:col-start-1 md:text-end md:row-start-2">
                   No <strong>Segundo Mistério</strong> Doloroso contemplamos a Flagelação de Nosso Senhor Jesus Cristo.
@@ -1834,10 +1827,9 @@ export const various = [
                   height={350}
                   className="rounded-lg object-cover shadow-lg order-2 md:col-start-1 md:row-start-1 md:row-span-5"
                   sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-                  loading="eager"
+                  loading="lazy"
                   objectFit="contain"
                   draggable="false"
-                  priority
                 />
                 <p className="order-1 md:col-start-2 md:row-start-2">
                   No <strong>Terceiro Mistério</strong> Doloroso contemplamos a Coroação de espinhos de Nosso Senhor Jesus Cristo.
@@ -1899,10 +1891,9 @@ export const various = [
                   height={350}
                   className="rounded-lg object-cover shadow-lg order-2 md:col-start-2 md:row-start-1 md:row-span-5"
                   sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-                  loading="eager"
+                  loading="lazy"
                   objectFit="contain"
                   draggable="false"
-                  priority
                 />
                 <p className="order-1 md:col-start-1 md:text-end md:row-start-2">
                   No <strong>Quarto Mistério</strong> Doloroso contemplamos Nosso Senhor Jesus Cristo carregando a Cruz nas costas até o alto do Calvário.
@@ -1964,10 +1955,9 @@ export const various = [
                   height={350}
                   className="rounded-lg object-cover shadow-lg order-2 md:col-start-1 md:row-start-1 md:row-span-5"
                   sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-                  loading="eager"
+                  loading="lazy"
                   objectFit="contain"
                   draggable="false"
-                  priority
                 />
                 <p className="order-1 md:col-start-2 md:row-start-2">
                   No <strong>Quinto Mistério</strong> Doloroso contemplamos a Crucifixão e morte de Nosso Senhor Jesus Cristo.
@@ -2036,10 +2026,9 @@ export const various = [
                   height={350}
                   className="rounded-lg object-cover shadow-lg order-2 md:col-start-1 md:row-start-1 md:row-span-5"
                   sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-                  loading="eager"
+                  loading="lazy"
                   objectFit="contain"
                   draggable="false"
-                  priority
                 />
                 <p className="order-1 md:col-start-2 md:row-start-2">
                   No <strong>Primeiro Mistério</strong> Glorioso contemplamos a Ressurreição de Nosso Senhor Jesus Cristo.
@@ -2101,10 +2090,9 @@ export const various = [
                   height={350}
                   className="rounded-lg object-cover shadow-lg order-2 md:col-start-2 md:row-start-1 md:row-span-5"
                   sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-                  loading="eager"
+                  loading="lazy"
                   objectFit="contain"
                   draggable="false"
-                  priority
                 />
                 <p className="order-1 md:col-start-1 md:text-end md:row-start-2">
                   No <strong>Segundo Mistério</strong> Glorioso contemplamos a Ascensão de Nosso Senhor Jesus Cristo aos Céus.
@@ -2166,10 +2154,9 @@ export const various = [
                   height={350}
                   className="rounded-lg object-cover shadow-lg order-2 md:col-start-1 md:row-start-1 md:row-span-5"
                   sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-                  loading="eager"
+                  loading="lazy"
                   objectFit="contain"
                   draggable="false"
-                  priority
                 />
                 <p className="order-1 md:col-start-2 md:row-start-2">
                   No <strong>Terceiro Mistério</strong> Glorioso contemplamos a descida do Espírito Santo sobre Nossa Senhora e os Apóstolos no Santo Cenáculo.
@@ -2231,10 +2218,9 @@ export const various = [
                   height={350}
                   className="rounded-lg object-cover shadow-lg order-2 md:col-start-2 md:row-start-1 md:row-span-5"
                   sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-                  loading="eager"
+                  loading="lazy"
                   objectFit="contain"
                   draggable="false"
-                  priority
                 />
                 <p className="order-1 md:col-start-1 md:text-end md:row-start-2">
                   No <strong>Quarto Mistério</strong> Glorioso contemplamos a Assunção de Nossa Senhora aos Céus de corpo e alma.
@@ -2296,10 +2282,9 @@ export const various = [
                   height={350}
                   className="rounded-lg object-cover shadow-lg order-2 md:col-start-1 md:row-start-1 md:row-span-5"
                   sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-                  loading="eager"
+                  loading="lazy"
                   objectFit="contain"
                   draggable="false"
-                  priority
                 />
                 <p className="order-1 md:col-start-2 md:row-start-2">
                   No <strong>Quinto Mistério</strong> Glorioso contemplamos a gloriosa coroação de Nossa Senhora Maria Santíssima como Rainha do Céu e da Terra dos Anjos e dos Homens.
@@ -2368,10 +2353,9 @@ export const various = [
                   height={350}
                   className="rounded-lg object-cover shadow-lg order-2 md:col-start-1 md:row-start-1 md:row-span-5"
                   sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-                  loading="eager"
+                  loading="lazy"
                   objectFit="contain"
                   draggable="false"
-                  priority
                 />
                 <p className="order-1 md:col-start-2 md:row-start-2">
                   No <strong>Primeiro Mistério</strong> Luminoso contemplamos o Batismo de Nosso Senhor Jesus Cristo no rio Jordão.
@@ -2433,10 +2417,9 @@ export const various = [
                   height={350}
                   className="rounded-lg object-cover shadow-lg order-2 md:col-start-2 md:row-start-1 md:row-span-5"
                   sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-                  loading="eager"
+                  loading="lazy"
                   objectFit="contain"
                   draggable="false"
-                  priority
                 />
                 <p className="order-1 md:col-start-1 md:text-end md:row-start-2">
                   No <strong>Segundo Mistério</strong> Luminoso contemplamos o Primeiro milagre de Nosso Senhor Jesus Cristo transformando a água em vinho nas bodas de Caaná.
@@ -2498,10 +2481,9 @@ export const various = [
                   height={350}
                   className="rounded-lg object-cover shadow-lg order-2 md:col-start-1 md:row-start-1 md:row-span-5"
                   sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-                  loading="eager"
+                  loading="lazy"
                   objectFit="contain"
                   draggable="false"
-                  priority
                 />
                 <p className="order-1 md:col-start-2 md:row-start-2">
                   No <strong>Terceiro Mistério</strong> Luminoso contemplamos o Anúncio do Reino de Deus e o convite à conversão.
@@ -2563,10 +2545,9 @@ export const various = [
                   height={350}
                   className="rounded-lg object-cover shadow-lg order-2 md:col-start-2 md:row-start-1 md:row-span-5"
                   sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-                  loading="eager"
+                  loading="lazy"
                   objectFit="contain"
                   draggable="false"
-                  priority
                 />
                 <p className="order-1 md:col-start-1 md:text-end md:row-start-2">
                   No <strong>Quarto Mistério</strong> Luminoso contemplamos a Transfiguração de Nosso Senhor Jesus Cristo no Monte Thabor.
@@ -2628,10 +2609,9 @@ export const various = [
                   height={350}
                   className="rounded-lg object-cover shadow-lg order-2 md:col-start-1 md:row-start-1 md:row-span-5"
                   sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-                  loading="eager"
+                  loading="lazy"
                   objectFit="contain"
                   draggable="false"
-                  priority
                 />
                 <p className="order-1 md:col-start-2 md:row-start-2">
                   No <strong>Quinto Mistério</strong> Luminoso contemplamos a Instituição da Eucaristia na Última Ceia.

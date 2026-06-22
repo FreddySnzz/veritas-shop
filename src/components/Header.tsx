@@ -26,7 +26,7 @@ export function Header({ mode, search, data }: HeaderProps) {
   const { theme } = useTheme();
 
   return (
-    <header className={`${theme} fixed top-0 z-50 w-screen
+    <header className={`fixed top-0 z-50 w-screen
       bg-white text-secondary dark:bg-zinc-900 dark:text-background-alternative-v2`}
     >
       <div className="flex items-center justify-between mx-auto px-4 md:px-8 lg:px-12 py-2">
