@@ -7,10 +7,12 @@ import { CartProvider } from "@/data/context/CartContext";
 import { Toaster } from "sonner";
 import { AppProvider } from "@/data/context/AppContext";
 import { ThemeProvider } from "@/data/context/ThemeContext";
+import InstallPrompt from "@/components/modals/InstallPromptModal";
 
 export const metadata: Metadata = {
   title: "Veritas Ateliê",
   description: "Na simplicidade, a verdade florece!",
+  manifest: "/manifest.json",
   icons: {
     icon: "/favicon.ico",
   },
@@ -38,6 +40,7 @@ export default function RootLayout({
                 <AppProvider>
                   {children}
                   <Toaster />
+                  <InstallPrompt />
                 </AppProvider>
               </CustomizationProvider>
             </CartProvider>
