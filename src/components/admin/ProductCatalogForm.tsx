@@ -9,7 +9,7 @@ import { verifyFirebaseId } from "@/data/functions/verifyFirebaseId";
 import { uploadImageAction } from "@/app/actions/cloudinary.actions"; 
 import { 
   createProductAction, 
-  getAllProductsAction, 
+  getProductByIdAction, 
   updateProductAction 
 } from "@/app/actions/products.action";
 import { Eye, EyeOff, Images, Trash, X } from "lucide-react";
@@ -62,6 +62,8 @@ export function ProductForm({
   const isTouchDevice = useIsTouchDevice();
 
   useEffect(() => {
+    let ignore = false;
+
     const initializeForm = async () => {
       if (initialData) return;
 
@@ -71,10 +73,9 @@ export function ProductForm({
       if (verifyFirebaseId(productId)) {
         setIsLoading(true);
         try {
-          const products = await getAllProductsAction();
-          const foundProduct = products?.find((p: ProductModel) => p.id === productId);
+          const foundProduct = await getProductByIdAction(productId);
 
-          if (foundProduct) {
+          if (foundProduct && !ignore) {
             setName(foundProduct.name);
             setDesc(foundProduct.desc || "");
             setInitialPrice(foundProduct.initial_price);
@@ -86,24 +87,28 @@ export function ProductForm({
             setIsEditMode(true);
           };
         } catch (error) {
-          console.error("Erro ao carregar produto:", error);
+          if (!ignore) console.error("Erro ao carregar produto:", error);
         } finally {
-          setIsLoading(false);
+          if (!ignore) setIsLoading(false);
         };
       };
     };
 
     initializeForm();
+
+    return () => {
+      ignore = true;
+    };
   }, [pathname, initialData]);
 
   useEffect(() => {
-    const newUrls = newFiles.map(file => URL.createObjectURL(file));
-    setNewFilesPreviews(newUrls);
-
     return () => {
-      newUrls.forEach(url => URL.revokeObjectURL(url));
+      setNewFilesPreviews(currentPreviews => {
+        currentPreviews.forEach(url => URL.revokeObjectURL(url));
+        return currentPreviews; 
+      });
     };
-  }, [newFiles]);
+  }, []);
 
   const handleFileSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files.length > 0) {
@@ -114,7 +119,11 @@ export function ProductForm({
         toast.warning("Alguns arquivos eram maiores que 10MB e foram ignorados.");
       };
 
+      const newUrls = validFiles.map(file => URL.createObjectURL(file));
+
       setNewFiles(prev => [...prev, ...validFiles]);
+      setNewFilesPreviews(prev => [...prev, ...newUrls]);
+      
       if (fileInputRef.current) fileInputRef.current.value = "";
     };
   };
@@ -124,7 +133,9 @@ export function ProductForm({
   };
 
   const handleRemoveNewFile = (indexToRemove: number) => {
+    URL.revokeObjectURL(newFilesPreviews[indexToRemove]);
     setNewFiles(prev => prev.filter((_, index) => index !== indexToRemove));
+    setNewFilesPreviews(prev => prev.filter((_, index) => index !== indexToRemove));
   };
 
   const handleSubmit = async (e: React.FormEvent) => {

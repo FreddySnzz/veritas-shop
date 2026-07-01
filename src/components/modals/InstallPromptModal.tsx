@@ -4,33 +4,36 @@ import { useState, useEffect } from 'react';
 import { X, Share, PlusSquare } from 'lucide-react';
 
 export default function InstallPrompt() {
-  const [isIOS, setIsIOS] = useState(false);
-  const [isStandalone, setIsStandalone] = useState(false);
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const [deferredPrompt, setDeferredPrompt] = useState<any>(null);
   const [showPrompt, setShowPrompt] = useState(false);
   const [dontShowAgain, setDontShowAgain] = useState(false);
 
-  useEffect(() => {
-    const hidePrompt = localStorage.getItem('hideVeritasInstallPrompt');
-    if (hidePrompt === 'true') return;
-
+  const [isStandalone] = useState(() => {
+    if (typeof window === 'undefined') return false;
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const isAppMode = window.matchMedia('(display-mode: standalone)').matches || (window.navigator as any).standalone;
-    setIsStandalone(isAppMode);
+    return window.matchMedia('(display-mode: standalone)').matches || (window.navigator as any).standalone;
+  });
 
-    if (isAppMode) return;
-
-    // 3. Detecta iOS
+  const [isIOS] = useState(() => {
+    if (typeof window === 'undefined') return false;
     const userAgent = window.navigator.userAgent.toLowerCase();
-    const isIOSDevice = /iphone|ipad|ipod/.test(userAgent);
-    setIsIOS(isIOSDevice);
+    return /iphone|ipad|ipod/.test(userAgent);
+  });
 
-    if (isIOSDevice) {
-      setTimeout(() => setShowPrompt(true), 3000);
+  useEffect(() => {
+    if (typeof window === 'undefined') return;
+
+    const hidePrompt = localStorage.getItem('hideVeritasInstallPrompt');
+    
+    if (hidePrompt === 'true' || isStandalone) return;
+
+    // 3. Lógica para iOS
+    if (isIOS) {
+      const timer = setTimeout(() => setShowPrompt(true), 3000);
+      return () => clearTimeout(timer);
     };
 
-    // 4. Intercepta o prompt nativo no Android/Chrome
     const handleBeforeInstallPrompt = (e: Event) => {
       e.preventDefault();
       setDeferredPrompt(e);
@@ -42,7 +45,7 @@ export default function InstallPrompt() {
     return () => {
       window.removeEventListener('beforeinstallprompt', handleBeforeInstallPrompt);
     };
-  }, []);
+  }, [isStandalone, isIOS]);
 
   const handleInstallClick = async () => {
     if (!deferredPrompt) return;

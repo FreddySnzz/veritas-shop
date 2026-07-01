@@ -1,6 +1,8 @@
 'use client';
 
 import Image from "next/image";
+import { useRouter, usePathname, useSearchParams } from 'next/navigation';
+import { useState, useMemo, startTransition, useEffect } from 'react';
 import { CustomizationItemsModel } from "@/data/models/CustomizationItems.model";
 import { ToggleAvailableSwitch } from "../buttons/ToggleAvailableSwitch";
 import { ItemsCustomizationTypes } from "@/data/types/customization.type";
@@ -9,11 +11,9 @@ import CardButton from "../buttons/CardButton";
 import { formatAndCapitalize, formatCurrency } from "@/data/functions/formatAndCapitalize";
 import { FloatAddButton } from "../buttons/AddButton";
 import { SearchbarInput } from "../inputs/SearchbarInput";
-import { startTransition, useEffect, useMemo, useState } from "react";
 import { BookCopy, ListFilter, Plus, Trash, X } from "lucide-react";
 import { RiCheckboxMultipleLine } from "react-icons/ri";
 import { CustomButton } from "../buttons/CustomButton";
-import { useRouter } from "next/navigation";
 import { DesktopSidePanel } from "../DesktopSidePanel";
 import { CustomizationItemsFilters } from "../CustomizationItemsFilters";
 import CustomModal from "../modals/CustomModal";
@@ -40,60 +40,57 @@ interface ManageCustomizationItemsLayoutProps {
 export default function ManageCustomizationItemsLayout({ 
   customizationItems 
 }: ManageCustomizationItemsLayoutProps) {
-  const [searchText, setSearchText] = useState('');
-  const [selectedItems, setSelectedItems] = useState<string[]>([]);
-  const [selectedCategories, setSelectedCategories] = useState<string[]>([]);
-  const [selectedStyles, setSelectedStyles] = useState<string[]>([]);
+  const router = useRouter();
+  const pathname = usePathname();
+  const searchParams = useSearchParams();
+
+  const searchText = searchParams.get('search') || '';
+  const categoryParam = searchParams.get('categoria');
+  const styleParam = searchParams.get('estilo');
+
+  const [localSearchText, setLocalSearchText] = useState(searchText);
+  const [prevSearchText, setPrevSearchText] = useState(searchText);
+  
   const [showAvailableOnly, setShowAvailableOnly] = useState(false);
+  const [selectedItems, setSelectedItems] = useState<string[]>([]);
   const [isOpenFilterModal, setIsOpenFilterModal] = useState(false);
   const [isOpenCopyModal, setIsOpenCopyModal] = useState(false);
   const [isOpenDeleteModal, setIsOpenDeleteModal] = useState(false);
   const [selectedCategory, setSelectedCategory] = useState<string>('');
   const [selectedCategoryToCopy, setSelectedCategoryToCopy] = useState<string>('');
   const [isLoading, setIsLoading] = useState(false);
-  const [hasHydratedFilters, setHasHydratedFilters] = useState(false);
-  const router = useRouter();
 
-  useEffect(() => {
-    const savedFilters = sessionStorage.getItem('customizationItems-filters');
+  if (searchText !== prevSearchText) {
+    setPrevSearchText(searchText);
+    setLocalSearchText(searchText);
+  };
 
-    if (savedFilters) {
-      try {
-        const parsedFilters = JSON.parse(savedFilters);
-
-        setSearchText(parsedFilters.searchText ?? '');
-        setSelectedCategories(parsedFilters.selectedCategories ?? []);
-        setSelectedStyles(parsedFilters.selectedStyles ?? []);
-        setShowAvailableOnly(parsedFilters.showAvailableOnly ?? false);
-      } catch {
-        sessionStorage.removeItem('customizationItems-filters');
-      };
+  const updateQueryParams = (
+    key: string, 
+    value: string | null
+  ) => {
+    const params = new URLSearchParams(searchParams.toString());
+    
+    if (value) {
+      params.set(key, value);
+    } else {
+      params.delete(key);
     };
 
-    setHasHydratedFilters(true);
-  }, []);
+    router.replace(`${pathname}?${params.toString()}`, { scroll: false });
+  };
 
-  useEffect(() => {
-    if (!hasHydratedFilters) return;
+  const selectedCategories = useMemo(() => {
+    return categoryParam?.split(',').filter(Boolean) || [];
+  }, [categoryParam]);
 
-    const filters = {
-      searchText,
-      selectedCategories,
-      selectedStyles,
-      showAvailableOnly,
-    };
+  const selectedStyles = useMemo(() => {
+    return styleParam?.split(',').filter(Boolean) || [];
+  }, [styleParam]);
 
-    sessionStorage.setItem(
-      'customizationItems-filters',
-      JSON.stringify(filters)
-    );
-  }, [
-    hasHydratedFilters,
-    searchText,
-    selectedCategories,
-    selectedStyles,
-    showAvailableOnly
-  ]);
+  const handleSearchChange = (text: string) => {
+    setLocalSearchText(text);
+  };
 
   const normalizedItems = useMemo(() => {
     return customizationItems.map((item) => {
@@ -124,12 +121,7 @@ export default function ManageCustomizationItemsLayout({
       selectedStyles.length > 0 ||
       showAvailableOnly
     );
-  }, [
-    searchText, 
-    selectedCategories, 
-    selectedStyles, 
-    showAvailableOnly
-  ]);
+  }, [searchText, selectedCategories, selectedStyles, showAvailableOnly]);
 
   const categories = useMemo(() => {
     const uniqueCategories = Array.from(
@@ -152,28 +144,23 @@ export default function ManageCustomizationItemsLayout({
   }, [customizationItems]);
 
   const toggleCategory = (category: string) => {
-    setSelectedCategories((prev) =>
-      prev.includes(category)
-        ? prev.filter((item) => item !== category)
-        : [...prev, category]
-    );
+    const newCategories = selectedCategories.includes(category)
+      ? selectedCategories.filter((item) => item !== category)
+      : [...selectedCategories, category];
+    
+    updateQueryParams('categoria', newCategories.length ? newCategories.join(',') : null);
   };
 
   const toggleStyle = (style: string) => {
-    setSelectedStyles((prev) =>
-      prev.includes(style)
-        ? prev.filter((item) => item !== style)
-        : [...prev, style]
-    );
+    const newStyles = selectedStyles.includes(style)
+      ? selectedStyles.filter((item) => item !== style)
+      : [...selectedStyles, style];
+      
+    updateQueryParams('estilo', newStyles.length ? newStyles.join(',') : null);
   };
 
   const clearFilters = () => {
-    setSearchText('');
-    setSelectedCategories([]);
-    setSelectedStyles([]);
-    setShowAvailableOnly(false);
-
-    sessionStorage.removeItem('customizationItems-filters');
+    router.replace(pathname, { scroll: false });
   };
 
   const handleToggleItem = (id: string) => {
@@ -240,40 +227,27 @@ export default function ManageCustomizationItemsLayout({
     setSelectedCategory('');
   };
 
-  const filteredItems = useMemo(() => {
-    const lowerSearch = searchText.toLowerCase().trim();
+  useEffect(() => {
+    const timeoutId = setTimeout(() => {
+      const currentSearch = searchParams.get('search') || '';
+      if (localSearchText !== currentSearch) {
+        updateQueryParams('search', localSearchText || null);
+      }
+    }, 1000);
 
-    return normalizedItems
-      .filter(({ original, normalized }) => {
-        const matchesSearch =
-          !lowerSearch || normalized.searchBlob.includes(lowerSearch);
+    return () => clearTimeout(timeoutId);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [localSearchText, searchParams]);
 
-        const matchesCategory =
-          selectedCategories.length === 0 ||
-          selectedCategories.includes(normalized.category);
+  const lowerSearch = searchText.toLowerCase().trim();
+  const filteredItems = normalizedItems.filter(({ original, normalized }) => {
+    const matchesSearch = !lowerSearch || normalized.searchBlob.includes(lowerSearch);
+    const matchesCategory = selectedCategories.length === 0 || selectedCategories.includes(normalized.category);
+    const matchesStyle = selectedStyles.length === 0 || selectedStyles.includes(normalized.style);
+    const matchesAvailability = !showAvailableOnly || original.available;
 
-        const matchesStyle =
-          selectedStyles.length === 0 ||
-          selectedStyles.includes(normalized.style);
-
-        const matchesAvailability =
-          !showAvailableOnly || original.available;
-
-        return (
-          matchesSearch &&
-          matchesCategory &&
-          matchesStyle &&
-          matchesAvailability
-        );
-      })
-      .map(({ original }) => original);
-  }, [
-    normalizedItems,
-    searchText,
-    selectedCategories,
-    selectedStyles,
-    showAvailableOnly,
-  ]);
+    return matchesSearch && matchesCategory && matchesStyle && matchesAvailability;
+  }).map(({ original }) => original);
 
   return (
     <div className="flex flex-col font-sans h-full overflow-hidden">
@@ -335,9 +309,9 @@ export default function ManageCustomizationItemsLayout({
             contentClassName="p-4"
           >
             <CustomizationItemsFilters
-              searchText={searchText}
-              onSearchChange={setSearchText}
-              onClearSearch={() => setSearchText('')}
+              searchText={localSearchText}
+              onSearchChange={handleSearchChange}
+              onClearSearch={() => handleSearchChange('')}
               categories={categories}
               selectedCategories={selectedCategories}
               onToggleCategory={toggleCategory}
@@ -367,19 +341,17 @@ export default function ManageCustomizationItemsLayout({
             <div className="relative flex items-center grow gap-2">
               <SearchbarInput
                 searchbarPlaceholder="Pesquise por nome, estilo, categoria ou referência"
-                value={searchText}
-                onChange={(e) => {
-                  setSearchText(e.target.value);
-                }}
+                value={localSearchText}
+                onChange={(e) => handleSearchChange(e.target.value)}
                 className="bg-white shadow-xs truncate"
               />
 
-              {searchText.length > 0 && (
+              {localSearchText.length > 0 && (
                 <button
                   aria-label="Limpar pesquisa"
                   title="Limpar pesquisa"
                   className="absolute right-3 cursor-pointer"
-                  onClick={() => setSearchText('')}
+                  onClick={() => handleSearchChange('')}
                 >
                   <X className="w-6 h-6 text-secondary cursor-pointer" />
                 </button>
@@ -524,7 +496,7 @@ export default function ManageCustomizationItemsLayout({
                           <span className="truncate dark:font-bold dark:text-zinc-200">
                             Preço adicional: {formatCurrency(item?.price_addon)}
                           </span>
-                        ) : ' '}
+                        ) : ' '}
                       </div>
 
                       <div className="flex items-center gap-2">
@@ -571,9 +543,9 @@ export default function ManageCustomizationItemsLayout({
       >
         <DesktopSidePanel>
           <CustomizationItemsFilters
-            searchText={searchText}
-            onSearchChange={setSearchText}
-            onClearSearch={() => setSearchText('')}
+            searchText={localSearchText} 
+            onSearchChange={handleSearchChange}
+            onClearSearch={() => handleSearchChange('')}
             categories={categories}
             selectedCategories={selectedCategories}
             onToggleCategory={toggleCategory}

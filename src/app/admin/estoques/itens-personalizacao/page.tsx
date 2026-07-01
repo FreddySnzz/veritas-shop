@@ -1,3 +1,4 @@
+import { Suspense } from "react";
 import { 
   getCachedAdminInfoAction,
   getCachedCustomizationItemsAction,
@@ -22,7 +23,11 @@ export default async function ManageInvertoryCatalogPage() {
             <DynamicBreadcrumb className="mt-16 py-4" />
             <hr className="border-muted-foreground/50 mb-4" />
           </div>
-          <ManageCustomizationItemsInventoryLayout customizationItems={items} />
+          <Suspense fallback={
+            <div className="p-4">Carregando itens...</div>
+          }>
+            <ManageCustomizationItemsInventoryLayout customizationItems={items} />
+          </Suspense>
         </main>
       </div>
       <div className="hidden lg:block shrink-0">

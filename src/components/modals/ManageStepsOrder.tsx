@@ -1,10 +1,11 @@
 'use client';
 
-import { useEffect, useMemo, useState } from 'react';
+import { useMemo, useState } from 'react';
 import { CgArrowsBreakeV } from 'react-icons/cg';
 import { X } from 'lucide-react';
 import CustomModal from './CustomModal';
 import { CustomizationItemsCategoryModel } from '@/data/models/CustomizationItemsCategory';
+import { saveCustomizationOrderAction } from '@/app/actions/customizationItemsCategory.action';
 import {
   DndContext,
   KeyboardSensor,
@@ -28,7 +29,6 @@ import {
 } from '@dnd-kit/modifiers';
 import { CSS } from '@dnd-kit/utilities';
 import { toast } from 'sonner';
-import { saveCustomizationOrderAction } from '@/app/actions/customizationItemsCategory.action';
 
 interface ManageStepsOrderModalProps extends React.HTMLAttributes<HTMLElement> {
   categories: CustomizationItemsCategoryModel[];
@@ -44,13 +44,11 @@ export default function ManageStepsOrderModal({
   const [items, setItems] = useState<CustomizationItemsCategoryModel[]>([]);
   const [loading, setLoading] = useState(false);
 
-  useEffect(() => {
-    setItems(
-      [...categories].sort(
-        (a, b) => (a.display_order ?? 999) - (b.display_order ?? 999)
-      )
+  useMemo(() => {
+    return [...categories].sort(
+      (a, b) => (a.display_order ?? 999) - (b.display_order ?? 999)
     );
-  }, [categories, modalOpen]);
+  }, [categories]);
 
   const sensors = useSensors(
     useSensor(MouseSensor, {

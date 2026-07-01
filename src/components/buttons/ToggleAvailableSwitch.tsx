@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useEffect, useTransition } from "react";
+import { useState, useTransition } from "react";
 import { useRouter } from "next/navigation";
 import { ItemsCustomizationTypes } from "@/data/types/customization.type";
 import { updateCatalogImageAction } from "@/app/actions/catalogImages.action";
@@ -36,10 +36,6 @@ export function ToggleAvailableSwitch({
   const [isPending, startTransition] = useTransition();
   const [isLoading, setIsLoading] = useState(false);
   const [availableState, setAvailableState] = useState<boolean>(available);
-
-  useEffect(() => {
-    setAvailableState(available);
-  }, [available]);
 
   const handleUpdate = (checked: boolean) => {
     if (isLoading) return;

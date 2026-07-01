@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useMemo, useRef, useState } from "react";
 import Image from "next/image";
 import { 
   createCustomizationItemCategoryAction, 
@@ -31,28 +31,13 @@ export default function CustomizationItemCategoryModal({
   modalOpen, 
   onClose 
 }: CustomizationItemCategoryProps) {
-  const [name, setName] = useState<string>('');
-  const [description, setDescription] = useState<string>('');
-  const [imageUrl, setImageUrl] = useState<string>('');
-  const [isLoading, setIsLoading] = useState<boolean>(false);
-
+  const [name, setName] = useState(mode === 'editar' ? initialData?.name : '');
+  const [description, setDescription] = useState(mode === 'editar' ? (initialData?.description || '') : '');
+  const [imageUrl, setImageUrl] = useState(mode === 'editar' ? (initialData?.image_url || '') : '');
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
-
-  useEffect(() => {
-    if (modalOpen) {
-      if (mode === 'editar' && initialData) {
-        setName(initialData.name);
-        setDescription(initialData.description || '');
-        setImageUrl(initialData.image_url || '');
-      } else {
-        setName('');
-        setDescription('');
-        setImageUrl('');
-      }
-      setSelectedFile(null);
-    };
-  }, [modalOpen, mode, initialData]);
+  
+  const [isLoading, setIsLoading] = useState<boolean>(false);
 
   const imagePreview = useMemo(() => {
     if (selectedFile) return URL.createObjectURL(selectedFile);
@@ -101,7 +86,7 @@ export default function CustomizationItemCategoryModal({
 
       const dataSubmit = {
         name: name,
-        category_name: removeAccentsAndSpaces(name),
+        category_name: removeAccentsAndSpaces(name ?? ''),
         description: description,
         image_url: finalUrlToSave,
         display_order: cachedCategories.length + 1,
@@ -172,6 +157,7 @@ export default function CustomizationItemCategoryModal({
 
         <form 
           id="add-category"
+          key={mode === 'editar' ? initialData?.id : 'novo'}
           onSubmit={handleSubmit}
           className="h-dvh md:h-auto"
         >
