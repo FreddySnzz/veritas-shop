@@ -52,6 +52,7 @@ export function WhatsAppButtonFixed(props: WhatsAppButtonProps) {
       href={props.message}
       target="_blank"
       rel="noopener noreferrer"
+      onContextMenu={() => {return false}}
     >
       <motion.button
         initial={{ opacity: 0, x: 100 }}
@@ -63,6 +64,15 @@ export function WhatsAppButtonFixed(props: WhatsAppButtonProps) {
         ref={buttonRef}
         onTouchStart={onTouchStart}
         onMouseDown={onMouseDown}
+        disabled={dragging}
+        onClick={props.clickCallback}
+        tabIndex={0}
+        role="button"
+        aria-disabled={dragging}
+        aria-pressed={dragging}
+        aria-haspopup="true"
+        aria-expanded="false"
+        onContextMenu={() => {return false}}
         className={`cursor-pointer p-3 items-center justify-center
           bg-linear-to-r from-green-500 to-green-600 
           text-white hover:from-green-600/90 hover:to-green-600/90
