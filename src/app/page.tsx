@@ -39,7 +39,7 @@ export default async function Home() {
           </div>
           <div className="mt-8">
             <CatalogRosaryReconstructionCard 
-              whatsappNumber={user?.phone || '5586994379414'}
+              whatsappNumber={ user?.role === 'admin' ? user?.phone || '5586994379414' : '5586994379414'}
             />
           </div>
           <div className="mt-8">
@@ -53,7 +53,7 @@ export default async function Home() {
         } 
       />
       <Footer 
-        whatsappNumber={user?.phone || '5586994379414'}
+        whatsappNumber={ user?.role === 'admin' ? user?.phone || '5586994379414' : '5586994379414'}
       />
     </div>
   );

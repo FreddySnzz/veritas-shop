@@ -25,6 +25,12 @@ import Alert from "./Alert";
 import Link from "next/link";
 import { mountProductUrl } from "@/data/functions/removeAccentsAndSpaces";
 import { centsToPriceString } from "@/data/functions/inputMasks";
+import { useAuth } from "@/data/context/AuthContext";
+import { CustomButton } from "./buttons/CustomButton";
+import { useRouter } from "next/navigation";
+import { createOrderAction } from "@/app/actions/orders.action";
+import { CreateOrderRequest } from "@/data/types/order.type";
+import { toast } from "sonner";
 
 interface CartProps extends React.HTMLAttributes<HTMLElement> {
   whatsappNumber?: string;
@@ -41,10 +47,12 @@ export default function Cart({
     addQuantity,
     subtractQuantity,
   } = useCart();
+  const { user, isAuthenticated } = useAuth();
   const [isClearCartModalOpen, setIsClearCartModalOpen] = useState(false);
   const [isDeleteItemCartModalOpen, setIsDeleteItemCartModalOpen] = useState(false);
   const [itemCartIdToDelete, setItemCartIdToDelete] = useState<string>('');
   const isCartEmpty = cartCount === 0;
+  const router = useRouter();
 
   const handleSubtractQuantity = (id: string) => {
     const itemQuantity = items.filter(item => item.cartId === id)[0].quantity;
@@ -88,161 +96,6 @@ export default function Cart({
     return `• ${key}: ${value}\n`;
   };
 
-  const renderOrderSummaryDesktop = () => {
-    return (
-      <div className="hidden md:flex flex-col w-full lg:w-1/3 pl-16">
-      <div className="flex-1 flex-col">
-        <span className="font-bold text-2xl text-secondary dark:text-zinc-50 uppercase">
-          Resumo do Pedido
-        </span>
-
-        <Alert 
-          title="Lembre-se que o valor mostrado é apenas uma estimativa."
-          subtitle="O valor real será confirmado na finalização do pedido com nosso atendimento."
-          className="flex font-medium my-2 dark:bg-input/50"
-        />
-
-        <div className="flex flex-col mt-4 gap-2">
-          {items.map((item) => (
-            <div 
-              key={item.cartId}
-              className="flex flex-col"
-            >
-              <div className="flex justify-between w-full gap-2 items-baseline">
-                <p className="text-nowrap">
-                  {item.quantity} {item.quantity > 1 ? "itens" : "item"}
-                </p>
-                <hr className="border-dashed border-gray-300 w-full" />
-                <p>{formatCurrency(item.product.price * item.quantity)}</p>
-              </div>
-              {item.product.customizationPrice > 0 && (
-                <div className="flex justify-between text-xs text-gray-400 dark:text-zinc-500 font-medium">
-                  <p>Personalização</p>
-                  <p>
-                    + {formatCurrency(Number(centsToPriceString(item.product.customizationPrice * item.quantity)))}
-                  </p>
-                </div>
-              )}
-            </div>
-          ))}
-        </div>
-        <div className="flex justify-between mt-2 w-full gap-2 items-baseline">
-          <p className="text-nowrap">Entrega</p>
-          <hr className="border-dashed border-gray-300 w-full" />
-          <p className="text-nowrap">A combinar</p>
-        </div>
-        <div className="flex font-bold dark:font-black justify-between mt-6 w-full gap-2 items-baseline dark:text-details">
-          <p className="text-nowrap">Total</p>
-          <hr className="border-dashed border-gray-300 dark:border-details w-full" />
-          <p>{calculeTotalCartValue()}</p>
-        </div>
-      </div>
-
-      <div className="shrink-0 mt-auto">
-        <div className="hidden md:flex w-full items-center justify-center">
-          <button 
-            type="button"
-            aria-label="Limpar carrinho"
-            onClick={() => setIsClearCartModalOpen(true)}
-            className={`flex items-center justify-center gap-2 px-5 py-3 
-              text-red-500/80 dark:text-red-400 hover:text-red-600 dark:hover:text-red-500 transition-colors font-medium cursor-pointer
-            `}
-          >
-            <Trash2 className="w-4 h-4" />
-            <span>Limpar Carrinho</span>
-          </button>
-        </div>
-        <Alert className="flex font-medium mb-4 dark:bg-input/50">
-          <p>{`Ao clicar em "Finalizar Pedido", você declara que leu e concorda com nossos `} 
-            <Link 
-              href="/ajuda/termos-e-condicoes"
-              className="font-bold hover:underline"
-              target="_blank"
-              rel="noopener noreferrer"
-              aria-label="Ver Termos e Condições"
-              title="Ver Termos e Condições"
-            >
-              <span> Termos e Condições.</span>
-            </Link>
-          </p>
-        </Alert>
-        <WhatsAppButton message={generateWhatsAppMessage(items)} />
-        <SupportButton messageToSupport="Olá, estou tendo problemas no meu carrinho!" />
-      </div>
-    </div>
-    )
-  };
-
-  const renderOrderSummaryMobile = () => {
-    return (
-      <div className="flex-1 flex-col">
-        <p className="font-bold text-lg text-secondary dark:text-zinc-50 uppercase">
-          Resumo do Pedido
-        </p>
-
-        <div className="flex flex-col mt-2 gap-2">
-          {items.map((item) => (
-            <div 
-              key={item.cartId}
-              className="flex flex-col"
-            >
-              <div className="flex justify-between w-full gap-2 items-baseline">
-                <p className="text-nowrap">
-                  {item.quantity} {item.quantity > 1 ? "itens" : "item"}
-                </p>
-                <hr className="border-dashed border-gray-300 w-full" />
-                <p>{formatCurrency(item.product.price * item.quantity)}</p>
-              </div>
-              {item.product.customizationPrice > 0 && (
-                <div className="flex justify-between text-xs text-gray-400 dark:text-zinc-500 font-medium">
-                  <p>Personalização</p>
-                  <p>
-                    + {formatCurrency(Number(centsToPriceString(item.product.customizationPrice * item.quantity)))}
-                  </p>
-                </div>
-              )}
-            </div>
-          ))}
-        </div>
-
-        <div className="flex justify-between w-full gap-2 items-baseline">
-          <p className="text-nowrap">Entrega</p>
-          <hr className="border-dashed border-gray-300 w-full" />
-          <p className="text-nowrap">A combinar</p>
-        </div>
-
-        <div className="flex font-bold dark:font-black dark:text-details justify-between mt-6 w-full gap-2 items-baseline">
-          <p className="text-nowrap">Total</p>
-          <hr className="border-dashed border-gray-300 dark:border-details w-full" />
-          <p>{calculeTotalCartValue()}</p>
-        </div>
-        <Alert 
-          title="Lembre-se que o valor mostrado é apenas uma estimativa."
-          subtitle="O valor real será confirmado na finalização do pedido com nosso atendimento."
-          className="flex font-medium my-2 dark:bg-input/50"
-        />
-        <Alert className="flex font-medium my-2 dark:bg-input/50">
-          <span>{`Ao clicar em "Finalizar Pedido", você declara que leu e concorda com nossos `}
-            <Link 
-              href="/ajuda/termos-e-condicoes"
-              className="font-bold hover:underline"
-              target="_blank"
-              rel="noopener noreferrer"
-              aria-label="Ver Termos e Condições"
-              title="Ver Termos e Condições"
-            >
-              <span> Termos e Condições.</span>
-            </Link>
-          </span>
-        </Alert>
-        <SupportButton 
-          messageToSupport="Olá, estou tendo problemas no meu carrinho!"
-          className="my-2"
-        />
-      </div>
-    )
-  };
-
   const generateWhatsAppMessage = (items: CartProductItem[]) => {
     let mensagem = `Olá! Gostaria de finalizar o seguinte pedido:\n\n`;
     let totalGeral = 0;
@@ -275,6 +128,53 @@ export default function Cart({
     mensagem += `Aguardo a confirmação e dados para pagamento!`;
 
     return `https://wa.me/${whatsappNumber}?text=${encodeURIComponent(mensagem)}`;
+  };
+
+  const createOrder = async () => {
+    try {
+      if (!user) return;
+
+      items.forEach(async (item) => {
+        let customizationPrice = Number(centsToPriceString(item.product.customizationPrice));
+        
+        if (!customizationPrice) customizationPrice = 0;
+        const subtotal = (item.product.price + customizationPrice) * item.quantity;
+
+        const payload: CreateOrderRequest = {
+          user_id: user?.id,
+          product_id: item.product.id,
+          quantity: item.quantity,
+          customization: item.product.customizationPrice > 0 ? item.customization : null,
+          final_price: subtotal,
+        };
+
+        await createOrderAction(payload);
+      });
+
+      return;
+    } catch (error) {
+      console.error('Erro ao criar pedido:', error);
+      toast.error("Erro ao criar pedido.");
+    };
+  };
+
+  const renderFinishOrderButton = () => {
+    if (isAuthenticated) 
+      return <WhatsAppButton clickCallback={createOrder} message={generateWhatsAppMessage(items)} />;
+
+    return (
+      <CustomButton
+        type="button"
+        title="Faça login para ver o botão de WhatsApp"
+        aria-label="Faça login para ver o botão de WhatsApp"
+        onClick={() => router.push('/login?redirect=/carrinho')}
+        className={`w-full bg-primary dark:bg-details text-white hover:bg-primary/90 dark:hover:bg-details/90`}
+      >
+        <p className="text-center">
+          Faça login para concluir seu pedido
+        </p>
+      </CustomButton>
+    );
   };
 
   return (
@@ -311,7 +211,7 @@ export default function Cart({
                 />
               </div>
 
-              <div className="flex">
+              <div className="flex flex-col md:flex-row">
                 <div className="w-full lg:w-2/3 space-y-4">
                   {items.map((item) => (
                     <div 
@@ -418,31 +318,111 @@ export default function Cart({
                       </div>
                     </div>
                   ))}
+
+                  {/* Mobile */}
+                  <div className="flex md:hidden w-full items-center justify-center">
+                    <button 
+                      type="button"
+                      aria-label="Limpar carrinho"
+                      onClick={() => setIsClearCartModalOpen(true)}
+                      className={`flex items-center justify-center gap-2 px-5 py-3 
+                        text-red-500/80 dark:text-red-400 hover:text-red-600 dark:hover:text-red-500
+                        transition-colors font-medium cursor-pointer
+                      `}
+                    >
+                      <Trash2 className="w-4 h-4" />
+                      <p>Limpar Carrinho</p>
+                    </button>
+                  </div>
                 </div>
 
-                <>{renderOrderSummaryDesktop()}</>
+                <div className="flex flex-col w-full lg:w-1/3 pl-0 md:pl-16">
+                  <div className="flex flex-1 flex-col">
+                    <p className="font-bold text-lg md:text-2xl text-secondary dark:text-zinc-50 uppercase md:order-first">
+                      Resumo do Pedido
+                    </p>
+
+                    <Alert 
+                      title="Lembre-se que o valor mostrado é apenas uma estimativa."
+                      subtitle="O valor real será confirmado na finalização do pedido com nosso atendimento."
+                      className="flex font-medium my-2 dark:bg-input/50 order-last md:order-2"
+                    />
+
+                    <div className="flex flex-col mt-2 md:mt-4 gap-2 md:order-3">
+                      {items.map((item) => (
+                        <div 
+                          key={item.cartId}
+                          className="flex flex-col"
+                        >
+                          <div className="flex justify-between w-full gap-2 items-baseline">
+                            <p className="text-nowrap">
+                              {item.quantity} {item.quantity > 1 ? "itens" : "item"}
+                            </p>
+                            <hr className="border-dashed border-gray-300 w-full" />
+                            <p>{formatCurrency(item.product.price * item.quantity)}</p>
+                          </div>
+                          {item.product.customizationPrice > 0 && (
+                            <div className="flex justify-between text-xs text-gray-400 dark:text-zinc-500 font-medium">
+                              <p>Personalização</p>
+                              <p>
+                                + {formatCurrency(Number(centsToPriceString(item.product.customizationPrice * item.quantity)))}
+                              </p>
+                            </div>
+                          )}
+                        </div>
+                      ))}
+                    </div>
+                    <div className="flex justify-between md:mt-2 w-full gap-2 items-baseline md:order-4">
+                      <p className="text-nowrap">Entrega</p>
+                      <hr className="border-dashed border-gray-300 w-full" />
+                      <p className="text-nowrap">A combinar</p>
+                    </div>
+                    <div className="flex font-bold dark:font-black justify-between mt-6 w-full gap-2 items-baseline dark:text-details md:order-5">
+                      <p className="text-nowrap">Total</p>
+                      <hr className="border-dashed border-gray-300 dark:border-details w-full" />
+                      <p>{calculeTotalCartValue()}</p>
+                    </div>
+                  </div>
+
+                  <div className="shrink-0 mt-auto">
+                    <button 
+                      type="button"
+                      aria-label="Limpar carrinho"
+                      onClick={() => setIsClearCartModalOpen(true)}
+                      className={`hidden md:flex w-full items-center justify-center gap-2 px-5 py-3 
+                        text-red-500/80 dark:text-red-400 hover:text-red-600 dark:hover:text-red-500 
+                        transition-colors font-medium cursor-pointer
+                      `}
+                    >
+                      <Trash2 className="w-4 h-4" />
+                      <span>Limpar Carrinho</span>
+                    </button>
+                    <Alert className="flex font-medium mb-4 dark:bg-input/50">
+                      <p>{`Ao clicar em "Finalizar Pedido", você declara que leu e concorda com nossos `} 
+                        <Link 
+                          href="/ajuda/termos-e-condicoes"
+                          className="font-bold hover:underline"
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          aria-label="Ver Termos e Condições"
+                          title="Ver Termos e Condições"
+                        >
+                          <span> Termos e Condições.</span>
+                        </Link>
+                      </p>
+                    </Alert>
+                    <div className="hidden md:block">
+                      {renderFinishOrderButton()}
+                    </div>
+                  </div>
+                  <SupportButton messageToSupport="Olá, estou tendo problemas no meu carrinho!" />
+                </div>
 
                 <DeleteItemCartModal
                   cartId={itemCartIdToDelete}
                   modalOpen={isDeleteItemCartModalOpen}
                   onClose={() => setIsDeleteItemCartModalOpen(false)}
                 />
-              </div>
-              
-              {/* Tela Mobile */}
-              <div className="flex md:hidden w-full items-center justify-center">
-                <button 
-                  type="button"
-                  aria-label="Limpar carrinho"
-                  onClick={() => setIsClearCartModalOpen(true)}
-                  className={`flex items-center justify-center gap-2 px-5 py-3 
-                    text-red-500/80 dark:text-red-400 hover:text-red-600 dark:hover:text-red-500
-                    transition-colors font-medium cursor-pointer
-                  `}
-                >
-                  <Trash2 className="w-4 h-4" />
-                  <p>Limpar Carrinho</p>
-                </button>
               </div>
 
               <ClearCartModal
@@ -454,15 +434,12 @@ export default function Cart({
         </div>
       </div>
 
+      {/* Footer Mobile */}
       {!isCartEmpty && (
-        <div className="shrink-0 mt-auto md:hidden">
-          <div className="flex flex-col w-full mt-2">
-            {renderOrderSummaryMobile()}
-          </div>
-          
+        <div className="shrink-0 mt-4 md:hidden">
           <hr className="border-muted-foreground/50" />
           <div className="flex flex-col my-2 gap-2">
-            <WhatsAppButton message={generateWhatsAppMessage(items)} />
+            {renderFinishOrderButton()}
             <BackButton backRoute />
           </div>
         </div>

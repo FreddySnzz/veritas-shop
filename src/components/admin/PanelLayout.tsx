@@ -7,10 +7,11 @@ import { refreshCacheAction } from "@/app/actions/cache.actions";
 import { updateUserAction } from "@/app/actions/users.action";
 import { 
   ClipboardPenLine, 
-  Eye, 
   Image as ImageIcon, 
   ListOrdered, 
+  Package, 
   RefreshCw, 
+  ShieldUser, 
   X 
 } from "lucide-react";
 import { toast } from "sonner";
@@ -84,6 +85,18 @@ export default function PanelLayout({ categories, className }: PanelLayoutProps)
       onClick: () => router.push('/admin/estoques'),
     },
     {
+      key: 'orders',
+      title: 'Gerenciar Pedidos',
+      icon: <Package className="h-6 w-6" />,
+      onClick: () => router.push('/admin/pedidos'),
+    },
+    {
+      key: 'users',
+      title: 'Gerenciar Usuários',
+      icon: <ShieldUser className="h-6 w-6" />,
+      onClick: () => toast.error("Em breve!"),
+    },
+    {
       key: 'steps',
       title: 'Ordenar Passos de Personalização',
       icon: <ListOrdered className="h-6 w-6" />,
@@ -101,17 +114,11 @@ export default function PanelLayout({ categories, className }: PanelLayoutProps)
       icon: <FaWhatsapp className="h-6 w-6" />,
       onClick: () => setIsOpenWhatsAppModal(true),
     },
-    {
-      key: 'orders',
-      title: 'Ver Pedidos',
-      icon: <Eye className="h-6 w-6" />,
-      onClick: () => toast.warning('Em breve!'),
-    },
   ];
 
   return (
     <div className={`flex flex-col font-sans h-full ${className}`}>
-      <div className={`grid flex-1 grid-cols-1 gap-4 overflow-y-auto 
+      <div className={`grid flex-1 grid-cols-1 gap-4 overflow-y-auto mt-16 md:mt-0
         sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5`}
       >
         {actions.map((action) => (
@@ -153,7 +160,7 @@ export default function PanelLayout({ categories, className }: PanelLayoutProps)
               </button>
             </div>
             <span className="text-xs text-gray-400 dark:text-zinc-500 mt-4">
-              Esse número será usado para enviar mensagens de confirmação de pedidos ou suporte para clientes.
+              Esse número será usado para o envio de mensagens de confirmação de pedidos ou suporte para clientes.
             </span>
           </div>
 

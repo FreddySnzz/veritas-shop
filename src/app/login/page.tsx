@@ -13,13 +13,17 @@ import { LogoHorizontalSvg } from "@/components/Typography";
 import { onlyNumbers } from '@/data/functions/inputMasks';
 import { Loader2 } from "lucide-react";
 import { FaGoogle } from 'react-icons/fa6';
-import { CreateUserRequest } from '@/data/types/auth';
+import { CreateUserRequest, User } from '@/data/types/auth';
 import { authFormSchema } from '@/data/schemas/form.schema';
-import { registerAction, userLoginAction } from '../actions/auth.actions';
+import { 
+  registerAction, 
+  registerWithGoogleAction, 
+  userLoginAction 
+} from '../actions/auth.actions';
 import { cn } from '@/lib/utils';
 import { signInWithPopup } from 'firebase/auth';
 import { auth, googleProvider } from '@/data/firebase/config';
-import { RolesEnum } from '@/data/types/roles.enum';
+import { RolesEnum } from '@/data/types/enums/roles.enum';
 
 export default function Login() {
   const { setToken, setUser } = useAuth();
@@ -72,7 +76,10 @@ export default function Login() {
     setIsLoading(true);
     
     try {
-      const response = await userLoginAction({ phone: form.phone, password: form.password });
+      const response = await userLoginAction({ 
+        phone: form.phone, 
+        password: form.password 
+      });
 
       if (!response) {
         toast.error("O telefone ou senha estão incorretos.");
@@ -84,7 +91,7 @@ export default function Login() {
 
       Cookies.set('veritas_token', tokens.access, { 
         expires: 1,
-        path: '/',
+        path: redirectUrl,
       });
 
       setToken(tokens.access);
@@ -122,9 +129,11 @@ export default function Login() {
         role: RolesEnum.USER,
       };
 
+      await registerWithGoogleAction(safeUserData);
+
       Cookies.set('veritas_token', safeUserData.accessToken, {
         expires: 1,
-        path: '/',
+        path: redirectUrl,
       });
 
       setToken(safeUserData.accessToken);
@@ -178,23 +187,21 @@ export default function Login() {
       
       if (!loginResponse) return;
 
-      const { user } = createUserResponse;
       const { tokens } = loginResponse;
 
       Cookies.set('veritas_token', tokens.access, { 
         expires: 1,
-        path: '/',
+        path: redirectUrl,
       });
 
       setToken(tokens.access);
-      setUser(user);
+      setUser(createUserResponse as User);
 
       toast.success("Cadastro realizado com sucesso");
-      router.refresh();
+      router.push(redirectUrl);
 
       setTimeout(() => {
         router.replace(redirectUrl);
-        window.location.reload();
       }, 100);
     } catch (error) {
       console.error("Register error:", error);
@@ -326,7 +333,7 @@ export default function Login() {
               type="email"
               autoComplete="email"
               placeholder="seu@email.com"
-              required
+              required={false}
               onChange={(e) => setForm((prev) => ({ ...prev, email: e.target.value }))}
               value={form.email}
               className={cn("h-12 bg-white dark:bg-input/40 dark:placeholder:text-zinc-400 focus-visible:ring-0",

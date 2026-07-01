@@ -16,13 +16,38 @@ import { RosaryIcon } from "./icons/RosaryIcon";
 import { toast } from "sonner";
 import { ThemeToggleSwitch } from "./buttons/ThemeToggleSwitch";
 import { useAuth } from "@/data/context/AuthContext";
-import { cn } from "@/lib/utils";
 
 export default function Menu() {
   const { isMenuOpen, closeMenu } = useApp();
   const { user, logout } = useAuth();
   const router = useRouter();
   useLockBodyScroll(isMenuOpen);
+
+  const redirectProfile = () => {
+    if (!user) {
+      router.push('/login');
+      closeMenu();
+    };
+
+    if (user?.role === 'user') {
+      router.push('/pedidos');
+      closeMenu();
+    } else if (user?.role === 'admin') {
+      router.push('/admin');
+      closeMenu();
+    };
+  };
+
+  const handlePushRoute = (route: string) => {
+    router.push(route);
+    closeMenu();
+  };
+
+  const handleLogout = () => {
+    logout();
+    closeMenu();
+    router.push('/login');
+  };
 
   return (
     <>
@@ -41,7 +66,7 @@ export default function Menu() {
           <div className="flex flex-col gap-2">
             <button 
               type="button"
-              onClick={() => {router.push("/"), closeMenu()}}
+              onClick={() => handlePushRoute("/")}
               aria-label="Voltar para a página inicial"
               title="Voltar para a página inicial"
               className="flex items-center gap-2 cursor-pointer transition-colors dark:hover:text-details"
@@ -62,8 +87,7 @@ export default function Menu() {
             </button>
             <button
               type="button"
-              onClick={() => toast.warning("Em breve!")}
-              // onClick={() => {router.push("/pedidos"), closeMenu()}}
+              onClick={() => handlePushRoute("/pedidos")}
               aria-label="Ir para a página de pedidos"
               title="Ir para a página de pedidos"
               className="flex items-center gap-2 cursor-pointer transition-colors dark:hover:text-details"
@@ -73,7 +97,7 @@ export default function Menu() {
             </button>
             <button
               type="button"
-              onClick={() => {router.push("/ajuda/oracoes"), closeMenu()}}
+              onClick={() => handlePushRoute("/ajuda/oracoes")}
               aria-label="Ir para a página de orações"
               title="Ir para a página de orações"
               className="flex items-center gap-2 cursor-pointer transition-colors dark:hover:text-details"
@@ -87,7 +111,7 @@ export default function Menu() {
             <ThemeToggleSwitch />
             <button 
               type="button"
-              onClick={() => {router.push("/ajuda/sobre"), closeMenu()}}
+              onClick={() => handlePushRoute("/ajuda/sobre")}
               aria-label="Mais informações sobre nós"
               title="Mais informações sobre nós"
               className="flex items-center gap-4 cursor-pointer transition-colors dark:hover:text-details mt-2">
@@ -96,7 +120,7 @@ export default function Menu() {
             </button>
             <button 
               type="button"
-              onClick={() => {router.push("/ajuda"), closeMenu()}}
+              onClick={() => handlePushRoute("/ajuda")}
               aria-label="Ir para a página de ajuda"
               title="Ir para a página de ajuda"
               className="flex items-center gap-4 cursor-pointer transition-colors dark:hover:text-details"
@@ -109,23 +133,18 @@ export default function Menu() {
             <div className="flex items-center justify-between transition-all">
               <button 
                 type="button"
-                onClick={() => {user ?? (router.push("/login"), closeMenu())}}
+                onClick={redirectProfile}
                 aria-label={user ? "" : "Entrar na minha conta"}
                 title={user ? "" : "Entrar na minha conta"}
-                className={cn("flex items-center gap-4 transition-colors",
-                  !user ? "cursor-pointer dark:hover:text-details" : "cursor-default"
-                )}>
+                className={"flex items-center gap-4 transition-colors cursor-pointer dark:hover:text-details"}
+              >
                 { !user ? <User className="w-5 h-5" /> : "" }
                 <p>{user ? `Olá, ${user.name}!` : 'Entrar na minha conta'}</p>
               </button>
               { user && (
                 <button 
                   type="button"
-                  onClick={() => {
-                    logout(),
-                    closeMenu();
-                    router.push("/login");
-                  }}
+                  onClick={handleLogout}
                   aria-label="Sair"
                   title="Sair"
                   className="cursor-pointer hover:text-red-500 transition-colors">

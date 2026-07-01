@@ -27,13 +27,13 @@ export function SupportButton({
         "5586994379414"}?text=${encodeURIComponent(messageToSupport)}
       `}
       className={`flex items-center justify-center 
-        text-sm gap-1 hover:underline mt-2 ${className}
+        text-sm gap-1 hover:underline ${className}
       `}
     >
       <MessageSquareWarning className="w-3 h-3" />
-      <span className="text-xs text-secondary">
+      <p className="text-xs">
         {title}
-      </span>
+      </p>
     </Link>
   );
 };

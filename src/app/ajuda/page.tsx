@@ -16,11 +16,11 @@ export default async function HelpPage() {
           <hr className="border-muted-foreground/50" />
         </div>
         <HelpLayout 
-          whatsappNumber={user?.phone || '5586994379414'}
+          whatsappNumber={ user?.role === 'admin' ? user?.phone || '5586994379414' : '5586994379414'}
         />
       </main>
       <Footer 
-        whatsappNumber={user?.phone || '5586994379414'}
+        whatsappNumber={ user?.role === 'admin' ? user?.phone || '5586994379414' : '5586994379414'}
       />
     </div>
   );

@@ -4,26 +4,23 @@ import { useAuth } from "@/data/context/AuthContext";
 import { usePathname, useRouter } from "next/navigation";
 import { useEffect } from "react";
 import { Loader2 } from "lucide-react";
-import NotFound from "../not-found";
 
 export default function AdminLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
-  const { isAuthenticated, isLoading, user } = useAuth();
+  const { isAuthenticated, isLoading } = useAuth();
   const router = useRouter();
   const pathname = usePathname();
-
-  const isLoginPage = pathname === '/admin/login';
-
+  
+  const isLoginPage = pathname === '/login';
+  
   useEffect(() => {
     if (!isLoading && !isAuthenticated && !isLoginPage) {
-      router.replace('/admin/login');
+      router.replace('/login');
     };
   }, [isAuthenticated, isLoading, isLoginPage, router]);
-
-  if (user?.role === 'user') return NotFound();
 
   if (isLoading) {
     return (

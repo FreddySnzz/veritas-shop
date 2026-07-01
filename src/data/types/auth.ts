@@ -15,6 +15,14 @@ export interface CreateUserRequest {
   password: string;
 }
 
+export interface CreateUserWithGoogleRequest {
+  uid?: string;
+  displayName: string;
+  email?: string;
+  phone: string;
+  role: Roles;
+}
+
 export interface LoginResponse {
   user: {
     id: string;

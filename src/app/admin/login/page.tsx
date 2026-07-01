@@ -51,7 +51,7 @@ export default function Login() {
 
       Cookies.set('veritas_token', tokens.access, { 
         expires: 1,
-        path: '/',
+        path: redirectUrl,
       });
 
       setToken(tokens.access);

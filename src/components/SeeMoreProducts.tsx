@@ -7,17 +7,20 @@ import ProductModel from "@/data/models/Product.model";
 import { useMouseDrag, useIsTouchDevice } from "@/data/hook/useMouseDrag";
 import { mountProductUrl } from "@/data/functions/removeAccentsAndSpaces";
 import { formatCurrency } from "@/data/functions/formatAndCapitalize";
+import { cn } from "@/lib/utils";
 
 interface SeeMoreProductsProps {
-  atualProductId: string;
+  atualProductId?: string;
   cachedProducts: ProductModel[];
   className?: string;
+  motionDivClassName?: string;
 };
 
 export default function SeeMoreProducts({ 
   atualProductId,
   cachedProducts,
-  className
+  className,
+  motionDivClassName,
 }: SeeMoreProductsProps) {
   const availableProducts = cachedProducts.filter(
     (product: ProductModel) => product.available
@@ -28,13 +31,13 @@ export default function SeeMoreProducts({
   const router = useRouter();
 
   return (
-    <div className={`flex flex-1 flex-col py-4 ${className}`}>
+    <div className={cn("flex flex-1 flex-col py-4", className)}>
       <motion.div
         ref={containerRef}
         drag="x"
         dragConstraints={{ left: dragLeft, right: 0 }}
         dragElastic={0.05}
-        className={`flex cursor-grab active:cursor-grabbing scrollbar-hide mx-4 gap-4`}
+        className={cn("flex cursor-grab active:cursor-grabbing scrollbar-hide mx-4 gap-4", motionDivClassName)}
       >
         {availableProducts.map((product: ProductModel) => product.id !== atualProductId && (
           <div 
@@ -47,12 +50,12 @@ export default function SeeMoreProducts({
               onClick={!isTouchDevice ? undefined : () => router.push(`/${mountProductUrl(product.name, product.id)}`)}
               whileHover={{ scale: 1.02 }}
               transition={{ type: "spring", stiffness: 500, damping: 30 }}
-              className={`group flex flex-col rounded-lg w-60 h-70 cursor-pointer overflow-hidden
+              className={`group flex flex-col rounded-lg w-40 h-60 md:w-60 md:h-70 cursor-pointer overflow-hidden
                 bg-white dark:bg-input/50 shadow-md transition-all duration-300 text-start 
               `}
             >
               {product.images_url?.length ? (
-                <div className="relative w-full h-50 aspect-square overflow-hidden 
+                <div className="relative w-full md:h-50 aspect-square overflow-hidden 
                   shrink-0 cursor-grab active:cursor-grabbing"
                 >
                   <Image
@@ -86,10 +89,14 @@ export default function SeeMoreProducts({
                   <p className="font-bold group-hover:text-primary dark:group-hover:text-details transition-colors">
                     {formatCurrency(product.initial_price)}
                   </p>
-                  <p className="font-light text-sm text-gray-600 dark:text-zinc-200 line-clamp-1 group-hover:text-primary dark:group-hover:text-zinc-200 transition-colors">
+                  <p className={`font-light text-sm text-gray-600 dark:text-zinc-200 line-clamp-1 
+                    group-hover:text-primary dark:group-hover:text-zinc-200 transition-colors text-start`
+                  }>
                     {product.name}
                   </p>
-                  <p className="absolute right-3 bottom-1 text-xs text-primary font-medium opacity-0 group-hover:opacity-100 dark:group-hover:text-details transition-opacity mb-0.5">
+                  <p className={`absolute right-3 bottom-1 text-xs text-primary font-medium opacity-0 
+                    group-hover:opacity-100 dark:group-hover:text-details transition-opacity mb-0.5`
+                  }>
                     Ver mais →
                   </p>
                 </div>

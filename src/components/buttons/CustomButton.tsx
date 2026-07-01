@@ -9,6 +9,7 @@ interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
 export function CustomButton({ onClick, children, className }: ButtonProps) {
   return (
     <button 
+      type="button"
       onClick={onClick}
       className={cn(
         "flex lg:flex-col items-center justify-center w-full lg:max-h-1/2 xl:max-h-1/3 py-4 px-5",

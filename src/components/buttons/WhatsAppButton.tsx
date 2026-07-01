@@ -7,6 +7,7 @@ import { FaWhatsapp } from "react-icons/fa6";
 
 interface WhatsAppButtonProps extends React.HTMLAttributes<HTMLButtonElement> {
   message: string;
+  clickCallback?: () => void;
 };
 
 export function WhatsAppButton(props: WhatsAppButtonProps) {
@@ -19,6 +20,7 @@ export function WhatsAppButton(props: WhatsAppButtonProps) {
       <button
         type="button"
         aria-label="Finalizar pedido no WhatsApp"
+        onClick={props.clickCallback}
         className={`flex items-center justify-center w-full px-4 py-3 gap-2 
           bg-linear-to-r from-green-500 to-green-600 lg:text-lg
           text-white hover:from-green-600/90 hover:to-green-700/90

@@ -38,7 +38,11 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     
     if (redirect && pathname?.startsWith('/admin') && pathname !== '/admin/login') {
       router.replace('/admin/login?expired=true');
-    }
+    } else if (redirect && pathname !== '/login' || pathname === '/login') {
+      router.replace('/login?expired=true');
+    } else if (redirect) {
+      router.replace('/');
+    };
   }, [router, pathname]);
 
   const handleSetToken = useCallback((token: string) => {
@@ -89,12 +93,13 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       {children}
     </AuthContext.Provider>
   );
-}
+};
 
 export function useAuth() {
   const context = useContext(AuthContext);
   if (context === undefined) {
     throw new Error("useAuth must be used within an AuthProvider");
-  }
+  };
+
   return context;
-}
+};

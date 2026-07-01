@@ -32,7 +32,7 @@ export default function PrayersLayout() {
             onChange={(e) => {
               setSearchText(e.target.value);
             }}
-            className="bg-white shadow-xs"
+            className="bg-white dark:bg-input/30 shadow-xs"
           />
           
           {searchText.length > 0 && (

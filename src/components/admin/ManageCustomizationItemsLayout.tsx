@@ -234,6 +234,12 @@ export default function ManageCustomizationItemsLayout({
     };
   };
 
+  const handleResetCopyModal = () => {
+    setIsOpenCopyModal(false);
+    setSelectedCategoryToCopy('');
+    setSelectedCategory('');
+  };
+
   const filteredItems = useMemo(() => {
     const lowerSearch = searchText.toLowerCase().trim();
 
@@ -585,11 +591,7 @@ export default function ManageCustomizationItemsLayout({
       <CustomModal
         title="Copiar Itens"
         modalOpen={isOpenCopyModal}
-        onClose={() => {
-          setIsOpenCopyModal(false),
-          setSelectedCategoryToCopy('');
-          setSelectedCategory('');
-        }}
+        onClose={handleResetCopyModal}
       >
         <div className="flex flex-col w-full">
           <p className="text-xs text-gray-400 dark:text-zinc-500">
