@@ -6,6 +6,7 @@ import {
   doc,
   getDoc,
   getDocs,
+  limit,
   query,
   updateDoc,
   where,
@@ -31,7 +32,8 @@ async function productExists(
   const productRef = collection(db, Collections.PRODUCTS_COLLECTION);
 
   const nameQuery = query(
-    productRef, where("name", "==", name)
+    productRef, where("name", "==", name),
+    limit(1)
   );
 
   const nameSnap = await getDocs(nameQuery);

@@ -18,8 +18,8 @@ export async function getAllProductsAction() {
   } catch (error) {
     console.error("Erro ao carregar produtos:", error);
     return null;
-  };
-};
+  }
+}
 
 export async function getProductByNameAction(name: string) {
   try {
@@ -28,8 +28,8 @@ export async function getProductByNameAction(name: string) {
   } catch (error) {
     console.error("Erro ao carregar produto:", error);
     return null;
-  };
-};
+  }
+}
 
 export async function getProductByIdAction(id: string) {
   try {
@@ -38,8 +38,8 @@ export async function getProductByIdAction(id: string) {
   } catch (error) {
     console.error("Erro ao carregar produto:", error);
     return null;
-  };
-};
+  }
+}
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export async function createProductAction(data: any) {
@@ -50,8 +50,8 @@ export async function createProductAction(data: any) {
   } catch (error) {
     console.error("Erro ao criar produto:", error);
     return null;
-  };
-};
+  }
+}
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export async function updateProductAction(id: string, data: any) {
@@ -62,8 +62,8 @@ export async function updateProductAction(id: string, data: any) {
   } catch (error) {
     console.error("Erro ao atualizar produto:", error);
     return null;
-  };
-};
+  }
+}
 
 export async function deleteProductAction(id: string) {
   try {
@@ -71,5 +71,5 @@ export async function deleteProductAction(id: string) {
     await refreshCacheAction('products');
   } catch (error) {
     console.error("Erro ao excluir produto:", error);
-  };
-};
+  }
+}

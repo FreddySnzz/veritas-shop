@@ -94,7 +94,7 @@ html {
 
   --background-alternative: #f3f1ef;
   --background-alternative-v2: #f4f1ea;
-  --background-dark: oklch(27.4% 0.006 286.033);
+  --background-dark: oklch(27.394% 0.00551 285.955);
   --details: #8f7a4e;
   --neutral: #e0e0e0;
 
@@ -141,7 +141,7 @@ html {
 }
 
 .dark {
-  --background: oklch(0.141 0.005 285.823);
+  --background: oklch(14.077% 0.0044 285.776);
 
   --background-alternative: #f3f1ef;
   --background-alternative-v2: #f4f1ea;

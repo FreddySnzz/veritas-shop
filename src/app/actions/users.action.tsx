@@ -1,6 +1,10 @@
 'use server';
 
-import { getUserByEmail, updateUser } from "@/data/services/user.service";
+import { 
+  getUserByEmail, 
+  getUserById, 
+  updateUser 
+} from "@/data/services/user.service";
 import { serializeFirestoreData } from "@/data/functions/firebaseSerialize";
 
 export async function getAdminInfoAction() {
@@ -10,8 +14,18 @@ export async function getAdminInfoAction() {
   } catch (error) {
     console.error("Erro ao carregar informações do admin:", error);
     throw error;
-  };
-};
+  }
+}
+
+export async function getUserByIdAction(id: string) {
+  try {
+    const user = await getUserById(id);
+    return serializeFirestoreData(user);
+  } catch (error) {
+    console.error("Erro ao carregar informações do usuário:", error);
+    throw error;
+  }
+}
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export async function updateUserAction(id: string, data: any) {
@@ -21,5 +35,5 @@ export async function updateUserAction(id: string, data: any) {
   } catch (error) {
     console.error("Erro ao atualizar usuário:", error);
     throw error;
-  };
-};
+  }
+}

@@ -15,7 +15,7 @@ export default async function AdminPanel() {
     <div className="flex flex-col h-dvh overflow-y-auto bg-background-alternative dark:bg-background-dark">
       <div className="flex flex-col shrink-0 h-dvh">
         <Header mode="admin" />
-        <main className={`flex-1 flex flex-col px-4 pb-4 mt-20
+        <main className={`flex-1 flex flex-col px-4 pb-4
           md:px-12 md:mt-0 lg:px-16 overflow-hidden`}
         >
           <div className="hidden md:block shrink-0 md:mb-8 lg:mb-12">
@@ -30,9 +30,9 @@ export default async function AdminPanel() {
       </div>
       <div className="hidden lg:block shrink-0">
         <Footer 
-          whatsappNumber={user?.phone || '5586994379414'}
+          whatsappNumber={ user?.role === 'admin' ? user?.phone || '5586994379414' : '5586994379414'}
         />
       </div>
     </div>
-  );
-};
+  )
+}

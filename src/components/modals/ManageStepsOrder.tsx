@@ -1,10 +1,11 @@
 'use client';
 
-import { useEffect, useMemo, useState } from 'react';
+import { useMemo, useState } from 'react';
 import { CgArrowsBreakeV } from 'react-icons/cg';
 import { X } from 'lucide-react';
 import CustomModal from './CustomModal';
 import { CustomizationItemsCategoryModel } from '@/data/models/CustomizationItemsCategory';
+import { saveCustomizationOrderAction } from '@/app/actions/customizationItemsCategory.action';
 import {
   DndContext,
   KeyboardSensor,
@@ -28,7 +29,6 @@ import {
 } from '@dnd-kit/modifiers';
 import { CSS } from '@dnd-kit/utilities';
 import { toast } from 'sonner';
-import { saveCustomizationOrderAction } from '@/app/actions/customizationItemsCategory.action';
 
 interface ManageStepsOrderModalProps extends React.HTMLAttributes<HTMLElement> {
   categories: CustomizationItemsCategoryModel[];
@@ -41,16 +41,12 @@ export default function ManageStepsOrderModal({
   modalOpen,
   onClose,
 }: ManageStepsOrderModalProps) {
-  const [items, setItems] = useState<CustomizationItemsCategoryModel[]>([]);
+  const [items, setItems] = useState<CustomizationItemsCategoryModel[]>(
+    [...categories].sort(
+      (a, b) => (a.display_order ?? 999) - (b.display_order ?? 999)
+    )
+  );
   const [loading, setLoading] = useState(false);
-
-  useEffect(() => {
-    setItems(
-      [...categories].sort(
-        (a, b) => (a.display_order ?? 999) - (b.display_order ?? 999)
-      )
-    );
-  }, [categories, modalOpen]);
 
   const sensors = useSensors(
     useSensor(MouseSensor, {
@@ -119,7 +115,7 @@ export default function ManageStepsOrderModal({
         </div>
       </div>
     );
-  }
+  };
 
   function handleDragEnd(event: DragEndEvent) {
     const { active, over } = event;
@@ -137,7 +133,7 @@ export default function ManageStepsOrderModal({
         display_order: index + 1,
       }));
     });
-  }
+  };
 
   async function handleSaveOrder() {
     try {
@@ -151,7 +147,14 @@ export default function ManageStepsOrderModal({
     } finally {
       setLoading(false);
     }
-  }
+  };
+
+  const handleCancelClick = () => {
+    setItems([...categories].sort(
+      (a, b) => (a.display_order ?? 999) - (b.display_order ?? 999)
+    ));
+    onClose?.();
+  };
 
   if (!modalOpen) return null;
 
@@ -214,7 +217,7 @@ export default function ManageStepsOrderModal({
         <div className="mt-auto flex w-full items-center gap-2">
           <button
             type="button"
-            onClick={onClose}
+            onClick={handleCancelClick}
             disabled={loading}
             className={`flex w-full items-center justify-center rounded-lg 
               bg-gray-50 px-4 py-2 font-medium cursor-pointer hover:bg-primary/10 

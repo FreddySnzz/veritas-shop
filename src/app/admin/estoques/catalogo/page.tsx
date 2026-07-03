@@ -27,9 +27,9 @@ export default async function ManageInvertoryCatalogPage() {
       </div>
       <div className="hidden lg:block shrink-0">
         <Footer 
-          whatsappNumber={user?.phone || '5586994379414'}
+          whatsappNumber={ user?.role === 'admin' ? user?.phone || '5586994379414' : '5586994379414'}
         />
       </div>
     </div>
-  );
-};
+  )
+}

@@ -1,11 +1,10 @@
 'use client';
 
-import Cookies from 'js-cookie';
 import { useEffect, useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import Link from "next/link";
-import { useAuth } from "@/data/context/AuthContext";
 import { toast } from "sonner";
+import { useAuth } from '@/data/context/AuthContext';
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 import { PasswordInput } from '@/components/ui/password-input';
@@ -15,18 +14,23 @@ import { Loader2 } from "lucide-react";
 import { FaGoogle } from 'react-icons/fa6';
 import { CreateUserRequest } from '@/data/types/auth';
 import { authFormSchema } from '@/data/schemas/form.schema';
-import { registerAction, userLoginAction } from '../actions/auth.actions';
+import { 
+  registerAction, 
+  registerWithGoogleAction, 
+  userLoginAction 
+} from '../actions/auth.actions';
 import { cn } from '@/lib/utils';
 import { signInWithPopup } from 'firebase/auth';
 import { auth, googleProvider } from '@/data/firebase/config';
-import { RolesEnum } from '@/data/types/roles.enum';
+import { RolesEnum } from '@/data/types/enums/roles.enum';
+import validate from '@/data/schemas/validate-forms';
 
 export default function Login() {
-  const { setToken, setUser } = useAuth();
   const searchParams = useSearchParams();
   const [mode, setMode] = useState<'login' | 'register'>('login');
   const [isLoading, setIsLoading] = useState(false);
   const [errors, setErrors] = useState<{ [key: string]: string }>({});
+  const { login } = useAuth();
 
   const [form, setForm] = useState({
     name: '',
@@ -42,37 +46,21 @@ export default function Login() {
 
   useEffect(() => {
     if (isExpired) {
-      localStorage.clear();
-      Cookies.remove('veritas_token');
       toast.warning("Sua sessão expirou. Faça login novamente.");
+      router.replace('/login');
     };
-  }, [isExpired]);
-
-  function validate() {
-    const result = authFormSchema.safeParse(form);
-
-    if (!result.success) {
-      const fieldErrors: { [key: string]: string } = {};
-
-      result.error.issues.forEach((issue) => {
-        const path = issue.path[0];
-        if (typeof path === "string") fieldErrors[path] = issue.message;
-      });
-
-      setErrors(fieldErrors);
-      return false;
-    };
-
-    setErrors({});
-    return true;
-  };
+  }, [isExpired, router]);
   
   const handleLogin = async (e: React.FormEvent) => {
+    let newRedirectUrl = redirectUrl;
     e.preventDefault();
     setIsLoading(true);
     
     try {
-      const response = await userLoginAction({ phone: form.phone, password: form.password });
+      const response = await userLoginAction({ 
+        phone: form.phone, 
+        password: form.password 
+      });
 
       if (!response) {
         toast.error("O telefone ou senha estão incorretos.");
@@ -80,21 +68,14 @@ export default function Login() {
         return;
       };
 
-      const { user, tokens } = response;
-
-      Cookies.set('veritas_token', tokens.access, { 
-        expires: 1,
-        path: '/',
-      });
-
-      setToken(tokens.access);
-      setUser(user);
-
+      login(response.user);
       toast.success("Login realizado com sucesso");
+      if (response.user.role === 'admin') newRedirectUrl = '/admin';
+      router.push(newRedirectUrl);
       router.refresh();
 
       setTimeout(() => {
-        router.replace(redirectUrl);
+        router.push(newRedirectUrl);
       }, 100);
     } catch (error) {
       console.error("Login error:", error);
@@ -122,25 +103,21 @@ export default function Login() {
         role: RolesEnum.USER,
       };
 
-      Cookies.set('veritas_token', safeUserData.accessToken, {
-        expires: 1,
-        path: '/',
-      });
+      await registerWithGoogleAction(safeUserData);
 
-      setToken(safeUserData.accessToken);
-      setUser({
+      login({
         id: safeUserData.uid,
         name: safeUserData.displayName,
         email: safeUserData.email,
         phone: safeUserData.phone,
         role: safeUserData.role,
       });
-
       toast.success("Login realizado com sucesso");
+      router.push(redirectUrl);
       router.refresh();
 
       setTimeout(() => {
-        router.replace(redirectUrl);
+        router.push(redirectUrl);
       }, 100);
     } catch (error) {
       console.error('Erro ao autenticar com Google:', error);
@@ -152,7 +129,11 @@ export default function Login() {
 
   const handleRegister = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!validate()) return;
+    const validation = validate(authFormSchema, form);
+    if (validation.success === false) {
+      setErrors(validation.errors);
+      return;
+    };
 
     setIsLoading(true);
     
@@ -178,23 +159,13 @@ export default function Login() {
       
       if (!loginResponse) return;
 
-      const { user } = createUserResponse;
-      const { tokens } = loginResponse;
-
-      Cookies.set('veritas_token', tokens.access, { 
-        expires: 1,
-        path: '/',
-      });
-
-      setToken(tokens.access);
-      setUser(user);
-
+      login(loginResponse.user);
       toast.success("Cadastro realizado com sucesso");
+      router.push(redirectUrl);
       router.refresh();
 
       setTimeout(() => {
-        router.replace(redirectUrl);
-        window.location.reload();
+        router.push(redirectUrl);
       }, 100);
     } catch (error) {
       console.error("Register error:", error);
@@ -326,7 +297,7 @@ export default function Login() {
               type="email"
               autoComplete="email"
               placeholder="seu@email.com"
-              required
+              required={false}
               onChange={(e) => setForm((prev) => ({ ...prev, email: e.target.value }))}
               value={form.email}
               className={cn("h-12 bg-white dark:bg-input/40 dark:placeholder:text-zinc-400 focus-visible:ring-0",

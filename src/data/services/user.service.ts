@@ -5,7 +5,9 @@ import {
   doc,
   getDoc,
   getDocs,
+  limit,
   query,
+  setDoc,
   updateDoc,
   where,
 } from "firebase/firestore";
@@ -13,8 +15,8 @@ import UserModel from "../models/User.model";
 import { Collections } from "../types/collections.enum";
 import { unstable_cache } from "next/cache";
 import { createPasswordHashed } from "@/lib/password";
-import { CreateUserRequest } from "../types/auth";
-import { RolesEnum } from "../types/roles.enum";
+import { CreateUserRequest, CreateUserWithGoogleRequest } from "../types/auth";
+import { RolesEnum } from "../types/enums/roles.enum";
 
 export class UserServiceError extends Error {
   status: number;
@@ -30,29 +32,41 @@ export class UserServiceError extends Error {
 async function userExists(
   email?: string,
   phone?: string,
+  id?: string
 ): Promise<boolean> {
+  if (!email && !phone && !id) return false;
+  
   const userRef = collection(db, Collections.USERS_COLLECTION);
 
-  const emailQuery = query(
-    userRef, where("email", "==", email)
-  );
+  if (id) {
+    const docRef = doc(db, Collections.USERS_COLLECTION, id);
+    const docSnap = await getDoc(docRef);
+    if (docSnap.exists()) return true; 
+  };
 
-  const phoneQuery = query(
-    userRef, where("phone", "==", phone)
-  );
+  const queriesToRun = [];
 
-  const emailSnap = await getDocs(emailQuery);
-  const phoneSnap = await getDocs(phoneQuery);
+  if (email) {
+    const emailQuery = query(userRef, where("email", "==", email), limit(1));
+    queriesToRun.push(getDocs(emailQuery).then(snap => !snap.empty));
+  };
 
-  if (!emailSnap.empty || !phoneSnap.empty) return true;
+  if (phone) {
+    const phoneQuery = query(userRef, where("phone", "==", phone), limit(1));
+    queriesToRun.push(getDocs(phoneQuery).then(snap => !snap.empty));
+  };
 
-  return false;
+  if (queriesToRun.length === 0) return false;
+
+  const results = await Promise.all(queriesToRun);
+
+  return results.some(exists => exists === true);
 };
 
 export async function createUser(
   data: CreateUserRequest
 ): Promise<Partial<UserModel>> {
-  const verifyUserExists = await userExists(data.email, data.phone);
+  const verifyUserExists = await userExists(data?.phone, data?.email, );
 
   if (verifyUserExists) {
     return new UserServiceError("User already exists", 400);
@@ -73,6 +87,31 @@ export async function createUser(
     id: docRef.id,
     role: RolesEnum.USER,
   };
+};
+
+export async function createUserWithGoogle(
+  data: CreateUserWithGoogleRequest
+): Promise<Partial<UserModel> | undefined> {
+  if (!data.uid) return;
+
+  const verifyUserExists = await userExists(data.email, data.phone, data.uid);
+
+  if (verifyUserExists) {
+    return new UserServiceError("User already exists", 400);
+  };
+
+  const userRef = doc(db, Collections.USERS_COLLECTION, data.uid);
+  
+  await setDoc(userRef, {
+    name: data.displayName,
+    email: data.email,
+    phone: data.phone || null,
+    password: null,
+    role: RolesEnum.USER,
+    updated_at: new Date(),
+  }, { merge: true });
+  
+  return data;
 };
 
 export async function getUserByEmail(

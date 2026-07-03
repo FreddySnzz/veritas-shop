@@ -30,7 +30,6 @@ export function Header({ mode, search, data }: HeaderProps) {
       bg-white text-secondary dark:bg-zinc-900 dark:text-background-alternative-v2`}
     >
       <div className="flex items-center justify-between mx-auto px-4 md:px-8 lg:px-12 py-2">
-        {/* TODO: Ocultar no desktop? */}
         <div className="pr-2 ml-auto cursor-pointer w-10">
           <MenuIcon 
             isMenuOpen={isMenuOpen} 
@@ -75,7 +74,7 @@ export function Header({ mode, search, data }: HeaderProps) {
           }
 
           {mode === 'admin' && 
-            <LogoutButton onClick={() => logout()} /> 
+            <LogoutButton onClick={logout} /> 
           }
         </div>
         <Sidebar />

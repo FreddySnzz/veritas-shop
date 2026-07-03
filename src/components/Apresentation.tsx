@@ -86,9 +86,8 @@ export default function Apresentation() {
       </section>
 
       <WhatsAppButtonFixed 
-        message={`https://wa.me/${user?.phone || 
-          "5586994379414"}?text=${encodeURIComponent('Olá, gostaria de fazer um pedido de Terço Personalizado!')}`
-        } 
+        message={`https://wa.me/${user?.role === 'admin' ? user?.phone 
+          || '5586994379414' : "5586994379414"}?text=${encodeURIComponent('Olá, gostaria de fazer um pedido de Terço Personalizado!')}`} 
       />
     </section>
   );

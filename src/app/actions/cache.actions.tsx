@@ -13,7 +13,7 @@ import { getCachedAdminInfo } from "@/data/services/user.service";
 
 export async function refreshCacheAction(collection: string) {
   revalidateTag(collection, "max");
-};
+}
 
 export async function getCachedProductsAction() {
   const products = await getCachedProducts();
@@ -23,26 +23,26 @@ export async function getCachedProductsAction() {
     sortedItems = [...products].sort((a, b) => {
       return a.name.localeCompare(b.name, 'pt-BR');
     });
-  };
+  }
   
   return serializeFirestoreData(sortedItems);
-};
+}
 
 export async function getCachedAdminInfoAction() {
   const admin = await getCachedAdminInfo();
 
   if (!admin) {
     return null;
-  };
+  }
 
   return serializeFirestoreData(admin);
-};
+}
 
 export async function getCachedCatalogImagesAction() {
   const catalogImages = await getCachedCatalogImages();
   
   return serializeFirestoreData(catalogImages);
-};
+}
 
 export async function getCachedCustomizationItemsAction() {
   const customizationItems = await getCachedCustomizationItems();
@@ -52,10 +52,10 @@ export async function getCachedCustomizationItemsAction() {
     sortedItems = [...customizationItems].sort((a, b) => {
       return a.name.localeCompare(b.name, 'pt-BR');
     });
-  };
+  }
   
   return serializeFirestoreData(sortedItems);
-};
+}
 
 export async function getCachedCustomizationItemsCategoriesAction() {
   const customizationItemsCategories = await getCachedCustomizationItemsCategories();
@@ -65,7 +65,7 @@ export async function getCachedCustomizationItemsCategoriesAction() {
     sortedItems = [...customizationItemsCategories].sort((a, b) => {
       return a.name.localeCompare(b.name, 'pt-BR');
     });
-  };
+  }
   
   return serializeFirestoreData(sortedItems);
-};
+}

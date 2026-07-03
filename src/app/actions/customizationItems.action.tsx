@@ -20,8 +20,8 @@ export async function getAllCustomizationItemsAction() {
   } catch (error) {
     console.error("Erro ao buscar todos os itens de personalização:", error);
     throw error;
-  };
-};
+  }
+}
 
 export async function getCustomizationItemByIdAction(id: string) {
   try {
@@ -30,8 +30,8 @@ export async function getCustomizationItemByIdAction(id: string) {
   } catch (error) {
     console.error("Erro ao buscar item de personalização por id:", error);
     throw error;
-  };
-};
+  }
+}
 
 export async function getCustomizationItemByRefAction(ref: string) {
   try {
@@ -42,8 +42,8 @@ export async function getCustomizationItemByRefAction(ref: string) {
   } catch (error) {
     console.error("Erro ao buscar item de personalização por ref:", error);
     throw error;
-  };
-};
+  }
+}
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export async function createCustomizationItemAction(data: any) {
@@ -54,8 +54,8 @@ export async function createCustomizationItemAction(data: any) {
   } catch (error) {
     console.error("Erro ao criar item de personalização:", error);
     throw error;
-  };
-};
+  }
+}
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export async function updateCustomizationItemAction(id: string, data: any) {
@@ -66,8 +66,8 @@ export async function updateCustomizationItemAction(id: string, data: any) {
   } catch (error) {
     console.error("Erro ao atualizar item de personalização:", error);
     throw error;
-  };
-};
+  }
+}
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export async function copyCustomizationItemsAction(data: any) {
@@ -78,8 +78,8 @@ export async function copyCustomizationItemsAction(data: any) {
   } catch (error) {
     console.error("Erro ao copiar itens de personalização:", error);
     throw error;
-  };
-};
+  }
+}
 
 export async function deleteCustomizationItemAction(id: string) {
   try {
@@ -87,5 +87,5 @@ export async function deleteCustomizationItemAction(id: string) {
     await refreshCacheAction('customization_items');
   } catch (error) {
     console.error("Erro ao excluir item de personalização:", error);
-  };
-};
+  }
+}

@@ -17,13 +17,13 @@ export default async function CartPage() {
       <Header mode="cart" />
       <main className="flex-1 flex flex-col px-6 mt-20 md:mt-24 sm:px-14 lg:px-16">
         <Cart 
-          whatsappNumber={user?.phone || '5586994379414'}
+          whatsappNumber={ user?.role === 'admin' ? user?.phone || '5586994379414' : '5586994379414'}
           catalogProducts={availableProducts} 
         />
       </main>
       <div className="hidden md:block">
         <Footer 
-        whatsappNumber={user?.phone || '5586994379414'}
+        whatsappNumber={ user?.role === 'admin' ? user?.phone || '5586994379414' : '5586994379414'}
       />
       </div>
     </div>

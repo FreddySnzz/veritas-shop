@@ -7,6 +7,7 @@ import { FaWhatsapp } from "react-icons/fa6";
 
 interface WhatsAppButtonProps extends React.HTMLAttributes<HTMLButtonElement> {
   message: string;
+  clickCallback?: () => void;
 };
 
 export function WhatsAppButton(props: WhatsAppButtonProps) {
@@ -19,6 +20,7 @@ export function WhatsAppButton(props: WhatsAppButtonProps) {
       <button
         type="button"
         aria-label="Finalizar pedido no WhatsApp"
+        onClick={props.clickCallback}
         className={`flex items-center justify-center w-full px-4 py-3 gap-2 
           bg-linear-to-r from-green-500 to-green-600 lg:text-lg
           text-white hover:from-green-600/90 hover:to-green-700/90
@@ -50,6 +52,8 @@ export function WhatsAppButtonFixed(props: WhatsAppButtonProps) {
       href={props.message}
       target="_blank"
       rel="noopener noreferrer"
+      onContextMenu={(e) => e.preventDefault()}
+      style={{ WebkitTouchCallout: 'none' }}
     >
       <motion.button
         initial={{ opacity: 0, x: 100 }}
@@ -61,6 +65,7 @@ export function WhatsAppButtonFixed(props: WhatsAppButtonProps) {
         ref={buttonRef}
         onTouchStart={onTouchStart}
         onMouseDown={onMouseDown}
+        onContextMenu={(e) => e.preventDefault()}
         className={`cursor-pointer p-3 items-center justify-center
           bg-linear-to-r from-green-500 to-green-600 
           text-white hover:from-green-600/90 hover:to-green-600/90
@@ -73,7 +78,8 @@ export function WhatsAppButtonFixed(props: WhatsAppButtonProps) {
           zIndex: 9999,
           transition: dragging ? 'none' : 'left 0.2s ease, top 0.2s ease',
           touchAction: 'none',
-          userSelect: 'none'
+          userSelect: 'none',
+          WebkitTouchCallout: 'none'
         }}
       >
         <FaWhatsapp className="w-6 h-6" />

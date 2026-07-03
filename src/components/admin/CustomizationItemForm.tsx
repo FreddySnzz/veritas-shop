@@ -238,9 +238,7 @@ export function CustomizationItemForm({
         </div>
 
         <div className="flex flex-col w-full lg:flex-row gap-4 lg:gap-8">
-          <div className={`flex flex-col w-full
-            ${fileInputRef.current ?? 'lg:w-1/3'}`}
-          >
+          <div className={`flex flex-col w-full ${!imagePreview ? 'lg:w-1/3' : ''}`}>
             <Label htmlFor="image" className="text-sm mb-1 dark:text-zinc-50">
               Imagem do Item (Opcional)
             </Label>

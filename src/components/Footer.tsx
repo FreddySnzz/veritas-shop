@@ -150,14 +150,6 @@ export default function Footer({
                 >
                   <span className="hover:underline">Relatar Problema</span>
                 </Link>
-
-                <Link 
-                  aria-label="Painel Administrativo"
-                  title="Painel Administrativo"
-                  href={`/admin`}
-                >
-                  <span className="hover:underline">Painel Administrativo</span>
-                </Link>
               </div>
             </div>
           </div>
