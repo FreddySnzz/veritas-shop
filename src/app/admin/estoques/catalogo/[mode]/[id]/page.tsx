@@ -19,7 +19,7 @@ export default async function AddProductCatalogPage({ params }: {
 
   if (!product) {
     notFound();
-  };
+  }
 
   return (
     <div className="flex flex-col h-dvh overflow-y-auto bg-background-alternative dark:bg-background-dark">
@@ -44,5 +44,5 @@ export default async function AddProductCatalogPage({ params }: {
         />
       </div>
     </div>
-  );
-};
+  )
+}

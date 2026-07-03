@@ -13,7 +13,7 @@ interface PageProps {
   params: Promise<{
     item: string;
   }>;
-};
+}
 
 export default async function AddProductCatalogPage({ params }: PageProps) {
   const { user } = await getCachedAdminInfoAction();
@@ -26,7 +26,7 @@ export default async function AddProductCatalogPage({ params }: PageProps) {
 
   if (!product) {
     notFound();
-  };
+  }
 
   return (
     <div className="flex flex-col h-dvh overflow-y-auto bg-background-alternative dark:bg-background-dark">
@@ -45,5 +45,5 @@ export default async function AddProductCatalogPage({ params }: PageProps) {
         whatsappNumber={ user?.role === 'admin' ? user?.phone || '5586994379414' : '5586994379414'}
       />
     </div>
-  );
-};
+  )
+}

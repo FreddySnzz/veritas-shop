@@ -74,7 +74,7 @@ export function Header({ mode, search, data }: HeaderProps) {
           }
 
           {mode === 'admin' && 
-            <LogoutButton onClick={() => logout()} /> 
+            <LogoutButton onClick={logout} /> 
           }
         </div>
         <Sidebar />

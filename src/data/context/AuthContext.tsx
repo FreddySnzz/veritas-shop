@@ -3,91 +3,56 @@
 import { 
   type ReactNode, 
   createContext, 
-  useCallback, 
   useContext, 
-  useEffect, 
-  useState, 
-  useRef 
+  useState 
 } from "react";
-import { deleteCookie, getCookie, setCookie } from "@/lib/cookies";
 import { User } from "../types/auth";
-import { useRouter, usePathname } from "next/navigation";
+import { useRouter } from "next/navigation";
+import { logoutAction } from "@/app/actions/auth.actions";
 
 interface AuthContextType {
   user: User | null;
   isAuthenticated: boolean;
-  isLoading: boolean;
-  setToken: (token: string) => void;
-  setUser: (user: User) => void;
-  logout: () => void;
+  login: (userData: User) => void;
+  logout: () => Promise<void>;
 };
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
-export function AuthProvider({ children }: { children: ReactNode }) {
-  const [user, setUser] = useState<User | null>(null);
-  const [isLoading, setIsLoading] = useState(true);
+export function AuthProvider({ 
+  children, 
+  initialUser = null 
+}: { 
+  children: ReactNode, 
+  initialUser?: User | null 
+}) {
+  const [user, setUser] = useState<User | null>(initialUser);
+  const [prevInitialUser, setPrevInitialUser] = useState<User | null>(initialUser);
   const router = useRouter();
-  const pathname = usePathname();
-  const hasInitialized = useRef(false);
 
-  const logout = useCallback((redirect: boolean = true) => {
-    setUser(null);
-    deleteCookie("veritas_token");
-    localStorage.removeItem("user");
-    
-    if (redirect && pathname?.startsWith('/admin') && pathname !== '/admin/login') {
-      router.replace('/admin/login?expired=true');
-    } else if (redirect && pathname !== '/login' || pathname === '/login') {
-      router.replace('/login?expired=true');
-    } else if (redirect) {
-      router.replace('/');
-    };
-  }, [router, pathname]);
+  if (initialUser !== prevInitialUser) {
+    setPrevInitialUser(initialUser);
+    setUser(initialUser);
+  };
 
-  const handleSetToken = useCallback((token: string) => {
-    setCookie("veritas_token", token, 1);
-  }, []);
-
-  const handleSetUser = useCallback((userData: User) => {
+  const login = (userData: User) => {
     setUser(userData);
-    localStorage.setItem("user", JSON.stringify(userData));
-  }, []);
+  };
 
-  // Inicialização - carrega dados do localStorage
-  useEffect(() => {
-    if (hasInitialized.current) return;
-    hasInitialized.current = true;
-
-    const initAuth = () => {
-      const token = getCookie("veritas_token");
-      const storedUser = localStorage.getItem("user");
-
-      if (token && storedUser) {
-        try {
-          const parsedUser = JSON.parse(storedUser);
-          setUser(parsedUser);
-        } catch (error) {
-          console.error("Erro ao parsear usuário:", error);
-          logout(false);
-        }
-      }
-      
-      setIsLoading(false);
-    };
-
-    initAuth();
-  }, [logout]);
+  const logout = async () => {
+    setUser(null); 
+    await logoutAction(); 
+    router.push('/login');
+    router.refresh();
+  };
 
   return (
     <AuthContext.Provider
       value={{
         user,
         isAuthenticated: !!user,
-        isLoading,
-        setToken: handleSetToken,
-        setUser: handleSetUser,
-        logout: () => logout(true),
+        login,
+        logout,
       }}
     >
       {children}
@@ -98,7 +63,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 export function useAuth() {
   const context = useContext(AuthContext);
   if (context === undefined) {
-    throw new Error("useAuth must be used within an AuthProvider");
+    throw new Error("useAuth deve ser usado dentro de um AuthProvider");
   };
 
   return context;

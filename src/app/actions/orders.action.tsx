@@ -19,8 +19,8 @@ export async function getAllOrdersByUserAction(userId: string) {
   } catch (error) {
     console.error("Erro ao carregar pedidos:", error);
     return null;
-  };
-};
+  }
+}
 
 export async function getAllOrdersAdminAction() {
   try {
@@ -29,8 +29,8 @@ export async function getAllOrdersAdminAction() {
   } catch (error) {
     console.error("Erro ao carregar pedidos:", error);
     return null;
-  };
-};
+  }
+}
 
 export async function getOrderByIdAction(orderId: string) {
   try {
@@ -39,8 +39,8 @@ export async function getOrderByIdAction(orderId: string) {
   } catch (error) {
     console.error(`Erro ao carregar pedido ${orderId}:`, error);
     return null;
-  };
-};
+  }
+}
 
 export async function createOrderAction(data: CreateOrderRequest) {
   try {
@@ -49,8 +49,8 @@ export async function createOrderAction(data: CreateOrderRequest) {
   } catch (error) {
     console.error("Erro ao criar pedido (action):", error);
     return null;
-  };
-};
+  }
+}
 
 export async function updateOrderStatusAction(orderId: string, status: OrderStatus) {
   try {
@@ -59,8 +59,8 @@ export async function updateOrderStatusAction(orderId: string, status: OrderStat
   } catch (error) {
     console.error("Erro ao atualizar pedido:", error);
     return null;
-  };
-};
+  }
+}
 
 export async function deleteOrderAction(orderId: string) {
   try {
@@ -68,5 +68,5 @@ export async function deleteOrderAction(orderId: string) {
   } catch (error) {
     console.error("Erro ao excluir pedido:", error);
     return null;
-  };
-};
+  }
+}

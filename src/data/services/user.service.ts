@@ -105,7 +105,7 @@ export async function createUserWithGoogle(
   await setDoc(userRef, {
     name: data.displayName,
     email: data.email,
-    phone: null,
+    phone: data.phone || null,
     password: null,
     role: RolesEnum.USER,
     updated_at: new Date(),

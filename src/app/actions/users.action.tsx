@@ -14,8 +14,8 @@ export async function getAdminInfoAction() {
   } catch (error) {
     console.error("Erro ao carregar informações do admin:", error);
     throw error;
-  };
-};
+  }
+}
 
 export async function getUserByIdAction(id: string) {
   try {
@@ -24,8 +24,8 @@ export async function getUserByIdAction(id: string) {
   } catch (error) {
     console.error("Erro ao carregar informações do usuário:", error);
     throw error;
-  };
-};
+  }
+}
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export async function updateUserAction(id: string, data: any) {
@@ -35,5 +35,5 @@ export async function updateUserAction(id: string, data: any) {
   } catch (error) {
     console.error("Erro ao atualizar usuário:", error);
     throw error;
-  };
-};
+  }
+}

@@ -3,43 +3,30 @@
 import { useAuth } from "@/data/context/AuthContext";
 import { usePathname, useRouter } from "next/navigation";
 import { useEffect } from "react";
-import { Loader2 } from "lucide-react";
 
 export default function AdminLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
-  const { isAuthenticated, isLoading } = useAuth();
+  const { isAuthenticated } = useAuth();
   const router = useRouter();
   const pathname = usePathname();
   
   const isLoginPage = pathname === '/login';
   
   useEffect(() => {
-    if (!isLoading && !isAuthenticated && !isLoginPage) {
+    if (!isAuthenticated && !isLoginPage) {
       router.replace('/login');
     };
-  }, [isAuthenticated, isLoading, isLoginPage, router]);
-
-  if (isLoading) {
-    return (
-      <div className="flex min-h-screen items-center justify-center bg-background-alternative">
-        <Loader2 className="h-8 w-8 animate-spin text-gray-500" />
-      </div>
-    );
-  };
+  }, [isAuthenticated, isLoginPage, router]);
 
   if (isLoginPage) {
     return <>{children}</>;
   };
 
   if (!isAuthenticated) {
-    return (
-      <div className="flex min-h-screen items-center justify-center bg-background-alternative">
-        <Loader2 className="h-8 w-8 animate-spin text-gray-500" />
-      </div>
-    );
+    return null;
   };
 
   return <>{children}</>;

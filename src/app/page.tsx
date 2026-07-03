@@ -56,5 +56,5 @@ export default async function Home() {
         whatsappNumber={ user?.role === 'admin' ? user?.phone || '5586994379414' : '5586994379414'}
       />
     </div>
-  );
-};
+  )
+}

@@ -151,6 +151,7 @@ export default function Cart({
         await createOrderAction(payload);
       });
 
+      router.push('/pedidos');
       return;
     } catch (error) {
       console.error('Erro ao criar pedido:', error);

@@ -16,8 +16,8 @@ export async function getAllCatalogImagesAction() {
   } catch (error) {
     console.error("Erro ao carregar imagens:", error);
     throw error;
-  };
-};
+  }
+}
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export async function createCatalogImageAction(data: any) {
@@ -28,8 +28,8 @@ export async function createCatalogImageAction(data: any) {
   } catch (error) {
     console.error("Erro ao criar imagem:", error);
     throw error;
-  };
-};
+  }
+}
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export async function updateCatalogImageAction(id: string, data: any) {
@@ -40,8 +40,8 @@ export async function updateCatalogImageAction(id: string, data: any) {
   } catch (error) {
     console.error("Erro ao atualizar imagem:", error);
     throw error;
-  };
-};
+  }
+}
 
 export async function deleteCatalogImageAction(id: string) {
   try {
@@ -49,5 +49,5 @@ export async function deleteCatalogImageAction(id: string) {
     await refreshCacheAction('catalog_images');
   } catch (error) {
     console.error("Erro ao excluir imagem:", error);
-  };
-};
+  }
+}

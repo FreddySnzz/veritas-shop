@@ -12,11 +12,14 @@ export function decodeJWT(token: string): User | null {
     const decoded = atob(payload.replace(/-/g, "+").replace(/_/g, "/"));
     const data = JSON.parse(decoded);
 
+    console.log('data', data);
+
     return {
       id: data.user?.id || data.id || data.sub,
       name: data.user?.name || data.name,
       email: data.user?.email || data.email,
       role: data.user?.role || data.role,
+      phone: data.user?.phone || data.phone,
     };
   } catch (error) {
     console.error("Failed to decode JWT:", error);
@@ -24,7 +27,9 @@ export function decodeJWT(token: string): User | null {
   };
 };
 
-export function buildAccessToken(user: Partial<User>): string {
+export function buildAccessToken(
+  user: Partial<User>
+): string {
   const secret = process.env.JWT_SECRET as Secret;
 
   const options: SignOptions = {
@@ -35,6 +40,9 @@ export function buildAccessToken(user: Partial<User>): string {
     sub: user.id,
     email: user.email,
     type: "access",
+    role: user.role,
+    name: user.name,
+    phone: user.phone,
   };
 
   try {

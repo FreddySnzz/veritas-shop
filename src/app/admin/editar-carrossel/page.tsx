@@ -34,5 +34,5 @@ export default async function ManageCatalogImagesPage() {
         />
       </div>
     </div>
-  );
-};
+  )
+}

@@ -4,7 +4,6 @@ import { Serwist } from "serwist";
 
 declare global {
   interface WorkerGlobalScope extends SerwistGlobalConfig {
-    // Injeta os arquivos estáticos compilados pelo Next.js no momento do build
     __SW_MANIFEST: (PrecacheEntry | string)[] | undefined;
   }
 }
@@ -16,7 +15,6 @@ const serwist = new Serwist({
   skipWaiting: true,
   clientsClaim: true,
   navigationPreload: true,
-  // Usa a estratégia de cache recomendada pelo Serwist para o App Router
   runtimeCaching: defaultCache,
 });
 

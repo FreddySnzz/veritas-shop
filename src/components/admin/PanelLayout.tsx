@@ -30,7 +30,7 @@ interface PanelLayoutProps {
 };
 
 export default function PanelLayout({ categories, className }: PanelLayoutProps) {
-  const { user, setUser } = useAuth();
+  const { user } = useAuth();
   const [whatsappNumber, setWhatsappNumber] = useState<string>(user?.phone || '');
   const [isOpenOrderStepsModal, setIsOpenOrderStepsModal] = useState(false);
   const [isOpenWhatsAppModal, setIsOpenWhatsAppModal] = useState(false);
@@ -58,7 +58,6 @@ export default function PanelLayout({ categories, className }: PanelLayoutProps)
       if (!user) return;
 
       await updateUserAction(user.id, { phone: number });
-      setUser({ ...user, phone: number });
       toast.success("Número do WhatsApp atualizado com sucesso!");
       setIsOpenWhatsAppModal(false);
     } catch (error) {

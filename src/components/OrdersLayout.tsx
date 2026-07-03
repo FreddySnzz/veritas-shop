@@ -56,6 +56,10 @@ export default function OrdersLayout({ catalogProducts, adminInfo }: OrdersLayou
     };
   }, [isAuthenticated, user, router, catalogProducts]);
 
+  setTimeout(() => {
+    router.refresh();
+  }, 1000 * 60 * 3);
+
   return (
     <div className="flex-1 flex flex-col w-full min-h-0 font-sans">
       <div className="flex flex-col">

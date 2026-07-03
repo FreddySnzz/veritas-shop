@@ -12,7 +12,7 @@ export const dynamicParams = false;
 
 export function generateStaticParams() {
   return [{ mode: 'adicionar' }, { mode: 'editar' }];
-};
+}
 
 export default async function AddProductCatalogPage({ params }: { 
   params: Promise<{ mode: string }> 
@@ -23,7 +23,7 @@ export default async function AddProductCatalogPage({ params }: {
 
   if (mode !== 'adicionar' && mode !== 'editar') {
     notFound();
-  };
+  }
   
   return (
     <div className="flex flex-col h-dvh overflow-y-auto bg-background-alternative dark:bg-background-dark">
@@ -48,5 +48,5 @@ export default async function AddProductCatalogPage({ params }: {
         />
       </div>
     </div>
-  );
-};
+  )
+}

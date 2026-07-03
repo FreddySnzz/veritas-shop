@@ -21,8 +21,8 @@ export async function getAllCategoriesAction() {
   } catch (error) {
     console.error("Erro ao buscar todas as categorias:", error);
     throw error;
-  };
-};
+  }
+}
 
 export async function getCategoryByIdAction(id: string) {
   try {
@@ -31,8 +31,8 @@ export async function getCategoryByIdAction(id: string) {
   } catch (error) {
     console.error("Erro ao buscar categoria por id:", error);
     throw error;
-  };
-};
+  }
+}
 
 export async function getCategoryByNameAction(name: string) {
   try {
@@ -41,8 +41,8 @@ export async function getCategoryByNameAction(name: string) {
   } catch (error) {
     console.error("Erro ao buscar categoria por name:", error);
     throw error;
-  };
-};
+  }
+}
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export async function createCustomizationItemCategoryAction(data: any) {
@@ -53,8 +53,8 @@ export async function createCustomizationItemCategoryAction(data: any) {
   } catch (error) {
     console.error("Erro ao criar categoria:", error);
     throw error;
-  };
-};
+  }
+}
 
 export async function updateCustomizationItemCategoryAction(
   id: string, 
@@ -68,8 +68,8 @@ export async function updateCustomizationItemCategoryAction(
   } catch (error) {
     console.error("Erro ao atualizar categoria:", error);
     throw error;
-  };
-};
+  }
+}
 
 export async function updateCustomizationItemCategoryStatusAction(
   id: string, 
@@ -87,8 +87,8 @@ export async function updateCustomizationItemCategoryStatusAction(
   } catch (error) {
     console.error("Erro ao atualizar categoria:", error);
     throw error;
-  };
-};
+  }
+}
 
 export async function saveCustomizationOrderAction(
   categories: CustomizationItemsCategoryModel[],
@@ -99,8 +99,8 @@ export async function saveCustomizationOrderAction(
   } catch (error) {
     console.error("Erro ao salvar ordem:", error);
     throw error;
-  };
-};
+  }
+}
 
 export async function deleteCategoryAction(id: string) {
   try {
@@ -108,5 +108,5 @@ export async function deleteCategoryAction(id: string) {
     await refreshCacheAction('customization_items_categories');
   } catch (error) {
     console.error("Erro ao excluir categoria:", error);
-  };
-};
+  }
+}

@@ -36,5 +36,5 @@ export default async function ManageInvertoryCatalogPage() {
         />
       </div>
     </div>
-  );
-};
+  )
+}

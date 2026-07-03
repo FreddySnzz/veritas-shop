@@ -41,8 +41,8 @@ export default function OrdersAdminLayout({
   }, [searchText, ordersRemapped]);
 
   return (
-    <div className="flex-1 flex flex-col w-full min-h-0 font-sans md:mt-20">
-      <div className="flex flex-col">
+    <div className="flex flex-col font-sans h-full overflow-hidden">
+      <div className="flex flex-col w-full md:gap-3 mb-2 md:mb-4">
         <div className="flex items-baseline justify-between">
           <p className="text-2xl lg:text-3xl font-bold text-secondary dark:text-zinc-50">
             Pedidos
@@ -99,9 +99,9 @@ export default function OrdersAdminLayout({
         </div>
       </div>
 
-      <div className="md:hidden shrink-0 mt-auto bg-background-alternative dark:bg-input/0 mb-4">
-        <hr className="border-muted-foreground/50 mb-2" />
-        <div className="flex flex-col">
+      <div className="md:hidden shrink-0 mt-auto bg-background-alternative dark:bg-input/0 z-10">
+        <hr className="border-muted-foreground/50 my-2" />
+        <div className="flex flex-col gap-4">
           <BackButton pushRoute="/admin" />
         </div>
       </div>

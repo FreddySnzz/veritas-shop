@@ -569,10 +569,7 @@ export function ProductForm({
         <hr className="border-muted-foreground/50 mb-2 lg:hidden" />
         <div className="flex lg:justify-end">
           <div className="flex gap-4 w-full lg:w-1/2 xl:w-1/3">
-            <BackButton 
-              backRoute 
-              className="dark:bg-zinc-800 dark:hover:bg-zinc-950/15 transition-colors"
-            />
+            <BackButton backRoute />
             <button 
               type="submit" 
               aria-label={isEditMode ? "Salvar Alterações" : "Criar Produto"}

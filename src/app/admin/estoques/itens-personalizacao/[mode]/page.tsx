@@ -14,7 +14,7 @@ interface PageProps {
   params: Promise<{
     mode: string;
   }>;
-};
+}
 
 export default async function AddProductCatalogPage({ params }: PageProps) {
   const { user } = await getCachedAdminInfoAction();
@@ -27,7 +27,7 @@ export default async function AddProductCatalogPage({ params }: PageProps) {
 
   if (mode !== 'adicionar') {
     notFound();
-  };
+  }
 
   return (
     <div className="flex flex-col h-dvh overflow-y-auto bg-background-alternative dark:bg-background-dark">
@@ -53,4 +53,4 @@ export default async function AddProductCatalogPage({ params }: PageProps) {
       </div>
     </div>
   );
-};
+}

@@ -33,5 +33,5 @@ export default async function ManageCategoryItemsPage() {
         />
       </div>
     </div>
-  );
-};
+  )
+}

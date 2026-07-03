@@ -34,5 +34,5 @@ export default async function AdminPanel() {
         />
       </div>
     </div>
-  );
-};
+  )
+}

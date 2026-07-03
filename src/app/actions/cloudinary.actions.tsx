@@ -8,7 +8,7 @@ function getPublicIdFromUrl(url: string) {
   const match = url.match(regex);
 
   return match ? match[1] : null;
-};
+}
 
 export async function deleteImageAction(imageUrl: string) {
   if (!imageUrl) return;
@@ -18,7 +18,7 @@ export async function deleteImageAction(imageUrl: string) {
   if (!publicId) {
     console.error("Não foi possível extrair o ID da imagem:", imageUrl);
     return;
-  };
+  }
 
   try {
     await cloudinary.uploader.destroy(publicId, {
@@ -26,15 +26,15 @@ export async function deleteImageAction(imageUrl: string) {
     });
   } catch (error) {
     console.error("Erro ao apagar imagem do Cloudinary:", error);
-  };
-};
+  }
+}
 
 export async function uploadImageAction(formData: FormData) {
   const file = formData.get("file") as File;
 
   if (!file) {
     throw new Error("Nenhum arquivo encontrado");
-  };
+  }
   
   const arrayBuffer = await file.arrayBuffer();
   const buffer = Buffer.from(arrayBuffer);
@@ -57,9 +57,9 @@ export async function uploadImageAction(formData: FormData) {
     if (error.error?.message?.includes("File exists") || error.message?.includes("already exists")) {
       const existing = await cloudinary.api.resource(publicId);
       return existing.secure_url;
-    };
+    }
 
     console.error("Erro no Cloudinary:", error);
     throw new Error("Falha no upload da imagem");
-  };
-};
+  }
+}

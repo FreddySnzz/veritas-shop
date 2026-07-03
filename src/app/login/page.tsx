@@ -1,11 +1,10 @@
 'use client';
 
-import Cookies from 'js-cookie';
 import { useEffect, useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import Link from "next/link";
-import { useAuth } from "@/data/context/AuthContext";
 import { toast } from "sonner";
+import { useAuth } from '@/data/context/AuthContext';
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 import { PasswordInput } from '@/components/ui/password-input';
@@ -13,7 +12,7 @@ import { LogoHorizontalSvg } from "@/components/Typography";
 import { onlyNumbers } from '@/data/functions/inputMasks';
 import { Loader2 } from "lucide-react";
 import { FaGoogle } from 'react-icons/fa6';
-import { CreateUserRequest, User } from '@/data/types/auth';
+import { CreateUserRequest } from '@/data/types/auth';
 import { authFormSchema } from '@/data/schemas/form.schema';
 import { 
   registerAction, 
@@ -24,13 +23,14 @@ import { cn } from '@/lib/utils';
 import { signInWithPopup } from 'firebase/auth';
 import { auth, googleProvider } from '@/data/firebase/config';
 import { RolesEnum } from '@/data/types/enums/roles.enum';
+import validate from '@/data/schemas/validate-forms';
 
 export default function Login() {
-  const { setToken, setUser } = useAuth();
   const searchParams = useSearchParams();
   const [mode, setMode] = useState<'login' | 'register'>('login');
   const [isLoading, setIsLoading] = useState(false);
   const [errors, setErrors] = useState<{ [key: string]: string }>({});
+  const { login } = useAuth();
 
   const [form, setForm] = useState({
     name: '',
@@ -46,32 +46,13 @@ export default function Login() {
 
   useEffect(() => {
     if (isExpired) {
-      localStorage.clear();
-      Cookies.remove('veritas_token');
       toast.warning("Sua sessão expirou. Faça login novamente.");
+      router.replace('/login');
     };
-  }, [isExpired]);
-
-  function validate() {
-    const result = authFormSchema.safeParse(form);
-
-    if (!result.success) {
-      const fieldErrors: { [key: string]: string } = {};
-
-      result.error.issues.forEach((issue) => {
-        const path = issue.path[0];
-        if (typeof path === "string") fieldErrors[path] = issue.message;
-      });
-
-      setErrors(fieldErrors);
-      return false;
-    };
-
-    setErrors({});
-    return true;
-  };
+  }, [isExpired, router]);
   
   const handleLogin = async (e: React.FormEvent) => {
+    let newRedirectUrl = redirectUrl;
     e.preventDefault();
     setIsLoading(true);
     
@@ -87,21 +68,14 @@ export default function Login() {
         return;
       };
 
-      const { user, tokens } = response;
-
-      Cookies.set('veritas_token', tokens.access, { 
-        expires: 1,
-        path: redirectUrl,
-      });
-
-      setToken(tokens.access);
-      setUser(user);
-
+      login(response.user);
       toast.success("Login realizado com sucesso");
+      if (response.user.role === 'admin') newRedirectUrl = '/admin';
+      router.push(newRedirectUrl);
       router.refresh();
 
       setTimeout(() => {
-        router.replace(redirectUrl);
+        router.push(newRedirectUrl);
       }, 100);
     } catch (error) {
       console.error("Login error:", error);
@@ -131,25 +105,19 @@ export default function Login() {
 
       await registerWithGoogleAction(safeUserData);
 
-      Cookies.set('veritas_token', safeUserData.accessToken, {
-        expires: 1,
-        path: redirectUrl,
-      });
-
-      setToken(safeUserData.accessToken);
-      setUser({
+      login({
         id: safeUserData.uid,
         name: safeUserData.displayName,
         email: safeUserData.email,
         phone: safeUserData.phone,
         role: safeUserData.role,
       });
-
       toast.success("Login realizado com sucesso");
+      router.push(redirectUrl);
       router.refresh();
 
       setTimeout(() => {
-        router.replace(redirectUrl);
+        router.push(redirectUrl);
       }, 100);
     } catch (error) {
       console.error('Erro ao autenticar com Google:', error);
@@ -161,7 +129,11 @@ export default function Login() {
 
   const handleRegister = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!validate()) return;
+    const validation = validate(authFormSchema, form);
+    if (validation.success === false) {
+      setErrors(validation.errors);
+      return;
+    };
 
     setIsLoading(true);
     
@@ -187,21 +159,13 @@ export default function Login() {
       
       if (!loginResponse) return;
 
-      const { tokens } = loginResponse;
-
-      Cookies.set('veritas_token', tokens.access, { 
-        expires: 1,
-        path: redirectUrl,
-      });
-
-      setToken(tokens.access);
-      setUser(createUserResponse as User);
-
+      login(loginResponse.user);
       toast.success("Cadastro realizado com sucesso");
       router.push(redirectUrl);
+      router.refresh();
 
       setTimeout(() => {
-        router.replace(redirectUrl);
+        router.push(redirectUrl);
       }, 100);
     } catch (error) {
       console.error("Register error:", error);

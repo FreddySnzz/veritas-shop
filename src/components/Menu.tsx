@@ -1,5 +1,6 @@
 'use client';
 
+import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useApp } from "@/data/context/AppContext";
 import { useLockBodyScroll } from "@/data/hook/useBodyLockScroll";
@@ -38,11 +39,6 @@ export default function Menu() {
     };
   };
 
-  const handlePushRoute = (route: string) => {
-    router.push(route);
-    closeMenu();
-  };
-
   const handleLogout = () => {
     logout();
     closeMenu();
@@ -64,70 +60,70 @@ export default function Menu() {
       >
         <div className="flex flex-col justify-between h-[90vh] p-6 font-medium">
           <div className="flex flex-col gap-2">
-            <button 
-              type="button"
-              onClick={() => handlePushRoute("/")}
-              aria-label="Voltar para a página inicial"
+            <Link 
               title="Voltar para a página inicial"
+              aria-label="Voltar para a página inicial"
+              href="/"
+              onClick={closeMenu}
               className="flex items-center gap-2 cursor-pointer transition-colors dark:hover:text-details"
             >
               <Home className="w-5 h-5" />
               <p>Página Inicial</p>
-            </button>
+            </Link>
             <button
-              type="button"
-              onClick={() => toast.warning("Em breve!")}
-              // onClick={() => {router.push("/produtos"), closeMenu()}}
-              aria-label="Ir para a página de produtos"
               title="Ir para a página de produtos"
+              aria-label="Ir para a página de produtos"
+              // href="/produtos"
+              // onClick={closeMenu}
+              onClick={() => toast.warning("Em breve!")}
               className="flex items-center gap-2 cursor-pointer transition-colors dark:hover:text-details"
             >
               <RosaryIcon  className="w-5 h-5" />
               <p>Produtos</p>
             </button>
-            <button
-              type="button"
-              onClick={() => handlePushRoute("/pedidos")}
-              aria-label="Ir para a página de pedidos"
+            <Link 
               title="Ir para a página de pedidos"
+              aria-label="Ir para a página de pedidos"
+              href="/pedidos"
+              onClick={closeMenu}
               className="flex items-center gap-2 cursor-pointer transition-colors dark:hover:text-details"
             >
               <Package className="w-5 h-5" />
               <p>Pedidos</p>
-            </button>
-            <button
-              type="button"
-              onClick={() => handlePushRoute("/ajuda/oracoes")}
-              aria-label="Ir para a página de orações"
+            </Link>
+            <Link
               title="Ir para a página de orações"
+              aria-label="Ir para a página de orações"
+              href="/ajuda/oracoes"
+              onClick={closeMenu}
               className="flex items-center gap-2 cursor-pointer transition-colors dark:hover:text-details"
             >
               <PiHandsPrayingFill className="w-5 h-5" />
               <p>Orações</p>
-            </button>
+            </Link>
           </div>
           
           <div className="flex flex-col gap-2">
             <ThemeToggleSwitch />
-            <button 
-              type="button"
-              onClick={() => handlePushRoute("/ajuda/sobre")}
-              aria-label="Mais informações sobre nós"
+            <Link 
               title="Mais informações sobre nós"
+              aria-label="Mais informações sobre nós"
+              href="/ajuda/sobre"
+              onClick={closeMenu}
               className="flex items-center gap-4 cursor-pointer transition-colors dark:hover:text-details mt-2">
               <BookOpenText className="w-5 h-5" />
               <p>Sobre nós</p>
-            </button>
-            <button 
-              type="button"
-              onClick={() => handlePushRoute("/ajuda")}
-              aria-label="Ir para a página de ajuda"
+            </Link>
+            <Link 
               title="Ir para a página de ajuda"
+              aria-label="Ir para a página de ajuda"
+              href="/ajuda"
+              onClick={closeMenu}
               className="flex items-center gap-4 cursor-pointer transition-colors dark:hover:text-details"
             >
               <CircleQuestionMark className="w-5 h-5" />
               <p>Precisa de ajuda?</p>
-            </button>
+            </Link>
 
             <hr className="border-muted-foreground/50 my-2" />
             <div className="flex items-center justify-between transition-all">

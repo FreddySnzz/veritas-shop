@@ -15,6 +15,9 @@ import { toast } from "sonner";
 import { ArrowBigUpDash, Images, Trash, X } from "lucide-react";
 import { useLockBodyScroll } from "@/data/hook/useBodyLockScroll";
 import { Textarea } from "../ui/textarea";
+import validate from "@/data/schemas/validate-forms";
+import { categoryFormSchema } from "@/data/schemas/category-form.schema";
+import { cn } from "@/lib/utils";
 
 interface CustomizationItemCategoryProps extends React.HTMLAttributes<HTMLElement> {
   mode: 'editar' | 'adicionar';
@@ -31,9 +34,13 @@ export default function CustomizationItemCategoryModal({
   modalOpen, 
   onClose 
 }: CustomizationItemCategoryProps) {
-  const [name, setName] = useState(mode === 'editar' ? initialData?.name : '');
-  const [description, setDescription] = useState(mode === 'editar' ? (initialData?.description || '') : '');
-  const [imageUrl, setImageUrl] = useState(mode === 'editar' ? (initialData?.image_url || '') : '');
+  const [form, setForm] = useState({
+    name: mode === 'editar' ? initialData?.name : '',
+    description: mode === 'editar' ? initialData?.description : '',
+    image_url: mode === 'editar' ? initialData?.image_url : '',
+  });
+  const [errors, setErrors] = useState<{ [key: string]: string }>({});
+  
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
   
@@ -41,9 +48,9 @@ export default function CustomizationItemCategoryModal({
 
   const imagePreview = useMemo(() => {
     if (selectedFile) return URL.createObjectURL(selectedFile);
-    if (imageUrl) return imageUrl;
+    if (form.image_url) return form.image_url;
     return null;
-  }, [selectedFile, imageUrl]);
+  }, [selectedFile, form.image_url]);
 
   useLockBodyScroll(modalOpen);
 
@@ -52,7 +59,7 @@ export default function CustomizationItemCategoryModal({
   const handleButtonClick = () => fileInputRef.current?.click();
 
   const handleRemoveImage = async () => {
-    if (!imageUrl) {
+    if (!form.image_url) {
       setSelectedFile(null);
       return;
     };
@@ -60,9 +67,9 @@ export default function CustomizationItemCategoryModal({
     setIsLoading(true);
 
     try {
-      await deleteImageAction(imageUrl);
+      await deleteImageAction(form.image_url);
       setSelectedFile(null);
-      setImageUrl("");
+      setForm((prev) => ({ ...prev, image_url: "" }));
     } catch (error) {
       console.error("Erro ao apagar imagem:", error);
       toast.error("Erro ao apagar imagem do servidor.");
@@ -73,10 +80,16 @@ export default function CustomizationItemCategoryModal({
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    const validation = validate(categoryFormSchema, form);
+    if (validation.success === false) {
+      setErrors(validation.errors);
+      return;
+    };
+
     setIsLoading(true);
     
     try {
-      let finalUrlToSave = imageUrl;
+      let finalUrlToSave = form.image_url;
 
       if (selectedFile) {
         const formData = new FormData();
@@ -85,9 +98,9 @@ export default function CustomizationItemCategoryModal({
       };
 
       const dataSubmit = {
-        name: name,
-        category_name: removeAccentsAndSpaces(name ?? ''),
-        description: description,
+        name: form.name,
+        category_name: removeAccentsAndSpaces(form.name ?? ''),
+        description: form.description,
         image_url: finalUrlToSave,
         display_order: cachedCategories.length + 1,
         available: true,
@@ -118,9 +131,11 @@ export default function CustomizationItemCategoryModal({
       console.error("Erro geral no submit:", error);
       toast.error("Erro ao processar requisição.");
     } finally {
-      setName("");
-      setDescription("");
-      setImageUrl("");
+      setForm({
+        name: "",
+        description: "",
+        image_url: "",
+      });
       setIsLoading(false);
       setTimeout(() => {
         window.location.reload();
@@ -172,11 +187,14 @@ export default function CustomizationItemCategoryModal({
                 type="text"
                 autoComplete="name"
                 placeholder="Ex: Cordões"
-                onChange={(e) => setName(e.target.value)}
-                value={name}
-                className="bg-gray-50 focus-visible:ring-0 truncate text-secondary"
+                onChange={(e) => setForm((prev) => ({ ...prev, name: e.target.value }))}
+                value={form.name}
+                className={cn("bg-gray-50 focus-visible:ring-0 truncate text-secondary",
+                  errors.name ? "border-red-500 focus:border-red-500 focus:ring-red-500" : ""
+                )}
                 disabled={isLoading}
               />
+              {errors.name && <p className="text-xs text-red-500">{errors.name}</p>}
 
               {mode === 'editar' && (
                 <p className="text-xs text-primary dark:text-red-400">
@@ -194,11 +212,14 @@ export default function CustomizationItemCategoryModal({
                 id="description"
                 autoComplete="description"
                 placeholder="Ex: Selecione a cor da Conta."
-                onChange={(e) => setDescription(e.target.value)}
-                value={description}
-                className="bg-gray-50 focus-visible:ring-0 text-secondary text-sm"
+                onChange={(e) => setForm((prev) => ({ ...prev, description: e.target.value }))}
+                value={form.description}
+                className={cn("bg-gray-50 focus-visible:ring-0 text-secondary text-sm",
+                  errors.description ? "border-red-500 focus:border-red-500 focus:ring-red-500" : ""
+                )}
                 disabled={isLoading}
               />
+              {errors.description && <p className="text-xs text-red-500">{errors.description}</p>}
 
               <p className="text-xs text-primary dark:text-details">
                 A descrição da categoria será exibida como subtítulo na página de personalização.
@@ -231,7 +252,7 @@ export default function CustomizationItemCategoryModal({
                   dark:bg-input/50 dark:hover:bg-input/70 dark:border dark:border-zinc-700
                 `}
               >
-                {selectedFile || imageUrl ? (
+                {selectedFile || form.image_url ? (
                   <> 
                     <Images className="w-4 h-4 text-secondary" />
                     <p>Alterar Imagem</p>

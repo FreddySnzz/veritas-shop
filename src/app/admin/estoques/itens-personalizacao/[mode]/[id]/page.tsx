@@ -15,7 +15,7 @@ interface PageProps {
     mode: string;
     id: string;
   }>;
-};
+}
 
 export default async function AddProductCatalogPage({ params }: PageProps) {
   const { user } = await getCachedAdminInfoAction();
@@ -29,7 +29,7 @@ export default async function AddProductCatalogPage({ params }: PageProps) {
 
   if (mode !== 'editar' && !itemToEdit) {
     notFound();
-  };
+  }
 
   return (
     <div className="flex flex-col h-dvh overflow-y-auto bg-background-alternative dark:bg-background-dark">
@@ -55,5 +55,5 @@ export default async function AddProductCatalogPage({ params }: PageProps) {
         />
       </div>
     </div>
-  );
-};
+  )
+}
