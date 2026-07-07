@@ -1,42 +1,70 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback, useSyncExternalStore } from 'react';
 import { X, Share, PlusSquare } from 'lucide-react';
 
-export default function InstallPrompt() {
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const [deferredPrompt, setDeferredPrompt] = useState<any>(null);
+interface BeforeInstallPromptEvent extends Event {
+  readonly platforms: string[];
+  readonly userChoice: Promise<{
+    outcome: 'accepted' | 'dismissed';
+    platform: string;
+  }>;
+  prompt(): Promise<void>;
+}
+
+const emptySubscribe = () => () => {};
+
+export function useIsClient() {
+  return useSyncExternalStore(
+    emptySubscribe,
+    () => true,  
+    () => false  
+  );
+}
+
+function useInstallPrompt() {
+  const [deferredPrompt, setDeferredPrompt] = useState<BeforeInstallPromptEvent | null>(null);
   const [showPrompt, setShowPrompt] = useState(false);
-  const [dontShowAgain, setDontShowAgain] = useState(false);
+  const isClient = useIsClient();
 
-  const [isStandalone] = useState(() => {
+  const checkIsDismissed = useCallback(() => {
     if (typeof window === 'undefined') return false;
+    return localStorage.getItem('hideVeritasInstallPrompt') === 'true';
+  }, []);
+
+  const isStandalone = isClient && (
+    window.matchMedia('(display-mode: standalone)').matches ||
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    return window.matchMedia('(display-mode: standalone)').matches || (window.navigator as any).standalone;
-  });
+    ('standalone' in window.navigator && (window.navigator as any).standalone)
+  );
 
-  const [isIOS] = useState(() => {
-    if (typeof window === 'undefined') return false;
-    const userAgent = window.navigator.userAgent.toLowerCase();
-    return /iphone|ipad|ipod/.test(userAgent);
-  });
+  const isIOS = isClient && (
+    /iphone|ipad|ipod/.test(window.navigator.userAgent.toLowerCase()) ||
+    (window.navigator.platform === 'MacIntel' && window.navigator.maxTouchPoints > 1)
+  );
 
   useEffect(() => {
-    if (typeof window === 'undefined') return;
+    if (!isClient) return;
+    if (checkIsDismissed()) return;
 
     const hidePrompt = localStorage.getItem('hideVeritasInstallPrompt');
-    
-    if (hidePrompt === 'true' || isStandalone) return;
+    if (hidePrompt === 'true') return;
+    if (isStandalone) return;
 
-    // 3. Lógica para iOS
     if (isIOS) {
-      const timer = setTimeout(() => setShowPrompt(true), 3000);
+      const timer = setTimeout(() => {
+        if (!checkIsDismissed()) {
+          setShowPrompt(true);
+        }
+      }, 3000); 
+      
       return () => clearTimeout(timer);
-    };
+    }
 
     const handleBeforeInstallPrompt = (e: Event) => {
       e.preventDefault();
-      setDeferredPrompt(e);
+      if (checkIsDismissed()) return;
+      setDeferredPrompt(e as BeforeInstallPromptEvent);
       setShowPrompt(true);
     };
 
@@ -45,7 +73,7 @@ export default function InstallPrompt() {
     return () => {
       window.removeEventListener('beforeinstallprompt', handleBeforeInstallPrompt);
     };
-  }, [isStandalone, isIOS]);
+  }, [isClient, isStandalone, isIOS, checkIsDismissed]);
 
   const handleInstallClick = async () => {
     if (!deferredPrompt) return;
@@ -55,31 +83,41 @@ export default function InstallPrompt() {
     
     if (outcome === 'accepted') {
       setShowPrompt(false);
-    };
-
+    }
+    
     setDeferredPrompt(null);
   };
+
+  return {
+    showPrompt,
+    setShowPrompt,
+    isStandalone: isClient ? isStandalone : false,
+    isIOS: isClient ? isIOS : false,
+    handleInstallClick
+  };
+}
+
+export default function InstallPrompt() {
+  const { showPrompt, setShowPrompt, isStandalone, isIOS, handleInstallClick } = useInstallPrompt();
+  const [dontShowAgain, setDontShowAgain] = useState(false);
+
+  if (!showPrompt || isStandalone) return null;
 
   const handleClose = () => {
     if (dontShowAgain) {
       localStorage.setItem('hideVeritasInstallPrompt', 'true');
-    };
-
+    }
     setShowPrompt(false);
-  };
-
-  if (!showPrompt || isStandalone) return null;
+  }
 
   return (
-    <div className="fixed bottom-4 left-4 right-4 z-50 flex flex-col gap-3 rounded-2xl font-sans
-      bg-white dark:bg-zinc-900 p-4 shadow-2xl ring-1 ring-zinc-200 dark:ring-zinc-800 
-      md:bottom-8 md:left-auto md:right-8 md:w-96 text-zinc-800 dark:text-zinc-100"
-    >
+    <div className={`fixed bottom-4 left-4 right-4 z-50 flex flex-col gap-3 rounded-2xl font-sans 
+      bg-white dark:bg-zinc-900 p-6 shadow-2xl ring-1 ring-zinc-200 dark:ring-zinc-800 
+      md:bottom-8 md:left-auto md:right-8 md:w-96 text-zinc-800 dark:text-zinc-100`
+    }>
       <div className="flex items-start justify-between">
         <div>
-          <p className="font-semibold text-lg">
-            Instale o Veritas Ateliê
-          </p>
+          <p className="font-semibold text-lg">Instale o Veritas Ateliê</p>
           <p className="text-sm text-zinc-500 dark:text-zinc-400 mt-1">
             Adicione nosso site à sua tela inicial para acesso rápido e fácil.
           </p>
@@ -87,7 +125,7 @@ export default function InstallPrompt() {
         <button 
           onClick={handleClose}
           className="p-1 text-zinc-400 hover:text-zinc-600 dark:hover:text-zinc-300 transition-colors cursor-pointer"
-          aria-label="Fechar"
+          aria-label="Fechar prompt de instalação"
         >
           <X className="w-5 h-5" />
         </button>
@@ -105,8 +143,9 @@ export default function InstallPrompt() {
       ) : (
         <button
           onClick={handleInstallClick}
-          className="mt-2 w-full rounded-xl px-4 py-2.5 text-sm font-semibold text-white shadow-sm 
-            bg-primary dark:bg-details hover:bg-primary/90 dark:hover:bg-details/90 transition-colors"
+          className={`mt-2 w-full rounded-xl px-4 py-2.5 text-sm font-semibold transition-colors cursor-pointer
+            text-white shadow-sm bg-primary dark:bg-details hover:bg-primary/90 dark:hover:bg-details/90
+          `}
         >
           Adicionar à Tela Inicial
         </button>
@@ -118,7 +157,7 @@ export default function InstallPrompt() {
           id="dontShowAgain" 
           checked={dontShowAgain}
           onChange={(e) => setDontShowAgain(e.target.checked)}
-          className="w-4 h-4 rounded border-zinc-300 text-indigo-600 focus:ring-indigo-600 cursor-pointer"
+          className="w-4 h-4 rounded border-zinc-300 text-primary focus:ring-primary cursor-pointer"
         />
         <label 
           htmlFor="dontShowAgain" 
@@ -128,5 +167,5 @@ export default function InstallPrompt() {
         </label>
       </div>
     </div>
-  );
+  )
 }

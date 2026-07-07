@@ -8,7 +8,7 @@ import ProductModel from "@/data/models/Product.model";
 import UserModel from "@/data/models/User.model";
 import OrderCard from "./OrderCard";
 import { getAllOrdersByUserAction } from "@/app/actions/orders.action";
-import { OrderStatusType } from "@/data/types/order.type";
+import { OrderStatusType, statusMap } from "@/data/types/orders-status.type";
 import SeeMoreProducts from "./SeeMoreProducts";
 import { LucidePackageOpen } from "lucide-react";
 import { SupportButton } from "./buttons/SupportButton";
@@ -16,14 +16,6 @@ import { SupportButton } from "./buttons/SupportButton";
 interface OrdersLayoutProps extends React.HTMLAttributes<HTMLElement> {
   catalogProducts: ProductModel[];
   adminInfo?: UserModel;
-};
-
-const statusMap: Record<string, OrderModel["status"]> = {
-  awaiting_payment: "Aguardando Pagamento",
-  production: "Em Produção",
-  crafted: "Confeccionado",
-  completed: "Entregue",
-  cancelled: "Cancelado"
 };
 
 export default function OrdersLayout({ catalogProducts, adminInfo }: OrdersLayoutProps) {
@@ -90,7 +82,7 @@ export default function OrdersLayout({ catalogProducts, adminInfo }: OrdersLayou
             <>
               {orders.map((order) => (
                 <OrderCard 
-                  key={order.id} 
+                  key={order.order_number} 
                   mode="user"
                   order={order} 
                   adminInfo={adminInfo}

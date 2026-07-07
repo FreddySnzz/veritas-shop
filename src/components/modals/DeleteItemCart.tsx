@@ -69,7 +69,7 @@ export default function DeleteItemCartModal({
           <div 
             onClick={() => handleDelete(cartId)}
             className={`flex gap-2 items-center justify-center px-4 py-2 rounded-lg cursor-pointer
-              bg-primary dark:bg-red-500 text-white hover:bg-primary/90 dark:hover:bg-red-600/80 
+              bg-red-500 text-white dark:hover:bg-red-600/80 
               transition-colors font-medium
             `}
           >

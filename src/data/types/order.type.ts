@@ -1,10 +1,3 @@
-export type OrderStatusType = 
-  'awaiting_payment' | 
-  'production' | 
-  'crafted' | 
-  'completed' | 
-  'cancelled';
-
 export type CreateOrderRequest = {
   user_id: string;
   product_id: string;

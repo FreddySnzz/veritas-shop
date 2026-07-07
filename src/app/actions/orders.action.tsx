@@ -42,6 +42,16 @@ export async function getOrderByIdAction(orderId: string) {
   }
 }
 
+export async function getOrderByOrderNumberAction(orderNumber: string) {
+  try {
+    const order = await getOrderById(orderNumber);
+    return serializeFirestoreData(order);
+  } catch (error) {
+    console.error(`Erro ao carregar pedido ${orderNumber}:`, error);
+    return null;
+  }
+}
+
 export async function createOrderAction(data: CreateOrderRequest) {
   try {
     const order = await createOrder(data);

@@ -12,12 +12,15 @@ export default async function CartPage() {
   const orders = await getAllOrdersAdminAction();
 
   const ordersRemapped: OrderModel[] = [];
-  products?.filter((product: ProductModel) => product.available).filter(
-    (product: ProductModel) => orders.some(
-      (order: OrderModel) => order.product_id === product.id ? 
-      ordersRemapped.push({ ...order, product }) : null
-    )
-  );
+  orders.forEach((order: OrderModel) => {
+    const product = products.find((product: ProductModel) => product.id === order.product_id);
+    if (product) {
+      ordersRemapped.push({
+        ...order,
+        product: product,
+      });
+    }
+  });
 
   return (
     <div className="flex flex-col h-dvh overflow-y-auto bg-background-alternative dark:bg-background-dark">

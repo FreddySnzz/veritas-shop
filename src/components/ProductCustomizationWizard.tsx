@@ -246,13 +246,13 @@ export default function ProductCustomizerWizard({
       setDirection(1);
       setCurrentStepIndex(prev => prev + 2);
       return;
-    };
+    }
 
     if (currentStepIndex < wizardSteps.length - 1) {
       setDirection(1);
       setCurrentStepIndex(prev => prev + 1);
-    };
-  };
+    }
+  }
 
   const handleBack = () => {
     if (!currentStep) return;
@@ -264,21 +264,23 @@ export default function ProductCustomizerWizard({
       setDirection(-1);
       setCurrentStepIndex(prev => prev - 2);
       return;
-    };
+    }
 
     if (currentStepIndex > 0) {
       setDirection(-1);
       setCurrentStepIndex(prev => prev - 1);
-    } else {
+    } else if (Object.keys(customization).length > 0) {
       setDeleteCustomizationModalOpen(true);
-    };
-  };
+    } else if (currentStepIndex === 0) {
+      router.back();
+    }
+  }
 
   const handleStepClick = (step: Step) => {
     setCurrentStepIndex(wizardSteps.findIndex(
       s => s.id === step.id
-    ));
-  };
+    ))
+  }
 
   const handleSelectAndAdvance = (
     categoryKey: string, 
@@ -287,7 +289,7 @@ export default function ProductCustomizerWizard({
     if (itemRef !== null && customization[categoryKey as keyof typeof customization] === itemRef) {
       updateCustomization({[categoryKey]: undefined });
       return; 
-    };
+    }
 
     updateCustomization({ 
       [categoryKey]: itemRef === null ? undefined : itemRef 
@@ -623,7 +625,7 @@ export default function ProductCustomizerWizard({
             `}
           >
             <ChevronLeft size={18} />
-            <span>Voltar</span>
+            <span>{currentStepIndex > 0 ? "Voltar" : "Sair"}</span>
           </button>
 
           {currentStepIndex < wizardSteps.length - 1 && (

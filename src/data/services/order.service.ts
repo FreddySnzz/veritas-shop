@@ -16,6 +16,7 @@ import { getUserById } from "./user.service";
 import { getProductById } from "./product.service";
 import { OrderStatus } from "../types/enums/orders.enum";
 import { CreateOrderRequest } from "../types/order.type";
+import { generateOrderNumber } from "../functions/generateOrderNumber";
 
 export class OrderServiceError extends Error {
   status: number;
@@ -77,6 +78,20 @@ export async function getOrderById(
   return data;
 };
 
+export async function getOrderByOrderNumber(
+  orderNumber: string
+): Promise<OrderModel[] | null> {
+  const orderRef = collection(db, Collections.ORDERS_COLLECTION);
+  
+  const refQuery = query(orderRef, where("order_number", "==", orderNumber));
+  const refSnap = await getDocs(refQuery);
+
+  return refSnap.docs.map((doc) => ({
+    id: doc.id,
+    ...doc.data()
+  })) as OrderModel[];
+};
+
 export async function createOrder(
   data: CreateOrderRequest
 ): Promise<OrderModel> {
@@ -87,12 +102,20 @@ export async function createOrder(
     throw new OrderServiceError("User or product not exists", 400);
   };
 
-  const docRef = await addDoc(collection(db, Collections.ORDERS_COLLECTION), {
+  const orderNumber = generateOrderNumber();
+
+  const newOrderData = {
     ...data,
-    status: OrderStatus.AWAITING_PAYMENT,
+    order_number: orderNumber,
+    status: OrderStatus.AWAITING_CONFIRMATION,
     created_at: new Date(),
     updated_at: new Date(),
-  });
+  };
+
+  const docRef = await addDoc(collection(
+    db, 
+    Collections.ORDERS_COLLECTION
+  ), newOrderData);
 
   return { 
     ...data, 
@@ -131,21 +154,3 @@ export async function deleteOrder(id: string) {
 
   await deleteDoc(docRef);
 };
-
-// export async function updateOrder(id: string, data: OrderModel): Promise<OrderModel> {
-//   const docRef = doc(db, Collections.ORDERS_COLLECTION, id);
-//   const docSnap = await getDoc(docRef);
-  
-//   if (!docSnap.exists()) {
-//     throw new OrderServiceError("Order not exists", 404);
-//   };
-
-//   const updatedData = {
-//     ...docSnap.data(),
-//     ...data,
-//   };
-
-//   await updateDoc(docRef, updatedData);
-
-//   return updatedData;
-// };

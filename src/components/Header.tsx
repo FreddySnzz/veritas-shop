@@ -3,9 +3,9 @@
 import Link from "next/link";
 import Image from "next/image";
 import FlowerIcon from "./icons/FlowerIcon";
-import Sidebar from "./Sidebar";
 import Menu from "./Menu";
 import Searchbar from "./Searchbar";
+import CartSidebar from "./CartSidebar";
 import { CartButton } from "./buttons/CartButton";
 import { LogoutButton } from "./buttons/LogoutButton";
 import { useAuth } from "@/data/context/AuthContext";
@@ -77,7 +77,7 @@ export function Header({ mode, search, data }: HeaderProps) {
             <LogoutButton onClick={logout} /> 
           }
         </div>
-        <Sidebar />
+        <CartSidebar />
       </div>
     </header>
   );

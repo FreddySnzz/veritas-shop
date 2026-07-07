@@ -15,7 +15,7 @@ import Alert from "./Alert";
 import Link from "next/link";
 import { mountProductUrl } from "@/data/functions/removeAccentsAndSpaces";
 
-export default function Sidebar() {
+export default function CartSidebar() {
   const { isSidebarOpen, closeSidebar } = useApp();
   const router = useRouter();
   const { 
@@ -183,16 +183,28 @@ export default function Sidebar() {
                             )}
                             
                             <div className="flex mt-2">
-                              <div className="flex border border-gray-200 dark:border-background-dark gap-3 px-3 py-2 rounded">
-                                <button 
-                                  type="button"
-                                  aria-label="Diminuir quantidade"
-                                  title="Diminuir quantidade"
-                                  className="cursor-pointer"
-                                  onClick={() => handleSubtractQuantity(item.cartId)}
-                                >
-                                  <Minus className="w-3 h-3 hover:text-secondary/80 transition-colors" />
-                                </button>
+                              <div className="flex border border-gray-200 dark:border-background-dark gap-3 px-3 py-2 rounded transition-all">
+                                { item.quantity === 1 ? (
+                                  <button 
+                                    type="button"
+                                    aria-label="Remover item do carrinho"
+                                    title="Remover item do carrinho"
+                                    onClick={() => handleRemoveItemCart(item.cartId)}
+                                    className="cursor-pointer"
+                                  >
+                                    <Trash2 className="w-3 h-3 hover:text-secondary/80 transition-colors" />
+                                  </button>
+                                ) : (
+                                  <button 
+                                    type="button"
+                                    aria-label="Diminuir quantidade"
+                                    title="Diminuir quantidade"
+                                    className="cursor-pointer"
+                                    onClick={() => handleSubtractQuantity(item.cartId)}
+                                  >
+                                    <Minus className="w-3 h-3 hover:text-secondary/80 transition-colors" />
+                                  </button>
+                                )}
                                 <span className="px-3">
                                   {item.quantity}
                                 </span>
@@ -208,18 +220,6 @@ export default function Sidebar() {
                               </div>
                             </div>
                           </div>
-                        </div>
-
-                        <div className="flex flex-col justify-center pl-2">
-                          <button 
-                            type="button"
-                            aria-label="Remover item do carrinho"
-                            title="Remover item do carrinho"
-                            onClick={() => handleRemoveItemCart(item.cartId)}
-                            className="cursor-pointer"
-                          >
-                            <Trash2 className="w-4 h-4 hover:text-secondary/80 transition-colors" />
-                          </button>
                         </div>
                       </div>
                     </div>
