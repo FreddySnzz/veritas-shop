@@ -9,7 +9,7 @@ import { getUserByIdAction } from "@/app/actions/users.action";
 import { deleteOrderAction, updateOrderStatusAction } from "@/app/actions/orders.action";
 import OrderModel from "@/data/models/Orders.model";
 import UserModel from "@/data/models/User.model";
-import { OrderStatusType } from "@/data/types/order.type";
+import { OrderStatusType, statusMap } from "@/data/types/orders-status.type";
 import { 
   formatAndCapitalize, 
   formatCurrency 
@@ -30,20 +30,13 @@ import { CustomButton } from "./buttons/CustomButton";
 import CustomModal from "./modals/CustomModal";
 import { OrderStatus } from "@/data/types/enums/orders.enum";
 import { toast } from "sonner";
+import { PayButton } from "./buttons/PayButton";
 
 interface OrderCardProps extends React.HTMLAttributes<HTMLElement> {
   mode?: "user" | "admin";
   order: OrderModel,
   adminInfo?: UserModel,
   className?: string,
-};
-
-const statusMap: Record<string, OrderModel["status"]> = {
-  awaiting_payment: "Aguardando Pagamento",
-  production: "Em Produção",
-  crafted: "Confeccionado",
-  completed: "Entregue",
-  cancelled: "Cancelado"
 };
 
 export default function OrderCard({ 
@@ -53,7 +46,7 @@ export default function OrderCard({
   className 
 }: OrderCardProps ) {
   const [userInfo, setUserInfo] = useState<UserModel | null>(null);
-  const [newStatus, setNewStatus] = useState<OrderStatusType>("awaiting_payment");
+  const [newStatus, setNewStatus] = useState<OrderStatusType>(OrderStatus.AWAITING_CONFIRMATION);
   const [expandedCard, setExpandedCard] = useState(false);
   const [deleteModalOpen, setDeleteModalOpen] = useState(false);
   const [sendMessageToClient, setSendMessageToClient] = useState(false);
@@ -73,16 +66,16 @@ export default function OrderCard({
         };
 
         window.open(
-          encodeURI(`https://wa.me/${userInfo?.phone}?text=Olá, boas notícias! O pedido *${order?.product?.name}* está *${statusMap[status]}!*`)
+          encodeURI(`https://wa.me/${userInfo?.phone}?text=Olá, boas notícias! O pedido *${order?.order_number}* está *${statusMap[status]}!*`)
         );
       };
+      router.refresh();
     } catch (error) {
       console.error("Erro ao atualizar status do pedido:", error);
       toast.error("Erro ao atualizar status do pedido.");
     } finally {
       setLoading(false);
       setExpandedCard(!expandedCard);
-      router.refresh();
     };
   };
 
@@ -103,9 +96,9 @@ export default function OrderCard({
     };
   };
 
-  const handleCopyOrderIDToClipboard = () => {
-    navigator.clipboard.writeText(order.id);
-    toast.success("ID do pedido copiado");
+  const handleCopyOrderNumberToClipboard = () => {
+    navigator.clipboard.writeText(order.order_number);
+    toast.success("Número do pedido copiado");
   };
 
   const renderCustomizationDesc = (
@@ -144,7 +137,6 @@ export default function OrderCard({
         {order?.product?.images_url ? (
           <Link 
             href={`/${mountProductUrl(order?.product?.name, order?.product?.id)}`}
-            target="_blank"
             aria-label={`Ver ${order?.product?.name}`}
             title={`Ver ${order?.product?.name}`}
             className={cn("relative shrink-0 w-25 h-25")}
@@ -175,11 +167,9 @@ export default function OrderCard({
           onClick={() => setExpandedCard(!expandedCard)}
           className="flex flex-col grow justify-between w-full text-xs text-secondary cursor-pointer dark:text-zinc-400"
         >
-          <div className={mode === "user" ? "hidden" : ""}>
-            <p className="dark:font-bold text-xs text-muted-foreground/50 dark:text-zinc-500">
-              # {order.id}
-            </p>
-          </div>
+          <p className="dark:font-bold text-[0.65rem] text-muted-foreground/50 dark:text-zinc-500">
+            # {order?.order_number}
+          </p>
           <p className="font-bold mt-1 text-sm text-black dark:text-zinc-50">
             {order?.product?.name}
           </p>
@@ -193,32 +183,54 @@ export default function OrderCard({
           <div className="flex items-center gap-2">
             <div aria-hidden="true"
               className={`size-2 rounded-full ${
-                  order.status === "Confeccionado"
-                    ? "bg-green-600"
+                order.status === "Aguardando Confirmação"
+                  ? "bg-blue-300" 
+                  : order.status === "Confeccionado"
+                    ? "bg-blue-600"
                     : order.status === "Em Produção"
                       ? "bg-yellow-400"
                       : order.status === "Aguardando Pagamento"
-                        ? "bg-blue-500 animate-pulse"
+                        ? "bg-green-500 animate-pulse"
                         : order.status === "Entregue"
                           ? "bg-green-400"
                           : order.status === "Cancelado"
-                          ? "bg-red-500" : "bg-gray-500"
+                          ? "bg-red-500" : "bg-secondary"
               }`}/>
               <p aria-hidden="true"
                 className={`font-bold ${
-                  order.status === "Confeccionado"
-                    ? "text-green-600"
-                    : order.status === "Em Produção"
-                      ? "text-yellow-400"
-                      : order.status === "Aguardando Pagamento"
-                        ? "text-blue-500 animate-pulse"
-                        : order.status === "Entregue"
-                          ? "text-green-400"
-                          : order.status === "Cancelado"
-                          ? "text-red-500" : "text-gray-500"
+                  order.status === "Aguardando Confirmação"
+                    ? "text-blue-300" 
+                    : order.status === "Confeccionado" 
+                      ? "text-blue-600" 
+                      : order.status === "Em Produção"
+                        ? "text-yellow-400"
+                        : order.status === "Aguardando Pagamento"
+                          ? "text-green-500 animate-pulse"
+                          : order.status === "Entregue"
+                            ? "text-green-400"
+                            : order.status === "Cancelado"
+                            ? "text-red-500" : "text-secondary"
               }`}>{order.status}</p>
           </div>
         </div>
+
+        <Link
+          aria-label="Ir para pagamento do pedido"
+          title="Ir para pagamento do pedido"
+          rel="noopener noreferrer"
+          target="_blank"
+          href={`https://wa.me/${adminInfo?.phone ||
+            "5586994379414"}?text=${encodeURIComponent(`
+              Olá, gostaria de concluir o pagamento do pedido #${order.order_number} que fiz na Veritas Ateliê!
+            `)
+          }`}
+          className={cn(mode === "admin" ? "hidden" : "",
+            order.status === statusMap.awaiting_payment ? 
+            `${mode === "admin" ? "hidden" : "hidden md:flex justify-center items-center md:w-1/2 xl:w-1/3 2xl:w-1/4"}` : "hidden",
+          )}
+        >
+          <PayButton />
+        </Link>
 
         <div className={cn("flex justify-end items-center")}>
           <button
@@ -284,27 +296,22 @@ export default function OrderCard({
             Última atualização: {formatDateWithTime(order.updated_at!)}
           </p>
 
-          <div className={cn("hidden",
-            mode === "admin" ? "hidden" : "",
-            order.status === "Aguardando Pagamento" ? "block mt-4" : ""
-          )}>
-            <Link
-              aria-label="Ir para pagamento do pedido"
-              title="Ir para pagamento do pedido"
-              rel="noopener noreferrer"
-              target="_blank"
-              href={`https://wa.me/${adminInfo?.phone ||
-                "5586994379414"}?text=${encodeURIComponent(`Olá, gostaria de concluir o pagamento do pedido #${order.id} que fiz na Veritas Ateliê!`)}
-              `}
-            >
-              <CustomButton
-                onClick={() => void(0)}
-                className="bg-primary hover:bg-primary/90 dark:bg-details dark:hover:bg-details/90 text-white transition-colors py-3"
-              >
-                Deseja pagar agora?
-              </CustomButton>
-            </Link>
-          </div>
+          <Link
+            aria-label="Ir para pagamento do pedido"
+            title="Ir para pagamento do pedido"
+            rel="noopener noreferrer"
+            target="_blank"
+            href={`https://wa.me/${adminInfo?.phone ||
+              "5586994379414"}?text=${encodeURIComponent(`
+                Olá, gostaria de concluir o pagamento do pedido #${order.order_number} que fiz na Veritas Ateliê!
+              `)
+            }`}
+            className={cn(mode === "admin" ? "hidden" : "block",
+              order.status === statusMap.awaiting_payment ? "flex md:hidden justify-center items-center md:w-1/2 xl:w-1/3 2xl:w-1/4 mt-4" : "hidden",
+            )}
+          >
+            <PayButton />
+          </Link>
         </div>
       </motion.div>
 
@@ -316,15 +323,15 @@ export default function OrderCard({
           >
             <div className="flex flex-col w-full">
               <div className="flex gap-2 dark:text-zinc-50">
-                <p className="font-bold">ID:</p>
+                <p className="font-bold">Pedido:</p>
                 <button
                   type="button"
-                  aria-label="Copiar ID do pedido"
-                  title="Copiar ID do pedido"
-                  onClick={handleCopyOrderIDToClipboard}
+                  aria-label="Copiar Number do pedido"
+                  title="Copiar Number do pedido"
+                  onClick={handleCopyOrderNumberToClipboard}
                 >
                   <p className="dark:text-zinc-50">
-                    {order.id}
+                    {order?.order_number}
                   </p>
                 </button>
               </div>
@@ -441,7 +448,7 @@ export default function OrderCard({
               <div className="flex items-center gap-4 text-xs text-secondary dark:text-zinc-200">
                 <input
                   type="checkbox"
-                  id={`message-to-client-${order.id}`}
+                  id={`message-to-client-${order.order_number}`}
                   checked={sendMessageToClient}
                   onChange={() => setSendMessageToClient(!sendMessageToClient)}
                   className={`w-4 h-4 text-primary rounded border-gray-300 focus:ring-primary dark:focus:ring-details 

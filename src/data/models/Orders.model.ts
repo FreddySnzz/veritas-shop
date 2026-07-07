@@ -1,8 +1,9 @@
-import { OrderStatusType } from "../types/order.type";
+import { OrderStatusType } from "../types/orders-status.type";
 import ProductModel from "./Product.model";
 
 export default interface OrderModel {
   id: string;
+  order_number: string;
   user_id: string;
   product_id: string;
   product?: ProductModel;

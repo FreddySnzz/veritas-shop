@@ -1,23 +1,61 @@
 'use client';
 
+import Image from "next/image";
 import Link from "next/link";
+import { useEffect, useState } from "react";
 import { FaInstagram, FaWhatsapp } from "react-icons/fa6";
+import { TbWorldDownload } from "react-icons/tb";
 import { SlogganTypography } from "./Typography";
 import { PhraseSloganAlternative } from "./Phrases";
 import { useMediaQuery } from "@/data/hook/useMediaQuery";
-import Image from "next/image";
+import { toast } from "sonner";
 
 interface FooterProps extends React.HTMLAttributes<HTMLDivElement> {
   className?: string;
   whatsappNumber?: string;
-};
+}
+
+interface BeforeInstallPromptEvent extends Event {
+  readonly platforms: string[];
+  readonly userChoice: Promise<{
+    outcome: 'accepted' | 'dismissed';
+    platform: string;
+  }>;
+  prompt(): Promise<void>;
+}
 
 export default function Footer({ 
   className,
   whatsappNumber
 }: FooterProps) {
+  const [deferredPrompt, setDeferredPrompt] = useState<BeforeInstallPromptEvent | null>(null);
   const isSmUp = useMediaQuery("(min-width: 540px)");
   const isMdUp = useMediaQuery("(min-width: 768px)");
+
+  useEffect(() => {
+    const handleBeforeInstallPrompt = (e: Event) => {
+      e.preventDefault();
+      setDeferredPrompt(e as BeforeInstallPromptEvent);
+    };
+
+    window.addEventListener('beforeinstallprompt', handleBeforeInstallPrompt);
+
+    return () => {
+      window.removeEventListener('beforeinstallprompt', handleBeforeInstallPrompt);
+    };
+  }, []);
+
+  const handleSaveApp = async () => {
+    if (!deferredPrompt) {
+      toast.info('Para instalar, abra o menu do seu navegador e selecione "Adicionar à Tela Inicial".');
+      return;
+    };
+
+    deferredPrompt.prompt();
+    setDeferredPrompt(null);
+  }
+
+  if (!deferredPrompt) return null;
 
   return (
     <footer className={`w-full bg-secondary dark:bg-zinc-950 font-sans p-8 z-49 
@@ -57,10 +95,10 @@ export default function Footer({
               Siga-nos
             </p>
             
-            <div className="flex sm:flex-col gap-4">
+            <div className="flex sm:flex-col gap-2 sm:gap-4">
               <div className="flex text-primary dark:text-zinc-400">
                 <div className={`flex cursor-pointer items-center justify-center 
-                  hover:text-blue-400`}
+                  hover:text-blue-400 transition-all`}
                 >
                   <Link 
                     rel="noopener noreferrer"
@@ -80,7 +118,7 @@ export default function Footer({
               
               <div className="flex text-primary dark:text-zinc-400">
                 <div className={`flex cursor-pointer items-center justify-center 
-                  hover:text-green-500`}
+                  hover:text-green-500 transition-all`}
                 >
                   <Link 
                     rel="noopener noreferrer"
@@ -95,6 +133,26 @@ export default function Footer({
                       WhatsApp
                     </span>
                   </Link>
+                </div>
+              </div>
+
+              <div className="flex text-primary dark:text-zinc-400">
+                <div className={`flex cursor-pointer items-center justify-center 
+                  hover:text-details/80 transition-all`}
+                >
+                  <button 
+                    type="button"
+                    onClick={handleSaveApp}
+                    aria-label="Salvar como app"
+                    title="Salvar como app"
+                    rel="noopener noreferrer"
+                    className="flex items-center justify-center cursor-pointer"
+                  >
+                    <TbWorldDownload size={35} />
+                    <span className="hidden sm:block ml-2 text-sm hover:underline">
+                      Salvar como app
+                    </span>
+                  </button>
                 </div>
               </div>
             </div>
@@ -192,5 +250,5 @@ export default function Footer({
         </div>
       </div>
     </footer>
-  );
-};
+  )
+}

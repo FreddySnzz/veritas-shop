@@ -6,22 +6,15 @@ import OrderModel from "@/data/models/Orders.model";
 import { BackButton } from "../buttons/BackButton";
 import OrderCard from "../OrderCard";
 import { SearchbarInput } from "../inputs/SearchbarInput";
+import { statusMap } from "@/data/types/orders-status.type";
 
 interface OrdersAdminLayoutProps extends React.HTMLAttributes<HTMLElement> {
   orders: OrderModel[];
 };
 
-const statusMap: Record<string, OrderModel["status"]> = {
-  awaiting_payment: "Aguardando Pagamento",
-  production: "Em Produção",
-  crafted: "Confeccionado",
-  completed: "Entregue",
-  cancelled: "Cancelado"
-};
-
 export default function OrdersAdminLayout({ 
   orders,
- }: OrdersAdminLayoutProps) {
+}: OrdersAdminLayoutProps) {
   const [searchText, setSearchText] = useState<string>('');
   
   const ordersRemapped = orders.map((order: OrderModel) => ({
@@ -34,10 +27,10 @@ export default function OrdersAdminLayout({
       return ordersRemapped;
     }
 
-    const lowerSearch = searchText.toLowerCase();
-    return ordersRemapped.filter((order) => 
-      order.id.toLowerCase().includes(lowerSearch)
-    );
+    const lowerSearch = searchText.trim();
+    return ordersRemapped.filter((order) => {
+      return order.order_number.trim().includes(lowerSearch);
+    });
   }, [searchText, ordersRemapped]);
 
   return (
@@ -56,7 +49,7 @@ export default function OrdersAdminLayout({
 
       <div className="relative flex w-full items-center justify-center mb-2 md:gap-3">
         <SearchbarInput
-          searchbarPlaceholder="Busque por ID do pedido"
+          searchbarPlaceholder="Busque pelo número do pedido"
           value={searchText}
           onChange={(e) => {
             setSearchText(e.target.value);
