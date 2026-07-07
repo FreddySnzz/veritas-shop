@@ -465,8 +465,8 @@ export default function OrderCard({
                   type="button"
                   aria-label="Salvar pedido"
                   title="Salvar pedido"
-                  className={cn("flex w-full px-4 py-3 rounded-lg items-center justify-center font-medium transition-all cursor-pointer",
-                    "bg-gray-50 dark:bg-zinc-900/40 hover:bg-primary/10 dark:hover:bg-zinc-900/50 text-secondary ",
+                  className={cn("font-medium text-secondary transition-all cursor-pointer min-h-full",
+                    "bg-gray-50 dark:bg-zinc-900/40 hover:bg-primary/10 dark:hover:bg-zinc-900/50",
                   )}
                   onClick={() => setExpandedCard(!expandedCard)}
                 >
@@ -477,7 +477,7 @@ export default function OrderCard({
                   aria-label="Salvar pedido"
                   title="Salvar pedido"
                   disabled={loading}
-                  className="bg-primary hover:bg-primary/90 dark:bg-details dark:hover:bg-details/90 text-white transition-colors py-3"
+                  className="bg-primary hover:bg-primary/90 dark:bg-details dark:hover:bg-details/90 text-white transition-colors py-3 min-h-full"
                   onClick={() => handleStatusChange(newStatus)}
                 >
                   {loading ? "Salvando..." : "Salvar"}
