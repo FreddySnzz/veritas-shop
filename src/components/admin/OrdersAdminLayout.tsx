@@ -7,6 +7,15 @@ import { BackButton } from "../buttons/BackButton";
 import OrderCard from "../OrderCard";
 import { SearchbarInput } from "../inputs/SearchbarInput";
 import { statusMap } from "@/data/types/orders-status.type";
+import { 
+  Select, 
+  SelectContent, 
+  SelectGroup, 
+  SelectItem, 
+  SelectTrigger, 
+  SelectValue 
+} from "../ui/select";
+import { cn } from "@/lib/utils";
 
 interface OrdersAdminLayoutProps extends React.HTMLAttributes<HTMLElement> {
   orders: OrderModel[];
@@ -16,22 +25,22 @@ export default function OrdersAdminLayout({
   orders,
 }: OrdersAdminLayoutProps) {
   const [searchText, setSearchText] = useState<string>('');
+  const [selectedStatus, setSelectedStatus] = useState<string>('ALL');
   
-  const ordersRemapped = orders.map((order: OrderModel) => ({
-    ...order,
-    status: statusMap[order.status as OrderModel["status"]],
-  }));
-
   const filteredOrders = useMemo(() => {
-    if (searchText.length === 0) {
-      return ordersRemapped;
-    }
+    return orders.filter((order) => {
+      const uppercaseSearch = searchText.trim().toUpperCase();
+      const orderNumber = order.order_number.trim().toUpperCase();
+      const orderProductName = order.product?.name.trim().toUpperCase() || '';
+      
+      const matchesSearch = searchText.length === 0 || 
+        orderNumber.includes(uppercaseSearch) || 
+        orderProductName.includes(uppercaseSearch);
 
-    const lowerSearch = searchText.trim();
-    return ordersRemapped.filter((order) => {
-      return order.order_number.trim().includes(lowerSearch);
+      const matchesStatus = selectedStatus === 'ALL' || order.status === selectedStatus;
+      return matchesSearch && matchesStatus;
     });
-  }, [searchText, ordersRemapped]);
+  }, [searchText, selectedStatus, orders]);
 
   return (
     <div className="flex flex-col font-sans h-full overflow-hidden">
@@ -41,19 +50,16 @@ export default function OrdersAdminLayout({
             Pedidos
           </p>
           <p className="text-sm text-secondary dark:text-muted-foreground">
-            {ordersRemapped.length} {ordersRemapped.length > 1 || ordersRemapped.length === 0 ? "pedidos" : "pedido"}
+            {filteredOrders.length} {filteredOrders.length > 1 || filteredOrders.length === 0 ? "pedidos" : "pedido"}
           </p>
         </div>
-        <hr className="border-muted-foreground/50 my-2" />
       </div>
 
-      <div className="relative flex w-full items-center justify-center mb-2 md:gap-3">
+      <div className="relative flex w-full items-center justify-center mb-2 gap-3">
         <SearchbarInput
-          searchbarPlaceholder="Busque pelo número do pedido"
+          searchbarPlaceholder="Busque pelo nome do produto, número do pedido..."
           value={searchText}
-          onChange={(e) => {
-            setSearchText(e.target.value);
-          }}
+          onChange={(e) => setSearchText(e.target.value)}
           className="bg-white dark:bg-input/30 shadow-xs"
         />
         
@@ -61,17 +67,46 @@ export default function OrdersAdminLayout({
           <button
             aria-label="Limpar pesquisa"
             title="Limpar pesquisa"
-            className="absolute right-2 cursor-pointer"
+            className="absolute right-30 sm:right-38 cursor-pointer"
             onClick={() => setSearchText('')}
           >
             <X className="w-6 h-6 text-secondary cursor-pointer" />
           </button>
         )}
+
+        <Select 
+          value={selectedStatus} 
+          onValueChange={setSelectedStatus}
+        >
+          <SelectTrigger 
+            title="Filtrar por status do pedido"
+            aria-label="Filtrar por status do pedido"
+            className={cn("border-none hover:border-none w-full cursor-pointer",
+              "focus:outline-none focus:ring-0 focus:ring-offset-0",
+              "bg-white hover:bg-gray-50 dark:bg-input/50 dark:hover:bg-input/70 text-secondary",
+              "dark:bg-input/30 dark:hover:bg-input/50 dark:border-zinc-700 max-w-24 md:max-w-32",
+            )}
+          >
+            <SelectValue placeholder={"Status"} />
+          </SelectTrigger>
+          <SelectContent className="transition-all font-sans">
+            <SelectGroup>
+              <SelectItem value="ALL" className="cursor-pointer">
+                Todos
+              </SelectItem>
+              {Object.entries(statusMap).map(([key, displayValue]) => (
+                <SelectItem key={key} value={key} className="cursor-pointer">
+                  {displayValue}
+                </SelectItem>
+              ))}
+            </SelectGroup>
+          </SelectContent>
+        </Select>
       </div>
       
       <div className="flex-1 overflow-y-auto scrollbar-hide mb-6">
         <div className="flex flex-col h-full space-y-4">
-          {ordersRemapped.length === 0 ? (
+          {filteredOrders.length === 0 ? (
             <div className="flex flex-col h-full items-center justify-center py-12 text-center">
               <LucidePackageOpen className="w-16 h-16 text-secondary dark:text-muted-foreground mb-4" />
               <p className="text-secondary dark:text-muted-foreground font-bold">
@@ -84,7 +119,10 @@ export default function OrdersAdminLayout({
                 <OrderCard 
                   key={order.id} 
                   mode="admin"
-                  order={order} 
+                  order={{
+                    ...order,
+                    status: statusMap[order.status as OrderModel["status"]],
+                  }} 
                 />
               ))}
             </>
