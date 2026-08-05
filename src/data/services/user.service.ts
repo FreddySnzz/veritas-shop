@@ -184,6 +184,15 @@ export async function updateUser(
     ...data,
   };
 
+  if (data.password) {
+    const hashedPassword = await createPasswordHashed(data.password);
+    updatedData.password = hashedPassword;
+  }
+
+  if (data.phone) {
+    updatedData.phone = data.phone.length === 11 ? "55" + data.phone : data.phone;
+  }
+
   await updateDoc(docRef, updatedData);
 
   return updatedData;

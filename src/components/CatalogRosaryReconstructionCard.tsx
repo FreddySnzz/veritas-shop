@@ -1,8 +1,8 @@
 'use client';
 
 import Link from "next/link";
-import FlowerIcon from "./icons/FlowerIcon";
 import { CircleArrowRight } from "lucide-react";
+import { FaTools } from "react-icons/fa";
 
 interface CatalogRosaryReconstructionCardProps {
   whatsappNumber: string;
@@ -30,7 +30,7 @@ export default function CatalogRosaryReconstructionCard({ whatsappNumber }: Cata
           rel="noopener noreferrer"
           title="Restaurar meu terço"
           aria-label="Restaurar meu terço"
-          className="flex gap-2 mt-8 text-white dark:text-zinc-200 hover:underline dark:hover:text-details italic items-center transition-colors"
+          className="flex gap-2 mt-8 w-fit text-white dark:text-zinc-200 hover:underline dark:hover:text-details italic items-center transition-colors"
         >
           <span className="font-medium">
             Quero restaurar meu terço
@@ -39,11 +39,8 @@ export default function CatalogRosaryReconstructionCard({ whatsappNumber }: Cata
         </Link>
       </div>
 
-      <div className="absolute top-5 right-[-200] md:top-2 md:right-[-100] pointer-events-none z-0">
-        <FlowerIcon 
-          color="#af996a42"
-          className="h-70 md:h-60" 
-        />
+      <div className="absolute translate-y-1/8 right-[-90] md:right-[-1] pointer-events-none z-0">
+        <FaTools className="text-[#af996a42] dark:text-muted-foreground/10 h-40 w-40 md:h-50 md:w-50" />
       </div>
     </div>
   )

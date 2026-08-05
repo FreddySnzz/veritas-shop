@@ -25,6 +25,7 @@
     "@types/js-cookie": "^3.0.6",
     "@types/jsonwebtoken": "^9.0.10",
     "bcrypt": "^6.0.0",
+    "cheerio": "^1.2.0",
     "class-variance-authority": "^0.7.1",
     "cloudinary": "^2.8.0",
     "clsx": "^2.1.1",

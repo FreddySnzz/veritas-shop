@@ -16,7 +16,7 @@ import {
 import { unstable_cache } from "next/cache";
 import { Collections } from "../types/collections.enum";
 import { ProductServiceError } from "./product.service";
-import { CustomizationItemsCategoryModel } from "@/data/models/CustomizationItemsCategory";
+import { CustomizationItemsCategoryModel } from "@/data/models/CustomizationItemsCategory.model";
 import { CustomizationItemConfig } from "../types/customization.type";
 
 export async function getAllCategories(): Promise<CustomizationItemsCategoryModel[] | null> {

@@ -7,7 +7,7 @@ import {
   updateCustomizationItemCategoryAction 
 } from "@/app/actions/customizationItemsCategory.action";
 import { removeAccentsAndSpaces } from "@/data/functions/removeAccentsAndSpaces";
-import { CustomizationItemsCategoryModel } from "@/data/models/CustomizationItemsCategory";
+import { CustomizationItemsCategoryModel } from "@/data/models/CustomizationItemsCategory.model";
 import { deleteImageAction, uploadImageAction } from "@/app/actions/cloudinary.actions";
 import { Label } from "../ui/label";
 import { Input } from "../ui/input";
@@ -40,10 +40,8 @@ export default function CustomizationItemCategoryModal({
     image_url: mode === 'editar' ? initialData?.image_url : '',
   });
   const [errors, setErrors] = useState<{ [key: string]: string }>({});
-  
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
-  
   const [isLoading, setIsLoading] = useState<boolean>(false);
 
   const imagePreview = useMemo(() => {

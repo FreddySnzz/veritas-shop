@@ -4,7 +4,7 @@ import { useMemo, useState } from 'react';
 import { CgArrowsBreakeV } from 'react-icons/cg';
 import { X } from 'lucide-react';
 import CustomModal from './CustomModal';
-import { CustomizationItemsCategoryModel } from '@/data/models/CustomizationItemsCategory';
+import { CustomizationItemsCategoryModel } from '@/data/models/CustomizationItemsCategory.model';
 import { saveCustomizationOrderAction } from '@/app/actions/customizationItemsCategory.action';
 import {
   DndContext,

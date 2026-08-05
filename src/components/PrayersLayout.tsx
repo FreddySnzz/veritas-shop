@@ -6,7 +6,7 @@ import {
   various, 
   specificPrayers 
 } from "@/data/constants/prayers";
-import { SearchbarInput } from "./inputs/SearchbarInput";
+import { CustomInput } from "./inputs/CustomInput";
 import { X } from "lucide-react";
 import { useState } from "react";
 import { removeAccentsAndSpaces } from "@/data/functions/removeAccentsAndSpaces";
@@ -26,7 +26,7 @@ export default function PrayersLayout() {
     >
       <div className="flex overflow-y-auto font-sans scrollbar-hide">
         <div className="relative flex w-full items-center justify-center mb-4 md:gap-3">
-          <SearchbarInput
+          <CustomInput
             searchbarPlaceholder="Busque por oração"
             value={searchText}
             onChange={(e) => {
@@ -64,6 +64,7 @@ export default function PrayersLayout() {
                   aria-label={prayer.title}
                   title={prayer.title}
                   href={`/ajuda/oracoes${prayer.href}`}
+                  className="w-fit"
                 >
                   <p className="font-medium dark:text-zinc-400 hover:underline ml-2">
                     • {prayer.title}
@@ -87,6 +88,7 @@ export default function PrayersLayout() {
                   aria-label={prayer.title}
                   title={prayer.title}
                   href={`/ajuda/oracoes${prayer.href}`}
+                  className="w-fit"
                 >
                   <p className="font-medium dark:text-zinc-400 hover:underline ml-2">
                     • {prayer.title}
@@ -110,6 +112,7 @@ export default function PrayersLayout() {
                   aria-label={prayer.title}
                   title={prayer.title}
                   href={`/ajuda/oracoes${prayer.href}`}
+                  className="w-fit"
                 >
                   <p className="font-medium dark:text-zinc-400 hover:underline ml-2">
                     • {prayer.title}
@@ -127,6 +130,7 @@ export default function PrayersLayout() {
               aria-label={prayer.title}
               title={prayer.title}
               href={`/ajuda/oracoes${prayer.href}`}
+              className="w-fit"
             >
               <span className="font-medium dark:text-zinc-400 hover:underline ml-2">
                 • {prayer.title}

@@ -6,14 +6,26 @@ import {
   getAllProducts, 
   getProductById, 
   getProductByName, 
+  getProductsByCategory, 
   updateProduct 
 } from "@/data/services/product.service";
 import { refreshCacheAction } from "./cache.actions";
 import { serializeFirestoreData } from "@/data/functions/firebaseSerialize";
+import { revalidatePath } from "next/cache";
 
 export async function getAllProductsAction() {
   try {
     const products = await getAllProducts();
+    return serializeFirestoreData(products);
+  } catch (error) {
+    console.error("Erro ao carregar produtos:", error);
+    return null;
+  }
+}
+
+export async function getProductsByCategoryAction(categoryId: string) {
+  try {
+    const products = await getProductsByCategory(categoryId);
     return serializeFirestoreData(products);
   } catch (error) {
     console.error("Erro ao carregar produtos:", error);
@@ -46,6 +58,7 @@ export async function createProductAction(data: any) {
   try {
     const product = await createProduct(data);
     await refreshCacheAction('products');
+    revalidatePath('/admin/estoques/catalogo');
     return serializeFirestoreData(product);
   } catch (error) {
     console.error("Erro ao criar produto:", error);
@@ -58,6 +71,7 @@ export async function updateProductAction(id: string, data: any) {
   try {
     const product = await updateProduct(id, data);
     await refreshCacheAction('products');
+    revalidatePath('/admin/estoques/catalogo');
     return serializeFirestoreData(product);
   } catch (error) {
     console.error("Erro ao atualizar produto:", error);
@@ -69,6 +83,7 @@ export async function deleteProductAction(id: string) {
   try {
     await deleteProduct(id);
     await refreshCacheAction('products');
+    revalidatePath('/admin/estoques/catalogo');
   } catch (error) {
     console.error("Erro ao excluir produto:", error);
   }

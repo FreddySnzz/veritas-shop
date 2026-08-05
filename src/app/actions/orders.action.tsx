@@ -11,6 +11,7 @@ import {
 } from "@/data/services/order.service";
 import { OrderStatus } from "@/data/types/enums/orders.enum";
 import { CreateOrderRequest } from "@/data/types/order.type";
+import { revalidatePath } from "next/cache";
 
 export async function getAllOrdersByUserAction(userId: string) {
   try {
@@ -55,6 +56,7 @@ export async function getOrderByOrderNumberAction(orderNumber: string) {
 export async function createOrderAction(data: CreateOrderRequest) {
   try {
     const order = await createOrder(data);
+    revalidatePath('/me/pedidos');
     return serializeFirestoreData(order);
   } catch (error) {
     console.error("Erro ao criar pedido (action):", error);
@@ -65,6 +67,7 @@ export async function createOrderAction(data: CreateOrderRequest) {
 export async function updateOrderStatusAction(orderId: string, status: OrderStatus) {
   try {
     const order = await updateOrderStatus(orderId, status);
+    revalidatePath('/me/pedidos');
     return serializeFirestoreData(order);
   } catch (error) {
     console.error("Erro ao atualizar pedido:", error);
@@ -75,6 +78,7 @@ export async function updateOrderStatusAction(orderId: string, status: OrderStat
 export async function deleteOrderAction(orderId: string) {
   try {
     await deleteOrder(orderId);
+    revalidatePath('/me/pedidos');
   } catch (error) {
     console.error("Erro ao excluir pedido:", error);
     return null;

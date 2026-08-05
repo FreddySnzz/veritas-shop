@@ -6,6 +6,13 @@ export function removeAccentsAndSpaces(str: string) {
     .replace(/\s+/g, '_');
 };
 
+export function deleteAccentsAndSpaces(str: string) {
+  return str
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "")
+    .replace(/\s+/g, '');
+};
+
 export function removeDots(str: string) {
   return str.replace(/\./g, '');
 };

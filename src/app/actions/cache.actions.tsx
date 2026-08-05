@@ -6,10 +6,12 @@ import { getCachedCatalogImages } from "@/data/services/catalogImages.service";
 import { serializeFirestoreData } from "@/data/functions/firebaseSerialize";
 import { getCachedCustomizationItemsCategories } from "@/data/services/categoryItem.service";
 import { getCachedCustomizationItems } from "@/data/services/customizationItems.service";
-import { CustomizationItemsCategoryModel } from "@/data/models/CustomizationItemsCategory";
+import { CustomizationItemsCategoryModel } from "@/data/models/CustomizationItemsCategory.model";
 import { CustomizationItemsModel } from "@/data/models/CustomizationItems.model";
 import ProductModel from "@/data/models/Product.model";
 import { getCachedAdminInfo } from "@/data/services/user.service";
+import { getCachedProductCategories } from "@/data/services/categoryProduct.service";
+import { ProductCategoryModel } from "@/data/models/ProductCategory.model";
 
 export async function refreshCacheAction(collection: string) {
   revalidateTag(collection, "max");
@@ -63,6 +65,19 @@ export async function getCachedCustomizationItemsCategoriesAction() {
   let sortedItems: CustomizationItemsCategoryModel[] = [];
   if (customizationItemsCategories) {
     sortedItems = [...customizationItemsCategories].sort((a, b) => {
+      return a.name.localeCompare(b.name, 'pt-BR');
+    });
+  }
+  
+  return serializeFirestoreData(sortedItems);
+}
+
+export async function getCachedProductCategoriesAction() {
+  const productCategories = await getCachedProductCategories();
+
+  let sortedItems: ProductCategoryModel[] = [];
+  if (productCategories) {
+    sortedItems = [...productCategories].sort((a, b) => {
       return a.name.localeCompare(b.name, 'pt-BR');
     });
   }

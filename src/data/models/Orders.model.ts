@@ -6,6 +6,7 @@ export default interface OrderModel {
   order_number: string;
   user_id: string;
   product_id: string;
+  coupon_id?: string;
   product?: ProductModel;
   quantity: number;
   customization?: object | null;

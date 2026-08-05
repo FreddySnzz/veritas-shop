@@ -1,7 +1,13 @@
 import "../styles/globals.css";
 import type { Metadata } from "next";
 import { cookies } from "next/headers";
-import { geistMono, geistSans, playfair, space } from "../styles/fonts";
+import { 
+  geistMono, 
+  geistSans, 
+  playfair, 
+  space, 
+  libertinus 
+} from "../styles/fonts";
 import { CustomizationProvider } from "@/data/context/CustomizationContext";
 import { AuthProvider } from "@/data/context/AuthContext";
 import { CartProvider } from "@/data/context/CartContext";
@@ -49,7 +55,8 @@ export default async function RootLayout({
     <html lang="pt-br" suppressHydrationWarning>
       <body
         className={`${playfair.variable} ${space.variable} ${geistMono.variable} 
-          ${geistSans.variable} antialiased font-playfair-display`}
+          ${geistSans.variable} ${libertinus.variable} antialiased font-playfair-display
+        `}
       >
         <ThemeProvider
           attribute="class"

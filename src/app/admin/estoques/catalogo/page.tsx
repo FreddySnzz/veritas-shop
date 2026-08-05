@@ -1,5 +1,6 @@
 import { 
   getCachedAdminInfoAction, 
+  getCachedProductCategoriesAction, 
   getCachedProductsAction 
 } from "@/app/actions/cache.actions";
 import DynamicBreadcrumb from "@/components/DynamicBreadcrumb";
@@ -10,6 +11,7 @@ import ManageCatalogInventory from "@/components/admin/CatalogInventory";
 export default async function ManageInvertoryCatalogPage() {
   const { user } = await getCachedAdminInfoAction();
   const products = await getCachedProductsAction();
+  const categories = await getCachedProductCategoriesAction();
 
   return (
     <div className="flex flex-col h-dvh overflow-y-auto bg-background-alternative dark:bg-background-dark">
@@ -22,7 +24,10 @@ export default async function ManageInvertoryCatalogPage() {
             <DynamicBreadcrumb className="mt-16 py-4" />
             <hr className="border-muted-foreground/50 mb-4" />
           </div>
-          <ManageCatalogInventory products={products} />
+          <ManageCatalogInventory 
+            products={products} 
+            categories={categories}
+          />
         </main>
       </div>
       <div className="hidden lg:block shrink-0">

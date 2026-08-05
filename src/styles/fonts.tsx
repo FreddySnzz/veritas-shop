@@ -1,4 +1,10 @@
-import { Geist, Geist_Mono, Playfair_Display, Space_Grotesk } from "next/font/google";
+import { 
+  Geist, 
+  Geist_Mono, 
+  Playfair_Display, 
+  Space_Grotesk,
+  Libertinus_Math,
+} from "next/font/google";
 
 const space = Space_Grotesk({
   variable: "--font-space-grotesk",
@@ -20,4 +26,16 @@ const geistMono = Geist_Mono({
   subsets: ["latin"],
 });
 
-export { space, playfair, geistSans, geistMono };
+const libertinus = Libertinus_Math({
+  weight: "400",
+  variable: "--font-libertinus-math",
+  subsets: ["latin", "math"],
+});
+
+export { 
+  space, 
+  playfair, 
+  geistSans, 
+  geistMono,
+  libertinus
+};

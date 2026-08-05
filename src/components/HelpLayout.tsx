@@ -130,9 +130,20 @@ export default function HelpLayout({ whatsappNumber }: HelpLayoutProps) {
 
         <div className="flex flex-col mt-12 gap-4">
           <Link
+            aria-label="Bíblia"
+            title="Bíblia"
+            href={`/ajuda/biblia`}
+            className="w-fit"
+          >
+            <span className="font-bold text-2xl hover:underline">
+              Bíblia Online
+            </span>
+          </Link>
+          <Link
             aria-label="Orações"
             title="Orações"
             href={`/ajuda/oracoes`}
+            className="w-fit"
           >
             <span className="font-bold text-2xl hover:underline">
               Aprenda a Rezar
@@ -142,18 +153,21 @@ export default function HelpLayout({ whatsappNumber }: HelpLayoutProps) {
             aria-label="Termos e Condições"
             title="Termos e Condições"
             href={`/ajuda/termos-e-condicoes`}
+            className="w-fit"
           >
             <span className="font-bold text-2xl hover:underline">
               Termos e Condições
             </span>
           </Link>
-          
-          <SupportButton
-            title="Relatar problema ou falar com suporte"
-            messageToSupport={`Olá, gostaria de informar um problema que encontrei na Veritas Ateliê!`}
-          />
+
+          <div className="flex justify-center">
+            <SupportButton
+              title="Relatar problema ou falar com suporte"
+              messageToSupport={`Olá, gostaria de informar um problema que encontrei na Veritas Ateliê!`}
+            />
+          </div>
         </div>
       </div>
     </section>
-  );
-};
+  )
+}

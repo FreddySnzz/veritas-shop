@@ -1,6 +1,7 @@
 import { 
   getCachedAdminInfoAction, 
-  getCachedCustomizationItemsCategoriesAction 
+  getCachedCustomizationItemsCategoriesAction, 
+  getCachedProductCategoriesAction
 } from "@/app/actions/cache.actions";
 import { Header } from "@/components/Header";
 import DynamicBreadcrumb from "@/components/DynamicBreadcrumb";
@@ -20,6 +21,7 @@ export default async function AddProductCatalogPage({ params }: {
   const { user } = await getCachedAdminInfoAction();
   const { mode } = await params;
   const categories = await getCachedCustomizationItemsCategoriesAction();
+  const productCategories = await getCachedProductCategoriesAction();
 
   if (mode !== 'adicionar' && mode !== 'editar') {
     notFound();
@@ -39,6 +41,7 @@ export default async function AddProductCatalogPage({ params }: {
           <ProductForm 
             initialData={null} 
             customizationOptions={categories}
+            productCategories={productCategories}
           />
         </main>
       </div>

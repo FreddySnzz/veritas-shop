@@ -13,7 +13,7 @@ import { onlyNumbers } from '@/data/functions/inputMasks';
 import { Loader2 } from "lucide-react";
 import { FaGoogle } from 'react-icons/fa6';
 import { CreateUserRequest } from '@/data/types/auth';
-import { authFormSchema } from '@/data/schemas/form.schema';
+import { authFormSchema } from '@/data/schemas/auth-form.schema';
 import { 
   registerAction, 
   registerWithGoogleAction, 
@@ -373,30 +373,30 @@ export default function Login() {
           </button>
         </div>
 
-        <div className="flex flex-col mt-8 justify-center">
-          <button
-            className={`text-sm text-secondary cursor-pointer`}
-          >
-            {mode === 'login' ? "Ainda não possui uma conta?" : "Já possui uma conta?" }
-          </button>
-          <button
-            type="button"
-            title="Criar uma conta"
-            aria-label="Criar uma conta"
-            onClick={() => {
-              setMode((prev) => (prev === 'login' ? 'register' : 'login'))
-              setForm({
-                name: '',
-                phone: '',
-                email: '',
-                password: '',
-              })
-            }}
-            className={`text-sm text-secondary dark:text-details font-bold cursor-pointer hover:underline`}
-          >
-            {mode === 'login' ? "Criar uma conta agora" : "Entrar com uma conta existente" }
-          </button>
-        </div> 
+        <div className="flex w-full justify-center">
+          <div className="flex flex-col mt-8 justify-center w-fit">
+            <button className={`text-sm text-secondary cursor-pointer`}>
+              {mode === 'login' ? "Ainda não possui uma conta?" : "Já possui uma conta?" }
+            </button>
+            <button
+              type="button"
+              title={mode === "login" ? "Criar uma conta" : "Entrar com uma conta existente"}
+              aria-label={mode === "login" ? "Criar uma conta" : "Entrar com uma conta existente"}
+              className={`text-sm text-secondary dark:text-details font-bold cursor-pointer hover:underline`}
+              onClick={() => {
+                setMode((prev) => (prev === 'login' ? 'register' : 'login'))
+                setForm({
+                  name: '',
+                  phone: '',
+                  email: '',
+                  password: '',
+                })
+              }}
+            >
+              {mode === 'login' ? "Criar uma conta agora" : "Entrar com uma conta existente" }
+            </button>
+          </div> 
+        </div>
 
         <div className="mt-8 flex items-center justify-center">
           <Link

@@ -377,7 +377,7 @@ export const specificPrayers = [
         <Link
           href="/ajuda/oracoes/ave-maria"
           title="Ir para Ave Maria"
-          className="italic hover:underline"
+          className="w-fit italic hover:underline"
         >
           Ave Maria...
         </Link>
@@ -391,7 +391,7 @@ export const specificPrayers = [
         <Link
           href="/ajuda/oracoes/ave-maria"
           title="Ir para Ave Maria"
-          className="italic hover:underline"
+          className="w-fit italic hover:underline"
         >
           Ave Maria...
         </Link>
@@ -405,7 +405,7 @@ export const specificPrayers = [
         <Link
           href="/ajuda/oracoes/ave-maria"
           title="Ir para Ave Maria"
-          className="italic hover:underline"
+          className="w-fit italic hover:underline"
         >
           Ave Maria...
         </Link>
@@ -550,7 +550,7 @@ export const various = [
         <Link
           href="/ajuda/oracoes/credo"
           title="Ir para o Credo"
-          className="italic hover:underline"
+          className="w-fit italic hover:underline"
         >
           Credo...
         </Link>
@@ -560,14 +560,14 @@ export const various = [
           <Link
             href="/ajuda/oracoes/pai-nosso"
             title="Ir para Pai Nosso"
-            className="italic hover:underline"
+            className="w-fit italic hover:underline"
           >
             Pai Nosso...
           </Link>
           <Link
             href="/ajuda/oracoes/ave-maria"
             title="Ir para Ave Maria"
-            className="italic hover:underline"
+            className="w-fit italic hover:underline"
           >
             Ave Maria...
           </Link>
@@ -586,7 +586,7 @@ export const various = [
           <Link
             href="/ajuda/oracoes/ave-maria"
             title="Ir para Ave Maria"
-            className="italic hover:underline mt-2"
+            className="italic hover:underline mt-2 w-fit"
           >
             Ave Maria...
           </Link>
@@ -605,7 +605,7 @@ export const various = [
           <Link
             href="/ajuda/oracoes/ave-maria"
             title="Ir para Ave Maria"
-            className="italic hover:underline mt-2"
+            className="italic hover:underline mt-2 w-fit"
           >
             Ave Maria...
           </Link>
@@ -623,7 +623,7 @@ export const various = [
           <Link
             href="/ajuda/oracoes/ave-maria"
             title="Ir para Ave Maria"
-            className="italic hover:underline mt-2"
+            className="italic hover:underline mt-2 w-fit"
           >
             Ave Maria...
           </Link>
@@ -641,7 +641,7 @@ export const various = [
           <Link
             href="/ajuda/oracoes/gloria-ao-pai"
             title="Ir para Gloria ao Pai"
-            className="italic hover:underline mt-2"
+            className="italic hover:underline mt-2 w-fit"
           >
             Glória ao Pai...
           </Link>
@@ -652,14 +652,14 @@ export const various = [
           <Link
             href="/ajuda/oracoes/pai-nosso"
             title="Ir para Pai Nosso"
-            className="italic hover:underline"
+            className="w-fit italic hover:underline"
           >
             Pai Nosso...
           </Link>
           <Link
             href="/ajuda/oracoes/ave-maria"
             title="Ir para Ave Maria"
-            className="italic hover:underline"
+            className="w-fit italic hover:underline"
           >
             Ave Maria...
           </Link>
@@ -677,7 +677,7 @@ export const various = [
           <Link
             href="/ajuda/oracoes/ave-maria"
             title="Ir para Ave Maria"
-            className="italic hover:underline mt-2"
+            className="italic hover:underline mt-2 w-fit"
           >
             Ave Maria...
           </Link>
@@ -695,7 +695,7 @@ export const various = [
           <Link
             href="/ajuda/oracoes/ave-maria"
             title="Ir para Ave Maria"
-            className="italic hover:underline mt-2"
+            className="italic hover:underline mt-2 w-fit"
           >
             Ave Maria...
           </Link>
@@ -713,7 +713,7 @@ export const various = [
           <Link
             href="/ajuda/oracoes/ave-maria"
             title="Ir para Ave Maria"
-            className="italic hover:underline mt-2"
+            className="italic hover:underline mt-2 w-fit"
           >
             Ave Maria...
           </Link>
@@ -731,7 +731,7 @@ export const various = [
           <Link
             href="/ajuda/oracoes/gloria-ao-pai"
             title="Ir para Gloria ao Pai"
-            className="italic hover:underline mt-2"
+            className="italic hover:underline mt-2 w-fit"
           >
             Glória ao Pai...
           </Link>
@@ -742,14 +742,14 @@ export const various = [
           <Link
             href="/ajuda/oracoes/pai-nosso"
             title="Ir para Pai Nosso"
-            className="italic hover:underline"
+            className="w-fit italic hover:underline"
           >
             Pai Nosso...
           </Link>
           <Link
             href="/ajuda/oracoes/ave-maria"
             title="Ir para Ave Maria"
-            className="italic hover:underline"
+            className="w-fit italic hover:underline"
           >
             Ave Maria...
           </Link>
@@ -767,7 +767,7 @@ export const various = [
           <Link
             href="/ajuda/oracoes/ave-maria"
             title="Ir para Ave Maria"
-            className="italic hover:underline mt-2"
+            className="italic hover:underline mt-2 w-fit"
           >
             Ave Maria...
           </Link>
@@ -785,7 +785,7 @@ export const various = [
           <Link
             href="/ajuda/oracoes/ave-maria"
             title="Ir para Ave Maria"
-            className="italic hover:underline mt-2"
+            className="italic hover:underline mt-2 w-fit"
           >
             Ave Maria...
           </Link>
@@ -803,7 +803,7 @@ export const various = [
           <Link
             href="/ajuda/oracoes/ave-maria"
             title="Ir para Ave Maria"
-            className="italic hover:underline mt-2"
+            className="italic hover:underline mt-2 w-fit"
           >
             Ave Maria...
           </Link>
@@ -821,7 +821,7 @@ export const various = [
           <Link
             href="/ajuda/oracoes/gloria-ao-pai"
             title="Ir para Gloria ao Pai"
-            className="italic hover:underline mt-2"
+            className="italic hover:underline mt-2 w-fit"
           >
             Glória ao Pai...
           </Link>
@@ -852,7 +852,7 @@ export const various = [
         <Link
           href="/ajuda/oracoes/sub-tuum"
           title="Ir para Sub Tuum"
-          className="italic hover:underline mt-4"
+          className="italic hover:underline mt-4 w-fit"
         >
           À vossa proteção...
         </Link>
@@ -876,7 +876,7 @@ export const various = [
           <Link
             href="/ajuda/oracoes/vinde-espirito-santo"
             title="Ir para o Vinde Espírito Santo"
-            className="italic hover:underline"
+            className="w-fit italic hover:underline"
           >
             Vinde Espírito Santo...
           </Link>
@@ -887,28 +887,28 @@ export const various = [
           <Link
             href="/ajuda/oracoes/pai-nosso"
             title="Ir para o Pai Nosso"
-            className="italic hover:underline"
+            className="w-fit italic hover:underline"
           >
             Pai Nosso...
           </Link>
           <Link
             href="/ajuda/oracoes/ave-maria"
             title="Ir para o Ave Maria"
-            className="italic hover:underline"
+            className="w-fit italic hover:underline"
           >
             Ave Maria...
           </Link>
           <Link
             href="/ajuda/oracoes/gloria-ao-pai"
             title="Ir para o Glória ao Pai"
-            className="italic hover:underline"
+            className="w-fit italic hover:underline"
           >
             Glória ao Pai...
           </Link>
           <Link
             href="/ajuda/oracoes/jaculatoria-fatima"
             title="Ir para a Jaculatória de Fátima"
-            className="italic hover:underline"
+            className="w-fit italic hover:underline"
           >
             Ó, meu Jesus...
           </Link>
@@ -934,19 +934,19 @@ export const various = [
               Será que o fazemos?`}
             </p>
             <p className="mt-2 text-sm">
-              <p className="font-medium">
+              <span className="font-medium">
                 {`1º Amando a Deus acima de tudo: `}
                 <br/>
-              </p>
+              </span>
               {`Neguei a fé? Duvidei da existência de Deus? Escarneci da religião? 
               Deixei de rezar por muito tempo? 
               Declarei que o matrimônio, o sacerdócio, a confissão, a missa estão utrapassados?`}
             </p>
             <p className="mt-2 text-sm">
-              <p className="font-medium">
+              <span className="font-medium">
                 {`2º Não tomando o seu Santo Nome em vão: `}
                 <br/>
-              </p>
+              </span>
               {`Cantei músicas blasfemas? Zombei da Igreja, das cerimônias religiosas ou de seus representantes? 
               Falei mal do Santo Padre, o Papa? Acusei a Igreja de ser falsa, ou desonesta? 
               Acusei Deus de injusto? Roguei pragas? 
@@ -954,30 +954,30 @@ export const various = [
               Jurei em falso, ou à toa?`}
             </p>
             <p className="mt-2 text-sm">
-              <p className="font-medium">
+              <span className="font-medium">
                 {`3º Guardando os dias santificados: `}
                 <br/>
-              </p>
+              </span>
               {`Passei o Domingo na frente da televisão? Faltei na missa nesse mesmo dia? 
               Fiz piada com a Santa Missa? Disse que "já assisti missas que chega"? 
               Fui na missa para "cumprir a obrigação"? 
               Dediquei uma parte do meu tempo a Deus, lendo a Bíblia e rezando?`}
             </p>
             <p className="mt-2 text-sm">
-              <p className="font-medium">
+              <span className="font-medium">
                 {`4º Honrando pai e mãe: `}
                 <br/>
-              </p>
+              </span>
               {`Fui desobediente aos pais, autoridades ou superiores? 
               Desejei-lhes algum mal, talvez a morte? 
               Obedeci-lhes em coisas contrárias à lei de Deus? 
               Negligenciei como pai e mãe ou irmão mais velho, os deveres de educação e instrução religiosa?`}
             </p>
             <p className="mt-2 text-sm">
-              <p className="font-medium">
+              <span className="font-medium">
                 {`5º Não matando: `}
                 <br/>
-              </p>
+              </span>
               {`Tive ódio? Recusei o perdão a quem me pediu? Desejei a morte para mim ou para outros? 
               Ensinei a praticar pecados? Seduzi alguém ao pecado? 
               Defendi o assassínio de bebês através do aborto? 
@@ -985,10 +985,10 @@ export const various = [
               Falei que "a terra tá cheia demais, e precisa mesmo morrer gente"?`}
             </p>
             <p className="mt-2 text-sm">
-              <p className="font-medium">
+              <span className="font-medium">
                 {`6º Guardando a castidade; 9º Não cobiçando a mulher (ou marido) do próximo: `}
                 <br/>
-              </p>
+              </span>
               {`Tenho visto revistas e filmes pornográficos? 
               Faço ou aprovo o sexo sem o matrimônio ou fora do matrimônio? 
               Defendi ou propaguei a sua leitura? 
@@ -1000,10 +1000,10 @@ export const various = [
               Me envergonhei da minha virgindade, rejeitando-a?`}
             </p>
             <p className="mt-2 text-sm">
-              <p className="font-medium">
+              <span className="font-medium">
                 {`7º Não roubando; 10º Não cobiçando as coisas alheias: `}
                 <br/>
-              </p>
+              </span>
               {`Prejudiquei alguém ou tive desejo de prejudicar, enganando no troco, nos pesos e nas medidas, ou roubando? 
               Fiz dívidas desnecessárias à subsistência? Paguei as minhas dívidas? 
               Comprei bebidas ou cigarros a fiado, sem ter como pagar? 
@@ -1013,10 +1013,10 @@ export const various = [
               Deixei de devolver algo que não me pertence? Paguei com justiça os meus empregados?`}
             </p>
             <p className="mt-2 text-sm">
-              <p className="font-medium">
+              <span className="font-medium">
                 {`8º Não mentindo: `}
                 <br/>
-              </p>
+              </span>
               {`Falei mal dos outros pelas costas? Fui fiel à verdade ao comentar acontecimentos passados? 
               Exagerei ou inventei qualidades para ganhar um emprego ou subir no emprego?
               Prejudiquei alguém com minhas palavras? Fiz alguém perder o emprego? 
@@ -1037,63 +1037,63 @@ export const various = [
               E o caminho certo? Será que o seguimos?)`}
             </p>
             <p className="mt-2 text-sm">
-              <p className="font-medium">
+              <span className="font-medium">
                 {`- Dando de comer a quem tem fome e de beber a quem tem sede: `}
                 <br/>
-              </p>
+              </span>
               {`Dei esmolas em dinheiro ou comida para os pedintes? 
               Ajudei os amigos, parentes ou vizinhos desempregados? 
               Paguei um salário justo aos empregados? 
               Tenho ajudado meus pais idosos com comida ou remédios?`}
             </p>
             <p className="mt-2 text-sm">
-              <p className="font-medium">
+              <span className="font-medium">
                 {`- Vestindo os que estão nus: `}
                 <br/>
-              </p>
+              </span>
               {`Tenho roupas demais? Tenho o armário cheio de roupas e digo "não tenho o que vestir"? 
               Me visto só com roupas da moda? Já dei uma roupa nova e bonita a alguém que precisava dela? 
               O que faço com as roupas que me sobram?`}
             </p>
             <p className="mt-2 text-sm">
-              <p className="font-medium">
+              <span className="font-medium">
                 {`- Visitar os enfermos e cativos: `}
                 <br/>
-              </p>
+              </span>
               {`Sou doador de sangue? Visito os meus parentes e amigos doentes? 
               Sei se na minha rua tem alguém doente? Visito meus pais idosos?`}
             </p>
             <p className="mt-2 text-sm">
-              <p className="font-medium">
+              <span className="font-medium">
                 {`- Dar pousada aos peregrinos: `}
                 <br/>
-              </p>
+              </span>
               {`Cobro um preço justo pelo aluguel? Expulsei um filho de casa? 
               Recusei morada a algum parente? Ajudo os desabrigados nas enchentes e enchurradas? 
               Tenho bons sentimentos para com os imigrantes de outras cidades e estados?`}
             </p>
             <p className="mt-2 text-sm">
-              <p className="font-medium">
+              <span className="font-medium">
                 {`- Remir os cativos e oprimidos: `}
                 <br/>
-              </p>
+              </span>
               {`Ajudo os drogados a largar o vício e os prostituídos a mudar de vida? 
               Tenho vontade de ajudar a Igreja nas visitas que faz ao presídio, 
               indo lá ou colaborando com doações?`}
             </p>
             <p className="mt-2 text-sm">
-              <p className="font-medium">
+              <span className="font-medium">
                 {`- Enterrar os mortos: `}
                 <br/>
-              </p>
+              </span>
               {`Evito de ir a velórios e enterros? Vou só por obrigação social? 
               Concedi um enterro cristão aos meus parentes, chamando um sacerdote?`}
             </p>
             <p className="mt-2 text-sm">
-              <p className="font-medium">
+              <span className="font-medium">
                 {`- Dar bons conselhos; Ensinar aos ignorantes; Consolar os aflitos: `}
                 <br/>
-              </p>
+              </span>
               {`Tenho conversado com meus filhos, ensinando-os a moral cristã? 
               Tenho ensinado eles ou os outros a não pecar, por amor a Deus? 
               Tenho aconselhado os pais a batizar os filhos, e os pecadores a se confessar? 
@@ -1101,19 +1101,19 @@ export const various = [
               Me ofereço para dar catequese? Perdoar as injúrias; Sofrer com paciência as fraquezas do próximo;`}
             </p>
             <p className="mt-2 text-sm">
-              <p className="font-medium">
+              <span className="font-medium">
                 {`- Corrigir os que erram: `}
                 <br/>
-              </p>
+              </span>
               {`Tenho tido paciência com os erros dos outros? Tenho perdoado com facilidade a quem me ofendeu? 
               Tenho alertado às pessoas de vida errada? Tenho alertado aos jovens promíscuos sobre o seu erro? 
               Tenho corrigido meus filhos quando erram?`}
             </p>
             <p className="mt-2 text-sm">
-              <p className="font-medium">
+              <span className="font-medium">
                 {`- Rogar a Deus pelos vivos e pelos defuntos: `}
                 <br/>
-              </p>
+              </span>
               {`Lembro dos meus parentes e amigos falecidos nas minhas orações? 
               Quando rezo peço mais para mim do que para os outros? 
               Rezo pelos problemas dos outros? 
@@ -1128,7 +1128,7 @@ export const various = [
             <Link
               href="/ajuda/oracoes/ato-de-contricao"
               title="Ir para o Ato de Contrição"
-              className="italic hover:underline"  
+              className="w-fit italic hover:underline"  
             >
               Meu Deus, eu me arrependo...
             </Link>
@@ -1147,9 +1147,9 @@ export const various = [
               Creio em vós porque sois a própria verdade. 
               Espero receber de vós a salvação e o perdão dos meus pecados, 
               porque sei que só Vós sois bom e misericordioso.`}
-              <p className="font-medium mt-2">
+              <span className="font-medium mt-2">
                 Amém.
-              </p>
+              </span>
             </p>
           </div>
         </div>
@@ -1218,28 +1218,28 @@ export const various = [
             <Link
               href="/ajuda/oracoes/pai-nosso"
               title="Ir para o Pai Nosso"
-              className="italic hover:underline"
+              className="w-fit italic hover:underline"
             >
               Pai Nosso...
             </Link>
             <Link
               href="/ajuda/oracoes/ave-maria"
               title="Ir para o Ave Maria"
-              className="italic hover:underline"
+              className="w-fit italic hover:underline"
             >
               Ave Maria...
             </Link>
             <Link
               href="/ajuda/oracoes/gloria-ao-pai"
               title="Ir para o Glória ao Pai"
-              className="italic hover:underline"
+              className="w-fit italic hover:underline"
             >
               Glória ao Pai...
             </Link>
             <Link
               href="/ajuda/oracoes/ato-de-desagravo"
               title="Ir para o Ato de Desagravo"
-              className="italic hover:underline"
+              className="w-fit italic hover:underline"
             >
               Ato de Desagravo...
             </Link>
@@ -1300,14 +1300,14 @@ export const various = [
         <Link
           href="/ajuda/oracoes/sinal-da-cruz"
           title="Ir para Sinal da Cruz"
-          className="italic hover:underline"
+          className="w-fit italic hover:underline"
         >
           Sinal da Cruz...
         </Link>
         <Link
           href="/ajuda/oracoes/vinde-espirito-santo"
           title="Ir para Vinde Espírito Santo"
-          className="italic hover:underline"
+          className="w-fit italic hover:underline"
         >
           Vinde Espírito Santo...
         </Link>
@@ -1323,35 +1323,35 @@ export const various = [
             <Link
               href="/ajuda/oracoes/credo"
               title="Ir para o Credo"
-              className="italic hover:underline"
+              className="w-fit italic hover:underline"
             >
               Credo...
             </Link>
             <Link
               href="/ajuda/oracoes/pai-nosso"
               title="Ir para o Pai Nosso"
-              className="italic hover:underline"
+              className="w-fit italic hover:underline"
             >
               Pai Nosso...
             </Link>
             <Link
               href="/ajuda/oracoes/ave-maria"
               title="Ir para o Ave Maria"
-              className="italic hover:underline"
+              className="w-fit italic hover:underline"
             >
               Ave Maria... (3x)
             </Link>
             <Link
               href="/ajuda/oracoes/gloria-ao-pai"
               title="Ir para o Glória ao Pai"
-              className="italic hover:underline"
+              className="w-fit italic hover:underline"
             >
               Glória ao Pai...
             </Link>
             <Link
               href="/ajuda/oracoes/jaculatoria-fatima"
               title="Ir para a Jaculatória de Fátima"
-              className="italic hover:underline"
+              className="w-fit italic hover:underline"
             >
               Ó, meu Jesus...
             </Link>
@@ -1379,49 +1379,55 @@ export const various = [
                 <p className="order-1 md:col-start-2 md:row-start-2">
                   No <strong>Primeiro Mistério</strong> Gozoso contemplamos a Anunciação do Anjo Gabriel à Nossa Senhora e a Encarnação do Verbo no seio Puríssimo de Maria. 
                 </p>
-                <p className="text-sm text-end sm:text-start dark:text-zinc-200 italic font-bold order-3 md:col-start-2 md:row-start-3">
+                <Link 
+                  href={`/ajuda/biblia?search=${encodeURI(misteriousImages[0].verse)}`}
+                  title="Ir para versículo"
+                  aria-label="Ir para versículo"
+                  className="w-fit hover:underline text-sm italic font-bold order-3 md:col-start-2 md:row-start-3
+                    text-end md:text-end sm:text-start dark:text-zinc-200"
+                >
                   {misteriousImages[0].verse}
-                </p>
+                </Link>
                 <div className="flex flex-col mt-2 order-4 md:col-start-2 md:row-start-4 md:mt-0">
                   <Link
                     href="/ajuda/oracoes/pai-nosso"
                     title="Ir para o Pai Nosso"
-                    className="italic hover:underline"
+                    className="w-fit italic hover:underline"
                   >
                     Pai Nosso...
                   </Link>
                   <Link
                     href="/ajuda/oracoes/ave-maria"
                     title="Ir para o Ave Maria"
-                    className="italic hover:underline"
+                    className="w-fit italic hover:underline"
                   >
                     Ave Maria... (10x)
                   </Link>
                   <Link
                     href="/ajuda/oracoes/gloria-ao-pai"
                     title="Ir para o Glória ao Pai"
-                    className="italic hover:underline"
+                    className="w-fit italic hover:underline"
                   >
                     Glória ao Pai...
                   </Link>
                   <Link
                     href="/ajuda/oracoes/jaculatoria-fatima"
                     title="Ir para a Jaculatória de Fátima"
-                    className="italic hover:underline"
+                    className="w-fit italic hover:underline"
                   >
                     Ó, meu Jesus...
                   </Link>
                   <Link
                     href="/ajuda/oracoes/jaculatoria-medalha-milagrosa"
                     title="Ir para a Jaculatória da Medalha Milagrosa"
-                    className="italic hover:underline"
+                    className="w-fit italic hover:underline"
                   >
                     Ó Maria...
                   </Link>
                   <Link
                     href="/ajuda/oracoes/suplicao-da-chama-de-amor"
                     title="Ir para a Súplica da Chama de Amor"
-                    className="italic hover:underline"
+                    className="w-fit italic hover:underline"
                   >
                     Santa Mãe de Deus...
                   </Link>
@@ -1443,49 +1449,54 @@ export const various = [
                 <p className="order-1 md:col-start-1 md:text-end md:row-start-2">
                   No <strong>Segundo Mistério</strong> Gozoso contemplamos a Visitação de Nossa Senhora a sua prima Santa Isabel.
                 </p>
-                <p className="text-sm text-end md:text-end sm:text-start dark:text-zinc-200 italic font-bold order-3 md:col-start-1 md:row-start-3">
+                <Link 
+                  href={`/ajuda/biblia?search=${encodeURI(misteriousImages[1].verse)}`}
+                  title="Ir para versículo"
+                  aria-label="Ir para versículo"
+                  className="text-sm text-end md:text-end sm:text-start dark:text-zinc-200 italic font-bold order-3 md:col-start-1 md:row-start-3"
+                >
                   {misteriousImages[1].verse}
-                </p>
+                </Link>
                 <div className="flex flex-col mt-2 order-4 md:col-start-1 md:row-start-4 md:text-end md:mt-0">
                   <Link
                     href="/ajuda/oracoes/pai-nosso"
                     title="Ir para o Pai Nosso"
-                    className="italic hover:underline"
+                    className="w-fit italic hover:underline"
                   >
                     Pai Nosso...
                   </Link>
                   <Link
                     href="/ajuda/oracoes/ave-maria"
                     title="Ir para o Ave Maria"
-                    className="italic hover:underline"
+                    className="w-fit italic hover:underline"
                   >
                     Ave Maria... (10x)
                   </Link>
                   <Link
                     href="/ajuda/oracoes/gloria-ao-pai"
                     title="Ir para o Glória ao Pai"
-                    className="italic hover:underline"
+                    className="w-fit italic hover:underline"
                   >
                     Glória ao Pai...
                   </Link>
                   <Link
                     href="/ajuda/oracoes/jaculatoria-fatima"
                     title="Ir para a Jaculatória de Fátima"
-                    className="italic hover:underline"
+                    className="w-fit italic hover:underline"
                   >
                     Ó, meu Jesus...
                   </Link>
                   <Link
                     href="/ajuda/oracoes/jaculatoria-medalha-milagrosa"
                     title="Ir para a Jaculatória da Medalha Milagrosa"
-                    className="italic hover:underline"
+                    className="w-fit italic hover:underline"
                   >
                     Ó Maria...
                   </Link>
                   <Link
                     href="/ajuda/oracoes/suplicao-da-chama-de-amor"
                     title="Ir para a Súplica da Chama de Amor"
-                    className="italic hover:underline"
+                    className="w-fit italic hover:underline"
                   >
                     Santa Mãe de Deus...
                   </Link>
@@ -1507,49 +1518,54 @@ export const various = [
                 <p className="order-1 md:col-start-2 md:row-start-2">
                   No <strong>Terceiro Mistério</strong> Gozoso contemplamos o Nascimento de Nosso Senhor Jesus Cristo em Belém.
                 </p>
-                <p className="text-sm text-end sm:text-start dark:text-zinc-200 italic font-bold order-3 md:col-start-2 md:row-start-3">
+                <Link 
+                  href={`/ajuda/biblia?search=${encodeURI(misteriousImages[2].verse)}`}
+                  title="Ir para versículo"
+                  aria-label="Ir para versículo"
+                  className="text-sm text-end md:text-end sm:text-start dark:text-zinc-200 italic font-bold order-3 md:col-start-3 md:row-start-3"
+                >
                   {misteriousImages[2].verse}
-                </p>
+                </Link>
                 <div className="flex flex-col mt-2 order-4 md:col-start-2 md:row-start-4 md:mt-0">
                   <Link
                     href="/ajuda/oracoes/pai-nosso"
                     title="Ir para o Pai Nosso"
-                    className="italic hover:underline"
+                    className="w-fit italic hover:underline"
                   >
                     Pai Nosso...
                   </Link>
                   <Link
                     href="/ajuda/oracoes/ave-maria"
                     title="Ir para o Ave Maria"
-                    className="italic hover:underline"
+                    className="w-fit italic hover:underline"
                   >
                     Ave Maria... (10x)
                   </Link>
                   <Link
                     href="/ajuda/oracoes/gloria-ao-pai"
                     title="Ir para o Glória ao Pai"
-                    className="italic hover:underline"
+                    className="w-fit italic hover:underline"
                   >
                     Glória ao Pai...
                   </Link>
                   <Link
                     href="/ajuda/oracoes/jaculatoria-fatima"
                     title="Ir para a Jaculatória de Fátima"
-                    className="italic hover:underline"
+                    className="w-fit italic hover:underline"
                   >
                     Ó, meu Jesus...
                   </Link>
                   <Link
                     href="/ajuda/oracoes/jaculatoria-medalha-milagrosa"
                     title="Ir para a Jaculatória da Medalha Milagrosa"
-                    className="italic hover:underline"
+                    className="w-fit italic hover:underline"
                   >
                     Ó Maria...
                   </Link>
                   <Link
                     href="/ajuda/oracoes/suplicao-da-chama-de-amor"
                     title="Ir para a Súplica da Chama de Amor"
-                    className="italic hover:underline"
+                    className="w-fit italic hover:underline"
                   >
                     Santa Mãe de Deus...
                   </Link>
@@ -1571,49 +1587,54 @@ export const various = [
                 <p className="order-1 md:col-start-1 md:row-start-2 md:text-end">
                   No <strong>Quarto Mistério</strong> Gozoso contemplamos a Apresentação do Menino Jesus no Templo e a Purificação de Nossa Senhora.
                 </p>
-                <p className="text-sm text-end md:text-end sm:text-start dark:text-zinc-200 italic font-bold order-3 md:col-start-1 md:row-start-3">
+                <Link 
+                  href={`/ajuda/biblia?search=${encodeURI(misteriousImages[3].verse)}`}
+                  title="Ir para versículo"
+                  aria-label="Ir para versículo"
+                  className="text-sm text-end md:text-end sm:text-start dark:text-zinc-200 italic font-bold order-3 md:col-start-1 md:row-start-3"
+                >
                   {misteriousImages[3].verse}
-                </p>
+                </Link>
                 <div className="flex flex-col mt-2 order-4 md:col-start-1 md:row-start-4 md:text-end md:mt-0">
                   <Link
                     href="/ajuda/oracoes/pai-nosso"
                     title="Ir para o Pai Nosso"
-                    className="italic hover:underline"
+                    className="w-fit italic hover:underline"
                   >
                     Pai Nosso...
                   </Link>
                   <Link
                     href="/ajuda/oracoes/ave-maria"
                     title="Ir para o Ave Maria"
-                    className="italic hover:underline"
+                    className="w-fit italic hover:underline"
                   >
                     Ave Maria... (10x)
                   </Link>
                   <Link
                     href="/ajuda/oracoes/gloria-ao-pai"
                     title="Ir para o Glória ao Pai"
-                    className="italic hover:underline"
+                    className="w-fit italic hover:underline"
                   >
                     Glória ao Pai...
                   </Link>
                   <Link
                     href="/ajuda/oracoes/jaculatoria-fatima"
                     title="Ir para a Jaculatória de Fátima"
-                    className="italic hover:underline"
+                    className="w-fit italic hover:underline"
                   >
                     Ó, meu Jesus...
                   </Link>
                   <Link
                     href="/ajuda/oracoes/jaculatoria-medalha-milagrosa"
                     title="Ir para a Jaculatória da Medalha Milagrosa"
-                    className="italic hover:underline"
+                    className="w-fit italic hover:underline"
                   >
                     Ó Maria...
                   </Link>
                   <Link
                     href="/ajuda/oracoes/suplicao-da-chama-de-amor"
                     title="Ir para a Súplica da Chama de Amor"
-                    className="italic hover:underline"
+                    className="w-fit italic hover:underline"
                   >
                     Santa Mãe de Deus...
                   </Link>
@@ -1635,49 +1656,54 @@ export const various = [
                 <p className="order-1 md:col-start-2 md:row-start-2">
                   No <strong>Quinto Mistério</strong> Gozoso contemplamos a perda e o encontro do Menino Jesus no templo, discutindo com os doutores da Lei.
                 </p>
-                <p className="text-sm text-end sm:text-start dark:text-zinc-200 italic font-bold order-3 md:col-start-2 md:row-start-3">
+                <Link 
+                  href={`/ajuda/biblia?search=${encodeURI(misteriousImages[4].verse)}`}
+                  title="Ir para versículo"
+                  aria-label="Ir para versículo"
+                  className="text-sm text-end md:text-end sm:text-start dark:text-zinc-200 italic font-bold order-3 md:col-start-2 md:row-start-3"
+                >
                   {misteriousImages[4].verse}
-                </p>
+                </Link>
                 <div className="flex flex-col mt-2 order-4 md:col-start-2 md:row-start-4 md:mt-0">
                   <Link
                     href="/ajuda/oracoes/pai-nosso"
                     title="Ir para o Pai Nosso"
-                    className="italic hover:underline"
+                    className="w-fit italic hover:underline"
                   >
                     Pai Nosso...
                   </Link>
                   <Link
                     href="/ajuda/oracoes/ave-maria"
                     title="Ir para o Ave Maria"
-                    className="italic hover:underline"
+                    className="w-fit italic hover:underline"
                   >
                     Ave Maria... (10x)
                   </Link>
                   <Link
                     href="/ajuda/oracoes/gloria-ao-pai"
                     title="Ir para o Glória ao Pai"
-                    className="italic hover:underline"
+                    className="w-fit italic hover:underline"
                   >
                     Glória ao Pai...
                   </Link>
                   <Link
                     href="/ajuda/oracoes/jaculatoria-fatima"
                     title="Ir para a Jaculatória de Fátima"
-                    className="italic hover:underline"
+                    className="w-fit italic hover:underline"
                   >
                     Ó, meu Jesus...
                   </Link>
                   <Link
                     href="/ajuda/oracoes/jaculatoria-medalha-milagrosa"
                     title="Ir para a Jaculatória da Medalha Milagrosa"
-                    className="italic hover:underline"
+                    className="w-fit italic hover:underline"
                   >
                     Ó Maria...
                   </Link>
                   <Link
                     href="/ajuda/oracoes/suplicao-da-chama-de-amor"
                     title="Ir para a Súplica da Chama de Amor"
-                    className="italic hover:underline"
+                    className="w-fit italic hover:underline"
                   >
                     Santa Mãe de Deus...
                   </Link>
@@ -1706,49 +1732,54 @@ export const various = [
                 <p className="order-1 md:col-start-2 md:row-start-2">
                   No <strong>Primeiro Mistério</strong> Doloroso contemplamos a Oração e a Agonia de Jesus no Horto das Oliveiras.
                 </p>
-                <p className="text-sm text-end sm:text-start dark:text-zinc-200 italic font-bold order-3 md:col-start-2 md:row-start-3">
+                <Link 
+                  href={`/ajuda/biblia?search=${encodeURI(misteriousImages[5].verse)}`}
+                  title="Ir para versículo"
+                  aria-label="Ir para versículo"
+                  className="text-sm text-end md:text-end sm:text-start dark:text-zinc-200 italic font-bold order-3 md:col-start-1 md:row-start-3"
+                >
                   {misteriousImages[5].verse}
-                </p>
+                </Link>
                 <div className="flex flex-col mt-2 order-4 md:col-start-2 md:row-start-4 md:mt-0">
                   <Link
                     href="/ajuda/oracoes/pai-nosso"
                     title="Ir para o Pai Nosso"
-                    className="italic hover:underline"
+                    className="w-fit italic hover:underline"
                   >
                     Pai Nosso...
                   </Link>
                   <Link
                     href="/ajuda/oracoes/ave-maria"
                     title="Ir para o Ave Maria"
-                    className="italic hover:underline"
+                    className="w-fit italic hover:underline"
                   >
                     Ave Maria... (10x)
                   </Link>
                   <Link
                     href="/ajuda/oracoes/gloria-ao-pai"
                     title="Ir para o Glória ao Pai"
-                    className="italic hover:underline"
+                    className="w-fit italic hover:underline"
                   >
                     Glória ao Pai...
                   </Link>
                   <Link
                     href="/ajuda/oracoes/jaculatoria-fatima"
                     title="Ir para a Jaculatória de Fátima"
-                    className="italic hover:underline"
+                    className="w-fit italic hover:underline"
                   >
                     Ó, meu Jesus...
                   </Link>
                   <Link
                     href="/ajuda/oracoes/jaculatoria-medalha-milagrosa"
                     title="Ir para a Jaculatória da Medalha Milagrosa"
-                    className="italic hover:underline"
+                    className="w-fit italic hover:underline"
                   >
                     Ó Maria...
                   </Link>
                   <Link
                     href="/ajuda/oracoes/suplicao-da-chama-de-amor"
                     title="Ir para a Súplica da Chama de Amor"
-                    className="italic hover:underline"
+                    className="w-fit italic hover:underline"
                   >
                     Santa Mãe de Deus...
                   </Link>
@@ -1770,49 +1801,54 @@ export const various = [
                 <p className="order-1 md:col-start-1 md:text-end md:row-start-2">
                   No <strong>Segundo Mistério</strong> Doloroso contemplamos a Flagelação de Nosso Senhor Jesus Cristo.
                 </p>
-                <p className="text-sm text-end md:text-end sm:text-start dark:text-zinc-200 italic font-bold order-3 md:col-start-1 md:row-start-3">
+                <Link 
+                  href={`/ajuda/biblia?search=${encodeURI(misteriousImages[6].verse)}`}
+                  title="Ir para versículo"
+                  aria-label="Ir para versículo"
+                  className="text-sm text-end md:text-end sm:text-start dark:text-zinc-200 italic font-bold order-3 md:col-start-1 md:row-start-3"
+                >
                   {misteriousImages[6].verse}
-                </p>
+                </Link>
                 <div className="flex flex-col mt-2 order-4 md:col-start-1 md:row-start-4 md:text-end md:mt-0">
                   <Link
                     href="/ajuda/oracoes/pai-nosso"
                     title="Ir para o Pai Nosso"
-                    className="italic hover:underline"
+                    className="w-fit italic hover:underline"
                   >
                     Pai Nosso...
                   </Link>
                   <Link
                     href="/ajuda/oracoes/ave-maria"
                     title="Ir para o Ave Maria"
-                    className="italic hover:underline"
+                    className="w-fit italic hover:underline"
                   >
                     Ave Maria... (10x)
                   </Link>
                   <Link
                     href="/ajuda/oracoes/gloria-ao-pai"
                     title="Ir para o Glória ao Pai"
-                    className="italic hover:underline"
+                    className="w-fit italic hover:underline"
                   >
                     Glória ao Pai...
                   </Link>
                   <Link
                     href="/ajuda/oracoes/jaculatoria-fatima"
                     title="Ir para a Jaculatória de Fátima"
-                    className="italic hover:underline"
+                    className="w-fit italic hover:underline"
                   >
                     Ó, meu Jesus...
                   </Link>
                   <Link
                     href="/ajuda/oracoes/jaculatoria-medalha-milagrosa"
                     title="Ir para a Jaculatória da Medalha Milagrosa"
-                    className="italic hover:underline"
+                    className="w-fit italic hover:underline"
                   >
                     Ó Maria...
                   </Link>
                   <Link
                     href="/ajuda/oracoes/suplicao-da-chama-de-amor"
                     title="Ir para a Súplica da Chama de Amor"
-                    className="italic hover:underline"
+                    className="w-fit italic hover:underline"
                   >
                     Santa Mãe de Deus...
                   </Link>
@@ -1834,49 +1870,54 @@ export const various = [
                 <p className="order-1 md:col-start-2 md:row-start-2">
                   No <strong>Terceiro Mistério</strong> Doloroso contemplamos a Coroação de espinhos de Nosso Senhor Jesus Cristo.
                 </p>
-                <p className="text-sm text-end sm:text-start dark:text-zinc-200 italic font-bold order-3 md:col-start-2 md:row-start-3">
+                <Link 
+                  href={`/ajuda/biblia?search=${encodeURI(misteriousImages[7].verse)}`}
+                  title="Ir para versículo"
+                  aria-label="Ir para versículo"
+                  className="text-sm text-end md:text-end sm:text-start dark:text-zinc-200 italic font-bold order-3 md:col-start-1 md:row-start-3"
+                >
                   {misteriousImages[7].verse}
-                </p>
+                </Link>
                 <div className="flex flex-col mt-2 order-4 md:col-start-2 md:row-start-4 md:mt-0">
                   <Link
                     href="/ajuda/oracoes/pai-nosso"
                     title="Ir para o Pai Nosso"
-                    className="italic hover:underline"
+                    className="w-fit italic hover:underline"
                   >
                     Pai Nosso...
                   </Link>
                   <Link
                     href="/ajuda/oracoes/ave-maria"
                     title="Ir para o Ave Maria"
-                    className="italic hover:underline"
+                    className="w-fit italic hover:underline"
                   >
                     Ave Maria... (10x)
                   </Link>
                   <Link
                     href="/ajuda/oracoes/gloria-ao-pai"
                     title="Ir para o Glória ao Pai"
-                    className="italic hover:underline"
+                    className="w-fit italic hover:underline"
                   >
                     Glória ao Pai...
                   </Link>
                   <Link
                     href="/ajuda/oracoes/jaculatoria-fatima"
                     title="Ir para a Jaculatória de Fátima"
-                    className="italic hover:underline"
+                    className="w-fit italic hover:underline"
                   >
                     Ó, meu Jesus...
                   </Link>
                   <Link
                     href="/ajuda/oracoes/jaculatoria-medalha-milagrosa"
                     title="Ir para a Jaculatória da Medalha Milagrosa"
-                    className="italic hover:underline"
+                    className="w-fit italic hover:underline"
                   >
                     Ó Maria...
                   </Link>
                   <Link
                     href="/ajuda/oracoes/suplicao-da-chama-de-amor"
                     title="Ir para a Súplica da Chama de Amor"
-                    className="italic hover:underline"
+                    className="w-fit italic hover:underline"
                   >
                     Santa Mãe de Deus...
                   </Link>
@@ -1898,49 +1939,54 @@ export const various = [
                 <p className="order-1 md:col-start-1 md:text-end md:row-start-2">
                   No <strong>Quarto Mistério</strong> Doloroso contemplamos Nosso Senhor Jesus Cristo carregando a Cruz nas costas até o alto do Calvário.
                 </p>
-                <p className="text-sm text-end md:text-end sm:text-start dark:text-zinc-200 italic font-bold order-3 md:col-start-1 md:row-start-3">
+                <Link 
+                  href={`/ajuda/biblia?search=${encodeURI(misteriousImages[8].verse)}`}
+                  title="Ir para versículo"
+                  aria-label="Ir para versículo"
+                  className="text-sm text-end md:text-end sm:text-start dark:text-zinc-200 italic font-bold order-3 md:col-start-1 md:row-start-3"
+                >
                   {misteriousImages[8].verse}
-                </p>
+                </Link>
                 <div className="flex flex-col mt-2 order-4 md:col-start-1 md:row-start-4 md:text-end md:mt-0">
                   <Link
                     href="/ajuda/oracoes/pai-nosso"
                     title="Ir para o Pai Nosso"
-                    className="italic hover:underline"
+                    className="w-fit italic hover:underline"
                   >
                     Pai Nosso...
                   </Link>
                   <Link
                     href="/ajuda/oracoes/ave-maria"
                     title="Ir para o Ave Maria"
-                    className="italic hover:underline"
+                    className="w-fit italic hover:underline"
                   >
                     Ave Maria... (10x)
                   </Link>
                   <Link
                     href="/ajuda/oracoes/gloria-ao-pai"
                     title="Ir para o Glória ao Pai"
-                    className="italic hover:underline"
+                    className="w-fit italic hover:underline"
                   >
                     Glória ao Pai...
                   </Link>
                   <Link
                     href="/ajuda/oracoes/jaculatoria-fatima"
                     title="Ir para a Jaculatória de Fátima"
-                    className="italic hover:underline"
+                    className="w-fit italic hover:underline"
                   >
                     Ó, meu Jesus...
                   </Link>
                   <Link
                     href="/ajuda/oracoes/jaculatoria-medalha-milagrosa"
                     title="Ir para a Jaculatória da Medalha Milagrosa"
-                    className="italic hover:underline"
+                    className="w-fit italic hover:underline"
                   >
                     Ó Maria...
                   </Link>
                   <Link
                     href="/ajuda/oracoes/suplicao-da-chama-de-amor"
                     title="Ir para a Súplica da Chama de Amor"
-                    className="italic hover:underline"
+                    className="w-fit italic hover:underline"
                   >
                     Santa Mãe de Deus...
                   </Link>
@@ -1962,49 +2008,54 @@ export const various = [
                 <p className="order-1 md:col-start-2 md:row-start-2">
                   No <strong>Quinto Mistério</strong> Doloroso contemplamos a Crucifixão e morte de Nosso Senhor Jesus Cristo.
                 </p>
-                <p className="text-sm text-end sm:text-start dark:text-zinc-200 italic font-bold order-3 md:col-start-2 md:row-start-3">
+                <Link 
+                  href={`/ajuda/biblia?search=${encodeURI(misteriousImages[9].verse)}`}
+                  title="Ir para versículo"
+                  aria-label="Ir para versículo"
+                  className="text-sm text-end md:text-end sm:text-start dark:text-zinc-200 italic font-bold order-3 md:col-start-1 md:row-start-3"
+                >
                   {misteriousImages[9].verse}
-                </p>
+                </Link>
                 <div className="flex flex-col mt-2 order-4 md:col-start-2 md:row-start-4 md:mt-0">
                   <Link
                     href="/ajuda/oracoes/pai-nosso"
                     title="Ir para o Pai Nosso"
-                    className="italic hover:underline"
+                    className="w-fit italic hover:underline"
                   >
                     Pai Nosso...
                   </Link>
                   <Link
                     href="/ajuda/oracoes/ave-maria"
                     title="Ir para o Ave Maria"
-                    className="italic hover:underline"
+                    className="w-fit italic hover:underline"
                   >
                     Ave Maria... (10x)
                   </Link>
                   <Link
                     href="/ajuda/oracoes/gloria-ao-pai"
                     title="Ir para o Glória ao Pai"
-                    className="italic hover:underline"
+                    className="w-fit italic hover:underline"
                   >
                     Glória ao Pai...
                   </Link>
                   <Link
                     href="/ajuda/oracoes/jaculatoria-fatima"
                     title="Ir para a Jaculatória de Fátima"
-                    className="italic hover:underline"
+                    className="w-fit italic hover:underline"
                   >
                     Ó, meu Jesus...
                   </Link>
                   <Link
                     href="/ajuda/oracoes/jaculatoria-medalha-milagrosa"
                     title="Ir para a Jaculatória da Medalha Milagrosa"
-                    className="italic hover:underline"
+                    className="w-fit italic hover:underline"
                   >
                     Ó Maria...
                   </Link>
                   <Link
                     href="/ajuda/oracoes/suplicao-da-chama-de-amor"
                     title="Ir para a Súplica da Chama de Amor"
-                    className="italic hover:underline"
+                    className="w-fit italic hover:underline"
                   >
                     Santa Mãe de Deus...
                   </Link>
@@ -2033,49 +2084,54 @@ export const various = [
                 <p className="order-1 md:col-start-2 md:row-start-2">
                   No <strong>Primeiro Mistério</strong> Glorioso contemplamos a Ressurreição de Nosso Senhor Jesus Cristo.
                 </p>
-                <p className="text-sm text-end sm:text-start dark:text-zinc-200 italic font-bold order-3 md:col-start-2 md:row-start-3">
+                <Link 
+                  href={`/ajuda/biblia?search=${encodeURI(misteriousImages[10].verse)}`}
+                  title="Ir para versículo"
+                  aria-label="Ir para versículo"
+                  className="text-sm text-end md:text-end sm:text-start dark:text-zinc-200 italic font-bold order-3 md:col-start-1 md:row-start-3"
+                >
                   {misteriousImages[10].verse}
-                </p>
+                </Link>
                 <div className="flex flex-col mt-2 order-4 md:col-start-2 md:row-start-4 md:mt-0">
                   <Link
                     href="/ajuda/oracoes/pai-nosso"
                     title="Ir para o Pai Nosso"
-                    className="italic hover:underline"
+                    className="w-fit italic hover:underline"
                   >
                     Pai Nosso...
                   </Link>
                   <Link
                     href="/ajuda/oracoes/ave-maria"
                     title="Ir para o Ave Maria"
-                    className="italic hover:underline"
+                    className="w-fit italic hover:underline"
                   >
                     Ave Maria... (10x)
                   </Link>
                   <Link
                     href="/ajuda/oracoes/gloria-ao-pai"
                     title="Ir para o Glória ao Pai"
-                    className="italic hover:underline"
+                    className="w-fit italic hover:underline"
                   >
                     Glória ao Pai...
                   </Link>
                   <Link
                     href="/ajuda/oracoes/jaculatoria-fatima"
                     title="Ir para a Jaculatória de Fátima"
-                    className="italic hover:underline"
+                    className="w-fit italic hover:underline"
                   >
                     Ó, meu Jesus...
                   </Link>
                   <Link
                     href="/ajuda/oracoes/jaculatoria-medalha-milagrosa"
                     title="Ir para a Jaculatória da Medalha Milagrosa"
-                    className="italic hover:underline"
+                    className="w-fit italic hover:underline"
                   >
                     Ó Maria...
                   </Link>
                   <Link
                     href="/ajuda/oracoes/suplicao-da-chama-de-amor"
                     title="Ir para a Súplica da Chama de Amor"
-                    className="italic hover:underline"
+                    className="w-fit italic hover:underline"
                   >
                     Santa Mãe de Deus...
                   </Link>
@@ -2097,49 +2153,54 @@ export const various = [
                 <p className="order-1 md:col-start-1 md:text-end md:row-start-2">
                   No <strong>Segundo Mistério</strong> Glorioso contemplamos a Ascensão de Nosso Senhor Jesus Cristo aos Céus.
                 </p>
-                <p className="text-sm text-end md:text-end sm:text-start dark:text-zinc-200 italic font-bold order-3 md:col-start-1 md:row-start-3">
+                <Link 
+                  href={`/ajuda/biblia?search=${encodeURI(misteriousImages[11].verse)}`}
+                  title="Ir para versículo"
+                  aria-label="Ir para versículo"
+                  className="text-sm text-end md:text-end sm:text-start dark:text-zinc-200 italic font-bold order-3 md:col-start-1 md:row-start-3"
+                >
                   {misteriousImages[11].verse}
-                </p>
+                </Link>
                 <div className="flex flex-col mt-2 order-4 md:col-start-1 md:row-start-4 md:text-end md:mt-0">
                   <Link
                     href="/ajuda/oracoes/pai-nosso"
                     title="Ir para o Pai Nosso"
-                    className="italic hover:underline"
+                    className="w-fit italic hover:underline"
                   >
                     Pai Nosso...
                   </Link>
                   <Link
                     href="/ajuda/oracoes/ave-maria"
                     title="Ir para o Ave Maria"
-                    className="italic hover:underline"
+                    className="w-fit italic hover:underline"
                   >
                     Ave Maria... (10x)
                   </Link>
                   <Link
                     href="/ajuda/oracoes/gloria-ao-pai"
                     title="Ir para o Glória ao Pai"
-                    className="italic hover:underline"
+                    className="w-fit italic hover:underline"
                   >
                     Glória ao Pai...
                   </Link>
                   <Link
                     href="/ajuda/oracoes/jaculatoria-fatima"
                     title="Ir para a Jaculatória de Fátima"
-                    className="italic hover:underline"
+                    className="w-fit italic hover:underline"
                   >
                     Ó, meu Jesus...
                   </Link>
                   <Link
                     href="/ajuda/oracoes/jaculatoria-medalha-milagrosa"
                     title="Ir para a Jaculatória da Medalha Milagrosa"
-                    className="italic hover:underline"
+                    className="w-fit italic hover:underline"
                   >
                     Ó Maria...
                   </Link>
                   <Link
                     href="/ajuda/oracoes/suplicao-da-chama-de-amor"
                     title="Ir para a Súplica da Chama de Amor"
-                    className="italic hover:underline"
+                    className="w-fit italic hover:underline"
                   >
                     Santa Mãe de Deus...
                   </Link>
@@ -2161,49 +2222,54 @@ export const various = [
                 <p className="order-1 md:col-start-2 md:row-start-2">
                   No <strong>Terceiro Mistério</strong> Glorioso contemplamos a descida do Espírito Santo sobre Nossa Senhora e os Apóstolos no Santo Cenáculo.
                 </p>
-                <p className="text-sm text-end sm:text-start dark:text-zinc-200 italic font-bold order-3 md:col-start-2 md:row-start-3">
+                <Link 
+                  href={`/ajuda/biblia?search=${encodeURI(misteriousImages[12].verse)}`}
+                  title="Ir para versículo"
+                  aria-label="Ir para versículo"
+                  className="text-sm text-end md:text-end sm:text-start dark:text-zinc-200 italic font-bold order-3 md:col-start-1 md:row-start-3"
+                >
                   {misteriousImages[12].verse}
-                </p>
+                </Link>
                 <div className="flex flex-col mt-2 order-4 md:col-start-2 md:row-start-4 md:mt-0">
                   <Link
                     href="/ajuda/oracoes/pai-nosso"
                     title="Ir para o Pai Nosso"
-                    className="italic hover:underline"
+                    className="w-fit italic hover:underline"
                   >
                     Pai Nosso...
                   </Link>
                   <Link
                     href="/ajuda/oracoes/ave-maria"
                     title="Ir para o Ave Maria"
-                    className="italic hover:underline"
+                    className="w-fit italic hover:underline"
                   >
                     Ave Maria... (10x)
                   </Link>
                   <Link
                     href="/ajuda/oracoes/gloria-ao-pai"
                     title="Ir para o Glória ao Pai"
-                    className="italic hover:underline"
+                    className="w-fit italic hover:underline"
                   >
                     Glória ao Pai...
                   </Link>
                   <Link
                     href="/ajuda/oracoes/jaculatoria-fatima"
                     title="Ir para a Jaculatória de Fátima"
-                    className="italic hover:underline"
+                    className="w-fit italic hover:underline"
                   >
                     Ó, meu Jesus...
                   </Link>
                   <Link
                     href="/ajuda/oracoes/jaculatoria-medalha-milagrosa"
                     title="Ir para a Jaculatória da Medalha Milagrosa"
-                    className="italic hover:underline"
+                    className="w-fit italic hover:underline"
                   >
                     Ó Maria...
                   </Link>
                   <Link
                     href="/ajuda/oracoes/suplicao-da-chama-de-amor"
                     title="Ir para a Súplica da Chama de Amor"
-                    className="italic hover:underline"
+                    className="w-fit italic hover:underline"
                   >
                     Santa Mãe de Deus...
                   </Link>
@@ -2225,49 +2291,54 @@ export const various = [
                 <p className="order-1 md:col-start-1 md:text-end md:row-start-2">
                   No <strong>Quarto Mistério</strong> Glorioso contemplamos a Assunção de Nossa Senhora aos Céus de corpo e alma.
                 </p>
-                <p className="text-sm text-end md:text-end sm:text-start dark:text-zinc-200 italic font-bold order-3 md:col-start-1 md:row-start-3">
+                <Link 
+                  href={`/ajuda/biblia?search=${encodeURI(misteriousImages[13].verse)}`}
+                  title="Ir para versículo"
+                  aria-label="Ir para versículo"
+                  className="text-sm text-end md:text-end sm:text-start dark:text-zinc-200 italic font-bold order-3 md:col-start-1 md:row-start-3"
+                >
                   {misteriousImages[13].verse}
-                </p>
+                </Link>
                 <div className="flex flex-col mt-2 order-4 md:col-start-1 md:row-start-4 md:text-end md:mt-0">
                   <Link
                     href="/ajuda/oracoes/pai-nosso"
                     title="Ir para o Pai Nosso"
-                    className="italic hover:underline"
+                    className="w-fit italic hover:underline"
                   >
                     Pai Nosso...
                   </Link>
                   <Link
                     href="/ajuda/oracoes/ave-maria"
                     title="Ir para o Ave Maria"
-                    className="italic hover:underline"
+                    className="w-fit italic hover:underline"
                   >
                     Ave Maria... (10x)
                   </Link>
                   <Link
                     href="/ajuda/oracoes/gloria-ao-pai"
                     title="Ir para o Glória ao Pai"
-                    className="italic hover:underline"
+                    className="w-fit italic hover:underline"
                   >
                     Glória ao Pai...
                   </Link>
                   <Link
                     href="/ajuda/oracoes/jaculatoria-fatima"
                     title="Ir para a Jaculatória de Fátima"
-                    className="italic hover:underline"
+                    className="w-fit italic hover:underline"
                   >
                     Ó, meu Jesus...
                   </Link>
                   <Link
                     href="/ajuda/oracoes/jaculatoria-medalha-milagrosa"
                     title="Ir para a Jaculatória da Medalha Milagrosa"
-                    className="italic hover:underline"
+                    className="w-fit italic hover:underline"
                   >
                     Ó Maria...
                   </Link>
                   <Link
                     href="/ajuda/oracoes/suplicao-da-chama-de-amor"
                     title="Ir para a Súplica da Chama de Amor"
-                    className="italic hover:underline"
+                    className="w-fit italic hover:underline"
                   >
                     Santa Mãe de Deus...
                   </Link>
@@ -2289,49 +2360,54 @@ export const various = [
                 <p className="order-1 md:col-start-2 md:row-start-2">
                   No <strong>Quinto Mistério</strong> Glorioso contemplamos a gloriosa coroação de Nossa Senhora Maria Santíssima como Rainha do Céu e da Terra dos Anjos e dos Homens.
                 </p>
-                <p className="text-sm text-end sm:text-start dark:text-zinc-200 italic font-bold order-3 md:col-start-2 md:row-start-3">
+                <Link 
+                  href={`/ajuda/biblia?search=${encodeURI(misteriousImages[14].verse)}`}
+                  title="Ir para versículo"
+                  aria-label="Ir para versículo"
+                  className="text-sm text-end md:text-end sm:text-start dark:text-zinc-200 italic font-bold order-3 md:col-start-1 md:row-start-3"
+                >
                   {misteriousImages[14].verse}
-                </p>
+                </Link>
                 <div className="flex flex-col mt-2 order-4 md:col-start-2 md:row-start-4 md:mt-0">
                   <Link
                     href="/ajuda/oracoes/pai-nosso"
                     title="Ir para o Pai Nosso"
-                    className="italic hover:underline"
+                    className="w-fit italic hover:underline"
                   >
                     Pai Nosso...
                   </Link>
                   <Link
                     href="/ajuda/oracoes/ave-maria"
                     title="Ir para o Ave Maria"
-                    className="italic hover:underline"
+                    className="w-fit italic hover:underline"
                   >
                     Ave Maria... (10x)
                   </Link>
                   <Link
                     href="/ajuda/oracoes/gloria-ao-pai"
                     title="Ir para o Glória ao Pai"
-                    className="italic hover:underline"
+                    className="w-fit italic hover:underline"
                   >
                     Glória ao Pai...
                   </Link>
                   <Link
                     href="/ajuda/oracoes/jaculatoria-fatima"
                     title="Ir para a Jaculatória de Fátima"
-                    className="italic hover:underline"
+                    className="w-fit italic hover:underline"
                   >
                     Ó, meu Jesus...
                   </Link>
                   <Link
                     href="/ajuda/oracoes/jaculatoria-medalha-milagrosa"
                     title="Ir para a Jaculatória da Medalha Milagrosa"
-                    className="italic hover:underline"
+                    className="w-fit italic hover:underline"
                   >
                     Ó Maria...
                   </Link>
                   <Link
                     href="/ajuda/oracoes/suplicao-da-chama-de-amor"
                     title="Ir para a Súplica da Chama de Amor"
-                    className="italic hover:underline"
+                    className="w-fit italic hover:underline"
                   >
                     Santa Mãe de Deus...
                   </Link>
@@ -2360,49 +2436,54 @@ export const various = [
                 <p className="order-1 md:col-start-2 md:row-start-2">
                   No <strong>Primeiro Mistério</strong> Luminoso contemplamos o Batismo de Nosso Senhor Jesus Cristo no rio Jordão.
                 </p>
-                <p className="text-sm text-end sm:text-start dark:text-zinc-200 italic font-bold order-3 md:col-start-2 md:row-start-3">
+                <Link 
+                  href={`/ajuda/biblia?search=${encodeURI(misteriousImages[15].verse)}`}
+                  title="Ir para versículo"
+                  aria-label="Ir para versículo"
+                  className="text-sm text-end md:text-end sm:text-start dark:text-zinc-200 italic font-bold order-3 md:col-start-1 md:row-start-3"
+                >
                   {misteriousImages[15].verse}
-                </p>
+                </Link>
                 <div className="flex flex-col mt-2 order-4 md:col-start-2 md:row-start-4 md:mt-0">
                   <Link
                     href="/ajuda/oracoes/pai-nosso"
                     title="Ir para o Pai Nosso"
-                    className="italic hover:underline"
+                    className="w-fit italic hover:underline"
                   >
                     Pai Nosso...
                   </Link>
                   <Link
                     href="/ajuda/oracoes/ave-maria"
                     title="Ir para o Ave Maria"
-                    className="italic hover:underline"
+                    className="w-fit italic hover:underline"
                   >
                     Ave Maria... (10x)
                   </Link>
                   <Link
                     href="/ajuda/oracoes/gloria-ao-pai"
                     title="Ir para o Glória ao Pai"
-                    className="italic hover:underline"
+                    className="w-fit italic hover:underline"
                   >
                     Glória ao Pai...
                   </Link>
                   <Link
                     href="/ajuda/oracoes/jaculatoria-fatima"
                     title="Ir para a Jaculatória de Fátima"
-                    className="italic hover:underline"
+                    className="w-fit italic hover:underline"
                   >
                     Ó, meu Jesus...
                   </Link>
                   <Link
                     href="/ajuda/oracoes/jaculatoria-medalha-milagrosa"
                     title="Ir para a Jaculatória da Medalha Milagrosa"
-                    className="italic hover:underline"
+                    className="w-fit italic hover:underline"
                   >
                     Ó Maria...
                   </Link>
                   <Link
                     href="/ajuda/oracoes/suplicao-da-chama-de-amor"
                     title="Ir para a Súplica da Chama de Amor"
-                    className="italic hover:underline"
+                    className="w-fit italic hover:underline"
                   >
                     Santa Mãe de Deus...
                   </Link>
@@ -2424,49 +2505,54 @@ export const various = [
                 <p className="order-1 md:col-start-1 md:text-end md:row-start-2">
                   No <strong>Segundo Mistério</strong> Luminoso contemplamos o Primeiro milagre de Nosso Senhor Jesus Cristo transformando a água em vinho nas bodas de Caaná.
                 </p>
-                <p className="text-sm text-end md:text-end sm:text-start dark:text-zinc-200 italic font-bold order-3 md:col-start-1 md:row-start-3">
+                <Link 
+                  href={`/ajuda/biblia?search=${encodeURI(misteriousImages[16].verse)}`}
+                  title="Ir para versículo"
+                  aria-label="Ir para versículo"
+                  className="text-sm text-end md:text-end sm:text-start dark:text-zinc-200 italic font-bold order-3 md:col-start-1 md:row-start-3"
+                >
                   {misteriousImages[16].verse}
-                </p>
+                </Link>
                 <div className="flex flex-col mt-2 order-4 md:col-start-1 md:row-start-4 md:text-end md:mt-0">
                   <Link
                     href="/ajuda/oracoes/pai-nosso"
                     title="Ir para o Pai Nosso"
-                    className="italic hover:underline"
+                    className="w-fit italic hover:underline"
                   >
                     Pai Nosso...
                   </Link>
                   <Link
                     href="/ajuda/oracoes/ave-maria"
                     title="Ir para o Ave Maria"
-                    className="italic hover:underline"
+                    className="w-fit italic hover:underline"
                   >
                     Ave Maria... (10x)
                   </Link>
                   <Link
                     href="/ajuda/oracoes/gloria-ao-pai"
                     title="Ir para o Glória ao Pai"
-                    className="italic hover:underline"
+                    className="w-fit italic hover:underline"
                   >
                     Glória ao Pai...
                   </Link>
                   <Link
                     href="/ajuda/oracoes/jaculatoria-fatima"
                     title="Ir para a Jaculatória de Fátima"
-                    className="italic hover:underline"
+                    className="w-fit italic hover:underline"
                   >
                     Ó, meu Jesus...
                   </Link>
                   <Link
                     href="/ajuda/oracoes/jaculatoria-medalha-milagrosa"
                     title="Ir para a Jaculatória da Medalha Milagrosa"
-                    className="italic hover:underline"
+                    className="w-fit italic hover:underline"
                   >
                     Ó Maria...
                   </Link>
                   <Link
                     href="/ajuda/oracoes/suplicao-da-chama-de-amor"
                     title="Ir para a Súplica da Chama de Amor"
-                    className="italic hover:underline"
+                    className="w-fit italic hover:underline"
                   >
                     Santa Mãe de Deus...
                   </Link>
@@ -2488,49 +2574,54 @@ export const various = [
                 <p className="order-1 md:col-start-2 md:row-start-2">
                   No <strong>Terceiro Mistério</strong> Luminoso contemplamos o Anúncio do Reino de Deus e o convite à conversão.
                 </p>
-                <p className="text-sm text-end sm:text-start dark:text-zinc-200 italic font-bold order-3 md:col-start-2 md:row-start-3">
+                <Link 
+                  href={`/ajuda/biblia?search=${encodeURI(misteriousImages[17].verse)}`}
+                  title="Ir para versículo"
+                  aria-label="Ir para versículo"
+                  className="text-sm text-end md:text-end sm:text-start dark:text-zinc-200 italic font-bold order-3 md:col-start-1 md:row-start-3"
+                >
                   {misteriousImages[17].verse}
-                </p>
+                </Link>
                 <div className="flex flex-col mt-2 order-4 md:col-start-2 md:row-start-4 md:mt-0">
                   <Link
                     href="/ajuda/oracoes/pai-nosso"
                     title="Ir para o Pai Nosso"
-                    className="italic hover:underline"
+                    className="w-fit italic hover:underline"
                   >
                     Pai Nosso...
                   </Link>
                   <Link
                     href="/ajuda/oracoes/ave-maria"
                     title="Ir para o Ave Maria"
-                    className="italic hover:underline"
+                    className="w-fit italic hover:underline"
                   >
                     Ave Maria... (10x)
                   </Link>
                   <Link
                     href="/ajuda/oracoes/gloria-ao-pai"
                     title="Ir para o Glória ao Pai"
-                    className="italic hover:underline"
+                    className="w-fit italic hover:underline"
                   >
                     Glória ao Pai...
                   </Link>
                   <Link
                     href="/ajuda/oracoes/jaculatoria-fatima"
                     title="Ir para a Jaculatória de Fátima"
-                    className="italic hover:underline"
+                    className="w-fit italic hover:underline"
                   >
                     Ó, meu Jesus...
                   </Link>
                   <Link
                     href="/ajuda/oracoes/jaculatoria-medalha-milagrosa"
                     title="Ir para a Jaculatória da Medalha Milagrosa"
-                    className="italic hover:underline"
+                    className="w-fit italic hover:underline"
                   >
                     Ó Maria...
                   </Link>
                   <Link
                     href="/ajuda/oracoes/suplicao-da-chama-de-amor"
                     title="Ir para a Súplica da Chama de Amor"
-                    className="italic hover:underline"
+                    className="w-fit italic hover:underline"
                   >
                     Santa Mãe de Deus...
                   </Link>
@@ -2552,49 +2643,54 @@ export const various = [
                 <p className="order-1 md:col-start-1 md:text-end md:row-start-2">
                   No <strong>Quarto Mistério</strong> Luminoso contemplamos a Transfiguração de Nosso Senhor Jesus Cristo no Monte Thabor.
                 </p>
-                <p className="text-sm text-end md:text-end sm:text-start dark:text-zinc-200 italic font-bold order-3 md:col-start-1 md:row-start-3">
+                <Link 
+                  href={`/ajuda/biblia?search=${encodeURI(misteriousImages[18].verse)}`}
+                  title="Ir para versículo"
+                  aria-label="Ir para versículo"
+                  className="text-sm text-end md:text-end sm:text-start dark:text-zinc-200 italic font-bold order-3 md:col-start-1 md:row-start-3"
+                >
                   {misteriousImages[18].verse}
-                </p>
+                </Link>
                 <div className="flex flex-col mt-2 order-4 md:col-start-1 md:row-start-4 md:text-end md:mt-0">
                   <Link
                     href="/ajuda/oracoes/pai-nosso"
                     title="Ir para o Pai Nosso"
-                    className="italic hover:underline"
+                    className="w-fit italic hover:underline"
                   >
                     Pai Nosso...
                   </Link>
                   <Link
                     href="/ajuda/oracoes/ave-maria"
                     title="Ir para o Ave Maria"
-                    className="italic hover:underline"
+                    className="w-fit italic hover:underline"
                   >
                     Ave Maria... (10x)
                   </Link>
                   <Link
                     href="/ajuda/oracoes/gloria-ao-pai"
                     title="Ir para o Glória ao Pai"
-                    className="italic hover:underline"
+                    className="w-fit italic hover:underline"
                   >
                     Glória ao Pai...
                   </Link>
                   <Link
                     href="/ajuda/oracoes/jaculatoria-fatima"
                     title="Ir para a Jaculatória de Fátima"
-                    className="italic hover:underline"
+                    className="w-fit italic hover:underline"
                   >
                     Ó, meu Jesus...
                   </Link>
                   <Link
                     href="/ajuda/oracoes/jaculatoria-medalha-milagrosa"
                     title="Ir para a Jaculatória da Medalha Milagrosa"
-                    className="italic hover:underline"
+                    className="w-fit italic hover:underline"
                   >
                     Ó Maria...
                   </Link>
                   <Link
                     href="/ajuda/oracoes/suplicao-da-chama-de-amor"
                     title="Ir para a Súplica da Chama de Amor"
-                    className="italic hover:underline"
+                    className="w-fit italic hover:underline"
                   >
                     Santa Mãe de Deus...
                   </Link>
@@ -2616,49 +2712,54 @@ export const various = [
                 <p className="order-1 md:col-start-2 md:row-start-2">
                   No <strong>Quinto Mistério</strong> Luminoso contemplamos a Instituição da Eucaristia na Última Ceia.
                 </p>
-                <p className="text-sm text-end sm:text-start dark:text-zinc-200 italic font-bold order-3 md:col-start-2 md:row-start-3">
+                <Link 
+                  href={`/ajuda/biblia?search=${encodeURI(misteriousImages[19].verse)}`}
+                  title="Ir para versículo"
+                  aria-label="Ir para versículo"
+                  className="text-sm text-end md:text-end sm:text-start dark:text-zinc-200 italic font-bold order-3 md:col-start-1 md:row-start-3"
+                >
                   {misteriousImages[19].verse}
-                </p>
+                </Link>
                 <div className="flex flex-col mt-2 order-4 md:col-start-2 md:row-start-4 md:mt-0">
                   <Link
                     href="/ajuda/oracoes/pai-nosso"
                     title="Ir para o Pai Nosso"
-                    className="italic hover:underline"
+                    className="w-fit italic hover:underline"
                   >
                     Pai Nosso...
                   </Link>
                   <Link
                     href="/ajuda/oracoes/ave-maria"
                     title="Ir para o Ave Maria"
-                    className="italic hover:underline"
+                    className="w-fit italic hover:underline"
                   >
                     Ave Maria... (10x)
                   </Link>
                   <Link
                     href="/ajuda/oracoes/gloria-ao-pai"
                     title="Ir para o Glória ao Pai"
-                    className="italic hover:underline"
+                    className="w-fit italic hover:underline"
                   >
                     Glória ao Pai...
                   </Link>
                   <Link
                     href="/ajuda/oracoes/jaculatoria-fatima"
                     title="Ir para a Jaculatória de Fátima"
-                    className="italic hover:underline"
+                    className="w-fit italic hover:underline"
                   >
                     Ó, meu Jesus...
                   </Link>
                   <Link
                     href="/ajuda/oracoes/jaculatoria-medalha-milagrosa"
                     title="Ir para a Jaculatória da Medalha Milagrosa"
-                    className="italic hover:underline"
+                    className="w-fit italic hover:underline"
                   >
                     Ó Maria...
                   </Link>
                   <Link
                     href="/ajuda/oracoes/suplicao-da-chama-de-amor"
                     title="Ir para a Súplica da Chama de Amor"
-                    className="italic hover:underline"
+                    className="w-fit italic hover:underline"
                   >
                     Santa Mãe de Deus...
                   </Link>
@@ -2698,14 +2799,14 @@ export const various = [
         <Link
           href="/ajuda/oracoes/sinal-da-cruz"
           title="Ir para Sinal da Cruz"
-          className="italic hover:underline"
+          className="w-fit italic hover:underline"
         >
           Sinal da Cruz...
         </Link>
         <Link
           href="/ajuda/oracoes/vinde-espirito-santo"
           title="Ir para Vinde Espírito Santo"
-          className="italic hover:underline"
+          className="w-fit italic hover:underline"
         >
           Vinde Espírito Santo...
         </Link>
@@ -2741,7 +2842,7 @@ export const various = [
             <Link
               href="/ajuda/oracoes/pai-nosso"
               title="Ir para o Pai Nosso"
-              className="italic hover:underline"
+              className="w-fit italic hover:underline"
             >
               Pai Nosso...
             </Link>
@@ -2749,7 +2850,7 @@ export const various = [
             <Link
               href="/ajuda/oracoes/ave-maria"
               title="Ir para o Ave Maria"
-              className="italic hover:underline"
+              className="w-fit italic hover:underline"
             >
               Ave Maria...
             </Link>
@@ -2757,7 +2858,7 @@ export const various = [
             <Link
               href="/ajuda/oracoes/credo"
               title="Ir para o Credo"
-              className="italic hover:underline"
+              className="w-fit italic hover:underline"
             >
               Credo...
             </Link>
@@ -2802,14 +2903,14 @@ export const various = [
         <Link
           href="/ajuda/oracoes/sinal-da-cruz"
           title="Ir para Sinal da Cruz"
-          className="italic hover:underline"
+          className="w-fit italic hover:underline"
         >
           Sinal da Cruz...
         </Link>
         <Link
           href="/ajuda/oracoes/vinde-espirito-santo"
           title="Ir para Vinde Espírito Santo"
-          className="italic hover:underline"
+          className="w-fit italic hover:underline"
         >
           Vinde Espírito Santo...
         </Link>
@@ -2818,7 +2919,7 @@ export const various = [
           <Link
             href="/ajuda/oracoes/credo"
             title="Ir para o Credo"
-            className="italic hover:underline"
+            className="w-fit italic hover:underline"
           >
             Credo...
           </Link>
@@ -2849,7 +2950,7 @@ export const various = [
         <Link
           href="/ajuda/oracoes/sinal-da-cruz"
           title="Ir para Sinal da Cruz"
-          className="italic hover:underline"
+          className="w-fit italic hover:underline"
         >
           Sinal da Cruz...
         </Link>
@@ -2863,7 +2964,7 @@ export const various = [
         <Link
           href="/ajuda/oracoes/gloria-ao-pai"
           title="Ir para Gloria ao Pai"
-          className="italic hover:underline"
+          className="w-fit italic hover:underline"
         >
           Glória ao Pai...
         </Link>
@@ -2881,21 +2982,21 @@ export const various = [
               <Link
                 href="/ajuda/oracoes/gloria-ao-pai"
                 title="Ir para Gloria ao Pai"
-                className="italic hover:underline"
+                className="w-fit italic hover:underline"
               >
                 Glória ao Pai...
               </Link>
               <Link
                 href="/ajuda/oracoes/pai-nosso"
                 title="Ir para o Pai Nosso"
-                className="italic hover:underline"
+                className="w-fit italic hover:underline"
               >
                 Pai Nosso...
               </Link>
               <Link
                 href="/ajuda/oracoes/ave-maria"
                 title="Ir para o Ave Maria"
-                className="italic hover:underline"
+                className="w-fit italic hover:underline"
               >
                 Ave Maria... (3x)
               </Link>
@@ -2915,21 +3016,21 @@ export const various = [
               <Link
                 href="/ajuda/oracoes/gloria-ao-pai"
                 title="Ir para Gloria ao Pai"
-                className="italic hover:underline"
+                className="w-fit italic hover:underline"
               >
                 Glória ao Pai...
               </Link>
               <Link
                 href="/ajuda/oracoes/pai-nosso"
                 title="Ir para o Pai Nosso"
-                className="italic hover:underline"
+                className="w-fit italic hover:underline"
               >
                 Pai Nosso...
               </Link>
               <Link
                 href="/ajuda/oracoes/ave-maria"
                 title="Ir para o Ave Maria"
-                className="italic hover:underline"
+                className="w-fit italic hover:underline"
               >
                 Ave Maria... (3x)
               </Link>
@@ -2949,21 +3050,21 @@ export const various = [
               <Link
                 href="/ajuda/oracoes/gloria-ao-pai"
                 title="Ir para Gloria ao Pai"
-                className="italic hover:underline"
+                className="w-fit italic hover:underline"
               >
                 Glória ao Pai...
               </Link>
               <Link
                 href="/ajuda/oracoes/pai-nosso"
                 title="Ir para o Pai Nosso"
-                className="italic hover:underline"
+                className="w-fit italic hover:underline"
               >
                 Pai Nosso...
               </Link>
               <Link
                 href="/ajuda/oracoes/ave-maria"
                 title="Ir para o Ave Maria"
-                className="italic hover:underline"
+                className="w-fit italic hover:underline"
               >
                 Ave Maria... (3x)
               </Link>
@@ -2983,21 +3084,21 @@ export const various = [
               <Link
                 href="/ajuda/oracoes/gloria-ao-pai"
                 title="Ir para Gloria ao Pai"
-                className="italic hover:underline"
+                className="w-fit italic hover:underline"
               >
                 Glória ao Pai...
               </Link>
               <Link
                 href="/ajuda/oracoes/pai-nosso"
                 title="Ir para o Pai Nosso"
-                className="italic hover:underline"
+                className="w-fit italic hover:underline"
               >
                 Pai Nosso...
               </Link>
               <Link
                 href="/ajuda/oracoes/ave-maria"
                 title="Ir para o Ave Maria"
-                className="italic hover:underline"
+                className="w-fit italic hover:underline"
               >
                 Ave Maria... (3x)
               </Link>
@@ -3017,21 +3118,21 @@ export const various = [
               <Link
                 href="/ajuda/oracoes/gloria-ao-pai"
                 title="Ir para Gloria ao Pai"
-                className="italic hover:underline"
+                className="w-fit italic hover:underline"
               >
                 Glória ao Pai...
               </Link>
               <Link
                 href="/ajuda/oracoes/pai-nosso"
                 title="Ir para o Pai Nosso"
-                className="italic hover:underline"
+                className="w-fit italic hover:underline"
               >
                 Pai Nosso...
               </Link>
               <Link
                 href="/ajuda/oracoes/ave-maria"
                 title="Ir para o Ave Maria"
-                className="italic hover:underline"
+                className="w-fit italic hover:underline"
               >
                 Ave Maria... (3x)
               </Link>
@@ -3051,21 +3152,21 @@ export const various = [
               <Link
                 href="/ajuda/oracoes/gloria-ao-pai"
                 title="Ir para Gloria ao Pai"
-                className="italic hover:underline"
+                className="w-fit italic hover:underline"
               >
                 Glória ao Pai...
               </Link>
               <Link
                 href="/ajuda/oracoes/pai-nosso"
                 title="Ir para o Pai Nosso"
-                className="italic hover:underline"
+                className="w-fit italic hover:underline"
               >
                 Pai Nosso...
               </Link>
               <Link
                 href="/ajuda/oracoes/ave-maria"
                 title="Ir para o Ave Maria"
-                className="italic hover:underline"
+                className="w-fit italic hover:underline"
               >
                 Ave Maria... (3x)
               </Link>
@@ -3085,21 +3186,21 @@ export const various = [
               <Link
                 href="/ajuda/oracoes/gloria-ao-pai"
                 title="Ir para Gloria ao Pai"
-                className="italic hover:underline"
+                className="w-fit italic hover:underline"
               >
                 Glória ao Pai...
               </Link>
               <Link
                 href="/ajuda/oracoes/pai-nosso"
                 title="Ir para o Pai Nosso"
-                className="italic hover:underline"
+                className="w-fit italic hover:underline"
               >
                 Pai Nosso...
               </Link>
               <Link
                 href="/ajuda/oracoes/ave-maria"
                 title="Ir para o Ave Maria"
-                className="italic hover:underline"
+                className="w-fit italic hover:underline"
               >
                 Ave Maria... (3x)
               </Link>
@@ -3120,21 +3221,21 @@ export const various = [
               <Link
                 href="/ajuda/oracoes/gloria-ao-pai"
                 title="Ir para Gloria ao Pai"
-                className="italic hover:underline"
+                className="w-fit italic hover:underline"
               >
                 Glória ao Pai...
               </Link>
               <Link
                 href="/ajuda/oracoes/pai-nosso"
                 title="Ir para o Pai Nosso"
-                className="italic hover:underline"
+                className="w-fit italic hover:underline"
               >
                 Pai Nosso...
               </Link>
               <Link
                 href="/ajuda/oracoes/ave-maria"
                 title="Ir para o Ave Maria"
-                className="italic hover:underline"
+                className="w-fit italic hover:underline"
               >
                 Ave Maria... (3x)
               </Link>
@@ -3155,21 +3256,21 @@ export const various = [
               <Link
                 href="/ajuda/oracoes/gloria-ao-pai"
                 title="Ir para Gloria ao Pai"
-                className="italic hover:underline"
+                className="w-fit italic hover:underline"
               >
                 Glória ao Pai...
               </Link>
               <Link
                 href="/ajuda/oracoes/pai-nosso"
                 title="Ir para o Pai Nosso"
-                className="italic hover:underline"
+                className="w-fit italic hover:underline"
               >
                 Pai Nosso...
               </Link>
               <Link
                 href="/ajuda/oracoes/ave-maria"
                 title="Ir para o Ave Maria"
-                className="italic hover:underline"
+                className="w-fit italic hover:underline"
               >
                 Ave Maria... (3x)
               </Link>
@@ -3182,35 +3283,35 @@ export const various = [
             <Link
               href="/ajuda/oracoes/pai-nosso"
               title="Ir para o Pai Nosso"
-              className="italic hover:underline"
+              className="w-fit italic hover:underline"
             >
               Pai Nosso... em honra de São Miguel Arcanjo.
             </Link>
             <Link
               href="/ajuda/oracoes/pai-nosso"
               title="Ir para o Pai Nosso"
-              className="italic hover:underline"
+              className="w-fit italic hover:underline"
             >
               Pai Nosso... em honra de São Gabriel.
             </Link>
             <Link
               href="/ajuda/oracoes/pai-nosso"
               title="Ir para o Pai Nosso"
-              className="italic hover:underline"
+              className="w-fit italic hover:underline"
             >
               Pai Nosso... em honra de São Rafael.
             </Link>
             <Link
               href="/ajuda/oracoes/pai-nosso"
               title="Ir para o Pai Nosso"
-              className="italic hover:underline"
+              className="w-fit italic hover:underline"
             >
               Pai Nosso... em honra de nosso Anjo da Guarda.
             </Link>
             <Link
               href="/ajuda/oracoes/pai-nosso"
               title="Ir para o Pai Nosso"
-              className="italic hover:underline"
+              className="w-fit italic hover:underline"
             >
               Pai Nosso... em honra ao Anjo da Guarda das pessoas que nós ofendemos.
             </Link>

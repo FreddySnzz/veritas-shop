@@ -2,7 +2,7 @@
 
 import { X } from 'lucide-react';
 import { formatAndCapitalize } from '@/data/functions/formatAndCapitalize';
-import { SearchbarInput } from './inputs/SearchbarInput';
+import { CustomInput } from './inputs/CustomInput';
 
 interface CustomizationItemsFiltersProps {
   searchText: string;
@@ -59,7 +59,7 @@ export function CustomizationItemsFilters({
         </div>
 
         <div className="relative">
-          <SearchbarInput
+          <CustomInput
             id="desktop-search-items"
             searchbarPlaceholder="Nome, estilo, categoria ou referência"
             value={searchText}

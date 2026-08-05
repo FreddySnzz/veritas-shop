@@ -2,6 +2,7 @@ import { CustomizationItemConfig } from "../types/customization.type";
 
 export default interface ProductModel {
   id: string;
+  category_id: string;
   name: string;
   desc?: string;
   initial_price: number;

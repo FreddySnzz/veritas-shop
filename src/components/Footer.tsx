@@ -9,6 +9,7 @@ import { SlogganTypography } from "./Typography";
 import { PhraseSloganAlternative } from "./Phrases";
 import { useMediaQuery } from "@/data/hook/useMediaQuery";
 import { toast } from "sonner";
+import { cn } from "@/lib/utils";
 
 interface FooterProps extends React.HTMLAttributes<HTMLDivElement> {
   className?: string;
@@ -55,13 +56,11 @@ export default function Footer({
     setDeferredPrompt(null);
   }
 
-  if (!deferredPrompt) return null;
-
   return (
-    <footer className={`w-full bg-secondary dark:bg-zinc-950 font-sans p-8 z-49 
-      md:px-12 lg:px-32 md:pb-0 mt-8 ${isSmUp && 'px-16'}
-      ${className}`}
-    >
+    <footer className={cn(`w-full bg-secondary dark:bg-zinc-950 font-sans p-8 z-49 
+      md:px-12 lg:px-32 md:pb-0 mt-8 ${isSmUp && 'px-16'}`,
+      className
+    )}>
       <div className="md:flex md:justify-around">
         <div className="flex flex-col justify-center items-center grow w-full">
           <Link 
@@ -169,6 +168,7 @@ export default function Footer({
                   aria-label="Sobre nós"
                   title="Sobre nós"
                   href={`/ajuda/sobre`}
+                  className="w-fit"
                 >
                   <span className="hover:underline">Sobre nós</span>
                 </Link>
@@ -177,6 +177,7 @@ export default function Footer({
                   aria-label="Ajuda"
                   title="Ajuda"
                   href={`/ajuda`}
+                  className="w-fit"
                 >
                   <span className="hover:underline">Podemos ajudar?</span>
                 </Link>
@@ -185,6 +186,7 @@ export default function Footer({
                   aria-label="Dúvidas Frequentes"
                   title="Dúvidas Frequentes"
                   href={`/ajuda#faq`}
+                  className="w-fit"
                 >
                   <span className="hover:underline">Dúvidas Frequentes</span>
                 </Link>
@@ -193,6 +195,7 @@ export default function Footer({
                   aria-label="Termos e Condições"
                   title="Termos e Condições"
                   href={`/ajuda/termos-e-condicoes`}
+                  className="w-fit"
                 >
                   <span className="hover:underline">Termos e Condições</span>
                 </Link>
@@ -205,6 +208,7 @@ export default function Footer({
                   href={`https://wa.me/${whatsappNumber || 
                     "5586994379414"}?text=${encodeURIComponent("Olá, gostaria de informar um problema que encontrei na Veritas Ateliê!")}
                   `}
+                  className="w-fit"
                 >
                   <span className="hover:underline">Relatar Problema</span>
                 </Link>
