@@ -66,7 +66,7 @@ export default function Menu() {
               aria-label="Voltar para a página inicial"
               href="/"
               onClick={closeMenu}
-              className="flex items-center w-fit gap-2 cursor-pointer transition-colors dark:hover:text-details"
+              className="flex items-center w-fit gap-2 cursor-pointer transition-colors hover:text-primary dark:hover:text-details"
             >
               <Home className="w-5 h-5" />
               <p>Página Inicial</p>
@@ -77,7 +77,7 @@ export default function Menu() {
               // href="/produtos"
               // onClick={closeMenu}
               onClick={() => toast.warning("Em breve!")}
-              className="flex items-center w-fit gap-2 cursor-pointer transition-colors dark:hover:text-details"
+              className="flex items-center w-fit gap-2 cursor-pointer transition-colors hover:text-primary dark:hover:text-details"
             >
               <RosaryIcon  className="w-5 h-5" />
               <p>Produtos</p>
@@ -87,7 +87,7 @@ export default function Menu() {
               aria-label="Ir para a página de pedidos"
               href="/me/pedidos"
               onClick={closeMenu}
-              className="flex items-center w-fit gap-2 cursor-pointer transition-colors dark:hover:text-details"
+              className="flex items-center w-fit gap-2 cursor-pointer transition-colors hover:text-primary dark:hover:text-details"
             >
               <Package className="w-5 h-5" />
               <p>Pedidos</p>
@@ -97,7 +97,7 @@ export default function Menu() {
               aria-label="Ir para a página de orações"
               href="/ajuda/oracoes"
               onClick={closeMenu}
-              className="flex items-center w-fit gap-2 cursor-pointer transition-colors dark:hover:text-details"
+              className="flex items-center w-fit gap-2 cursor-pointer transition-colors hover:text-primary dark:hover:text-details"
             >
               <PiHandsPrayingFill className="w-5 h-5" />
               <p>Orações</p>
@@ -107,7 +107,7 @@ export default function Menu() {
               aria-label="Ir para a Bíblia"
               href="/ajuda/biblia"
               onClick={closeMenu}
-              className="flex items-center w-fit gap-2 cursor-pointer transition-colors dark:hover:text-details"
+              className="flex items-center w-fit gap-2 cursor-pointer transition-colors hover:text-primary dark:hover:text-details"
             >
               <FaBookBible className="w-5 h-5" />
               <p>Bíblia</p>
@@ -121,7 +121,7 @@ export default function Menu() {
               aria-label="Mais informações sobre nós"
               href="/ajuda/sobre"
               onClick={closeMenu}
-              className="flex items-center w-fit gap-4 cursor-pointer transition-colors dark:hover:text-details mt-2">
+              className="flex items-center w-fit gap-4 cursor-pointer transition-colors hover:text-primary dark:hover:text-details mt-2">
               <BookOpenText className="w-5 h-5" />
               <p>Sobre nós</p>
             </Link>
@@ -130,7 +130,7 @@ export default function Menu() {
               aria-label="Ir para a página de ajuda"
               href="/ajuda"
               onClick={closeMenu}
-              className="flex items-center w-fit gap-4 cursor-pointer transition-colors dark:hover:text-details"
+              className="flex items-center w-fit gap-4 cursor-pointer transition-colors hover:text-primary dark:hover:text-details"
             >
               <CircleQuestionMark className="w-5 h-5" />
               <p>Precisa de ajuda?</p>
@@ -143,7 +143,7 @@ export default function Menu() {
                 onClick={redirectProfile}
                 aria-label={user ? "" : "Entrar na minha conta"}
                 title={user ? "" : "Entrar na minha conta"}
-                className={"flex items-center gap-4 transition-colors cursor-pointer dark:hover:text-details"}
+                className={"flex items-center gap-4 transition-colors cursor-pointer hover:text-primary dark:hover:text-details"}
               >
                 { !user ? <User className="w-5 h-5" /> : "" }
                 <p>{user ? `Olá, ${user.name}!` : 'Entrar na minha conta'}</p>
