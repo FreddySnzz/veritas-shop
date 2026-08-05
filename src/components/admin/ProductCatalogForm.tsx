@@ -18,7 +18,7 @@ import { Input } from "@/components/ui/input";
 import { Switch } from "@/components/ui/switch";
 import { Textarea } from "../ui/textarea";
 import ProductModel from "@/data/models/Product.model"; 
-import { CustomizationItemsCategoryModel } from "@/data/models/CustomizationItemsCategory";
+import { CustomizationItemsCategoryModel } from "@/data/models/CustomizationItemsCategory.model";
 import { CustomizationItemConfig } from "@/data/types/customization.type";
 import { toast } from "sonner";
 import { BackButton } from "../buttons/BackButton";
@@ -29,17 +29,26 @@ import {
   priceStringToCents 
 } from "@/data/functions/inputMasks";
 import { cn } from "@/lib/utils";
+import { getProductCategoryByIdAction } from "@/app/actions/productsCategory.action";
+import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger } from "../ui/select";
+import { SelectValue } from "@radix-ui/react-select";
+import { ProductCategoryModel } from "@/data/models/ProductCategory.model";
 
 interface ProductFormProps {
   initialData?: ProductModel | null
   customizationOptions: CustomizationItemsCategoryModel[];
+  productCategories: ProductCategoryModel[];
 };
 
 export function ProductForm({ 
   initialData,
   customizationOptions,
+  productCategories,
 }: ProductFormProps) {
   const [name, setName] = useState<string>(initialData?.name || "");
+  const [category, setCategory] = useState<string>(
+    productCategories.find((category) => category.id === initialData?.category_id)?.name || ""
+  );
   const [desc, setDesc] = useState<string>(initialData?.desc || "");
   const [initialPrice, setInitialPrice] = useState<string>(centsToPriceString(initialData?.initial_price || 0));
   const [available, setAvailable] = useState<boolean>(initialData?.available || false);
@@ -74,9 +83,11 @@ export function ProductForm({
         setIsLoading(true);
         try {
           const foundProduct = await getProductByIdAction(productId);
+          const foundCategory = await getProductCategoryByIdAction(foundProduct.category_id);
 
           if (foundProduct && !ignore) {
             setName(foundProduct.name);
+            setCategory(foundCategory.name);
             setDesc(foundProduct.desc || "");
             setInitialPrice(foundProduct.initial_price);
             setCustomizable(foundProduct.customizable);
@@ -143,14 +154,23 @@ export function ProductForm({
     setIsLoading(true);
     
     try {
-      if (!initialPrice) {
+      if (!name) {
+        toast.error("Nome do produto obrigatório.");
+        setIsLoading(false);
+        return;
+      };
+
+      if (!initialPrice || Number(initialPrice) <= 0) {
         toast.error("O valor do produto não pode ser R$0,00");
         setIsLoading(false);
         return;
       };
 
-      if (!name) return toast.error("Nome do produto obrigatório.");
-      if (!initialPrice) return toast.error("Preço do produto obrigatório.");
+      if (!category) {
+        toast.error("Categoria do produto obrigatório.");
+        setIsLoading(false);
+        return;
+      };
 
       const uploadedUrls: string[] = [];
 
@@ -176,6 +196,7 @@ export function ProductForm({
       const dataToSubmit = {
         id: productId,
         name,
+        category_id: category,
         desc,
         available,
         customizable,
@@ -193,7 +214,6 @@ export function ProductForm({
 
       toast.success(isEditMode ? "Produto atualizado!" : "Produto criado!");
       setNewFiles([]);
-
       router.refresh(); 
       router.push(`/admin/estoques/catalogo`);
     } catch (error) {
@@ -251,7 +271,7 @@ export function ProductForm({
         onSubmit={handleSubmit} 
         className="flex-1 flex flex-col gap-4 overflow-y-auto scrollbar-hide"
       >
-        <div className="flex flex-col w-full lg:flex-row gap-4 lg:gap-8">
+        <div className="flex flex-col w-full md:flex-row gap-4 lg:gap-8">
           <div className="flex flex-col gap-2 w-full">
             <Label htmlFor="name" className="text-sm dark:text-zinc-50">
               Nome *
@@ -266,6 +286,36 @@ export function ProductForm({
               className="bg-white focus-visible:ring-0 truncate text-secondary dark:border-zinc-700/90"
               disabled={isLoading}
             />
+          </div>
+          <div className="flex flex-col gap-2 w-full">
+            <Label htmlFor="name" className="text-sm dark:text-zinc-50">
+              Categoria *
+            </Label>
+            <Select 
+              onValueChange={(value) => setCategory(value)}
+              disabled={isLoading}
+            >
+              <SelectTrigger 
+                title="Selecione a categoria"
+                aria-label="Selecione a categoria"
+                className={cn("border-none hover:border-none w-full cursor-pointer",
+                  "focus:outline-none focus:ring-0 focus:ring-offset-0 transition-all",
+                  "bg-white dark:bg-zinc-900/40 hover:bg-zinc-50 dark:hover:bg-zinc-900/50 text-secondary",
+                  "dark:bg-input/30 dark:hover:bg-input/50 dark:border-zinc-700",
+                )}
+              >
+                <SelectValue placeholder={category} />
+              </SelectTrigger>
+              <SelectContent className="transition-all font-sans">
+                <SelectGroup>
+                  {productCategories.map((value, index) => (
+                    <SelectItem key={index} value={value.id} className="cursor-pointer">
+                      {value.name}
+                    </SelectItem>
+                  ))}
+                </SelectGroup>
+              </SelectContent>
+            </Select>
           </div>
           
           <div className="flex flex-col gap-2 w-full">

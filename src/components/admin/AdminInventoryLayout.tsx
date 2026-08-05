@@ -1,7 +1,7 @@
 'use client'
 
 import { useRouter } from "next/navigation";
-import { ListChecks, Paintbrush, Plus, ShoppingBasket } from "lucide-react";
+import { ListChecks, Paintbrush, Plus, ShoppingBasket, TableProperties } from "lucide-react";
 import { CustomButton } from "../buttons/CustomButton";
 import { BackButton } from "../buttons/BackButton";
 
@@ -25,7 +25,7 @@ export default function AdminInventoryLayout() {
               onClick={() => router.push('/admin/estoques/catalogo/adicionar')}
             >
               <Plus className="w-6 h-6" />
-              <span>Produto ao Catálogo</span>
+              <p>Produto ao Catálogo</p>
             </CustomButton>
 
             <CustomButton
@@ -36,7 +36,7 @@ export default function AdminInventoryLayout() {
               onClick={() => router.push('/admin/estoques/itens-personalizacao/adicionar')}
             >
               <Plus className="w-6 h-6" />
-              <span>Item de Personalização</span>
+              <p>Item de Personalização</p>
             </CustomButton>
           </div>
         </div>
@@ -55,7 +55,7 @@ export default function AdminInventoryLayout() {
               onClick={() => router.push('/admin/estoques/catalogo')}
             >
               <ShoppingBasket className="w-6 h-6" />
-              <span>Produtos do Catálogo</span>
+              <p>Produtos do Catálogo</p>
             </CustomButton>
 
             <CustomButton
@@ -66,7 +66,7 @@ export default function AdminInventoryLayout() {
               onClick={() => router.push('/admin/estoques/itens-personalizacao')}
             >
               <Paintbrush className="w-6 h-6" />
-              <span>Itens de Personalização</span>
+              <p>Itens de Personalização</p>
             </CustomButton>
 
             <CustomButton
@@ -74,10 +74,21 @@ export default function AdminInventoryLayout() {
                 dark:shadow-black/15 dark:bg-input/50 dark:border-zinc-700
                 dark:text-zinc-200 dark:hover:bg-zinc-700
               `}
-              onClick={() => router.push('/admin/estoques/categoria')}
+              onClick={() => router.push('/admin/estoques/categoria-produtos')}
+            >
+              <TableProperties className="w-6 h-6" />
+              <p>Categorias de Produtos</p>
+            </CustomButton>
+
+            <CustomButton
+              className={`flex-col shadow-lg shadow-secondary/5 border lg:h-80
+                dark:shadow-black/15 dark:bg-input/50 dark:border-zinc-700
+                dark:text-zinc-200 dark:hover:bg-zinc-700
+              `}
+              onClick={() => router.push('/admin/estoques/categoria-itens')}
             >
               <ListChecks className="w-6 h-6" />
-              <span>Categorias de Itens</span>
+              <p>Categorias de Itens</p>
             </CustomButton>
           </div>
         </div>

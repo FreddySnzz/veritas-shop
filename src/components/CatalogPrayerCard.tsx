@@ -22,7 +22,7 @@ export default function CatalogPrayerCard() {
           href="/ajuda/oracoes"
           title="Ir para a página de Orações"
           aria-label="Ir para a página de Orações"
-          className="flex gap-2 mt-8 text-white dark:text-zinc-200 hover:underline dark:hover:text-details italic items-center transition-colors"
+          className="flex gap-2 w-fit mt-8 text-white dark:text-zinc-200 hover:underline dark:hover:text-details italic items-center transition-colors"
         >
           <span className="font-medium">
             Ir para a página de Orações

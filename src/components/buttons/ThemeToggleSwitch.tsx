@@ -14,7 +14,7 @@ export function ThemeToggleSwitch() {
   return (
     <div 
       onClick={(e) => e.stopPropagation()} 
-      className="flex items-center gap-4 transition-all cursor-pointer"
+      className="flex items-center gap-4 transition-all cursor-default"
       title={theme === 'light' ? 'Alternar para o tema escuro' : 'Alternar para o tema claro'}
       aria-label={theme === 'light' ? 'Alternar para o tema escuro' : 'Alternar para o tema claro'}
     >

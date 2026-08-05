@@ -5,7 +5,7 @@ import { LucidePackageOpen, X } from "lucide-react";
 import OrderModel from "@/data/models/Orders.model";
 import { BackButton } from "../buttons/BackButton";
 import OrderCard from "../OrderCard";
-import { SearchbarInput } from "../inputs/SearchbarInput";
+import { CustomInput } from "../inputs/CustomInput";
 import { statusMap } from "@/data/types/orders-status.type";
 import { 
   Select, 
@@ -56,7 +56,7 @@ export default function OrdersAdminLayout({
       </div>
 
       <div className="relative flex w-full items-center justify-center mb-2 gap-3">
-        <SearchbarInput
+        <CustomInput
           searchbarPlaceholder="Busque pelo nome do produto, número do pedido..."
           value={searchText}
           onChange={(e) => setSearchText(e.target.value)}

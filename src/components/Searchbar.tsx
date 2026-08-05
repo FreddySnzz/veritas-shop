@@ -5,7 +5,7 @@ import { cn } from "@/lib/utils";
 import { Search, X, Loader2 } from "lucide-react";
 import ProductCard from "./ProductCard";
 import { useMediaQuery } from "@/data/hook/useMediaQuery";
-import { SearchbarInput } from "./inputs/SearchbarInput";
+import { CustomInput } from "./inputs/CustomInput";
 
 interface SearchbarProps {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -70,7 +70,7 @@ export default function Searchbar({
     >
       <div className="relative w-full flex items-center">
         {isMdUp && (
-          <SearchbarInput
+          <CustomInput
             inputRef={inputRef as React.RefObject<HTMLInputElement>}
             value={searchText}
             searchbarPlaceholder={searchbarPlaceholder}
@@ -155,7 +155,7 @@ export default function Searchbar({
           isSmUp && "w-[50%]"
         )}>
           <div className="flex items-center justify-center w-full px-4">
-            <SearchbarInput
+            <CustomInput
               inputRef={inputRef as React.RefObject<HTMLInputElement>}
               value={searchText}
               searchbarPlaceholder={searchbarPlaceholder}

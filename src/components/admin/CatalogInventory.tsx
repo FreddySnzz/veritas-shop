@@ -8,17 +8,20 @@ import { BackButton } from "../buttons/BackButton";
 import CardButton from "../buttons/CardButton";
 import { FloatAddButton } from "../buttons/AddButton";
 import { formatCurrency } from "@/data/functions/formatAndCapitalize";
-import { SearchbarInput } from "../inputs/SearchbarInput";
+import { CustomInput } from "../inputs/CustomInput";
 import { Plus, X } from "lucide-react";
 import { CustomButton } from "../buttons/CustomButton";
 import { useRouter } from "next/navigation";
+import { ProductCategoryModel } from "@/data/models/ProductCategory.model";
 
 interface ManageCatalogInventoryProps {
   products: ProductModel[];
+  categories: ProductCategoryModel[];
 };
 
 export default function ManageCatalogInventory({ 
-  products 
+  products,
+  categories
 }: ManageCatalogInventoryProps) {
   const [searchText, setSearchText] = useState('');
 
@@ -37,7 +40,7 @@ export default function ManageCatalogInventory({
     <div className="flex flex-col font-sans h-full overflow-hidden">
       <div className="flex w-full items-center justify-center md:gap-3 mb-2 md:mb-4">
         <div className="relative flex items-center grow">
-          <SearchbarInput
+          <CustomInput
             searchbarPlaceholder="Pesquisar produtos"
             value={searchText}
             onChange={(e) => {
@@ -129,7 +132,10 @@ export default function ManageCatalogInventory({
                   <p className="text-xs text-gray-400 dark:text-zinc-500 mt-1 line-clamp-2">
                     {product.desc}
                   </p>
-                  <p className="text-xs mt-1 text-secondary dark:text-zinc-50 font-medium dark:font-black">
+                  <p className="text-xs text-gray-400 dark:text-zinc-500">
+                    Categoria: {categories.find((category) => category.id === product.category_id)?.name}
+                  </p>
+                  <p className="text-xs text-secondary dark:text-zinc-50 font-medium dark:font-black">
                     {formatCurrency(product.initial_price)}
                   </p>
                   <div className="flex flex-col mt-1">

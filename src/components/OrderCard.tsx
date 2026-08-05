@@ -174,7 +174,7 @@ export default function OrderCard({
             {order?.product?.name}
           </p>
           <p>
-            {order?.quantity} {order?.quantity > 1 ? 'itens' : 'item'}
+            {userInfo?.name} - {order?.quantity} {order?.quantity > 1 ? 'itens' : 'item'}
           </p>
           <p className={"mt-1 font-black text-sm text-primary dark:text-details"}>
             {formatCurrency(order?.final_price || 0)}

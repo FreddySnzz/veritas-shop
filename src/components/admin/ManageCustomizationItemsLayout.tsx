@@ -10,7 +10,7 @@ import { BackButton } from "../buttons/BackButton";
 import CardButton from "../buttons/CardButton";
 import { formatAndCapitalize, formatCurrency } from "@/data/functions/formatAndCapitalize";
 import { FloatAddButton } from "../buttons/AddButton";
-import { SearchbarInput } from "../inputs/SearchbarInput";
+import { CustomInput } from "../inputs/CustomInput";
 import { BookCopy, ListFilter, Plus, Trash, X } from "lucide-react";
 import { RiCheckboxMultipleLine } from "react-icons/ri";
 import { CustomButton } from "../buttons/CustomButton";
@@ -339,7 +339,7 @@ export default function ManageCustomizationItemsLayout({
 
           <div className="flex lg:hidden w-full items-center justify-end gap-1 md:gap-2 mt-2">
             <div className="relative flex items-center grow gap-2">
-              <SearchbarInput
+              <CustomInput
                 searchbarPlaceholder="Pesquise por nome, estilo, categoria ou referência"
                 value={localSearchText}
                 onChange={(e) => handleSearchChange(e.target.value)}

@@ -17,6 +17,7 @@ import { RosaryIcon } from "./icons/RosaryIcon";
 import { toast } from "sonner";
 import { ThemeToggleSwitch } from "./buttons/ThemeToggleSwitch";
 import { useAuth } from "@/data/context/AuthContext";
+import { FaBookBible } from "react-icons/fa6";
 
 export default function Menu() {
   const { isMenuOpen, closeMenu } = useApp();
@@ -31,7 +32,7 @@ export default function Menu() {
     };
 
     if (user?.role === 'user') {
-      router.push('/pedidos');
+      router.push('/me');
       closeMenu();
     } else if (user?.role === 'admin') {
       router.push('/admin');
@@ -55,7 +56,7 @@ export default function Menu() {
         className={`fixed top-14 left-0 h-full w-full sm:w-[40%] md:w-[35%] lg:w-[25%] xl:w-[20%]
           transform transition-transform duration-300 ease-in-out flex flex-col
           bg-white text-secondary dark:bg-zinc-900 dark:text-background-alternative-v2 font-sans
-          ${ isMenuOpen ? "translate-y-0" : "-translate-x-full"}
+          ${ isMenuOpen ? "translate-y-0" : "-translate-x-full"} cursor-default
         `}
       >
         <div className="flex flex-col justify-between h-[90vh] p-6 font-medium">
@@ -65,7 +66,7 @@ export default function Menu() {
               aria-label="Voltar para a página inicial"
               href="/"
               onClick={closeMenu}
-              className="flex items-center gap-2 cursor-pointer transition-colors dark:hover:text-details"
+              className="flex items-center w-fit gap-2 cursor-pointer transition-colors dark:hover:text-details"
             >
               <Home className="w-5 h-5" />
               <p>Página Inicial</p>
@@ -76,7 +77,7 @@ export default function Menu() {
               // href="/produtos"
               // onClick={closeMenu}
               onClick={() => toast.warning("Em breve!")}
-              className="flex items-center gap-2 cursor-pointer transition-colors dark:hover:text-details"
+              className="flex items-center w-fit gap-2 cursor-pointer transition-colors dark:hover:text-details"
             >
               <RosaryIcon  className="w-5 h-5" />
               <p>Produtos</p>
@@ -84,9 +85,9 @@ export default function Menu() {
             <Link 
               title="Ir para a página de pedidos"
               aria-label="Ir para a página de pedidos"
-              href="/pedidos"
+              href="/me/pedidos"
               onClick={closeMenu}
-              className="flex items-center gap-2 cursor-pointer transition-colors dark:hover:text-details"
+              className="flex items-center w-fit gap-2 cursor-pointer transition-colors dark:hover:text-details"
             >
               <Package className="w-5 h-5" />
               <p>Pedidos</p>
@@ -96,10 +97,20 @@ export default function Menu() {
               aria-label="Ir para a página de orações"
               href="/ajuda/oracoes"
               onClick={closeMenu}
-              className="flex items-center gap-2 cursor-pointer transition-colors dark:hover:text-details"
+              className="flex items-center w-fit gap-2 cursor-pointer transition-colors dark:hover:text-details"
             >
               <PiHandsPrayingFill className="w-5 h-5" />
               <p>Orações</p>
+            </Link>
+            <Link
+              title="Ir para a Bíblia"
+              aria-label="Ir para a Bíblia"
+              href="/ajuda/biblia"
+              onClick={closeMenu}
+              className="flex items-center w-fit gap-2 cursor-pointer transition-colors dark:hover:text-details"
+            >
+              <FaBookBible className="w-5 h-5" />
+              <p>Bíblia</p>
             </Link>
           </div>
           
@@ -110,7 +121,7 @@ export default function Menu() {
               aria-label="Mais informações sobre nós"
               href="/ajuda/sobre"
               onClick={closeMenu}
-              className="flex items-center gap-4 cursor-pointer transition-colors dark:hover:text-details mt-2">
+              className="flex items-center w-fit gap-4 cursor-pointer transition-colors dark:hover:text-details mt-2">
               <BookOpenText className="w-5 h-5" />
               <p>Sobre nós</p>
             </Link>
@@ -119,7 +130,7 @@ export default function Menu() {
               aria-label="Ir para a página de ajuda"
               href="/ajuda"
               onClick={closeMenu}
-              className="flex items-center gap-4 cursor-pointer transition-colors dark:hover:text-details"
+              className="flex items-center w-fit gap-4 cursor-pointer transition-colors dark:hover:text-details"
             >
               <CircleQuestionMark className="w-5 h-5" />
               <p>Precisa de ajuda?</p>

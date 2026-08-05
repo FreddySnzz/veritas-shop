@@ -59,6 +59,7 @@ export default function ProductPageLayout({
     addItem({
       id: product.id,
       name: product.name,
+      category_id: product.category_id,
       price: product.initial_price,
       image: product?.images_url?.[0] || "",
       customizable: false,
@@ -142,13 +143,13 @@ export default function ProductPageLayout({
           {product.available ? (
             <div className="flex flex-col">
               <p className="text-primary dark:text-details font-bold">
-                Disponível ✓
+                Disponível
               </p>
             </div>
           ) : (
             <div className="flex flex-col">
               <p className="text-red-500 dark:text-red-400 font-bold">
-                Produto Indisponível ✗
+                Produto Indisponível
               </p>
             </div>
           )}
@@ -182,13 +183,13 @@ export default function ProductPageLayout({
               {product.available ? (
                 <div className="flex flex-col">
                   <p className="text-primary dark:text-details font-bold">
-                    Disponível ✓
+                    Disponível
                   </p>
                 </div>
               ) : (
                 <div className="flex flex-col">
                   <p className="text-red-500 dark:text-red-400 font-bold">
-                    Produto Indisponível ✗
+                    Produto Indisponível
                   </p>
                 </div>
               )}
@@ -333,11 +334,13 @@ export default function ProductPageLayout({
                   )}
                 </div>
               </div>
-              
-              <SupportButton 
-                title="Relatar problema ou falar com suporte"
-                messageToSupport={`Olá, encontrei um erro no seu produto "${product.name}" na Veritas Ateliê!`} 
-              />
+
+              <div className="flex w-full justify-center mt-4">
+                <SupportButton 
+                  title="Relatar problema ou falar com suporte"
+                  messageToSupport={`Olá, encontrei um erro no seu produto "${product.name}" na Veritas Ateliê!`} 
+                />
+              </div>
             </div>
           </div>
         </div>
@@ -468,10 +471,12 @@ export default function ProductPageLayout({
 
           <div className="lg:hidden">
             <hr className="border-muted-foreground/50 my-4" />
-            <SupportButton
-              title="Relatar problema ou falar com suporte"
-              messageToSupport={`Olá, encontrei um erro no seu produto "${product.name}" na Veritas Ateliê!`}
-            />
+            <div className="flex w-full justify-center">
+              <SupportButton
+                title="Relatar problema ou falar com suporte"
+                messageToSupport={`Olá, encontrei um erro no seu produto "${product.name}" na Veritas Ateliê!`}
+              />
+            </div>
           </div>
         </div>
       </div>

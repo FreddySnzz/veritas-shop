@@ -3,5 +3,6 @@ export type CreateOrderRequest = {
   product_id: string;
   quantity: number;
   customization?: object | null;
+  coupon_id?: string | null;
   final_price: number;
 };

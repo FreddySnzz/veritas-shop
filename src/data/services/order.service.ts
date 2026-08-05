@@ -39,7 +39,8 @@ export async function getAllOrdersByUser(
 
   return refSnap.docs.map((doc) => ({
     id: doc.id,
-    ...doc.data()
+    ...doc.data(),
+    final_price: doc.data()?.final_price / 100,
   })) as OrderModel[];
 };
 
@@ -56,6 +57,7 @@ export async function getAllOrders(): Promise<OrderModel[] | null> {
     return {
       id: doc.id,
       ...data,
+      final_price: data?.final_price / 100,
     } as OrderModel;
   });
 };
@@ -75,6 +77,8 @@ export async function getOrderById(
     "Order not exists", 404
   );
 
+  if (data.final_price) data.final_price = data.final_price / 100;
+
   return data;
 };
 
@@ -88,7 +92,8 @@ export async function getOrderByOrderNumber(
 
   return refSnap.docs.map((doc) => ({
     id: doc.id,
-    ...doc.data()
+    ...doc.data(),
+    final_price: doc.data()?.final_price / 100,
   })) as OrderModel[];
 };
 
@@ -103,6 +108,8 @@ export async function createOrder(
   };
 
   const orderNumber = generateOrderNumber();
+
+  if (data.final_price) data.final_price = data.final_price * 100;
 
   const newOrderData = {
     ...data,

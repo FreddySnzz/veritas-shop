@@ -6,6 +6,8 @@ import {
   updateUser 
 } from "@/data/services/user.service";
 import { serializeFirestoreData } from "@/data/functions/firebaseSerialize";
+import { buildAccessToken } from "@/lib/jwt";
+import { cookies } from "next/headers";
 
 export async function getAdminInfoAction() {
   try {
@@ -31,6 +33,24 @@ export async function getUserByIdAction(id: string) {
 export async function updateUserAction(id: string, data: any) {
   try {
     const user = await updateUser(id, data);
+
+    const accessToken = buildAccessToken({
+      id: user.id,
+      name: user.name,
+      email: user.email,
+      phone: user.phone,
+      role: user.role,
+    });
+
+    const cookieStore = await cookies();
+    cookieStore.set('veritas_token', accessToken, {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === 'production',
+      sameSite: 'lax',
+      path: '/',
+      maxAge: 60 * 60 * 24,
+    });
+
     return serializeFirestoreData(user);
   } catch (error) {
     console.error("Erro ao atualizar usuário:", error);

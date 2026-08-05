@@ -94,7 +94,7 @@ export default function CartSidebar() {
               <button 
                 onClick={handleGoToCart} 
                 aria-label="Ir para página do carrinho" 
-                className="flex cursor-pointer"
+                className="flex cursor-pointer w-fit"
               >
                 <span className="text-xs hover:underline text-gray-400">
                   Ir para página do carrinho

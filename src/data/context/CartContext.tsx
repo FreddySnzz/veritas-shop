@@ -4,6 +4,7 @@ import { createContext, useContext, ReactNode } from 'react';
 import { useLocalStorage } from '@/data/hook/useLocalStorage';
 import { Customization } from '@/data/types/customization.type';
 import { BaseProduct, CartProductItem } from '../types/cart-products.type';
+import { useAuth } from './AuthContext';
 
 interface CartContextType {
   items: CartProductItem[];
@@ -19,9 +20,12 @@ interface CartContextType {
 const CartContext = createContext<CartContextType | undefined>(undefined);
 
 export function CartProvider({ children }: { children: ReactNode }) {
+  const { user, isAuthenticated } = useAuth();
   const [items, setItems] = useLocalStorage<CartProductItem[]>('shopping_cart', []);
 
   const addItem = (product: BaseProduct, customization?: Customization) => {
+    if (!isAuthenticated) throw new Error('Você precisa estar logado para adicionar produtos ao carrinho.');
+
     setItems((prev) => {
       if (!product.customizable) {
         const existingItem = prev.find(item => item.product.id === product.id);
@@ -35,6 +39,7 @@ export function CartProvider({ children }: { children: ReactNode }) {
       };
 
       const newItem: CartProductItem = {
+        userId: user?.id || '',
         cartId: crypto.randomUUID(),
         product,
         quantity: 1,

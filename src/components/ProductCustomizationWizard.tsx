@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useMemo } from 'react';
-import { useRouter } from 'next/navigation';
+import { usePathname, useRouter } from 'next/navigation';
 import Image from 'next/image';
 import { 
   useCustomization 
@@ -25,7 +25,7 @@ import {
 } from '@/data/models/CustomizationItems.model';
 import { 
   CustomizationItemsCategoryModel 
-} from '@/data/models/CustomizationItemsCategory';
+} from '@/data/models/CustomizationItemsCategory.model';
 import { 
   CustomizationItemConfig, 
   Step
@@ -131,6 +131,7 @@ export default function ProductCustomizerWizard({
   ] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const router = useRouter();
+  const pathName = usePathname();
 
   const wizardSteps = useMemo(() => {
     const defaultCategoryOrder: Record<string, number> = {
@@ -323,17 +324,22 @@ export default function ProductCustomizerWizard({
   
       addItem({
         id: baseProduct.id,
+        category_id: baseProduct.category_id,
         name: baseProduct.name,
         price: baseProduct.initial_price,
-        customizationPrice: finalPrice || 0,
+        customizationPrice: finalPrice / 100 || 0,
         image: baseProduct?.images_url?.[0] || "",
         customizable: true
       }, customization);
   
       toast.success("Produto adicionado ao carrinho!");
     } catch (error) {
-      console.log(error);
-      toast.error("Erro ao adicionar produto ao carrinho!");
+      if (error instanceof Error && error.message === "Você precisa estar logado para adicionar produtos ao carrinho.") {
+        toast.error(error.message);
+        router.push(`/login?redirect=${pathName}`);
+      } else {
+        toast.error("Erro ao adicionar produto ao carrinho!");
+      }
     } finally {
       setIsLoading(false);
     };
@@ -576,7 +582,7 @@ export default function ProductCustomizerWizard({
       </header>
 
       <main className="flex-1 flex flex-col min-h-0 overflow-hidden px-6 relative">
-        <div className="flex-1 overflow-y-auto scrollbar-hide">
+        <div className="flex-1 overflow-y-auto scrollbar-hide md:scrollbar-thin">
           <AnimatePresence mode='wait' custom={direction}>
             <motion.div
               key={currentStepIndex}

@@ -20,6 +20,7 @@ export type CartStore = {
 
 export interface BaseProduct {
   id: string;
+  category_id: string;
   name: string;
   price: number;
   customizationPrice: number;
@@ -28,6 +29,7 @@ export interface BaseProduct {
 };
 
 export interface CartProductItem {
+  userId: string;
   cartId: string;
   product: BaseProduct;
   quantity: number;

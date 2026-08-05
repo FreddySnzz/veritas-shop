@@ -43,3 +43,27 @@ export const formatDateWithTime = (dateInput: Date | string) => {
 
   return new Intl.DateTimeFormat('pt-BR', options).format(date);
 };
+
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export const formatDateByFirebase = (dateVal: any) => {
+  if (!dateVal) return '';
+
+  let dateObj: Date;
+
+  if (dateVal instanceof Date) {
+    dateObj = dateVal;
+  } else if (typeof dateVal.toDate === 'function') {
+    dateObj = dateVal.toDate();
+  } else if (dateVal.seconds !== undefined) {
+    dateObj = new Date(dateVal.seconds * 1000);
+  } else {
+    dateObj = new Date(dateVal);
+  }
+
+  if (isNaN(dateObj.getTime())) return '';
+
+  const timezoneOffset = dateObj.getTimezoneOffset() * 60000;
+  const localDate = new Date(dateObj.getTime() - timezoneOffset);
+
+  return localDate.toISOString().slice(0, 16);
+};

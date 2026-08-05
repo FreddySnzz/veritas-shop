@@ -1,0 +1,262 @@
+'use client';
+
+import Image from "next/image";
+import { useMemo, useState } from "react";
+import { useRouter } from "next/navigation";
+import { toast } from "sonner";
+import { Plus, Trash, X } from "lucide-react";
+import CustomModal from "../modals/CustomModal";
+import { BackButton } from "../buttons/BackButton";
+import { FloatAddButton } from "../buttons/AddButton";
+import { CustomInput } from "../inputs/CustomInput";
+import { CustomButton } from "../buttons/CustomButton";
+import { ProductCategoryModel } from "@/data/models/ProductCategory.model";
+import ProductCategoryModal from "../modals/ProductCategoryModal";
+import { deleteProductCategoryAction } from "@/app/actions/productsCategory.action";
+
+interface ManageProductCategoryProps {
+  categories: ProductCategoryModel[];
+};
+
+export function ManageProductCategoryLayout({ categories }: ManageProductCategoryProps) {
+  const [categoryModalOpen, setCategoryModalOpen] = useState<boolean>(false);
+  const [deleteCategoryModalOpen, setDeleteCategoryModalOpen] = useState<boolean>(false);
+  const [categoryToModify, setCategoryToModify] = useState<ProductCategoryModel | null>(null);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
+
+  const [searchText, setSearchText] = useState('');
+  const router = useRouter();
+
+  const filteredData = useMemo(() => {
+    if (!searchText) return categories;
+    
+    const lowerSearch = searchText.toLowerCase();
+    return categories.filter((category) => 
+      category.name.toLowerCase().includes(lowerSearch)
+    );
+  }, [searchText, categories]);
+  
+  const handleOpenCategoryModal = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    setCategoryToModify(null);
+    setCategoryModalOpen(true);
+  };
+
+  const handleEditCategory = (category: ProductCategoryModel) => {
+    setCategoryToModify(category);
+    setCategoryModalOpen(true);
+  };
+
+  const handleOpenDeleteModal = (e: React.MouseEvent, category: ProductCategoryModel) => {
+    e.stopPropagation();
+    setCategoryToModify(category);
+    setDeleteCategoryModalOpen(true);
+  };
+
+  const handleDeleteCategory = async (id: string) => {
+    if (!id) return;
+    
+    setIsLoading(true);
+    try {
+      await deleteProductCategoryAction(id);
+      toast.success("Categoria removida com sucesso!");
+      setDeleteCategoryModalOpen(false);
+      setCategoryToModify(null);
+      router.refresh();
+    } catch (error) {
+      console.error("Erro ao remover categoria:", error);
+      toast.error("Erro ao remover categoria.");
+    } finally {
+      setIsLoading(false);
+    };
+  };
+
+  return (
+    <div className="flex flex-col font-sans h-full overflow-hidden">
+      <div className="flex overflow-y-auto font-sans scrollbar-hide">
+        <div className="flex w-full items-center justify-center md:gap-3 mb-2 md:mb-4">
+          <div className="relative flex items-center grow">
+            <CustomInput
+              searchbarPlaceholder="Pesquisar categorias"
+              value={searchText}
+              onChange={(e) => {
+                setSearchText(e.target.value);
+              }}
+              className="bg-white shadow-xs"
+            />
+
+            {searchText.length > 0 && (
+              <button
+                aria-label="Limpar pesquisa"
+                title="Limpar pesquisa"
+                className="absolute right-3 cursor-pointer"
+                onClick={() => setSearchText('')}
+              >
+                <X className="w-6 h-6 text-secondary dark:text-zinc-200 dark:hover:text-red-400 cursor-pointer transition-colors" />
+              </button>
+            )}
+          </div>
+
+          <div>
+            <CustomButton 
+              onClick={(e: React.MouseEvent) => handleOpenCategoryModal(e)}
+              className={`hidden md:flex lg:flex-row py-2 lg:px-8 rounded-lg shadow-xs
+                bg-primary text-white hover:bg-primary/90 font-bold text-base
+                dark:bg-details dark:hover:bg-details/80
+              `}
+            >
+              <Plus className="w-6 h-6" />
+              <span>Adicionar</span>
+            </CustomButton>
+          </div>
+        </div>
+        
+        <div className="fixed md:hidden bottom-22 right-5 z-15">
+          <FloatAddButton
+            pushRoute={'#'}
+            onClick={(e: React.MouseEvent) => handleOpenCategoryModal(e)}
+            className="p-3"
+          />
+        </div>
+      </div>
+
+      {isLoading && (
+        <span className="text-center w-full mt-2 md:mt-0 mb-4 text-gray-400">
+          Atualizando...
+        </span>
+      )}
+
+      {categories.length === 0 || filteredData.length === 0 ? (
+        <div className={`flex flex-col w-full h-[55vh] gap-4 
+          items-center justify-center text-gray-400`}
+        >
+          <div className="flex flex-col items-center justify-center">
+            <span>Nenhuma categoria encontrada.</span>
+            <span className="font-bold text-sm">
+              {`Adicione uma nova categoria no botão "Adicionar".`}
+            </span>
+          </div>
+        </div>
+      ) : (
+        <>
+          <div className="flex-1 flex flex-col gap-2 overflow-y-auto scrollbar-hide">
+            <div className={`flex flex-col md:grid md:grid-cols-2 xl:grid-cols-3 gap-2`}>
+              {filteredData.map((category: ProductCategoryModel) => (
+                <div 
+                  key={category.id} 
+                  onClick={() => handleEditCategory(category)}
+                  className={`flex justify-center gap-4 w-full cursor-pointer
+                    bg-white dark:bg-input/50 rounded-xl p-4 border border-gray-100 dark:border-zinc-700
+                  `}
+                >
+                  {category.image_url ? (
+                    <div className="relative w-15 h-15 md:w-25 md:h-25 shrink-0">
+                      <Image
+                        src={category.image_url}
+                        alt="preview"
+                        draggable="false"
+                        fill
+                        loading="eager"
+                        className="aspect-square rounded-lg object-cover shadow-sm"
+                        sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                      />
+                    </div>
+                  ) : (
+                    <div 
+                      className={`shrink-0 flex items-center justify-center w-15 h-15 
+                        rounded-lg bg-gray-200 dark:bg-input/50 md:w-25 md:h-25
+                      `}
+                    >
+                      <p className="text-[0.6rem] text-secondary px-2 text-center font-medium">
+                        Sem Imagem
+                      </p>
+                    </div>
+                  )}
+                  
+                  <div className="flex flex-col grow justify-center w-full">
+                    <p className="font-bold text-secondary dark:text-zinc-50">
+                      {category.name}
+                    </p>
+                  </div>
+
+                  <div className="flex">
+                    <button 
+                      type="button"
+                      aria-label="Deletar Categoria"
+                      title="Deletar Categoria"
+                      onClick={(e) => handleOpenDeleteModal(e, category)}
+                      className={`flex items-center transition-colors cursor-pointer hover:text-red-500`}
+                    >
+                      <Trash className="transition-colors text-secondary dark:hover:text-red-400 w-4 h-4" />
+                    </button>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        </>
+      )}
+
+      <ProductCategoryModal 
+        key={categoryToModify ? categoryToModify.id : 'add-new-product-category'}
+        mode={categoryToModify ? 'editar' : 'adicionar'}
+        initialData={categoryToModify || undefined}
+        cachedCategories={categories}
+        modalOpen={categoryModalOpen} 
+        onClose={() => {
+          setCategoryToModify(null);
+          setCategoryModalOpen(false)
+        }}
+      />
+
+      <CustomModal
+        modalOpen={deleteCategoryModalOpen}
+        onClose={() => setDeleteCategoryModalOpen(false)}
+      >
+        <div className="flex flex-col items-center justify-center p-2">
+          <span className="font-bold text-center dark:text-zinc-50">
+            Tem certeza que deseja remover essa categoria?
+          </span>
+          <span className="text-xs font-light text-red-600 dark:text-red-400">
+            Essa ação não pode ser desfeita.
+          </span>
+        </div>
+
+        <div className="grid grid-cols-2 gap-4">
+          <button 
+            type="button"
+            aria-label="Cancelar"
+            onClick={() => setDeleteCategoryModalOpen(false)}
+            className={`flex gap-2 items-center justify-center px-4 py-2 rounded-lg cursor-pointer
+              bg-gray-100 text-secondary hover:bg-gray-200 transition-colors font-medium
+              dark:bg-zinc-800 dark:border-0 dark:hover:bg-zinc-950/15 disabled:opacity-50
+            `}
+            disabled={isLoading}
+          >
+            <span>Cancelar</span>
+          </button>
+
+          <button 
+            type="button"
+            aria-label="Confirmar"
+            onClick={() => handleDeleteCategory(categoryToModify?.id || '')}
+            className={`flex gap-2 items-center justify-center px-4 py-2 
+              text-white transition-colors font-medium rounded-lg cursor-pointer
+              bg-red-500 hover:bg-red-600 disabled:opacity-50
+            `}
+            disabled={isLoading}
+          >
+            <span>{isLoading ? 'Deletando...' : 'Sim, deletar'}</span>
+          </button>
+        </div>
+      </CustomModal>
+
+      <div className="shrink-0 md:hidden mt-auto bg-background-alternative dark:bg-input/0 z-10">
+        <hr className="border-muted-foreground/50 my-2" />
+        <div className="flex flex-col gap-4">
+          <BackButton backRoute />
+        </div>
+      </div>
+    </div>
+  );
+};

@@ -7,6 +7,7 @@ import {
   Minus, 
   Plus, 
   ShoppingCart, 
+  Tag, 
   Trash2 
 } from "lucide-react";
 import DeleteItemCartModal from "./modals/DeleteItemCart";
@@ -24,13 +25,18 @@ import { SupportButton } from "./buttons/SupportButton";
 import Alert from "./Alert";
 import Link from "next/link";
 import { mountProductUrl } from "@/data/functions/removeAccentsAndSpaces";
-import { centsToPriceString } from "@/data/functions/inputMasks";
 import { useAuth } from "@/data/context/AuthContext";
 import { CustomButton } from "./buttons/CustomButton";
 import { useRouter } from "next/navigation";
 import { createOrderAction } from "@/app/actions/orders.action";
 import { CreateOrderRequest } from "@/data/types/order.type";
 import { toast } from "sonner";
+import { CustomInput } from "./inputs/CustomInput";
+import { Label } from "./ui/label";
+import { getCouponByCodeAction, updateCouponAction, validateCouponAction } from "@/app/actions/coupons.action";
+import { applyCoupon } from "@/data/functions/applyCoupon";
+import { cn } from "@/lib/utils";
+import { AppliedCoupon } from "@/data/types/coupon.type";
 
 interface CartProps extends React.HTMLAttributes<HTMLElement> {
   whatsappNumber?: string;
@@ -40,7 +46,7 @@ interface CartProps extends React.HTMLAttributes<HTMLElement> {
 export default function Cart({ 
   catalogProducts,
   whatsappNumber
- }: CartProps) {
+}: CartProps) {
   const { 
     cartCount, 
     items, 
@@ -48,6 +54,9 @@ export default function Cart({
     subtractQuantity,
   } = useCart();
   const { user, isAuthenticated } = useAuth();
+  const [couponCode, setCouponCode] = useState('');
+  const [lockCoupon, setLockCoupon] = useState(false);
+  const [productsWithCouponApplied, setProductsWithCouponApplied] = useState<AppliedCoupon[]>([]);
   const [isClearCartModalOpen, setIsClearCartModalOpen] = useState(false);
   const [isDeleteItemCartModalOpen, setIsDeleteItemCartModalOpen] = useState(false);
   const [itemCartIdToDelete, setItemCartIdToDelete] = useState<string>('');
@@ -59,27 +68,98 @@ export default function Cart({
     
     if ((itemQuantity - 1) >= 1) {
       subtractQuantity(id);
+      setLockCoupon(false);
+      setProductsWithCouponApplied([]);
     };
 
     if ((itemQuantity - 1) < 1) return;
-  };
+  }
+
+  const handleAddQuantity = (id: string) => {
+    const itemQuantity = items.filter(item => item.cartId === id)[0].quantity;
+    
+    if ((itemQuantity + 1) <= 10) {
+      addQuantity(id);
+      setLockCoupon(false);
+      setProductsWithCouponApplied([]);
+    };
+  }
 
   const handleRemoveItemCart = (id: string) => {
     setItemCartIdToDelete(id);
     setIsDeleteItemCartModalOpen(true);
-  };
+  }
+
+  const handleCouponButtonClick = () => {
+    if (lockCoupon) {
+      setCouponCode('');
+      setLockCoupon(false);
+      setProductsWithCouponApplied([]);
+    } else {
+      handleApplyCoupon();
+      setLockCoupon(true);
+    }
+  }
+
+  const handleApplyCoupon = async () => {
+    if (!couponCode) return;
+
+    try {
+      const coupons = await validateCouponAction(couponCode); 
+
+      if (coupons.length === 0) { 
+        toast.error("Cupom inválido.");
+        setLockCoupon(false);
+        return;
+      }
+
+      const result = await applyCoupon({ coupon: coupons[0], cartItems: items });
+      
+      if (result) {
+        for (const couponApplied of result) {
+          if (couponApplied.applied_discount && couponApplied.product) {
+            toast.success(`Cupom aplicado à ${couponApplied.product.name} com sucesso!`);
+            setLockCoupon(true);
+          } else if (!couponApplied.applied_discount && couponApplied.message) {
+            toast.error(`${couponApplied.message} • (${formatCurrency(coupons[0].minimum_value)}).`);
+            setLockCoupon(false);
+          } else if (!couponApplied.applied_discount) {
+            toast.error(`Cupom não pode ser aplicado à ${couponApplied.product?.name}`);
+            setLockCoupon(false);
+          }
+        }
+      }
+
+      setProductsWithCouponApplied(result);
+    } catch (error) {
+      if (error instanceof Error && error.message === "Cupom expirado.") {
+        toast.error("O cupom está expirado.");
+        setLockCoupon(false);
+      } else {
+        toast.error("Erro ao aplicar cupom.");
+      }
+    }
+  }
 
   const calculeTotalCartValue = () => {
-    const total = items.reduce((acc, item) => {
+    let total = items.reduce((acc, item) => {
       const price = Number(item.product.price) || 0;
-      const customizationPrice = Number(centsToPriceString(item.product.customizationPrice)) || 0;
+      const customizationPrice = Number(item.product.customizationPrice) || 0;
       const quantity = Number(item.quantity) || 0;
+      const finalPrice = (acc + (price + customizationPrice)) * quantity;
 
-      return acc + (price + customizationPrice) * quantity;
+      return finalPrice;
     }, 0);
 
+    for (const coupon of productsWithCouponApplied) {
+      if (coupon.applied_discount && coupon.coupon_type === 'percentage' || coupon.coupon_type === 'fixed') {
+        total -= Number(coupon.discount_price);
+      }
+    }
+
+    if (total === 0) return 'R$0,00';
     return formatCurrency(total);
-  };
+  }
 
   const renderCustomizationDesc = (
     key: string, 
@@ -94,15 +174,18 @@ export default function Cart({
     };
 
     return `• ${key}: ${value}\n`;
-  };
+  }
 
-  const generateWhatsAppMessage = (items: CartProductItem[]) => {
+  const generateWhatsAppMessage = (
+    items: CartProductItem[], 
+    productsWithCouponApplied: AppliedCoupon[]
+  ) => {
     let mensagem = `Olá! Gostaria de finalizar o seguinte pedido:\n\n`;
     let totalGeral = 0;
     
     items.forEach((item: CartProductItem, index: number) => {
       const { product, quantity, customization } = item;
-      let customizationPrice = Number(centsToPriceString(product.customizationPrice));
+      let customizationPrice = Number(product.customizationPrice);
       
       if (!customizationPrice) customizationPrice = 0;
       const subtotal = (product.price + customizationPrice) * quantity;
@@ -112,6 +195,14 @@ export default function Cart({
       mensagem += `*ITEM ${index + 1}: ${formatAndCapitalize(product.name)}*\n`;
       mensagem += `Quantidade: ${quantity} (${formatCurrency(product.price)} / und)\n`;
       if (customizationPrice > 0) mensagem += `Personalização: (${formatCurrency(customizationPrice)} / item)\n`;
+      if (productsWithCouponApplied.length > 0) {
+        for (const coupon of productsWithCouponApplied) {
+          if (coupon.applied_discount && coupon.discount_price && coupon.product?.id === product.id) {
+            totalGeral -= Number(coupon.discount_price);
+            mensagem += `Cupom aplicado: "${couponCode.toLocaleUpperCase()}" ( - ${formatCurrency(Number(coupon.discount_price))})\n`;
+          }
+        }
+      }
       mensagem += `----------------------------------------------------\n`;
 
       Object.entries(customization || {}).forEach(([key, value]) => {
@@ -128,40 +219,51 @@ export default function Cart({
     mensagem += `Aguardo a confirmação e dados para pagamento!`;
 
     return `https://wa.me/${whatsappNumber}?text=${encodeURIComponent(mensagem)}`;
-  };
+  }
 
   const createOrder = async () => {
     try {
       if (!user) return;
 
-      items.forEach(async (item) => {
-        let customizationPrice = Number(centsToPriceString(item.product.customizationPrice));
-        
-        if (!customizationPrice) customizationPrice = 0;
+      for (const item of items) {
+        const customizationPrice = Number(item.product.customizationPrice) || 0;
         const subtotal = (item.product.price + customizationPrice) * item.quantity;
+
+        const matchedCoupon = productsWithCouponApplied.find(
+          (coupon) => coupon.product?.id === item.product.id
+        );
 
         const payload: CreateOrderRequest = {
           user_id: user?.id,
           product_id: item.product.id,
           quantity: item.quantity,
           customization: item.product.customizationPrice > 0 ? item.customization : null,
-          final_price: subtotal,
+          coupon_id: matchedCoupon?.applied_discount ? matchedCoupon.coupon_id : null,
+          final_price: matchedCoupon?.applied_discount ? Number(matchedCoupon.final_price) : subtotal,
         };
 
         await createOrderAction(payload);
-      });
 
-      router.push('/pedidos');
+        if (matchedCoupon?.applied_discount) {
+          const getCoupon = await getCouponByCodeAction(couponCode);
+          await updateCouponAction(
+            matchedCoupon.coupon_id, 
+            { quantity: getCoupon[0].quantity - 1 }
+          );
+        }
+      }
+
+      router.push('/me/pedidos');
       return;
     } catch (error) {
       console.error('Erro ao criar pedido:', error);
       toast.error("Erro ao criar pedido.");
-    };
+    }
   };
 
   const renderFinishOrderButton = () => {
     if (isAuthenticated) 
-      return <WhatsAppButton clickCallback={createOrder} message={generateWhatsAppMessage(items)} />;
+      return <WhatsAppButton clickCallback={createOrder} message={generateWhatsAppMessage(items, productsWithCouponApplied)} />;
 
     return (
       <CustomButton
@@ -176,7 +278,7 @@ export default function Cart({
         </p>
       </CustomButton>
     );
-  };
+  }
 
   return (
     <div className="flex-1 flex flex-col w-full min-h-0 font-sans">
@@ -303,7 +405,7 @@ export default function Cart({
                               type="button"
                               aria-label="Aumentar quantidade"
                               title="Aumentar quantidade"
-                              onClick={() => addQuantity(item.cartId)}
+                              onClick={() => handleAddQuantity(item.cartId)}
                               className="cursor-pointer px-2"
                             >
                               <Plus className="w-3 h-3 dark:text-zinc-300 hover:text-secondary/80 transition-colors" />
@@ -348,8 +450,40 @@ export default function Cart({
                       subtitle="O valor real será confirmado na finalização do pedido com nosso atendimento."
                       className="flex font-medium my-2 dark:bg-input/50 order-last md:order-2"
                     />
+                    <Alert 
+                      title="Apenas 1 (um) cupom pode ser aplicado ao carrinho."
+                      className="flex font-medium my-2 dark:bg-input/50 order-last md:order-3"
+                    />
 
-                    <div className="flex flex-col mt-2 md:mt-4 gap-2 md:order-3">
+                    <div className="flex flex-col font-bold my-4 w-full gap-2 md:order-4">
+                      <Label className="text-nowrap">
+                        <Tag className="w-4 h-4 text-primary dark:text-details" />
+                        Possui cupom de desconto?
+                      </Label>
+                      <div className="flex gap-2 items-center">
+                        <CustomInput
+                          searchbarPlaceholder="Ex: TERCO10OFF"
+                          value={couponCode}
+                          onChange={(e) => setCouponCode(e.target.value)}
+                          disabled={lockCoupon}
+                          className={`${lockCoupon ? "opacity-50 cursor-not-allowed" : ""}`}
+                          onClick={() => setCouponCode('')}
+                          withClearButton
+                        />
+                        <button
+                          type="button"
+                          aria-label="Aplicar"
+                          title="Aplicar"
+                          onClick={handleCouponButtonClick}
+                          className={cn(`flex items-center px-4 py-1.5 rounded-lg font-medium cursor-pointer transition-colors`,
+                            lockCoupon ? "bg-red-500 hover:bg-red-600" : "bg-primary hover:bg-primary/80 dark:bg-details dark:hover:bg-details/80"
+                          )}
+                        >
+                          {lockCoupon ? "Remover" : "Aplicar"}
+                        </button>
+                      </div>
+                    </div>
+                    <div className="flex flex-col gap-2 md:order-5">
                       {items.map((item) => (
                         <div 
                           key={item.cartId}
@@ -366,33 +500,63 @@ export default function Cart({
                             <div className="flex justify-between text-xs text-gray-400 dark:text-zinc-500 font-medium">
                               <p>Personalização</p>
                               <p>
-                                + {formatCurrency(Number(centsToPriceString(item.product.customizationPrice * item.quantity)))}
+                                + {formatCurrency(Number(item.product.customizationPrice * item.quantity))}
                               </p>
                             </div>
+                          )}
+                          {couponCode && productsWithCouponApplied.length > 0 && productsWithCouponApplied
+                            .filter((productWithCoupon) => productWithCoupon.applied_discount 
+                              && productWithCoupon.coupon_type !== 'free_shipping' 
+                              && item.product.id === productWithCoupon?.product?.id)
+                            .map((productCallback, index) => {
+                              return (
+                                <div 
+                                  key={index}
+                                  className={`flex flex-col`}
+                                >
+                                  <div className="flex justify-between text-xs text-primary dark:text-details font-medium">
+                                    <p>Cupom aplicado</p>
+                                    <p>
+                                      - {formatCurrency(Number(productCallback?.discount_price))}
+                                    </p>
+                                  </div>
+                                  <div className="flex gap-1 justify-between items-baseline text-xs text-primary dark:text-details font-bold text-nowrap">
+                                    <p>Valor final</p>
+                                    <hr className="border-dashed border-primary dark:border-details w-full" />
+                                    <p>{formatCurrency(Number(productCallback?.final_price))}</p>
+                                  </div>
+                                </div>
+                              )
+                            }
                           )}
                         </div>
                       ))}
                     </div>
-                    <div className="flex justify-between md:mt-2 w-full gap-2 items-baseline md:order-4">
+                    <div className="flex justify-between md:mt-2 w-full gap-2 items-baseline md:order-6">
                       <p className="text-nowrap">Entrega</p>
                       <hr className="border-dashed border-gray-300 w-full" />
-                      <p className="text-nowrap">A combinar</p>
+                      <p className="text-nowrap">
+                        {productsWithCouponApplied.length > 0 
+                          && productsWithCouponApplied[0].coupon_type === 'free_shipping' 
+                          && productsWithCouponApplied[0].applied_discount ? 'Frete Grátis' : 'A combinar'
+                        }
+                      </p>
                     </div>
-                    <div className="flex font-bold dark:font-black justify-between mt-6 w-full gap-2 items-baseline dark:text-details md:order-5">
+                    <div className="flex font-bold dark:font-black justify-between mt-6 w-full gap-2 items-baseline dark:text-details md:order-7">
                       <p className="text-nowrap">Total</p>
                       <hr className="border-dashed border-gray-300 dark:border-details w-full" />
                       <p>{calculeTotalCartValue()}</p>
                     </div>
                   </div>
 
-                  <div className="shrink-0 mt-auto">
+                  <div className="flex flex-col items-center shrink-0 mt-auto">
                     <button 
                       type="button"
                       aria-label="Limpar carrinho"
                       onClick={() => setIsClearCartModalOpen(true)}
-                      className={`hidden md:flex w-full items-center justify-center gap-2 px-5 py-3 
+                      className={`hidden md:flex items-center justify-center gap-2 px-5 py-3 
                         text-red-500/80 dark:text-red-400 hover:text-red-600 dark:hover:text-red-500 
-                        transition-colors font-medium cursor-pointer
+                        transition-colors font-medium cursor-pointer w-fit
                       `}
                     >
                       <Trash2 className="w-4 h-4" />
@@ -412,11 +576,13 @@ export default function Cart({
                         </Link>
                       </p>
                     </Alert>
-                    <div className="hidden md:block">
+                    <div className="hidden md:block w-full">
                       {renderFinishOrderButton()}
                     </div>
                   </div>
-                  <SupportButton messageToSupport="Olá, estou tendo problemas no meu carrinho!" />
+                  <div className="flex w-full justify-center mt-4">
+                    <SupportButton messageToSupport="Olá, estou tendo problemas no meu carrinho!" />
+                  </div>
                 </div>
 
                 <DeleteItemCartModal

@@ -12,7 +12,7 @@ import {
 } from "@/data/services/categoryItem.service";
 import { serializeFirestoreData } from "@/data/functions/firebaseSerialize";
 import { refreshCacheAction } from "./cache.actions";
-import { CustomizationItemsCategoryModel } from "@/data/models/CustomizationItemsCategory";
+import { CustomizationItemsCategoryModel } from "@/data/models/CustomizationItemsCategory.model";
 
 export async function getAllCategoriesAction() {
   try {

@@ -5,7 +5,8 @@ import { ProductForm } from "@/components/admin/ProductCatalogForm";
 import { getProductByIdAction } from "@/app/actions/products.action";
 import { 
   getCachedAdminInfoAction, 
-  getCachedCustomizationItemsCategoriesAction 
+  getCachedCustomizationItemsCategoriesAction, 
+  getCachedProductCategoriesAction
 } from "@/app/actions/cache.actions";
 import Footer from "@/components/Footer";
 
@@ -15,7 +16,8 @@ export default async function AddProductCatalogPage({ params }: {
   const { user } = await getCachedAdminInfoAction();
   const { id } = await params;
   const product = await getProductByIdAction(id);
-  const categories = await getCachedCustomizationItemsCategoriesAction();
+  const customizationItemscategories = await getCachedCustomizationItemsCategoriesAction();
+  const productCategories = await getCachedProductCategoriesAction();
 
   if (!product) {
     notFound();
@@ -34,7 +36,8 @@ export default async function AddProductCatalogPage({ params }: {
           </div>
           <ProductForm 
             initialData={product} 
-            customizationOptions={categories}
+            customizationOptions={customizationItemscategories}
+            productCategories={productCategories}
           />
         </main>
       </div>

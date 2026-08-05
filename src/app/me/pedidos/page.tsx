@@ -3,7 +3,7 @@ import Footer from "@/components/Footer";
 import { 
   getCachedAdminInfoAction, 
   getCachedProductsAction 
-} from "../actions/cache.actions";
+} from "../../actions/cache.actions";
 import ProductModel from "@/data/models/Product.model";
 import OrdersLayout from "@/components/OrdersLayout";
 

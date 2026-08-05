@@ -13,6 +13,7 @@ import CatalogImageModel from "@/data/models/CatalogImage.model";
 import Footer from "../components/Footer";
 import CatalogPrayerCard from "@/components/CatalogPrayerCard";
 import CatalogRosaryReconstructionCard from "@/components/CatalogRosaryReconstructionCard";
+import CatalogBibleCard from "@/components/CatalogBibleCard";
 
 export default async function Home() {
   const { user } = await getCachedAdminInfoAction();
@@ -42,8 +43,11 @@ export default async function Home() {
               whatsappNumber={ user?.role === 'admin' ? user?.phone || '5586994379414' : '5586994379414'}
             />
           </div>
-          <div className="mt-8">
+          <div className="mt-4">
             <CatalogPrayerCard />
+          </div>
+          <div className="mt-4">
+            <CatalogBibleCard />
           </div>
         </PageFadeInAnimationWrapper>
       </main>
@@ -53,6 +57,7 @@ export default async function Home() {
         } 
       />
       <Footer 
+        className="mt-4"
         whatsappNumber={ user?.role === 'admin' ? user?.phone || '5586994379414' : '5586994379414'}
       />
     </div>

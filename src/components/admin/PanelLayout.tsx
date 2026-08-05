@@ -12,6 +12,7 @@ import {
   Package, 
   RefreshCw, 
   ShieldUser, 
+  TicketPercent, 
   X 
 } from "lucide-react";
 import { toast } from "sonner";
@@ -21,7 +22,7 @@ import CustomModal from "../modals/CustomModal";
 import { Input } from "../ui/input";
 import { onlyNumbers } from "@/data/functions/inputMasks";
 import ManageStepsOrderModal from "../modals/ManageStepsOrder";
-import { CustomizationItemsCategoryModel } from "@/data/models/CustomizationItemsCategory";
+import { CustomizationItemsCategoryModel } from "@/data/models/CustomizationItemsCategory.model";
 import ActionCard from "../CardAdminPanel";
 
 interface PanelLayoutProps {
@@ -94,6 +95,12 @@ export default function PanelLayout({ categories, className }: PanelLayoutProps)
       title: 'Gerenciar Usuários',
       icon: <ShieldUser className="h-6 w-6" />,
       onClick: () => toast.error("Em breve!"),
+    },
+    {
+      key: 'coupons',
+      title: 'Gerenciar Cupons',
+      icon: <TicketPercent className="h-6 w-6" />,
+      onClick: () => router.push('/admin/cupons'),
     },
     {
       key: 'steps',

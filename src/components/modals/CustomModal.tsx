@@ -3,7 +3,7 @@
 import { useLockBodyScroll } from "@/data/hook/useBodyLockScroll";
 import { X } from "lucide-react";
 
-interface AddCustomizationItemCategoryProps extends React.HTMLAttributes<HTMLElement> {
+interface CustomModalProps extends React.HTMLAttributes<HTMLElement> {
   title? : string;
   children?: React.ReactNode;
   modalOpen: boolean;
@@ -17,7 +17,7 @@ export default function CustomModal({
   onClose, 
   children,
   className,
-}: AddCustomizationItemCategoryProps) {
+}: CustomModalProps) {
   useLockBodyScroll(modalOpen);
 
   if (!modalOpen) return null;

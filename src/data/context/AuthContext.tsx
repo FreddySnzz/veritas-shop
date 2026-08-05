@@ -15,6 +15,7 @@ interface AuthContextType {
   isAuthenticated: boolean;
   login: (userData: User) => void;
   logout: () => Promise<void>;
+  updateUser: (updatedData: Partial<User>) => void;
 };
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
@@ -46,6 +47,13 @@ export function AuthProvider({
     router.refresh();
   };
 
+  const updateUser = (updatedData: Partial<User>) => {
+    setUser((prevUser) => {
+      if (!prevUser) return null;
+      return { ...prevUser, ...updatedData };
+    });
+  };
+
   return (
     <AuthContext.Provider
       value={{
@@ -53,6 +61,7 @@ export function AuthProvider({
         isAuthenticated: !!user,
         login,
         logout,
+        updateUser,
       }}
     >
       {children}

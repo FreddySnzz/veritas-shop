@@ -28,8 +28,21 @@ export class ProductServiceError extends Error {
 
 async function productExists(
   name: string,
+  categoryId?: string
 ): Promise<boolean> {
   const productRef = collection(db, Collections.PRODUCTS_COLLECTION);
+
+  if (categoryId) {
+    const categoryQuery = query(
+      productRef, 
+      where("category_id", "==", categoryId), 
+      where("name", "==", name),
+    );
+
+    const categorySnap = await getDocs(categoryQuery);
+
+    if (!categorySnap.empty) return true;
+  };
 
   const nameQuery = query(
     productRef, where("name", "==", name),
@@ -52,6 +65,32 @@ export async function getAllProducts(): Promise<ProductModel[] | null> {
   const snapshot = await getDocs(q);
 
   return snapshot.docs.map((doc) => {
+    const data = doc.data();
+    return {
+      id: doc.id,
+      ...data,
+      initial_price: data.initial_price / 100
+    } as ProductModel;
+  });
+};
+
+export async function getProductsByCategory(
+  categoryId: string
+): Promise<ProductModel[] | null> {
+  const q = query(collection(
+    db, 
+    Collections.PRODUCTS_COLLECTION
+  ));
+
+  const categoryQuery = query(
+    q, where("category_id", "==", categoryId)
+  );
+
+  const categorySnap = await getDocs(categoryQuery);
+
+  if (categorySnap.empty) return null;
+
+  return categorySnap.docs.map((doc) => {
     const data = doc.data();
     return {
       id: doc.id,

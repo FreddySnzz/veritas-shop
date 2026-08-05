@@ -68,6 +68,12 @@ export default function DynamicBreadcrumb({
             formattedLink = 'Itens';
           } else if (formattedLink.includes('Catalogo')) {
             formattedLink = 'Produtos';
+          } else if (formattedLink.includes('Categoria itens')) {
+            formattedLink = 'Categoria de Itens';
+          } else if (formattedLink.includes('Categoria produtos')) {
+            formattedLink = 'Categoria de Produtos';
+          } else if (formattedLink.localeCompare('Me') === 0) {
+            formattedLink = 'Minha Conta';
           } else if (formattedLink.includes('Admin') && breadcrumbList.length > 4) {
             formattedLink = '';
           };

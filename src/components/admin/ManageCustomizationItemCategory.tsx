@@ -5,14 +5,14 @@ import { useMemo, useState } from "react";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
 import { deleteCategoryAction } from "@/app/actions/customizationItemsCategory.action";
-import { CustomizationItemsCategoryModel } from "@/data/models/CustomizationItemsCategory";
+import { CustomizationItemsCategoryModel } from "@/data/models/CustomizationItemsCategory.model";
 import { Plus, Trash, X } from "lucide-react";
 import CustomizationItemCategoryModal from "../modals/CustomizationItemCategory";
 import { ItemsCustomizationTypes } from "@/data/types/customization.type";
 import CustomModal from "../modals/CustomModal";
 import { BackButton } from "../buttons/BackButton";
 import { FloatAddButton } from "../buttons/AddButton";
-import { SearchbarInput } from "../inputs/SearchbarInput";
+import { CustomInput } from "../inputs/CustomInput";
 import { CustomButton } from "../buttons/CustomButton";
 import { ToggleAvailableSwitch } from "../buttons/ToggleAvailableSwitch";
 
@@ -80,7 +80,7 @@ export function ManageCustomizationItemCategory({ categories }: ManageCustomizat
       <div className="flex overflow-y-auto font-sans scrollbar-hide">
         <div className="flex w-full items-center justify-center md:gap-3 mb-2 md:mb-4">
           <div className="relative flex items-center grow">
-            <SearchbarInput
+            <CustomInput
               searchbarPlaceholder="Pesquisar categorias"
               value={searchText}
               onChange={(e) => {
@@ -221,6 +221,7 @@ export function ManageCustomizationItemCategory({ categories }: ManageCustomizat
       )}
 
       <CustomizationItemCategoryModal 
+        key={categoryToModify ? categoryToModify.id : 'add-new-customization-category'}
         mode={categoryToModify ? 'editar' : 'adicionar'}
         initialData={categoryToModify || undefined}
         cachedCategories={categories}

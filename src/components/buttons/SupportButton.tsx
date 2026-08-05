@@ -27,7 +27,7 @@ export function SupportButton({
         "5586994379414"}?text=${encodeURIComponent(messageToSupport)}
       `}
       className={`flex items-center justify-center 
-        text-sm gap-1 hover:underline ${className}
+        text-sm gap-1 hover:underline ${className} w-fit
       `}
     >
       <MessageSquareWarning className="w-3 h-3" />

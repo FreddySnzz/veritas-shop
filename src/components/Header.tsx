@@ -29,8 +29,8 @@ export function Header({ mode, search, data }: HeaderProps) {
     <header className={`fixed top-0 z-50 w-screen
       bg-white text-secondary dark:bg-zinc-900 dark:text-background-alternative-v2`}
     >
-      <div className="flex items-center justify-between mx-auto px-4 md:px-8 lg:px-12 py-2">
-        <div className="pr-2 ml-auto cursor-pointer w-10">
+      <div className="flex items-center mx-auto px-4 md:px-8 lg:px-12 py-2">
+        <div className="mr-2 cursor-pointer w-10">
           <MenuIcon 
             isMenuOpen={isMenuOpen} 
             toggleMenu={toggleMenu} 
@@ -38,28 +38,32 @@ export function Header({ mode, search, data }: HeaderProps) {
           <Menu />
         </div>
 
-        <Link 
-          aria-label="Voltar para a página inicial"
-          title="Voltar para a página inicial"
-          href="/" 
-          className="relative flex gap-2 w-full"
-        >
-          <div className="flex items-center gap-2">
-            <FlowerIcon
-              width={65} 
-              height={40} 
-              color={ theme === 'dark' ? "var(--color-background-alternative-v2)" : "var(--color-secondary)" }
-            />
-            <Image
-              src={ theme === 'dark' ? "/logo-w-alt.svg" : "/logo-w.svg" }
-              alt="Logo Veritas"
-              width={130}
-              height={40}
-              loading="eager"
-              className="object-contain"
-            />
-          </div>
-        </Link>
+        <div className="relative flex w-fit grow">
+          <Link 
+            aria-label="Voltar para a página inicial"
+            title="Voltar para a página inicial"
+            href="/" 
+            className="flex gap-2"
+          >
+            <div className="flex items-center gap-2">
+              <FlowerIcon
+                width={65} 
+                height={40} 
+                color={ theme === 'dark' ? "var(--color-background-alternative-v2)" : "var(--color-secondary)" }
+              />
+              <Image
+                src={ theme === 'dark' ? "/logo-w-alt.svg" : "/logo-w.svg" }
+                alt="Logo Veritas"
+                width={130}
+                height={40}
+                loading="eager"
+                className="object-contain"
+              />
+            </div>
+          </Link>
+
+        </div>
+
 
         <div className="flex justify-end items-center gap-2 w-[60%]">
           {search && data &&

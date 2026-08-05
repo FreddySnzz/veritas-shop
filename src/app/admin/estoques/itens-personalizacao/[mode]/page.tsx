@@ -8,7 +8,7 @@ import { Header } from "@/components/Header";
 import DynamicBreadcrumb from "@/components/DynamicBreadcrumb";
 import { CustomizationItemForm } from "@/components/admin/CustomizationItemForm";
 import Footer from "@/components/Footer";
-import { CustomizationItemsCategoryModel } from "@/data/models/CustomizationItemsCategory";
+import { CustomizationItemsCategoryModel } from "@/data/models/CustomizationItemsCategory.model";
 
 interface PageProps {
   params: Promise<{
