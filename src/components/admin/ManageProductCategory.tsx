@@ -4,7 +4,7 @@ import Image from "next/image";
 import { useMemo, useState } from "react";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
-import { Plus, Trash, X } from "lucide-react";
+import { Plus, Trash } from "lucide-react";
 import CustomModal from "../modals/CustomModal";
 import { BackButton } from "../buttons/BackButton";
 import { FloatAddButton } from "../buttons/AddButton";
@@ -83,18 +83,9 @@ export function ManageProductCategoryLayout({ categories }: ManageProductCategor
                 setSearchText(e.target.value);
               }}
               className="bg-white shadow-xs"
+              clearButtonAction={() => setSearchText('')}
+              withClearButton
             />
-
-            {searchText.length > 0 && (
-              <button
-                aria-label="Limpar pesquisa"
-                title="Limpar pesquisa"
-                className="absolute right-3 cursor-pointer"
-                onClick={() => setSearchText('')}
-              >
-                <X className="w-6 h-6 text-secondary dark:text-zinc-200 dark:hover:text-red-400 cursor-pointer transition-colors" />
-              </button>
-            )}
           </div>
 
           <div>

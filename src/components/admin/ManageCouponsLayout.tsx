@@ -95,7 +95,7 @@ export default function ManageCouponsLayout({
             value={searchText}
             onChange={(e) => setSearchText(e.target.value)}
             className="bg-white dark:bg-input/30 shadow-xs"
-            onClick={() => setSearchText('')}
+            clearButtonAction={() => setSearchText('')}
             withClearButton
           />
 

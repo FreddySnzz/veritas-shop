@@ -7,7 +7,6 @@ import {
   specificPrayers 
 } from "@/data/constants/prayers";
 import { CustomInput } from "./inputs/CustomInput";
-import { X } from "lucide-react";
 import { useState } from "react";
 import { removeAccentsAndSpaces } from "@/data/functions/removeAccentsAndSpaces";
 
@@ -33,18 +32,9 @@ export default function PrayersLayout() {
               setSearchText(e.target.value);
             }}
             className="bg-white dark:bg-input/30 shadow-xs"
+            clearButtonAction={() => setSearchText('')}
+            withClearButton
           />
-          
-          {searchText.length > 0 && (
-            <button
-              aria-label="Limpar pesquisa"
-              title="Limpar pesquisa"
-              className="absolute right-2 cursor-pointer"
-              onClick={() => setSearchText('')}
-            >
-              <X className="w-6 h-6 text-secondary cursor-pointer" />
-            </button>
-          )}
         </div>
       </div>
 

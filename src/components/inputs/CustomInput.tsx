@@ -10,7 +10,7 @@ interface CustomInputProps extends React.InputHTMLAttributes<HTMLInputElement> {
   onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
   onFocus?: () => void;
   onKeyDown?: (e: React.KeyboardEvent<HTMLInputElement>) => void;
-  onClick?: () => void;
+  clearButtonAction?: () => void;
   withClearButton?: boolean;
   PasswordMode?: boolean;
   disabled?: boolean;
@@ -24,7 +24,7 @@ export function CustomInput({
   onChange,
   onFocus,
   onKeyDown,
-  onClick,
+  clearButtonAction,
   value,
   inputRef,
   withClearButton,
@@ -46,11 +46,11 @@ export function CustomInput({
         onFocus={onFocus}
         onChange={onChange}
         className={cn(
-          withClearButton ? "pr-10" : "pr-3 truncate",
+          withClearButton ? "pr-8" : "pr-3",
           "w-full pl-3 py-2 text-sm font-medium text-secondary",
           "bg-background-alternative-v2 rounded-lg ring-0",
           "dark:bg-input/30 dark:text-zinc-200",
-          "focus:outline-none transition-all", className
+          "focus:outline-none transition-all truncate", className
         )}
         maxLength={max}
         onKeyDown={onKeyDown}
@@ -62,10 +62,10 @@ export function CustomInput({
           type="button"
           aria-label="Limpar pesquisa"
           title="Limpar pesquisa"
-          className={`absolute right-3 translate-y-1/4 cursor-pointer 
+          className={`absolute right-1.5 translate-y-1/4 cursor-pointer 
             ${disabled && withClearButton ? 'opacity-50 cursor-not-allowed' : ''}
           `}
-          onClick={onClick}
+          onClick={clearButtonAction}
           disabled={disabled}
         >
           <X className="w-6 h-6 text-secondary cursor-pointer" />

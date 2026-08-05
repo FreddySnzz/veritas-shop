@@ -469,7 +469,7 @@ export default function Cart({
                           onChange={(e) => setCouponCode(e.target.value)}
                           disabled={lockCoupon}
                           className={`${lockCoupon ? "opacity-50 cursor-not-allowed" : ""} bg-white`}
-                          onClick={() => setCouponCode('')}
+                          clearButtonAction={() => setCouponCode('')}
                           withClearButton
                         />
                         <button
