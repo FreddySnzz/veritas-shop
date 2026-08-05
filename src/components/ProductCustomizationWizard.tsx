@@ -412,13 +412,17 @@ export default function ProductCustomizerWizard({
 
           {completed && (
             <button 
+              type="button"
+              aria-label="Adicionar ao carrinho"
+              title="Adicionar ao carrinho"
               onClick={handleAddToCart}
               className={`flex w-full md:w-1/2 items-center justify-center px-4 py-3 transition-colors
                 bg-primary text-white rounded-xl font-bold gap-3 shadow-lg hover:bg-primary/90 
                 dark:bg-details dark:hover:bg-details/80
                 ${!completed ? 'cursor-not-allowed' : 'cursor-pointer'}
-                ${isLoading ? 'cursor-wait' : ''}
+                ${isLoading ? 'cursor-wait opacity-80' : ''}
               `}
+              disabled={isLoading}
             >
               <ShoppingCart className="w-5 h-5" />
               <span>{isLoading ? 'Adicionando...' : 'Adicionar ao Carrinho'}</span>

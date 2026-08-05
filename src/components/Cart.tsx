@@ -280,6 +280,8 @@ export default function Cart({
     );
   }
 
+  // console.log(formatCurrency(Number(item.product.customizationPrice * item.quantity)))
+
   return (
     <div className="flex-1 flex flex-col w-full min-h-0 font-sans">
       <div className="flex flex-col">
@@ -466,7 +468,7 @@ export default function Cart({
                           value={couponCode}
                           onChange={(e) => setCouponCode(e.target.value)}
                           disabled={lockCoupon}
-                          className={`${lockCoupon ? "opacity-50 cursor-not-allowed" : ""}`}
+                          className={`${lockCoupon ? "opacity-50 cursor-not-allowed" : ""} bg-white`}
                           onClick={() => setCouponCode('')}
                           withClearButton
                         />
@@ -475,7 +477,7 @@ export default function Cart({
                           aria-label="Aplicar"
                           title="Aplicar"
                           onClick={handleCouponButtonClick}
-                          className={cn(`flex items-center px-4 py-1.5 rounded-lg font-medium cursor-pointer transition-colors`,
+                          className={cn(`flex items-center px-4 py-1.5 rounded-lg font-medium cursor-pointer transition-colors text-white`,
                             lockCoupon ? "bg-red-500 hover:bg-red-600" : "bg-primary hover:bg-primary/80 dark:bg-details dark:hover:bg-details/80"
                           )}
                         >
