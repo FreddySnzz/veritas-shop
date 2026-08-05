@@ -1,6 +1,5 @@
 'use client';
 
-import { X } from 'lucide-react';
 import { formatAndCapitalize } from '@/data/functions/formatAndCapitalize';
 import { CustomInput } from './inputs/CustomInput';
 
@@ -67,19 +66,9 @@ export function CustomizationItemsFilters({
               (e: React.ChangeEvent<HTMLInputElement>) => onSearchChange(e.target.value)
             }
             className="bg-gray-50 shadow-xs truncate"
+            clearButtonAction={onClearSearch}
+            withClearButton
           />
-
-          {searchText.length > 0 && (
-            <button
-              type="button"
-              aria-label="Limpar pesquisa"
-              title="Limpar pesquisa"
-              className="absolute right-3 top-1/2 -translate-y-1/2 cursor-pointer"
-              onClick={onClearSearch}
-            >
-              <X className="w-5 h-5 text-secondary dark:text-zinc-200 dark:hover:text-red-400 cursor-pointer transition-colors" />
-            </button>
-          )}
         </div>
       </div>
 

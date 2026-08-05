@@ -15,7 +15,7 @@ import {
   formatCurrency 
 } from "@/data/functions/formatAndCapitalize";
 import { FoldVertical, Trash2, UnfoldVertical } from "lucide-react";
-import { formatDateWithTime } from "@/data/functions/formatDate";
+import { formatDateWithTime, formatShortDateWithTime } from "@/data/functions/formatDate";
 import { cn } from "@/lib/utils";
 import { mountProductUrl } from "@/data/functions/removeAccentsAndSpaces";
 import { 
@@ -31,9 +31,11 @@ import CustomModal from "./modals/CustomModal";
 import { OrderStatus } from "@/data/types/enums/orders.enum";
 import { toast } from "sonner";
 import { PayButton } from "./buttons/PayButton";
+import { getCouponByIdAction, updateCouponAction } from "@/app/actions/coupons.action";
 
 interface OrderCardProps extends React.HTMLAttributes<HTMLElement> {
   mode?: "user" | "admin";
+  filter?: string;
   order: OrderModel,
   adminInfo?: UserModel,
   className?: string,
@@ -41,6 +43,7 @@ interface OrderCardProps extends React.HTMLAttributes<HTMLElement> {
 
 export default function OrderCard({ 
   mode = "user",
+  filter,
   order, 
   adminInfo,
   className 
@@ -60,13 +63,20 @@ export default function OrderCard({
       toast.success("Status do pedido atualizado com sucesso!");
       setNewStatus(status);
 
+      if (order.coupon_id && status === 'cancelled') {
+        const couponInfo = await getCouponByIdAction(order.coupon_id);
+        await updateCouponAction(order.coupon_id, { quantity: couponInfo.quantity + 1 });
+      }
+      
       if (sendMessageToClient) {
         if (!userInfo?.phone) {
           toast.error("O usuário não possui número de telefone cadastrado.");
         };
 
         window.open(
-          encodeURI(`https://wa.me/${userInfo?.phone}?text=Olá, boas notícias! O pedido *${order?.order_number}* está *${statusMap[status]}!*`)
+          encodeURI(`https://wa.me/${userInfo?.phone}?text=Olá, 
+            ${status === 'cancelled' ? 'más notícias' : 'boas notícias'}! O pedido *${order?.order_number}* está *${statusMap[status]}!*
+          `)
         );
       };
       router.refresh();
@@ -170,17 +180,17 @@ export default function OrderCard({
           <p className="dark:font-bold text-[0.65rem] text-muted-foreground/50 dark:text-zinc-500">
             # {order?.order_number}
           </p>
-          <p className="font-bold mt-1 text-sm text-black dark:text-zinc-50">
+          <p className="font-bold text-sm text-black dark:text-zinc-50">
             {order?.product?.name}
           </p>
           <p>
             {userInfo?.name} - {order?.quantity} {order?.quantity > 1 ? 'itens' : 'item'}
           </p>
-          <p className={"mt-1 font-black text-sm text-primary dark:text-details"}>
+          <p className={"font-black text-sm text-primary dark:text-details"}>
             {formatCurrency(order?.final_price || 0)}
           </p>
 
-          <div className="flex items-center gap-2">
+          <div className="flex items-center gap-2 mt-1">
             <div aria-hidden="true"
               className={`size-2 rounded-full ${
                 order.status === "Aguardando Confirmação"
@@ -212,6 +222,23 @@ export default function OrderCard({
                             ? "text-red-500" : "text-secondary"
               }`}>{order.status}</p>
           </div>
+
+          {mode === "admin" && (
+            <div className={cn("flex flex-col w-full mt-0.5",
+              "text-secondary dark:text-zinc-500 text-sm"
+            )}>
+              {filter === 'created_at' && (
+                <p className="font-bold text-[0.6rem] text-black dark:text-zinc-200">
+                  Pedido realizado em {formatShortDateWithTime(order.created_at!)}
+                </p>
+              )}
+              {filter === 'updated_at' && (
+                <p className="font-bold text-[0.6rem] text-black dark:text-zinc-200">
+                  Última atualização: {formatShortDateWithTime(order.updated_at!)}
+                </p>
+              )}
+            </div>
+          )}
         </div>
 
         <Link
@@ -468,6 +495,7 @@ export default function OrderCard({
                   className={cn("font-medium text-secondary transition-all cursor-pointer min-h-full",
                     "bg-gray-50 dark:bg-zinc-900/40 hover:bg-primary/10 dark:hover:bg-zinc-900/50",
                   )}
+                  disabled={loading}
                   onClick={() => setExpandedCard(!expandedCard)}
                 >
                   Fechar
@@ -477,7 +505,9 @@ export default function OrderCard({
                   aria-label="Salvar pedido"
                   title="Salvar pedido"
                   disabled={loading}
-                  className="bg-primary hover:bg-primary/90 dark:bg-details dark:hover:bg-details/90 text-white transition-colors py-3 min-h-full"
+                  className={`bg-primary hover:bg-primary/90 dark:bg-details dark:hover:bg-details/90 text-white 
+                    transition-colors py-3 min-h-full ${loading ? "cursor-not-allowed opacity-80" : ""}
+                  `}
                   onClick={() => handleStatusChange(newStatus)}
                 >
                   {loading ? "Salvando..." : "Salvar"}

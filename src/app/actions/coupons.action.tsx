@@ -7,6 +7,7 @@ import {
   deleteCoupon, 
   getAllCoupons, 
   getCouponByCode, 
+  getCouponById, 
   updateCoupon 
 } from "@/data/services/coupon.service";
 import CouponModel from "@/data/models/Coupon.model";
@@ -28,6 +29,16 @@ export async function getCouponByCodeAction(code: string) {
     return serializeFirestoreData(coupons);
   } catch (error) {
     console.error("Erro ao buscar cupom por código:", error);
+    throw error;
+  }
+}
+
+export async function getCouponByIdAction(id: string) {
+  try {
+    const coupon = await getCouponById(id);
+    return serializeFirestoreData(coupon);
+  } catch (error) {
+    console.error("Erro ao buscar cupom por id:", error);
     throw error;
   }
 }

@@ -49,6 +49,23 @@ export async function getCouponByCode(
   })) as CouponModel[];
 }
 
+export async function getCouponById(
+  id: string
+): Promise<CouponModel | null> {
+  const docSnap = await getDoc(
+    doc(db, Collections.COUPONS_COLLECTION, id)
+  );
+  
+  const data = docSnap.exists() ? (
+    docSnap.data() as CouponModel
+  ) : null;
+  
+  if (data === null) throw new Error("Coupon not exists");
+
+  return data;
+};
+
+
 export async function createCoupon(
   data: CouponModel
 ): Promise<CouponModel | Error> {
@@ -88,6 +105,9 @@ export async function updateCoupon(
   id: string, 
   data: CouponModel
 ): Promise<CouponModel> {
+  console.log("id =========", id);
+  console.log("data =========", data);
+
   const docRef = doc(db, Collections.COUPONS_COLLECTION, id);
   const docSnap = await getDoc(docRef);
   

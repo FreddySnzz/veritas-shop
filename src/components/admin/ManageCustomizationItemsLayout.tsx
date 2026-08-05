@@ -11,7 +11,7 @@ import CardButton from "../buttons/CardButton";
 import { formatAndCapitalize, formatCurrency } from "@/data/functions/formatAndCapitalize";
 import { FloatAddButton } from "../buttons/AddButton";
 import { CustomInput } from "../inputs/CustomInput";
-import { BookCopy, ListFilter, Plus, Trash, X } from "lucide-react";
+import { BookCopy, ListFilter, Plus, Trash } from "lucide-react";
 import { RiCheckboxMultipleLine } from "react-icons/ri";
 import { CustomButton } from "../buttons/CustomButton";
 import { DesktopSidePanel } from "../DesktopSidePanel";
@@ -65,10 +65,7 @@ export default function ManageCustomizationItemsLayout({
     setLocalSearchText(searchText);
   };
 
-  const updateQueryParams = (
-    key: string, 
-    value: string | null
-  ) => {
+  const updateQueryParams = (key: string, value: string | null) => {
     const params = new URLSearchParams(searchParams.toString());
     
     if (value) {
@@ -344,18 +341,9 @@ export default function ManageCustomizationItemsLayout({
                 value={localSearchText}
                 onChange={(e) => handleSearchChange(e.target.value)}
                 className="bg-white shadow-xs truncate"
+                clearButtonAction={() => handleSearchChange('')}
+                withClearButton
               />
-
-              {localSearchText.length > 0 && (
-                <button
-                  aria-label="Limpar pesquisa"
-                  title="Limpar pesquisa"
-                  className="absolute right-3 cursor-pointer"
-                  onClick={() => handleSearchChange('')}
-                >
-                  <X className="w-6 h-6 text-secondary cursor-pointer" />
-                </button>
-              )}
             </div>
 
             <button

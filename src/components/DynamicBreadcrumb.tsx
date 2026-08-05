@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useMemo } from 'react';
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import {
   Breadcrumb,
   BreadcrumbItem,
@@ -14,6 +14,7 @@ import { FiHome } from "react-icons/fi";
 import FlowerIcon from "./icons/FlowerIcon";
 import { verifyFirebaseId } from '@/data/functions/verifyFirebaseId';
 import ProductModel from '@/data/models/Product.model';
+import { ArrowBigLeft } from 'lucide-react';
 
 interface DynamicBreadcrumbProps {
   className?: string
@@ -28,6 +29,7 @@ export default function DynamicBreadcrumb({
   mode, 
   product 
 }: DynamicBreadcrumbProps) {
+  const router = useRouter();
   const paths = usePathname();
 
   const breadcrumbList = useMemo(() => {
@@ -44,19 +46,44 @@ export default function DynamicBreadcrumb({
   return (
     <Breadcrumb className={className}>
       <BreadcrumbList className={`font-sans dark:text-zinc-600 ${listClassName}`}>
-        <BreadcrumbItem>
-          <BreadcrumbLink 
-            aria-label="Voltar para a página inicial"
-            title="Voltar para a página inicial"
-            href={ mode === 'admin' ? '/admin' : '/'} 
-            className="flex items-center"
-          >
-            <FiHome className="h-4 w-4" />
-          </BreadcrumbLink>
-        </BreadcrumbItem>
-
-        {breadcrumbList.length > 0 && breadcrumbList.length <= 4 && (
-          <BreadcrumbSeparator>/</BreadcrumbSeparator>
+        {paths.localeCompare('/admin') === 0 ? (
+          <>
+            <BreadcrumbItem>
+              <BreadcrumbLink 
+                aria-label="Voltar para a página inicial"
+                title="Voltar para a página inicial"
+                href={ mode === 'admin' ? '/admin' : '/'} 
+                className="flex items-center"
+              >
+                <FiHome className="h-4 w-4" />
+              </BreadcrumbLink>
+            </BreadcrumbItem>
+            <BreadcrumbSeparator>/</BreadcrumbSeparator>
+          </>
+        ) : (
+          <>
+            <BreadcrumbItem>
+              <button 
+                type="button"
+                title="Voltar"
+                aria-label="Voltar"
+                onClick={() => router.back()} 
+                className="flex items-center cursor-pointer hover:italic hover:underline hover:text-primary dark:hover:text-details transition-all gap-1" 
+                disabled={breadcrumbList.length === 0}
+              >
+                <ArrowBigLeft className="w-4 h-4" />
+                Voltar
+              </button>
+            </BreadcrumbItem>
+            {breadcrumbList.length > 0 && breadcrumbList.length <= 4 && (
+              <BreadcrumbSeparator>
+                <FlowerIcon 
+                  color="var(--color-zinc-500)"
+                  className='scale-125' 
+                />
+              </BreadcrumbSeparator>
+            )}
+          </>
         )}
 
         {breadcrumbList.map((link, index) => {

@@ -9,7 +9,7 @@ import CardButton from "../buttons/CardButton";
 import { FloatAddButton } from "../buttons/AddButton";
 import { formatCurrency } from "@/data/functions/formatAndCapitalize";
 import { CustomInput } from "../inputs/CustomInput";
-import { Plus, X } from "lucide-react";
+import { Plus } from "lucide-react";
 import { CustomButton } from "../buttons/CustomButton";
 import { useRouter } from "next/navigation";
 import { ProductCategoryModel } from "@/data/models/ProductCategory.model";
@@ -47,18 +47,9 @@ export default function ManageCatalogInventory({
               setSearchText(e.target.value);
             }}
             className="bg-white dark:bg-input/30 shadow-xs"
+            clearButtonAction={() => setSearchText('')}
+            withClearButton
           />
-
-          {searchText.length > 0 && (
-            <button
-              aria-label="Limpar pesquisa"
-              title="Limpar pesquisa"
-              onClick={() => setSearchText('')}
-              className="absolute right-3 cursor-pointer"
-            >
-              <X className="w-6 h-6 text-secondary cursor-pointer" />
-            </button>
-          )}
         </div>
         
         <div>

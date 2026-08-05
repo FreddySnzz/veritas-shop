@@ -44,6 +44,20 @@ export const formatDateWithTime = (dateInput: Date | string) => {
   return new Intl.DateTimeFormat('pt-BR', options).format(date);
 };
 
+export const formatShortDateWithTime = (dateInput: Date | string) => {
+  const date = typeof dateInput === 'string' ? new Date(dateInput) : dateInput;
+
+  const options: Intl.DateTimeFormatOptions = {
+    day: 'numeric',
+    month: 'numeric',
+    year: 'numeric',
+    hour: 'numeric',
+    minute: 'numeric',
+  };
+
+  return new Intl.DateTimeFormat('pt-BR', options).format(date);
+};
+
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export const formatDateByFirebase = (dateVal: any) => {
   if (!dateVal) return '';
