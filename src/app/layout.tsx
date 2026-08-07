@@ -1,4 +1,5 @@
 import "../styles/globals.css";
+import NextTopLoader from 'nextjs-toploader';
 import type { Metadata } from "next";
 import { cookies } from "next/headers";
 import { 
@@ -67,6 +68,18 @@ export default async function RootLayout({
             <CartProvider>
               <CustomizationProvider>
                 <AppProvider>
+                  <NextTopLoader 
+                    color={"#c3aa73"}
+                    initialPosition={0.08}
+                    crawlSpeed={200}
+                    height={3}
+                    crawl={true}
+                    showSpinner={false}
+                    easing="ease" 
+                    speed={200}
+                    shadow="0 0 10px #c3aa73,0 0 5px #c3aa73"
+                    zIndex={40}
+                  />
                   {children}
                   <Toaster />
                   <InstallPrompt />

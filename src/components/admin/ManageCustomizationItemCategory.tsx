@@ -15,6 +15,7 @@ import { FloatAddButton } from "../buttons/AddButton";
 import { CustomInput } from "../inputs/CustomInput";
 import { CustomButton } from "../buttons/CustomButton";
 import { ToggleAvailableSwitch } from "../buttons/ToggleAvailableSwitch";
+import { cn } from "@/lib/utils";
 
 interface ManageCustomizationItemCategoryProps {
   categories: CustomizationItemsCategoryModel[];
@@ -25,6 +26,7 @@ export function ManageCustomizationItemCategory({ categories }: ManageCustomizat
   const [deleteCategoryModalOpen, setDeleteCategoryModalOpen] = useState<boolean>(false);
   const [categoryToModify, setCategoryToModify] = useState<CustomizationItemsCategoryModel | null>(null);
   const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [isLoaded, setIsLoaded] = useState(false);
 
   const [searchText, setSearchText] = useState('');
   const router = useRouter();
@@ -152,7 +154,11 @@ export function ManageCustomizationItemCategory({ categories }: ManageCustomizat
                         draggable="false"
                         fill
                         loading="eager"
-                        className="aspect-square rounded-lg object-cover shadow-sm"
+                        className={cn("aspect-square rounded-lg object-cover shadow-sm",
+                          "transition-opacity duration-500 ease-in-out",
+                          isLoaded ? "opacity-100" : "opacity-0",
+                        )}
+                        onLoad={() => setIsLoaded(true)}
                         sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
                       />
                     </div>

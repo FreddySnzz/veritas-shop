@@ -13,6 +13,7 @@ import { CustomButton } from "../buttons/CustomButton";
 import { ProductCategoryModel } from "@/data/models/ProductCategory.model";
 import ProductCategoryModal from "../modals/ProductCategoryModal";
 import { deleteProductCategoryAction } from "@/app/actions/productsCategory.action";
+import { cn } from "@/lib/utils";
 
 interface ManageProductCategoryProps {
   categories: ProductCategoryModel[];
@@ -23,6 +24,7 @@ export function ManageProductCategoryLayout({ categories }: ManageProductCategor
   const [deleteCategoryModalOpen, setDeleteCategoryModalOpen] = useState<boolean>(false);
   const [categoryToModify, setCategoryToModify] = useState<ProductCategoryModel | null>(null);
   const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [isLoaded, setIsLoaded] = useState(false);
 
   const [searchText, setSearchText] = useState('');
   const router = useRouter();
@@ -148,7 +150,11 @@ export function ManageProductCategoryLayout({ categories }: ManageProductCategor
                         draggable="false"
                         fill
                         loading="eager"
-                        className="aspect-square rounded-lg object-cover shadow-sm"
+                        className={cn("aspect-square rounded-lg object-cover shadow-sm",
+                          "transition-opacity duration-500 ease-in-out",
+                          isLoaded ? "opacity-100" : "opacity-0",
+                        )}
+                        onLoad={() => setIsLoaded(true)}
                         sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
                       />
                     </div>

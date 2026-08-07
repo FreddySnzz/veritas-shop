@@ -4,6 +4,7 @@ import { useDraggableButton } from "@/data/hook/useDraggableButton";
 import { cn } from "@/lib/utils";
 import { Plus } from "lucide-react";
 import { useRouter } from "next/navigation";
+import { CustomLink } from "./CustomLink";
 
 interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
   pushRoute: string;
@@ -13,19 +14,17 @@ interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
 };
 
 export function AddButton({ className, pushRoute }: ButtonProps) {
-  const router = useRouter();
   return (
-    <button 
-      type="button"
+    <CustomLink
+      href={pushRoute}
       aria-label="Adicionar"
-      onClick={() => router.push(pushRoute)}
       className={cn("flex w-full px-4 py-3 rounded-lg items-center justify-center",
         "bg-primary text-white font-bold text-lg hover:bg-primary/90 cursor-pointer",
         "dark:bg-details dark:hover:bg-details/80 transition-colors", className
       )}
     >
-      Adicionar
-    </button>
+      <p>Adicionar</p>
+    </CustomLink>
   );
 };
 

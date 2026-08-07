@@ -17,8 +17,7 @@ export function WhatsAppButton(props: WhatsAppButtonProps) {
       target="_blank"
       rel="noopener noreferrer"
     >
-      <button
-        type="button"
+      <div
         aria-label="Finalizar pedido no WhatsApp"
         onClick={props.clickCallback}
         className={`flex items-center justify-center w-full px-4 py-3 gap-2 
@@ -31,7 +30,7 @@ export function WhatsAppButton(props: WhatsAppButtonProps) {
       >
         <FaWhatsapp className="w-6 h-6" />
         Finalizar pedido no WhatsApp
-      </button>
+      </div>
     </Link>
   );
 };

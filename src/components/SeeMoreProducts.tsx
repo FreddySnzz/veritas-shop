@@ -1,6 +1,7 @@
 'use client';
 
 import * as motion from "motion/react-client";
+import { useState } from "react";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import ProductModel from "@/data/models/Product.model";
@@ -8,6 +9,7 @@ import { useMouseDrag, useIsTouchDevice } from "@/data/hook/useMouseDrag";
 import { mountProductUrl } from "@/data/functions/removeAccentsAndSpaces";
 import { formatCurrency } from "@/data/functions/formatAndCapitalize";
 import { cn } from "@/lib/utils";
+import { CustomLink } from "./buttons/CustomLink";
 
 interface SeeMoreProductsProps {
   atualProductId?: string;
@@ -22,6 +24,7 @@ export default function SeeMoreProducts({
   className,
   motionDivClassName,
 }: SeeMoreProductsProps) {
+  const [isLoaded, setIsLoaded] = useState(false);
   const availableProducts = cachedProducts.filter(
     (product: ProductModel) => product.available
   );
@@ -64,25 +67,27 @@ export default function SeeMoreProducts({
                     draggable="false"
                     fill
                     loading="eager"
-                    className="object-cover group-hover:scale-105 transition-transform duration-300"
+                    className={cn("object-cover group-hover:scale-105 transition-transform duration-300",
+                      "transition-opacity duration-500 ease-in-out",
+                      isLoaded ? "opacity-100" : "opacity-0",
+                    )}
                     sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                    onLoad={() => setIsLoaded(true)}
                   />
                 </div>
               ) : (
                 <div className={`relative flex items-center justify-center w-full h-50 overflow-hidden  
                   cursor-grab active:cursor-grabbing bg-gray-200 shrink-0 aspect-square`}
                 >
-                  <span className="text-sm text-secondary px-2 text-center font-medium">
+                  <p className="text-sm text-secondary px-2 text-center font-medium">
                     Produto Sem Imagem
-                  </span>
+                  </p>
                 </div>
               )}
 
-              <button 
-                type="button"
+              <CustomLink
+                href={`/${mountProductUrl(product.name, product.id)}`}
                 aria-label={`Ver ${product.name}`}
-                title={`Ver ${product.name}`}
-                onClick={() => router.push(`/${mountProductUrl(product.name, product.id)}`)}
                 className="flex-1 flex flex-col px-3 py-3 w-full cursor-pointer"
               >
                 <div className="flex flex-col gap-1 items-start">
@@ -100,7 +105,7 @@ export default function SeeMoreProducts({
                     Ver mais →
                   </p>
                 </div>
-              </button>
+              </CustomLink>
             </motion.div>
           </div>
         ))}

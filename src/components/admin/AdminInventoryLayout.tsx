@@ -1,12 +1,17 @@
-'use client'
-
-import { useRouter } from "next/navigation";
-import { ListChecks, Paintbrush, Plus, ShoppingBasket, TableProperties } from "lucide-react";
-import { CustomButton } from "../buttons/CustomButton";
+import { 
+  ListChecks, 
+  Paintbrush, 
+  Plus, 
+  ShoppingBasket, 
+  TableProperties 
+} from "lucide-react";
+import { CustomLink } from "../buttons/CustomLink";
 import { BackButton } from "../buttons/BackButton";
 
 export default function AdminInventoryLayout() {
-  const router = useRouter();
+  const cardStyles = `flex-col shadow-lg shadow-secondary/5 border lg:h-80
+    dark:shadow-black/15 dark:bg-input/50 dark:border-zinc-700
+    dark:text-zinc-200 dark:hover:bg-zinc-700 text-center`;
 
   return (
     <div className="flex flex-col font-sans h-full">
@@ -17,27 +22,20 @@ export default function AdminInventoryLayout() {
           </h1>
           <hr className="border-muted-foreground/50 my-2 mb-4" />
           <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4 lg:h-40">
-            <CustomButton
-              className={`flex-col shadow-lg shadow-secondary/5 border lg:h-80
-                dark:shadow-black/15 dark:bg-input/50 dark:border-zinc-700
-                dark:text-zinc-200 dark:hover:bg-zinc-700
-              `}
-              onClick={() => router.push('/admin/estoques/catalogo/adicionar')}
+            <CustomLink
+              href="/admin/estoques/catalogo/adicionar"
+              className={cardStyles}
             >
               <Plus className="w-6 h-6" />
               <p>Produto ao Catálogo</p>
-            </CustomButton>
-
-            <CustomButton
-              className={`flex-col shadow-lg shadow-secondary/5 border lg:h-80
-                dark:shadow-black/15 dark:bg-input/50 dark:border-zinc-700
-                dark:text-zinc-200 dark:hover:bg-zinc-700
-              `}
-              onClick={() => router.push('/admin/estoques/itens-personalizacao/adicionar')}
+            </CustomLink>
+            <CustomLink
+              href="/admin/estoques/itens-personalizacao/adicionar" 
+              className={cardStyles}
             >
               <Plus className="w-6 h-6" />
               <p>Item de Personalização</p>
-            </CustomButton>
+            </CustomLink>
           </div>
         </div>
 
@@ -47,49 +45,34 @@ export default function AdminInventoryLayout() {
           </h1>
           <hr className="border-muted-foreground/50 my-2 mb-4" />
           <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4 lg:h-30">
-            <CustomButton
-              className={`flex-col shadow-lg shadow-secondary/5 border lg:h-80
-                dark:shadow-black/15 dark:bg-input/50 dark:border-zinc-700
-                dark:text-zinc-200 dark:hover:bg-zinc-700
-              `}
-              onClick={() => router.push('/admin/estoques/catalogo')}
+            <CustomLink
+              href="/admin/estoques/catalogo" 
+              className={cardStyles}
             >
               <ShoppingBasket className="w-6 h-6" />
               <p>Produtos do Catálogo</p>
-            </CustomButton>
-
-            <CustomButton
-              className={`flex-col shadow-lg shadow-secondary/5 border lg:h-80
-                dark:shadow-black/15 dark:bg-input/50 dark:border-zinc-700
-                dark:text-zinc-200 dark:hover:bg-zinc-700
-              `}
-              onClick={() => router.push('/admin/estoques/itens-personalizacao')}
+            </CustomLink>
+            <CustomLink
+              href="/admin/estoques/itens-personalizacao" 
+              className={cardStyles}
             >
               <Paintbrush className="w-6 h-6" />
               <p>Itens de Personalização</p>
-            </CustomButton>
-
-            <CustomButton
-              className={`flex-col shadow-lg shadow-secondary/5 border lg:h-80
-                dark:shadow-black/15 dark:bg-input/50 dark:border-zinc-700
-                dark:text-zinc-200 dark:hover:bg-zinc-700
-              `}
-              onClick={() => router.push('/admin/estoques/categoria-produtos')}
+            </CustomLink>
+            <CustomLink
+              href="/admin/estoques/categoria-produtos" 
+              className={cardStyles}
             >
               <TableProperties className="w-6 h-6" />
               <p>Categorias de Produtos</p>
-            </CustomButton>
-
-            <CustomButton
-              className={`flex-col shadow-lg shadow-secondary/5 border lg:h-80
-                dark:shadow-black/15 dark:bg-input/50 dark:border-zinc-700
-                dark:text-zinc-200 dark:hover:bg-zinc-700
-              `}
-              onClick={() => router.push('/admin/estoques/categoria-itens')}
+            </CustomLink>
+            <CustomLink
+              href="/admin/estoques/categoria-itens" 
+              className={cardStyles}
             >
               <ListChecks className="w-6 h-6" />
               <p>Categorias de Itens</p>
-            </CustomButton>
+            </CustomLink>
           </div>
         </div>
       </div>

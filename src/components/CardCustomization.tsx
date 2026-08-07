@@ -1,7 +1,9 @@
 import Image from "next/image";
+import { useState } from "react";
 import { CustomizationItemsModel } from "@/data/models/CustomizationItems.model";
 import { Check } from "lucide-react";
 import { formatCurrency } from "@/data/functions/formatAndCapitalize";
+import { cn } from "@/lib/utils";
 
 interface CardCustomizationProps {
   item: CustomizationItemsModel;
@@ -14,6 +16,8 @@ export default function CardCustomization({
   isSelected, 
   onSelect 
 }: CardCustomizationProps) {
+  const [isLoaded, setIsLoaded] = useState(false);
+
   return (
     <button
       type="button"
@@ -36,7 +40,11 @@ export default function CardCustomization({
             fill 
             draggable="false"
             loading="eager"
-            className="object-cover transition-transform duration-300" 
+            className={cn("object-cover transition-transform duration-300",
+              "transition-opacity duration-500 ease-in-out",
+              isLoaded ? "opacity-100" : "opacity-0",
+            )}
+            onLoad={() => setIsLoaded(true)}
             sizes="(max-width: 768px) 50vw, 33vw"
           />
         ) : (

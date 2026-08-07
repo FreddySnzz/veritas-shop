@@ -89,7 +89,7 @@ export default function ManageCouponsLayout({
   return (
     <div className="flex flex-col font-sans h-full overflow-hidden">
       <div className="relative flex w-full items-center justify-center gap-3">
-        <div className="relative flex w-full items-center gap-3">
+        <div className="relative flex w-full items-center gap-2">
           <CustomInput
             searchbarPlaceholder="Busque pelo código do cupom..."
             value={searchText}
@@ -162,8 +162,8 @@ export default function ManageCouponsLayout({
         </div>
       </div>
       
-      <div className="flex-1 overflow-y-auto scrollbar-hide mt-2">
-        <div className="flex flex-col space-y-4 mt-6">
+      <div className="flex-1 overflow-y-auto scrollbar-hide mt-4">
+        <div className="flex flex-col space-y-4">
           {filteredData.length === 0 ? (
             <div className="flex flex-col items-center justify-center py-12 text-center">
               <BadgePercent className="w-16 h-16 text-muted-foreground/50 mb-4" />
@@ -177,7 +177,9 @@ export default function ManageCouponsLayout({
                 <div 
                   key={index}
                   onClick={() => handleSelectCoupon(coupon)}
-                  className="flex bg-white p-4 rounded-lg cursor-pointer"
+                  className={`flex p-4 rounded-lg cursor-pointer transition-all
+                    bg-white hover:bg-zinc-50 dark:bg-input/30 dark:hover:bg-input/50 
+                  `}
                 >
                   <div className="grow">
                     <div className={`flex ${coupon.code.length > 15 ? 'flex-col text-sm' : 'flex-row gap-1'}`}>
@@ -209,15 +211,15 @@ export default function ManageCouponsLayout({
                     </div>
                   </div>
 
-                  <div className="relative flex justify-center items-center ">
+                  <div className="relative flex justify-center items-center transition-all">
                     <button
                       type="button"
                       aria-label="Excluir Cupom"
                       title="Excluir Cupom"
                       onClick={(e) => handleOpenDeleteModalCoupon(coupon, e)}
-                      className="absolute cursor-pointer transition-colors"
+                      className="absolute cursor-pointer"
                     >
-                      <Trash2 className="w-5 h-5 hover:text-red-500" />
+                      <Trash2 className="w-5 h-5 hover:text-red-500 transition-colors" />
                     </button>
                   </div>
                 </div>

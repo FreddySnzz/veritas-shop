@@ -72,18 +72,7 @@ export default function OrdersAdminLayout({
 
   return (
     <div className="flex flex-col font-sans h-full overflow-hidden">
-      <div className="flex flex-col w-full md:gap-3 mb-2 md:mb-4">
-        <div className="flex items-baseline justify-between">
-          <p className="text-2xl lg:text-3xl font-bold text-secondary dark:text-zinc-50">
-            Pedidos
-          </p>
-          <p className="text-sm text-secondary dark:text-muted-foreground">
-            {filteredAndSortedOrders.length} {filteredAndSortedOrders.length > 1 || filteredAndSortedOrders.length === 0 ? "pedidos" : "pedido"}
-          </p>
-        </div>
-      </div>
-
-      <div className="relative flex w-full items-center justify-center mb-2 gap-2">
+      <div className="relative flex w-full items-center justify-center mb-4 gap-2">
         <CustomInput
           searchbarPlaceholder="Busque pelo nome do produto, número do pedido..."
           value={searchText}
@@ -106,7 +95,7 @@ export default function OrdersAdminLayout({
         </button>
       </div>
       
-      <div className="flex-1 overflow-y-auto scrollbar-hide mb-6">
+      <div className="flex-1 overflow-y-auto scrollbar-hide">
         <div className="flex flex-col h-full">
           {filteredAndSortedOrders.length === 0 ? (
             <div className="flex flex-col h-full items-center justify-center py-12 text-center">
