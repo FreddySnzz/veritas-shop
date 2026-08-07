@@ -1,13 +1,8 @@
-'use client';
-
 import Image from "next/image";
 import Link from "next/link";
-import { useState } from "react";
 import ItemCollapse from "@/components/ItemCollapse";
 import ItemContent from "@/components/ItemContent";
 import { cn } from "@/lib/utils";
-
-const [isLoaded, setIsLoaded] = useState(false);
 
 const misteriousImages = [
   {
@@ -1378,9 +1373,7 @@ export const various = [
                   height={350}
                   className={cn("rounded-lg object-cover shadow-lg order-2 md:col-start-1 md:row-start-1 md:row-span-5",
                     "transition-opacity duration-500 ease-in-out",
-                    isLoaded ? "opacity-100" : "opacity-0",
                   )}
-                  onLoad={() => setIsLoaded(true)}
                   sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
                   loading="lazy"
                   objectFit="contain"
@@ -1452,9 +1445,7 @@ export const various = [
                   height={350}
                   className={cn("rounded-lg object-cover shadow-lg order-2 md:col-start-2 md:row-start-1 md:row-span-5",
                     "transition-opacity duration-500 ease-in-out",
-                    isLoaded ? "opacity-100" : "opacity-0",
                   )}
-                  onLoad={() => setIsLoaded(true)}
                   sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
                   loading="lazy"
                   objectFit="contain"
@@ -1525,9 +1516,7 @@ export const various = [
                   height={350}
                   className={cn("rounded-lg object-cover shadow-lg order-2 md:col-start-1 md:row-start-1 md:row-span-5",
                     "transition-opacity duration-500 ease-in-out",
-                    isLoaded ? "opacity-100" : "opacity-0",
                   )}
-                  onLoad={() => setIsLoaded(true)}
                   sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
                   loading="lazy"
                   objectFit="contain"
@@ -1598,9 +1587,7 @@ export const various = [
                   height={350}
                   className={cn("rounded-lg object-cover shadow-lg order-2 md:col-start-2 md:row-start-1 md:row-span-5",
                     "transition-opacity duration-500 ease-in-out",
-                    isLoaded ? "opacity-100" : "opacity-0",
                   )}
-                  onLoad={() => setIsLoaded(true)}
                   sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
                   loading="lazy"
                   objectFit="contain"
@@ -1671,9 +1658,7 @@ export const various = [
                   height={350}
                   className={cn("rounded-lg object-cover shadow-lg order-2 md:col-start-1 md:row-start-1 md:row-span-5",
                     "transition-opacity duration-500 ease-in-out",
-                    isLoaded ? "opacity-100" : "opacity-0",
                   )}
-                  onLoad={() => setIsLoaded(true)}
                   sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
                   loading="lazy"
                   objectFit="contain"
@@ -1751,9 +1736,7 @@ export const various = [
                   height={350}
                   className={cn("rounded-lg object-cover shadow-lg order-2 md:col-start-1 md:row-start-1 md:row-span-5",
                     "transition-opacity duration-500 ease-in-out",
-                    isLoaded ? "opacity-100" : "opacity-0",
                   )}
-                  onLoad={() => setIsLoaded(true)}
                   sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
                   loading="lazy"
                   objectFit="contain"
@@ -1824,9 +1807,7 @@ export const various = [
                   height={350}
                   className={cn("rounded-lg object-cover shadow-lg order-2 md:col-start-2 md:row-start-1 md:row-span-5",
                     "transition-opacity duration-500 ease-in-out",
-                    isLoaded ? "opacity-100" : "opacity-0",
                   )}
-                  onLoad={() => setIsLoaded(true)}
                   sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
                   loading="lazy"
                   objectFit="contain"
@@ -1897,9 +1878,7 @@ export const various = [
                   height={350}
                   className={cn("rounded-lg object-cover shadow-lg order-2 md:col-start-1 md:row-start-1 md:row-span-5",
                     "transition-opacity duration-500 ease-in-out",
-                    isLoaded ? "opacity-100" : "opacity-0",
                   )}
-                  onLoad={() => setIsLoaded(true)}
                   sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
                   loading="lazy"
                   objectFit="contain"
@@ -1970,9 +1949,7 @@ export const various = [
                   height={350}
                   className={cn("rounded-lg object-cover shadow-lg order-2 md:col-start-2 md:row-start-1 md:row-span-5",
                     "transition-opacity duration-500 ease-in-out",
-                    isLoaded ? "opacity-100" : "opacity-0",
                   )}
-                  onLoad={() => setIsLoaded(true)}
                   sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
                   loading="lazy"
                   objectFit="contain"
@@ -2043,9 +2020,7 @@ export const various = [
                   height={350}
                   className={cn("rounded-lg object-cover shadow-lg order-2 md:col-start-1 md:row-start-1 md:row-span-5",
                     "transition-opacity duration-500 ease-in-out",
-                    isLoaded ? "opacity-100" : "opacity-0",
                   )}
-                  onLoad={() => setIsLoaded(true)}
                   sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
                   loading="lazy"
                   objectFit="contain"
@@ -2123,9 +2098,7 @@ export const various = [
                   height={350}
                   className={cn("rounded-lg object-cover shadow-lg order-2 md:col-start-1 md:row-start-1 md:row-span-5",
                     "transition-opacity duration-500 ease-in-out",
-                    isLoaded ? "opacity-100" : "opacity-0",
                   )}
-                  onLoad={() => setIsLoaded(true)}
                   sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
                   loading="lazy"
                   objectFit="contain"
@@ -2196,9 +2169,7 @@ export const various = [
                   height={350}
                   className={cn("rounded-lg object-cover shadow-lg order-2 md:col-start-2 md:row-start-1 md:row-span-5",
                     "transition-opacity duration-500 ease-in-out",
-                    isLoaded ? "opacity-100" : "opacity-0",
                   )}
-                  onLoad={() => setIsLoaded(true)}
                   sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
                   loading="lazy"
                   objectFit="contain"
@@ -2269,9 +2240,7 @@ export const various = [
                   height={350}
                   className={cn("rounded-lg object-cover shadow-lg order-2 md:col-start-1 md:row-start-1 md:row-span-5",
                     "transition-opacity duration-500 ease-in-out",
-                    isLoaded ? "opacity-100" : "opacity-0",
                   )}
-                  onLoad={() => setIsLoaded(true)}
                   sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
                   loading="lazy"
                   objectFit="contain"
@@ -2342,9 +2311,7 @@ export const various = [
                   height={350}
                   className={cn("rounded-lg object-cover shadow-lg order-2 md:col-start-2 md:row-start-1 md:row-span-5",
                     "transition-opacity duration-500 ease-in-out",
-                    isLoaded ? "opacity-100" : "opacity-0",
                   )}
-                  onLoad={() => setIsLoaded(true)}
                   sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
                   loading="lazy"
                   objectFit="contain"
@@ -2415,9 +2382,7 @@ export const various = [
                   height={350}
                   className={cn("rounded-lg object-cover shadow-lg order-2 md:col-start-1 md:row-start-1 md:row-span-5",
                     "transition-opacity duration-500 ease-in-out",
-                    isLoaded ? "opacity-100" : "opacity-0",
                   )}
-                  onLoad={() => setIsLoaded(true)}
                   sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
                   loading="lazy"
                   objectFit="contain"
@@ -2495,9 +2460,7 @@ export const various = [
                   height={350}
                   className={cn("rounded-lg object-cover shadow-lg order-2 md:col-start-1 md:row-start-1 md:row-span-5",
                     "transition-opacity duration-500 ease-in-out",
-                    isLoaded ? "opacity-100" : "opacity-0",
                   )}
-                  onLoad={() => setIsLoaded(true)}
                   sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
                   loading="lazy"
                   objectFit="contain"
@@ -2568,9 +2531,7 @@ export const various = [
                   height={350}
                   className={cn("rounded-lg object-cover shadow-lg order-2 md:col-start-2 md:row-start-1 md:row-span-5",
                     "transition-opacity duration-500 ease-in-out",
-                    isLoaded ? "opacity-100" : "opacity-0",
                   )}
-                  onLoad={() => setIsLoaded(true)}
                   sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
                   loading="lazy"
                   objectFit="contain"
@@ -2641,9 +2602,7 @@ export const various = [
                   height={350}
                   className={cn("rounded-lg object-cover shadow-lg order-2 md:col-start-1 md:row-start-1 md:row-span-5",
                     "transition-opacity duration-500 ease-in-out",
-                    isLoaded ? "opacity-100" : "opacity-0",
                   )}
-                  onLoad={() => setIsLoaded(true)}
                   sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
                   loading="lazy"
                   objectFit="contain"
@@ -2714,9 +2673,7 @@ export const various = [
                   height={350}
                   className={cn("rounded-lg object-cover shadow-lg order-2 md:col-start-2 md:row-start-1 md:row-span-5",
                     "transition-opacity duration-500 ease-in-out",
-                    isLoaded ? "opacity-100" : "opacity-0",
                   )}
-                  onLoad={() => setIsLoaded(true)}
                   sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
                   loading="lazy"
                   objectFit="contain"
@@ -2787,9 +2744,7 @@ export const various = [
                   height={350}
                   className={cn("rounded-lg object-cover shadow-lg order-2 md:col-start-1 md:row-start-1 md:row-span-5",
                     "transition-opacity duration-500 ease-in-out",
-                    isLoaded ? "opacity-100" : "opacity-0",
                   )}
-                  onLoad={() => setIsLoaded(true)}
                   sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
                   loading="lazy"
                   objectFit="contain"
