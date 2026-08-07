@@ -14,6 +14,7 @@ import DeleteItemCartModal from "./modals/DeleteItemCart";
 import Alert from "./Alert";
 import Link from "next/link";
 import { mountProductUrl } from "@/data/functions/removeAccentsAndSpaces";
+import { cn } from "@/lib/utils";
 
 export default function CartSidebar() {
   const { isSidebarOpen, closeSidebar } = useApp();
@@ -27,6 +28,7 @@ export default function CartSidebar() {
   const [isClearCartModalOpen, setIsClearCartModalOpen] = useState(false);
   const [isDeleteItemCartModalOpen, setIsDeleteItemCartModalOpen] = useState(false);
   const [itemCartIdToDelete, setItemCartIdToDelete] = useState<string>('');
+  const [isLoaded, setIsLoaded] = useState(false);
   const isCartEmpty = cartCount === 0;
 
   useLockBodyScroll(isSidebarOpen);
@@ -149,7 +151,11 @@ export default function CartSidebar() {
                               src={item.product.image}
                               alt={item.product.name}
                               fill 
-                              className="object-cover rounded-lg aspect-square" 
+                              className={cn("object-cover rounded-lg aspect-square",
+                                "transition-opacity duration-500 ease-in-out",
+                                isLoaded ? "opacity-100" : "opacity-0",
+                              )}
+                              onLoad={() => setIsLoaded(true)}
                               sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
                             />
                           </div>

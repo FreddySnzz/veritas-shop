@@ -1,7 +1,13 @@
-import ItemCollapse from "@/components/ItemCollapse";
-import ItemContent from "@/components/ItemContent";
+'use client';
+
 import Image from "next/image";
 import Link from "next/link";
+import { useState } from "react";
+import ItemCollapse from "@/components/ItemCollapse";
+import ItemContent from "@/components/ItemContent";
+import { cn } from "@/lib/utils";
+
+const [isLoaded, setIsLoaded] = useState(false);
 
 const misteriousImages = [
   {
@@ -1370,7 +1376,11 @@ export const various = [
                   alt={misteriousImages[0].alt}
                   width={350}
                   height={350}
-                  className="rounded-lg object-cover shadow-lg order-2 md:col-start-1 md:row-start-1 md:row-span-5"
+                  className={cn("rounded-lg object-cover shadow-lg order-2 md:col-start-1 md:row-start-1 md:row-span-5",
+                    "transition-opacity duration-500 ease-in-out",
+                    isLoaded ? "opacity-100" : "opacity-0",
+                  )}
+                  onLoad={() => setIsLoaded(true)}
                   sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
                   loading="lazy"
                   objectFit="contain"
@@ -1440,7 +1450,11 @@ export const various = [
                   alt={misteriousImages[1].alt}
                   width={350}
                   height={350}
-                  className="rounded-lg object-cover shadow-lg order-2 md:col-start-2 md:row-start-1 md:row-span-5"
+                  className={cn("rounded-lg object-cover shadow-lg order-2 md:col-start-2 md:row-start-1 md:row-span-5",
+                    "transition-opacity duration-500 ease-in-out",
+                    isLoaded ? "opacity-100" : "opacity-0",
+                  )}
+                  onLoad={() => setIsLoaded(true)}
                   sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
                   loading="lazy"
                   objectFit="contain"
@@ -1509,7 +1523,11 @@ export const various = [
                   alt={misteriousImages[2].alt}
                   width={350}
                   height={350}
-                  className="rounded-lg object-cover shadow-lg order-2 md:col-start-1 md:row-start-1 md:row-span-5"
+                  className={cn("rounded-lg object-cover shadow-lg order-2 md:col-start-1 md:row-start-1 md:row-span-5",
+                    "transition-opacity duration-500 ease-in-out",
+                    isLoaded ? "opacity-100" : "opacity-0",
+                  )}
+                  onLoad={() => setIsLoaded(true)}
                   sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
                   loading="lazy"
                   objectFit="contain"
@@ -1578,7 +1596,11 @@ export const various = [
                   alt={misteriousImages[3].alt}
                   width={350}
                   height={350}
-                  className="rounded-lg object-cover shadow-lg order-2 md:col-start-2 md:row-start-1 md:row-span-5"
+                  className={cn("rounded-lg object-cover shadow-lg order-2 md:col-start-2 md:row-start-1 md:row-span-5",
+                    "transition-opacity duration-500 ease-in-out",
+                    isLoaded ? "opacity-100" : "opacity-0",
+                  )}
+                  onLoad={() => setIsLoaded(true)}
                   sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
                   loading="lazy"
                   objectFit="contain"
@@ -1647,7 +1669,11 @@ export const various = [
                   alt={misteriousImages[4].alt}
                   width={350}
                   height={350}
-                  className="rounded-lg object-cover shadow-lg order-2 md:col-start-1 md:row-start-1 md:row-span-5"
+                  className={cn("rounded-lg object-cover shadow-lg order-2 md:col-start-1 md:row-start-1 md:row-span-5",
+                    "transition-opacity duration-500 ease-in-out",
+                    isLoaded ? "opacity-100" : "opacity-0",
+                  )}
+                  onLoad={() => setIsLoaded(true)}
                   sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
                   loading="lazy"
                   objectFit="contain"
@@ -1723,7 +1749,11 @@ export const various = [
                   alt={misteriousImages[5].alt}
                   width={350}
                   height={350}
-                  className="rounded-lg object-cover shadow-lg order-2 md:col-start-1 md:row-start-1 md:row-span-5"
+                  className={cn("rounded-lg object-cover shadow-lg order-2 md:col-start-1 md:row-start-1 md:row-span-5",
+                    "transition-opacity duration-500 ease-in-out",
+                    isLoaded ? "opacity-100" : "opacity-0",
+                  )}
+                  onLoad={() => setIsLoaded(true)}
                   sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
                   loading="lazy"
                   objectFit="contain"
@@ -1792,7 +1822,11 @@ export const various = [
                   alt={misteriousImages[6].alt}
                   width={350}
                   height={350}
-                  className="rounded-lg object-cover shadow-lg order-2 md:col-start-2 md:row-start-1 md:row-span-5"
+                  className={cn("rounded-lg object-cover shadow-lg order-2 md:col-start-2 md:row-start-1 md:row-span-5",
+                    "transition-opacity duration-500 ease-in-out",
+                    isLoaded ? "opacity-100" : "opacity-0",
+                  )}
+                  onLoad={() => setIsLoaded(true)}
                   sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
                   loading="lazy"
                   objectFit="contain"
@@ -1861,7 +1895,11 @@ export const various = [
                   alt={misteriousImages[7].alt}
                   width={350}
                   height={350}
-                  className="rounded-lg object-cover shadow-lg order-2 md:col-start-1 md:row-start-1 md:row-span-5"
+                  className={cn("rounded-lg object-cover shadow-lg order-2 md:col-start-1 md:row-start-1 md:row-span-5",
+                    "transition-opacity duration-500 ease-in-out",
+                    isLoaded ? "opacity-100" : "opacity-0",
+                  )}
+                  onLoad={() => setIsLoaded(true)}
                   sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
                   loading="lazy"
                   objectFit="contain"
@@ -1930,7 +1968,11 @@ export const various = [
                   alt={misteriousImages[8].alt}
                   width={350}
                   height={350}
-                  className="rounded-lg object-cover shadow-lg order-2 md:col-start-2 md:row-start-1 md:row-span-5"
+                  className={cn("rounded-lg object-cover shadow-lg order-2 md:col-start-2 md:row-start-1 md:row-span-5",
+                    "transition-opacity duration-500 ease-in-out",
+                    isLoaded ? "opacity-100" : "opacity-0",
+                  )}
+                  onLoad={() => setIsLoaded(true)}
                   sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
                   loading="lazy"
                   objectFit="contain"
@@ -1999,7 +2041,11 @@ export const various = [
                   alt={misteriousImages[9].alt}
                   width={350}
                   height={350}
-                  className="rounded-lg object-cover shadow-lg order-2 md:col-start-1 md:row-start-1 md:row-span-5"
+                  className={cn("rounded-lg object-cover shadow-lg order-2 md:col-start-1 md:row-start-1 md:row-span-5",
+                    "transition-opacity duration-500 ease-in-out",
+                    isLoaded ? "opacity-100" : "opacity-0",
+                  )}
+                  onLoad={() => setIsLoaded(true)}
                   sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
                   loading="lazy"
                   objectFit="contain"
@@ -2075,7 +2121,11 @@ export const various = [
                   alt={misteriousImages[10].alt}
                   width={350}
                   height={350}
-                  className="rounded-lg object-cover shadow-lg order-2 md:col-start-1 md:row-start-1 md:row-span-5"
+                  className={cn("rounded-lg object-cover shadow-lg order-2 md:col-start-1 md:row-start-1 md:row-span-5",
+                    "transition-opacity duration-500 ease-in-out",
+                    isLoaded ? "opacity-100" : "opacity-0",
+                  )}
+                  onLoad={() => setIsLoaded(true)}
                   sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
                   loading="lazy"
                   objectFit="contain"
@@ -2144,7 +2194,11 @@ export const various = [
                   alt={misteriousImages[11].alt}
                   width={350}
                   height={350}
-                  className="rounded-lg object-cover shadow-lg order-2 md:col-start-2 md:row-start-1 md:row-span-5"
+                  className={cn("rounded-lg object-cover shadow-lg order-2 md:col-start-2 md:row-start-1 md:row-span-5",
+                    "transition-opacity duration-500 ease-in-out",
+                    isLoaded ? "opacity-100" : "opacity-0",
+                  )}
+                  onLoad={() => setIsLoaded(true)}
                   sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
                   loading="lazy"
                   objectFit="contain"
@@ -2213,7 +2267,11 @@ export const various = [
                   alt={misteriousImages[12].alt}
                   width={350}
                   height={350}
-                  className="rounded-lg object-cover shadow-lg order-2 md:col-start-1 md:row-start-1 md:row-span-5"
+                  className={cn("rounded-lg object-cover shadow-lg order-2 md:col-start-1 md:row-start-1 md:row-span-5",
+                    "transition-opacity duration-500 ease-in-out",
+                    isLoaded ? "opacity-100" : "opacity-0",
+                  )}
+                  onLoad={() => setIsLoaded(true)}
                   sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
                   loading="lazy"
                   objectFit="contain"
@@ -2282,7 +2340,11 @@ export const various = [
                   alt={misteriousImages[13].alt}
                   width={350}
                   height={350}
-                  className="rounded-lg object-cover shadow-lg order-2 md:col-start-2 md:row-start-1 md:row-span-5"
+                  className={cn("rounded-lg object-cover shadow-lg order-2 md:col-start-2 md:row-start-1 md:row-span-5",
+                    "transition-opacity duration-500 ease-in-out",
+                    isLoaded ? "opacity-100" : "opacity-0",
+                  )}
+                  onLoad={() => setIsLoaded(true)}
                   sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
                   loading="lazy"
                   objectFit="contain"
@@ -2351,7 +2413,11 @@ export const various = [
                   alt={misteriousImages[14].alt}
                   width={350}
                   height={350}
-                  className="rounded-lg object-cover shadow-lg order-2 md:col-start-1 md:row-start-1 md:row-span-5"
+                  className={cn("rounded-lg object-cover shadow-lg order-2 md:col-start-1 md:row-start-1 md:row-span-5",
+                    "transition-opacity duration-500 ease-in-out",
+                    isLoaded ? "opacity-100" : "opacity-0",
+                  )}
+                  onLoad={() => setIsLoaded(true)}
                   sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
                   loading="lazy"
                   objectFit="contain"
@@ -2427,7 +2493,11 @@ export const various = [
                   alt={misteriousImages[15].alt}
                   width={350}
                   height={350}
-                  className="rounded-lg object-cover shadow-lg order-2 md:col-start-1 md:row-start-1 md:row-span-5"
+                  className={cn("rounded-lg object-cover shadow-lg order-2 md:col-start-1 md:row-start-1 md:row-span-5",
+                    "transition-opacity duration-500 ease-in-out",
+                    isLoaded ? "opacity-100" : "opacity-0",
+                  )}
+                  onLoad={() => setIsLoaded(true)}
                   sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
                   loading="lazy"
                   objectFit="contain"
@@ -2496,7 +2566,11 @@ export const various = [
                   alt={misteriousImages[16].alt}
                   width={350}
                   height={350}
-                  className="rounded-lg object-cover shadow-lg order-2 md:col-start-2 md:row-start-1 md:row-span-5"
+                  className={cn("rounded-lg object-cover shadow-lg order-2 md:col-start-2 md:row-start-1 md:row-span-5",
+                    "transition-opacity duration-500 ease-in-out",
+                    isLoaded ? "opacity-100" : "opacity-0",
+                  )}
+                  onLoad={() => setIsLoaded(true)}
                   sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
                   loading="lazy"
                   objectFit="contain"
@@ -2565,7 +2639,11 @@ export const various = [
                   alt={misteriousImages[17].alt}
                   width={350}
                   height={350}
-                  className="rounded-lg object-cover shadow-lg order-2 md:col-start-1 md:row-start-1 md:row-span-5"
+                  className={cn("rounded-lg object-cover shadow-lg order-2 md:col-start-1 md:row-start-1 md:row-span-5",
+                    "transition-opacity duration-500 ease-in-out",
+                    isLoaded ? "opacity-100" : "opacity-0",
+                  )}
+                  onLoad={() => setIsLoaded(true)}
                   sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
                   loading="lazy"
                   objectFit="contain"
@@ -2634,7 +2712,11 @@ export const various = [
                   alt={misteriousImages[18].alt}
                   width={350}
                   height={350}
-                  className="rounded-lg object-cover shadow-lg order-2 md:col-start-2 md:row-start-1 md:row-span-5"
+                  className={cn("rounded-lg object-cover shadow-lg order-2 md:col-start-2 md:row-start-1 md:row-span-5",
+                    "transition-opacity duration-500 ease-in-out",
+                    isLoaded ? "opacity-100" : "opacity-0",
+                  )}
+                  onLoad={() => setIsLoaded(true)}
                   sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
                   loading="lazy"
                   objectFit="contain"
@@ -2703,7 +2785,11 @@ export const various = [
                   alt={misteriousImages[19].alt}
                   width={350}
                   height={350}
-                  className="rounded-lg object-cover shadow-lg order-2 md:col-start-1 md:row-start-1 md:row-span-5"
+                  className={cn("rounded-lg object-cover shadow-lg order-2 md:col-start-1 md:row-start-1 md:row-span-5",
+                    "transition-opacity duration-500 ease-in-out",
+                    isLoaded ? "opacity-100" : "opacity-0",
+                  )}
+                  onLoad={() => setIsLoaded(true)}
                   sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
                   loading="lazy"
                   objectFit="contain"

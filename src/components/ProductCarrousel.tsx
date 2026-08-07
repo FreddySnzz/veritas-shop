@@ -16,6 +16,7 @@ import {
   ChevronUp 
 } from "lucide-react";
 import { useIsTouchDevice } from "@/data/hook/useMouseDrag";
+import { cn } from "@/lib/utils";
 
 interface ProductCarrouselProps {
   product: ProductModel;
@@ -42,6 +43,7 @@ export default function ProductCarrousel({
   const [currentIndex, setCurrentIndex] = useState(0);
   const [isAnimating, setIsAnimating] = useState(false);
   const [isExpanded, setIsExpanded] = useState(false);
+  const [isLoaded, setIsLoaded] = useState(false);
   const isTouchDevice = useIsTouchDevice();
   
   const [touchStart, setTouchStart] = useState<number | null>(null);
@@ -152,9 +154,12 @@ export default function ProductCarrousel({
                   priority={index === 0}
                   draggable={false}
                   sizes="(max-width: 768px) 100vw, (max-width: 1200px) 25vw, 20vw"
-                  className={`object-cover ${gridMode ? 
-                    'md:object-cover' : 'sm:object-contain'} 
-                  `}
+                  className={cn("object-cover",
+                    gridMode ? "md:object-cover" : "sm:object-contain",
+                    "transition-opacity duration-600 ease-in-out",
+                    isLoaded ? "opacity-100" : "opacity-0",
+                  )}
+                  onLoad={() => setIsLoaded(true)}
                 />
               </div>
             );

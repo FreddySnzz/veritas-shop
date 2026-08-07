@@ -1,6 +1,6 @@
 'use client'
 
-import { useRouter } from "next/navigation";
+import { CustomLink } from "./CustomLink";
 
 interface CardButtonProps extends React.HTMLAttributes<HTMLElement> {
   pushRoute: string;
@@ -9,14 +9,13 @@ interface CardButtonProps extends React.HTMLAttributes<HTMLElement> {
 };
 
 export default function CardButton(props: CardButtonProps) {
-  const router = useRouter();
-
   return (
-    <div 
-      onClick={() => router.push(props.pushRoute)}
+    <CustomLink
+      href={props.pushRoute}
+      aria-label="Ver detalhes"
       className={`relative flex p-4 rounded-2xl h-fit cursor-pointer ${props.className}`}
     >
       {props.children}
-    </div>
+    </CustomLink>
   );
 };

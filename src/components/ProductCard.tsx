@@ -2,9 +2,11 @@
 
 import Image from "next/image";
 import Link from "next/link";
+import { useState } from "react";
 import ProductModel from "@/data/models/Product.model";
 import { mountProductUrl } from "@/data/functions/removeAccentsAndSpaces";
 import { formatCurrency } from "@/data/functions/formatAndCapitalize";
+import { cn } from "@/lib/utils";
 
 interface ProductCardProps extends React.HTMLAttributes<HTMLElement> {
   product: ProductModel;
@@ -12,6 +14,7 @@ interface ProductCardProps extends React.HTMLAttributes<HTMLElement> {
 };
 
 export default function ProductCard({ product, mode }: ProductCardProps) {
+  const [isLoaded, setIsLoaded] = useState(false);
   const mainImage = product.images_url?.[0] || null;
   const productUrl = `/${mountProductUrl(product.name, product.id)}`;
   
@@ -30,7 +33,11 @@ export default function ProductCard({ product, mode }: ProductCardProps) {
               alt={product.name}
               fill
               loading="eager"
-              className="object-cover group-hover:scale-105 transition-transform duration-300"
+              className={cn("object-cover group-hover:scale-105 transition-transform duration-300",
+                "transition-opacity duration-500 ease-in-out",
+                isLoaded ? "opacity-100" : "opacity-0",
+              )}
+              onLoad={() => setIsLoaded(true)}
               sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
             />
           ) : (

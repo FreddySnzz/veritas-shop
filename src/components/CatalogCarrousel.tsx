@@ -4,6 +4,7 @@ import Image from "next/image";
 import { useEffect, useState, useRef, TouchEvent } from "react";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import CatalogImageModel from "@/data/models/CatalogImage.model";
+import { cn } from "@/lib/utils";
 
 interface CatalogCarrouselProps {
   images: CatalogImageModel[];
@@ -26,6 +27,7 @@ export default function CatalogCarrousel({
 }: CatalogCarrouselProps) {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [isAnimating, setIsAnimating] = useState(false);
+  const [isLoaded, setIsLoaded] = useState(false);
   
   const [touchStart, setTouchStart] = useState<number | null>(null);
   const [touchEnd, setTouchEnd] = useState<number | null>(null);
@@ -117,7 +119,11 @@ export default function CatalogCarrousel({
                 alt={`Slide ${index + 1}`}
                 fill 
                 loading={index === 0 ? 'eager' : 'lazy'}
-                className="object-cover lg:object-contain pointer-events-none select-none"
+                className={cn("object-cover lg:object-contain pointer-events-none select-none",
+                  "transition-opacity duration-600 ease-in-out",
+                  isLoaded ? "opacity-100" : "opacity-0",
+                )}
+                onLoad={() => setIsLoaded(true)}
                 priority={index === 0} 
                 draggable={false}
                 sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"

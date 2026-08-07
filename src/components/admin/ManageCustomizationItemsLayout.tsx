@@ -32,6 +32,8 @@ import {
   deleteCustomizationItemAction 
 } from "@/app/actions/customizationItems.action";
 import { Input } from "../ui/input";
+import { CustomLink } from "../buttons/CustomLink";
+import { cn } from "@/lib/utils";
 
 interface ManageCustomizationItemsLayoutProps {
   customizationItems: CustomizationItemsModel[];
@@ -59,6 +61,7 @@ export default function ManageCustomizationItemsLayout({
   const [selectedCategory, setSelectedCategory] = useState<string>('');
   const [selectedCategoryToCopy, setSelectedCategoryToCopy] = useState<string>('');
   const [isLoading, setIsLoading] = useState(false);
+  const [isLoaded, setIsLoaded] = useState(false);
 
   if (searchText !== prevSearchText) {
     setPrevSearchText(searchText);
@@ -250,16 +253,17 @@ export default function ManageCustomizationItemsLayout({
     <div className="flex flex-col font-sans h-full overflow-hidden">
       <div className="flex flex-1 w-full overflow-y-auto scrollbar-hide content-start lg:gap-6">
         <div className="flex flex-col gap-3">
-          <CustomButton 
-            onClick={() => router.push('/admin/estoques/itens-personalizacao/adicionar')}
+          <CustomLink
+            href="/admin/estoques/itens-personalizacao/adicionar"
+            aria-label="Adicionar item"
             className={`hidden lg:flex lg:flex-row py-2 lg:px-8 rounded-lg shadow-xs
               bg-primary text-white hover:bg-primary/90 font-bold text-base
               dark:bg-details dark:hover:bg-details/80
             `}
           >
             <Plus className="w-6 h-6" />
-            <span>Adicionar item</span>
-          </CustomButton>
+            <p>Adicionar item</p>
+          </CustomLink>
 
           <CustomButton
             onClick={() => setIsOpenCopyModal(true)}
@@ -399,16 +403,17 @@ export default function ManageCustomizationItemsLayout({
             </div>
 
             <div className="hidden md:flex">
-              <CustomButton 
-                onClick={() => router.push('/admin/estoques/itens-personalizacao/adicionar')}
+              <CustomLink
+                href="/admin/estoques/itens-personalizacao/adicionar"
+                aria-label="Adicionar item"
                 className={`hidden md:flex lg:flex-row py-2 lg:px-8 rounded-lg shadow-xs
                   bg-primary text-white hover:bg-primary/90 font-bold text-base
                   dark:bg-details dark:hover:bg-details/80
                 `}
               >
                 <Plus className="w-6 h-6" />
-                <span>Adicionar</span>
-              </CustomButton>
+                <p>Adicionar</p>
+              </CustomLink>
             </div>
           </div>
 
@@ -450,7 +455,11 @@ export default function ManageCustomizationItemsLayout({
                           draggable="false"
                           fill
                           loading="eager"
-                          className="aspect-square rounded-2xl object-cover shadow-sm"
+                          className={cn("aspect-square rounded-2xl object-cover shadow-sm",
+                            "transition-opacity duration-500 ease-in-out",
+                            isLoaded ? "opacity-100" : "opacity-0",
+                          )}
+                          onLoad={() => setIsLoaded(true)}
                           sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
                         />
                       </div>

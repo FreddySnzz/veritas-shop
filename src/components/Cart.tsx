@@ -26,7 +26,6 @@ import Alert from "./Alert";
 import Link from "next/link";
 import { mountProductUrl } from "@/data/functions/removeAccentsAndSpaces";
 import { useAuth } from "@/data/context/AuthContext";
-import { CustomButton } from "./buttons/CustomButton";
 import { useRouter } from "next/navigation";
 import { createOrderAction } from "@/app/actions/orders.action";
 import { CreateOrderRequest } from "@/data/types/order.type";
@@ -37,6 +36,8 @@ import { getCouponByCodeAction, updateCouponAction, validateCouponAction } from 
 import { applyCoupon } from "@/data/functions/applyCoupon";
 import { cn } from "@/lib/utils";
 import { AppliedCoupon } from "@/data/types/coupon.type";
+import { centsToPriceString } from "@/data/functions/inputMasks";
+import { CustomLink } from "./buttons/CustomLink";
 
 interface CartProps extends React.HTMLAttributes<HTMLElement> {
   whatsappNumber?: string;
@@ -60,6 +61,7 @@ export default function Cart({
   const [isClearCartModalOpen, setIsClearCartModalOpen] = useState(false);
   const [isDeleteItemCartModalOpen, setIsDeleteItemCartModalOpen] = useState(false);
   const [itemCartIdToDelete, setItemCartIdToDelete] = useState<string>('');
+  const [isLoaded, setIsLoaded] = useState(false);
   const isCartEmpty = cartCount === 0;
   const router = useRouter();
 
@@ -126,6 +128,10 @@ export default function Cart({
           } else if (!couponApplied.applied_discount) {
             toast.error(`Cupom não pode ser aplicado à ${couponApplied.product?.name}`);
             setLockCoupon(false);
+          } else if (couponApplied.applied_discount) {
+            toast.success(`Cupom aplicado ao carrinho com sucesso!`);
+            setLockCoupon(true);
+            break;
           }
         }
       }
@@ -152,7 +158,7 @@ export default function Cart({
     }, 0);
 
     for (const coupon of productsWithCouponApplied) {
-      if (coupon.applied_discount && coupon.coupon_type === 'percentage' || coupon.coupon_type === 'fixed') {
+      if (coupon.applied_discount && coupon.coupon_type === 'percentage' || coupon.applied_discount && coupon.coupon_type === 'fixed') {
         total -= Number(coupon.discount_price);
       }
     }
@@ -181,15 +187,12 @@ export default function Cart({
     productsWithCouponApplied: AppliedCoupon[]
   ) => {
     let mensagem = `Olá! Gostaria de finalizar o seguinte pedido:\n\n`;
-    let totalGeral = 0;
     
     items.forEach((item: CartProductItem, index: number) => {
       const { product, quantity, customization } = item;
       let customizationPrice = Number(product.customizationPrice);
       
       if (!customizationPrice) customizationPrice = 0;
-      const subtotal = (product.price + customizationPrice) * quantity;
-      totalGeral += subtotal;
       
       mensagem += `----------------------------------------------------\n`;
       mensagem += `*ITEM ${index + 1}: ${formatAndCapitalize(product.name)}*\n`;
@@ -198,7 +201,6 @@ export default function Cart({
       if (productsWithCouponApplied.length > 0) {
         for (const coupon of productsWithCouponApplied) {
           if (coupon.applied_discount && coupon.discount_price && coupon.product?.id === product.id) {
-            totalGeral -= Number(coupon.discount_price);
             mensagem += `Cupom aplicado: "${couponCode.toLocaleUpperCase()}" ( - ${formatCurrency(Number(coupon.discount_price))})\n`;
           }
         }
@@ -213,8 +215,17 @@ export default function Cart({
       mensagem += `\n`;
     });
 
+    if (productsWithCouponApplied.length === 1) {
+      mensagem += `============================\n`;
+      mensagem += `*Cupom Aplicado: "${couponCode.toLocaleUpperCase()}" (${
+        productsWithCouponApplied[0]?.coupon_percentage_value ? 
+        `${productsWithCouponApplied[0]?.coupon_percentage_value}% OFF` :
+        productsWithCouponApplied[0]?.coupon_fixed_value && 
+        `- ${formatCurrency(Number(centsToPriceString(productsWithCouponApplied[0]?.coupon_fixed_value)))} OFF`
+      })*\n`;
+    }
     mensagem += `============================\n`;
-    mensagem += `*Total Estimado: ${formatCurrency(totalGeral)}*\n`;
+    mensagem += `*Total Estimado: ${calculeTotalCartValue()}*\n`;
     mensagem += `============================\n`;
     mensagem += `Aguardo a confirmação e dados para pagamento!`;
 
@@ -259,28 +270,27 @@ export default function Cart({
       console.error('Erro ao criar pedido:', error);
       toast.error("Erro ao criar pedido.");
     }
-  };
+  }
 
   const renderFinishOrderButton = () => {
     if (isAuthenticated) 
-      return <WhatsAppButton clickCallback={createOrder} message={generateWhatsAppMessage(items, productsWithCouponApplied)} />;
+      return <WhatsAppButton 
+        clickCallback={createOrder} 
+        message={generateWhatsAppMessage(items, productsWithCouponApplied)} 
+      />;
 
     return (
-      <CustomButton
-        type="button"
-        title="Faça login para ver o botão de WhatsApp"
+      <CustomLink
         aria-label="Faça login para ver o botão de WhatsApp"
-        onClick={() => router.push('/login?redirect=/carrinho')}
-        className={`w-full bg-primary dark:bg-details text-white hover:bg-primary/90 dark:hover:bg-details/90`}
+        href="/login?redirect=/carrinho"
+        className={`w-full bg-primary dark:bg-details text-white hover:bg-primary/90 dark:hover:bg-details/90 text-center`}
       >
         <p className="text-center">
           Faça login para concluir seu pedido
         </p>
-      </CustomButton>
+      </CustomLink>
     );
   }
-
-  // console.log(formatCurrency(Number(item.product.customizationPrice * item.quantity)))
 
   return (
     <div className="flex-1 flex flex-col w-full min-h-0 font-sans">
@@ -343,7 +353,11 @@ export default function Cart({
                               alt={item.product.name}
                               fill 
                               loading="eager"
-                              className="object-cover rounded-lg aspect-square" 
+                              className={cn("object-cover rounded-lg aspect-square",
+                                "transition-opacity duration-500 ease-in-out",
+                                isLoaded ? "opacity-100" : "opacity-0",
+                              )}
+                              onLoad={() => setIsLoaded(true)}
                               sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
                             />
                           </div>
@@ -460,7 +474,7 @@ export default function Cart({
                     <div className="flex flex-col font-bold my-4 w-full gap-2 md:order-4">
                       <Label className="text-nowrap">
                         <Tag className="w-4 h-4 text-primary dark:text-details" />
-                        Possui cupom de desconto?
+                        {productsWithCouponApplied.length > 0 ? 'Cupom Aplicado:' : 'Possui cupom de desconto?'}
                       </Label>
                       <div className="flex gap-2 items-center">
                         <CustomInput
@@ -534,7 +548,7 @@ export default function Cart({
                         </div>
                       ))}
                     </div>
-                    <div className="flex justify-between md:mt-2 w-full gap-2 items-baseline md:order-6">
+                    <div className="flex justify-between mt-2 w-full gap-2 items-baseline md:order-6">
                       <p className="text-nowrap">Entrega</p>
                       <hr className="border-dashed border-gray-300 w-full" />
                       <p className="text-nowrap">
@@ -544,7 +558,34 @@ export default function Cart({
                         }
                       </p>
                     </div>
-                    <div className="flex font-bold dark:font-black justify-between mt-6 w-full gap-2 items-baseline dark:text-details md:order-7">
+                    {productsWithCouponApplied.length === 1 && !productsWithCouponApplied[0].product && productsWithCouponApplied[0].coupon_percentage_value ? (
+                      <div className="flex flex-col md:order-7">
+                        <div className="flex font-bold justify-between mt-4 w-full gap-2 items-baseline text-primary dark:text-details">
+                          <p className="text-nowrap">{couponCode.toLocaleUpperCase()}</p>
+                          <hr className="border-dashed border-gray-300 dark:border-details w-full" />
+                          <p className="text-nowrap">{`${productsWithCouponApplied[0]?.coupon_percentage_value}% OFF`}</p>
+                        </div>
+                        <div className="flex font-bold justify-between w-full gap-2 items-baseline text-muted-foreground/70">
+                          <p className="text-nowrap">Desconto</p>
+                          <hr className="border-dashed text-muted-foreground/70 w-full" />
+                          <p className="text-nowrap">- {formatCurrency(Number(productsWithCouponApplied[0]?.discount_price))}</p>
+                        </div>
+                      </div>
+                    ) : productsWithCouponApplied.length === 1 && !productsWithCouponApplied[0].product && productsWithCouponApplied[0].coupon_percentage_value && (
+                      <div className="flex flex-col md:order-7">
+                        <div className="flex font-bold justify-between mt-4 w-full gap-2 items-baseline text-primary dark:text-details">
+                          <p className="text-nowrap">{couponCode.toLocaleUpperCase()}</p>
+                          <hr className="border-dashed border-gray-300 dark:border-details w-full" />
+                          <p className="text-nowrap">{`${formatCurrency(Number(centsToPriceString(productsWithCouponApplied[0]?.coupon_fixed_value)))} OFF`}</p>
+                        </div>
+                        <div className="flex font-bold justify-between w-full gap-2 items-baseline text-muted-foreground/70">
+                          <p className="text-nowrap">Desconto</p>
+                          <hr className="border-dashed text-muted-foreground/70 w-full" />
+                          <p className="text-nowrap">- {formatCurrency(Number(productsWithCouponApplied[0]?.discount_price))}</p>
+                        </div>
+                      </div>
+                    )}
+                    <div className="flex font-bold dark:font-black justify-between mt-2 w-full gap-2 items-baseline dark:text-details md:order-8">
                       <p className="text-nowrap">Total</p>
                       <hr className="border-dashed border-gray-300 dark:border-details w-full" />
                       <p>{calculeTotalCartValue()}</p>

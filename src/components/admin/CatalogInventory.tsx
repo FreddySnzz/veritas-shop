@@ -10,9 +10,9 @@ import { FloatAddButton } from "../buttons/AddButton";
 import { formatCurrency } from "@/data/functions/formatAndCapitalize";
 import { CustomInput } from "../inputs/CustomInput";
 import { Plus } from "lucide-react";
-import { CustomButton } from "../buttons/CustomButton";
-import { useRouter } from "next/navigation";
 import { ProductCategoryModel } from "@/data/models/ProductCategory.model";
+import { CustomLink } from "../buttons/CustomLink";
+import { cn } from "@/lib/utils";
 
 interface ManageCatalogInventoryProps {
   products: ProductModel[];
@@ -24,6 +24,7 @@ export default function ManageCatalogInventory({
   categories
 }: ManageCatalogInventoryProps) {
   const [searchText, setSearchText] = useState('');
+  const [isLoaded, setIsLoaded] = useState(false);
 
   const filteredData = useMemo(() => {
     if (!searchText) return products;
@@ -33,8 +34,6 @@ export default function ManageCatalogInventory({
       item.name.toLowerCase().includes(lowerSearch)
     );
   }, [searchText, products]);
-
-  const router = useRouter();
 
   return (
     <div className="flex flex-col font-sans h-full overflow-hidden">
@@ -52,17 +51,16 @@ export default function ManageCatalogInventory({
           />
         </div>
         
-        <div>
-          <CustomButton 
-            onClick={() => router.push('/admin/estoques/catalogo/adicionar')}
-            className={`hidden md:flex lg:flex-row py-2 lg:px-8 rounded-lg shadow-xs font-bold text-base
-              bg-primary dark:bg-details text-white hover:bg-primary/90 dark:hover:bg-details/80 
-            `}
-          >
-            <Plus className="w-6 h-6" />
-            <span>Adicionar</span>
-          </CustomButton>
-        </div>
+        <CustomLink
+          aria-label="Adicionar"
+          href="/admin/estoques/catalogo/adicionar"
+          className={`hidden md:flex lg:flex-row py-2 lg:px-8 rounded-lg shadow-xs font-bold text-base
+            bg-primary dark:bg-details text-white hover:bg-primary/90 dark:hover:bg-details/80 
+          `}
+        >
+          <Plus className="w-6 h-6" />
+          <p>Adicionar</p>
+        </CustomLink>
       </div>
 
       <div className={`flex-1 min-h-0 grid grid-cols-1 lg:grid-cols-3 xl:grid-cols-4
@@ -103,7 +101,11 @@ export default function ManageCatalogInventory({
                         draggable="false"
                         fill
                         loading="eager"
-                        className="aspect-square rounded-2xl object-cover shadow-sm"
+                        className={cn("aspect-square rounded-2xl object-cover shadow-sm",
+                          "transition-opacity duration-500 ease-in-out",
+                          isLoaded ? "opacity-100" : "opacity-0",
+                        )}
+                        onLoad={() => setIsLoaded(true)}
                         sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
                       />
                     </div>

@@ -4,7 +4,6 @@ import Link from "next/link";
 import ReactMarkdown from 'react-markdown';
 import remarkGfm from "remark-gfm";
 import { useLayoutEffect, useMemo, useRef, useState } from "react";
-import { useRouter } from "next/navigation";
 import { useCart } from "@/data/context/CartContext";
 import ProductCarrousel from "./ProductCarrousel";
 import SeeMoreProducts from "./SeeMoreProducts";
@@ -18,6 +17,7 @@ import { formatCurrency } from "@/data/functions/formatAndCapitalize";
 import { useMediaQuery } from "@/data/hook/useMediaQuery";
 import DynamicBreadcrumb from "./DynamicBreadcrumb";
 import { SupportButton } from "./buttons/SupportButton";
+import { CustomLink } from "./buttons/CustomLink";
 
 interface ProductPageLayoutProps {
   product: ProductModel;
@@ -35,8 +35,6 @@ export default function ProductPageLayout({
   const [showReadMoreMobile, setShowReadMoreMobile] = useState(false);
   const contentDesktopRef = useRef<HTMLDivElement>(null);
   const contentMobileRef = useRef<HTMLDivElement>(null);
-
-  const router = useRouter();
 
   const isMdUp = useMediaQuery("(min-width: 768px)");
 
@@ -264,15 +262,13 @@ export default function ProductPageLayout({
 
               {product.customizable ? (
                 <div className="flex flex-col my-6">
-                  <CustomButton
-                    type="button"
+                  <CustomLink
                     aria-label="Ir para página de personalização"
-                    title="Ir para página de personalização"
+                    href={`/personalizar/${removeAccentsAndSpacesToURL(product.name)}`}
                     className="bg-primary hover:bg-primary/90 dark:bg-details dark:hover:bg-details/80 text-white transition-colors"
-                    onClick={() => router.push(`/personalizar/${removeAccentsAndSpacesToURL(product.name)}`)}
                   >
                     <p>Personalizar agora</p>
-                  </CustomButton>
+                  </CustomLink>
                 </div>
               ) : (
                 <div className="flex flex-col">
@@ -349,15 +345,13 @@ export default function ProductPageLayout({
         <div className="flex flex-col mt-8 px-8 lg:px-32">
           {product.customizable ? (
             <div className="flex flex-col lg:hidden mb-6">
-              <CustomButton
-                type="button"
+              <CustomLink
+                href={`/personalizar/${removeAccentsAndSpacesToURL(product.name)}`}
                 aria-label="Ir para página de personalização"
-                title="Ir para página de personalização"
                 className="bg-primary hover:bg-primary/90 dark:bg-details dark:hover:bg-details/80 text-white transition-colors"
-                onClick={() => router.push(`/personalizar/${removeAccentsAndSpacesToURL(product.name)}`)}
               >
                 <p>Personalizar agora</p>
-              </CustomButton>
+              </CustomLink>
             </div>
           ) : (
             <div className="flex flex-col lg:hidden mb-6">

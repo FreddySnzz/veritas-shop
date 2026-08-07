@@ -226,3 +226,10 @@ input[type="number"]::-webkit-outer-spin-button {
 input[type="number"] {
   -moz-appearance: textfield;
 }
+
+#nprogress .bar {
+  top: 56px !important;
+}
+#nprogress .spinner {
+  top: 56px !important;
+}

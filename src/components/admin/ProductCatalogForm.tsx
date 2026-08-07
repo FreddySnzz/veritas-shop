@@ -65,6 +65,7 @@ export function ProductForm({
   const [isEditMode, setIsEditMode] = useState(!!initialData);
   const [viewMarkdown, setViewMarkdown] = useState<boolean>(false);
   const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [isLoaded, setIsLoaded] = useState(false);
    
   const router = useRouter();
   const pathname = usePathname();
@@ -444,7 +445,11 @@ export function ProductForm({
                     alt={`Produto imagem ${index + 1}`}
                     fill
                     loading="eager"
-                    className="object-cover rounded-lg border border-gray-200"
+                    className={cn("object-cover rounded-lg border border-gray-200",
+                      "transition-opacity duration-500 ease-in-out",
+                      isLoaded ? "opacity-100" : "opacity-0",
+                    )}
+                    onLoad={() => setIsLoaded(true)}
                     sizes="(max-width: 768px) 50vw, 33vw"
                   />
 
