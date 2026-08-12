@@ -19,6 +19,7 @@ import { updateUserAction } from "@/app/actions/users.action";
 
 export default function UserLayout() {
   const { isAuthenticated, user, logout, updateUser } = useAuth();
+  const userName = user?.name.split(' ');
   const { theme } = useTheme();
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
@@ -75,17 +76,24 @@ export default function UserLayout() {
 
       await updateUserAction(user.id, payload);
       updateUser({
+        id: user.id,
         name: form.name,
         email: form.email,
-        phone: form.phone,
+        phone: "55" + form.phone,
       });
       
       toast.success("Usuário atualizado com sucesso!");
       setIsModalOpen(false);
+      setErrors({});
       router.refresh();
     } catch (error) {
-      console.error("Erro ao atualizar usuário:", error);
-      toast.error("Erro ao salvar edição.");
+      if (error instanceof Error && error.message === "Phone isn't possible to update") {
+        toast.error("Não é possível atualizar para este telefone.");
+      } else if (error instanceof Error && error.message === "Email isn't possible to update") {
+        toast.error("Não é possível atualizar para este email.");
+      } else {
+        toast.error("Erro ao salvar edição.");
+      };
     } finally {
       setIsLoading(false);
     };
@@ -96,7 +104,7 @@ export default function UserLayout() {
       <div className="flex flex-col">
         <div className="flex flex-col">
           <p className="text-lg sm:text-xl md:text-2xl font-bold text-secondary dark:text-zinc-50">
-            Bem-vindo ao seu perfil, {user?.name}!
+            Bem-vindo ao seu perfil, {userName && `${userName[0]} ${userName[userName.length - 1]}`}!
           </p>
           <p className="text-xs text-gray-400 dark:text-zinc-500">
             Fique à vontade para ver seus pedidos ou alterar suas informações.
@@ -200,7 +208,7 @@ export default function UserLayout() {
                 errors.email ? "border-red-500 focus:border-red-500 focus:ring-red-500" : ""
               )}
               disabled={isLoading}
-              required
+              required={user?.email ? true : false}
             />
           </div>
           {errors.email && <p className="text-xs text-red-500">{errors.email}</p>}
@@ -222,7 +230,6 @@ export default function UserLayout() {
               )}
               disabled={isLoading}
               PasswordMode
-              required
             />
           </div>
           {errors.password && <p className="text-xs text-red-500">{errors.password}</p>}
@@ -246,7 +253,7 @@ export default function UserLayout() {
                 errors.phone ? "border-red-500 focus:border-red-500 focus:ring-red-500" : ""
               )}
               disabled={isLoading}
-              required
+              required={user?.phone ? true : false}
             />
           </div>
           {errors.phone && <p className="text-xs text-red-500">{errors.phone}</p>}
@@ -257,7 +264,7 @@ export default function UserLayout() {
             type="button"
             onClick={() => setIsModalOpen(false)}
             className={`flex w-full px-4 py-2 rounded-lg items-center justify-center
-              bg-gray-100 hover:bg-gray-200 font-medium cursor-pointer
+              bg-gray-100 hover:bg-gray-200 font-medium cursor-pointer disabled:cursor-not-allowed
               dark:bg-zinc-800 dark:hover:bg-zinc-950/15 transition-colors
             `}
             disabled={isLoading}
@@ -268,7 +275,7 @@ export default function UserLayout() {
             form="edit-user-form"
             type="submit"
             className={`flex w-full px-4 py-2 rounded-lg items-center justify-center font-medium cursor-pointer
-              bg-primary text-white hover:bg-praimary/80 disabled:opacity-70
+              bg-primary text-white hover:bg-praimary/80 disabled:opacity-70 disabled:cursor-not-allowed
               dark:bg-details dark:hover:bg-details/80 transition-colors
             `}
             disabled={isLoading}

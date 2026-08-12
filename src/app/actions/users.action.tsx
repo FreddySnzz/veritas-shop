@@ -29,6 +29,16 @@ export async function getUserByIdAction(id: string) {
   }
 }
 
+export async function getUserByEmailAction(email: string) {
+  try {
+    const user = await getUserByEmail(email);
+    return serializeFirestoreData(user);
+  } catch (error) {
+    console.error("Erro ao carregar informações do usuário:", error);
+    throw error;
+  }
+}
+
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export async function updateUserAction(id: string, data: any) {
   try {

@@ -396,9 +396,10 @@ export default function OrderCard({
                   <p className="font-bold">Pedido:</p>
                   <button
                     type="button"
-                    aria-label="Copiar Number do pedido"
-                    title="Copiar Number do pedido"
+                    aria-label="Copiar número do pedido"
+                    title="Copiar número do pedido"
                     onClick={handleCopyOrderNumberToClipboard}
+                    className="cursor-copy"
                   >
                     <p className="dark:text-zinc-50">
                       {order?.order_number}
@@ -471,7 +472,7 @@ export default function OrderCard({
                       title="Atualizar status do pedido"
                       aria-label="Atualizar status do pedido"
                       className={cn("border-none hover:border-none w-full cursor-pointer",
-                        "focus:outline-none focus:ring-0 focus:ring-offset-0",
+                        "focus:outline-none focus:ring-0 focus:ring-offset-0 transition-all",
                         "bg-gray-50 dark:bg-zinc-900/40 hover:bg-primary/10 dark:hover:bg-zinc-900/50 text-secondary",
                         "dark:bg-input/30 dark:hover:bg-input/50 dark:border-zinc-700",
                       )}

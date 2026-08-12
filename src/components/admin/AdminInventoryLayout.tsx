@@ -9,9 +9,9 @@ import { CustomLink } from "../buttons/CustomLink";
 import { BackButton } from "../buttons/BackButton";
 
 export default function AdminInventoryLayout() {
-  const cardStyles = `flex-col shadow-lg shadow-secondary/5 border lg:h-80
+  const cardStyles = `flex-col shadow-lg shadow-secondary/5 border
     dark:shadow-black/15 dark:bg-input/50 dark:border-zinc-700
-    dark:text-zinc-200 dark:hover:bg-zinc-700 text-center`;
+    dark:text-zinc-200 dark:hover:bg-zinc-700 text-center py-6`;
 
   return (
     <div className="flex flex-col font-sans h-full">

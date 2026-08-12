@@ -269,11 +269,11 @@ export default function ManageCustomizationItemsLayout({
             onClick={() => setIsOpenCopyModal(true)}
             className={`hidden lg:flex lg:flex-row py-2 lg:px-8 rounded-lg shadow-xs
             bg-gray-300 text-secondary hover:bg-gray-400/60 font-bold text-sm border
-            transition-colors dark:bg-zinc-900 dark:border-none
+            transition-colors dark:bg-input/50 dark:hover:bg-input/30 dark:border-none
             `}
           >
             <BookCopy className="w-5 h-5" />
-            <span>Copiar Itens de Personalização</span>
+            <p>Copiar Itens de Personalização</p>
           </CustomButton>
 
           <CustomButton
@@ -329,7 +329,7 @@ export default function ManageCustomizationItemsLayout({
 
         {/* Tela mobile */}
         <div className={`flex flex-col flex-1 min-h-0 
-          gap-4 overflow-y-auto scrollbar-hide content-start pb-4`}
+          gap-4 overflow-y-auto scrollbar-hide md:scrollbar-thin md:pr-2 content-start pb-4`}
         >
           <div className={`fixed md:hidden bottom-22 right-5 z-15`}>
             <FloatAddButton

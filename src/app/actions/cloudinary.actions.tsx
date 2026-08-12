@@ -49,8 +49,6 @@ export async function uploadImageAction(formData: FormData) {
       overwrite: false,
       resource_type: "image"
     });
-    
-    console.log("URL:", result.secure_url);
     return result.secure_url;
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   } catch (error: any) {

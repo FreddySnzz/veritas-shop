@@ -48,13 +48,11 @@ export default function SeeMoreProducts({
             className="flex flex-1 flex-col h-full"
           >
             <motion.div
-              aria-label={!isTouchDevice ? `Arraste para ver mais` : `Ver mais ${product.name}`}
-              title={!isTouchDevice ? `Arraste para ver mais` : `Ver mais ${product.name}`}
               onClick={!isTouchDevice ? undefined : () => router.push(`/${mountProductUrl(product.name, product.id)}`)}
               whileHover={{ scale: 1.02 }}
               transition={{ type: "spring", stiffness: 500, damping: 30 }}
               className={`group flex flex-col rounded-lg w-40 h-60 md:w-60 md:h-70 cursor-pointer overflow-hidden
-                bg-white dark:bg-input/50 shadow-md transition-all duration-300 text-start 
+                bg-white dark:bg-input/30 shadow-md transition-all duration-300 text-start 
               `}
             >
               {product.images_url?.length ? (
@@ -68,7 +66,7 @@ export default function SeeMoreProducts({
                     fill
                     loading="eager"
                     className={cn("object-cover group-hover:scale-105 transition-transform duration-300",
-                      "transition-opacity duration-500 ease-in-out",
+                      "duration-500 ease-in-out transition-all",
                       isLoaded ? "opacity-100" : "opacity-0",
                     )}
                     sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
@@ -87,20 +85,22 @@ export default function SeeMoreProducts({
 
               <CustomLink
                 href={`/${mountProductUrl(product.name, product.id)}`}
+                className={`flex-1 flex flex-col cursor-pointer bg-white dark:bg-input/30 dark:hover:bg-input/30
+                  transition-all items-start px-3 w-full rounded-b-lg rounded-t-none
+                `}
                 aria-label={`Ver ${product.name}`}
-                className="flex-1 flex flex-col px-3 py-3 w-full cursor-pointer"
               >
-                <div className="flex flex-col gap-1 items-start">
-                  <p className="font-bold group-hover:text-primary dark:group-hover:text-details transition-colors">
+                <div className="flex flex-col items-start">
+                  <p className="font-bold group-hover:text-primary dark:group-hover:text-details transition-all">
                     {formatCurrency(product.initial_price)}
                   </p>
-                  <p className={`font-light text-sm text-gray-600 dark:text-zinc-200 line-clamp-1 
-                    group-hover:text-primary dark:group-hover:text-zinc-200 transition-colors text-start`
+                  <p className={`font-light dark:font-normal dark:group-hover:font-bold text-sm text-gray-600 dark:text-zinc-200 line-clamp-1
+                    group-hover:text-primary dark:group-hover:text-zinc-200 transition-all text-start`
                   }>
                     {product.name}
                   </p>
                   <p className={`absolute right-3 bottom-1 text-xs text-primary font-medium opacity-0 
-                    group-hover:opacity-100 dark:group-hover:text-details transition-opacity mb-0.5`
+                    group-hover:opacity-100 dark:group-hover:text-details transition-all mb-0.5`
                   }>
                     Ver mais →
                   </p>

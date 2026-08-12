@@ -19,6 +19,10 @@ export default async function Home() {
   const { user } = await getCachedAdminInfoAction();
   const products = await getCachedProductsAction();
   const availableProducts = products?.filter((product: ProductModel) => product.available);
+  const catalogProducts = availableProducts
+    .filter((product: ProductModel) => product.featured)
+    .slice(0, 10);
+  
   const images = await getCachedCatalogImagesAction();
   const availableImages = images?.filter((img: CatalogImageModel) => img.available);
 
@@ -36,7 +40,7 @@ export default async function Home() {
             className={`${availableImages.length === 0 && 'hidden'} mt-14 md:h-[60vh]`}
           />
           <div className="px-6 md:px-12 lg:px-32">
-            <CatalogLayout products={availableProducts} />
+            <CatalogLayout products={catalogProducts} />
           </div>
           <div className="mt-8">
             <CatalogRosaryReconstructionCard 

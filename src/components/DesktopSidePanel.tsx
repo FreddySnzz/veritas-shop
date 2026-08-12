@@ -1,5 +1,6 @@
 'use client';
 
+import { cn } from '@/lib/utils';
 import { ReactNode } from 'react';
 
 interface DesktopSidePanelProps {
@@ -18,10 +19,10 @@ export function DesktopSidePanel({
   return (
     <aside
       aria-label='Painel lateral'
-      className={`flex shrink-0 flex-col lg:max-w-80 xl:max-w-100 ${className}`}
+      className={cn("flex shrink-0 flex-col lg:max-w-80 xl:max-w-100", className)}
     >
       <div className={`sticky top-0 flex flex-col gap-4`}>
-        <div className={`bg-white dark:bg-input/0 lg:dark:bg-input/50 rounded-xl ${contentClassName}`}>
+        <div className={cn("bg-white dark:bg-input/0 lg:dark:bg-input/50 rounded-xl", contentClassName)}>
           {title && (
             <h2 className="text-sm font-bold text-secondary dark:text-zinc-50 mb-3">
               {title}

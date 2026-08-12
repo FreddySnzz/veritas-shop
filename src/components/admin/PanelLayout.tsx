@@ -44,6 +44,7 @@ export default function PanelLayout({ categories, className }: PanelLayoutProps)
       await refreshCacheAction('products'); 
       await refreshCacheAction('customization_items'); 
       await refreshCacheAction('catalog_images');
+      await refreshCacheAction('products_categories');
       toast.success("Catálogo atualizado com sucesso!");
     } catch (error) {
       console.error(error);

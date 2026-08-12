@@ -13,6 +13,7 @@ import {
 import { cn } from "@/lib/utils";
 import { toast } from "sonner";
 import CustomModal from "./modals/CustomModal";
+import { bibleBooksList } from "@/data/constants/bible-books";
 
 const supportedLanguages = [
   { value: 'pt', label: 'Português' },
@@ -29,6 +30,7 @@ export default function BibleLayout() {
   const [language, setLanguage] = useState<SupportedLanguage>('pt' as SupportedLanguage);
   const [isLoading, setIsLoading] = useState(!!search);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isChooseBookAndChapterModalOpen, setIsChooseBookAndChapterModalOpen] = useState(false);
 
   const fetchSearchData = useCallback(async (query: string) => {
     try {
@@ -40,11 +42,12 @@ export default function BibleLayout() {
     }
   }, []);
 
-  const handleSearch = async () => {
-    if (searchText === "") return;
+  const handleSearch = async (overrideText?: string) => {
+    const query = overrideText ?? searchText; 
+    if (query === "") return;
     
     setIsLoading(true);
-    const result = await fetchSearchData(searchText);
+    const result = await fetchSearchData(query);
     
     if (result) {
       setSearchResult(result);
@@ -91,6 +94,18 @@ export default function BibleLayout() {
     }
   }
 
+  const handleChooseBookAndChapterModalOpen = (bookName: string) => {
+    setSearchText(bookName);
+    setIsChooseBookAndChapterModalOpen(true);
+  }
+
+  const handleChooseChapter = (chapter: number) => {
+    const newSearchText = `${searchText} ${chapter}`;
+    setSearchText(newSearchText);
+    setIsChooseBookAndChapterModalOpen(false);
+    handleSearch(newSearchText);
+  }
+
   return (
     <section id={'bible-layout'} className="font-sans">
       <div className="flex flex-col items-center justify-center w-full mb-4">
@@ -110,7 +125,7 @@ export default function BibleLayout() {
             onKeyDown={(e) => {
               if (e.key === 'Enter') handleSearch();
             }}
-            className="bg-white dark:bg-input/30 shadow-xs"
+            className="bg-white dark:bg-input/30 shadow-xs pr-9"
           />
           
           <button
@@ -119,13 +134,13 @@ export default function BibleLayout() {
             className={`absolute right-2 cursor-pointer transition-all
               hover:bg-zinc-50 dark:hover:bg-input/50 rounded-lg p-1
             `}
-            onClick={handleSearch}
+            onClick={() => handleSearch()}
           >
             <Search className="w-5 h-5 text-secondary cursor-pointer" />
           </button>
         </div>
 
-        { searchText.length > 0 && (
+        {searchText.length > 0 && (
           <button
             aria-label="Limpar busca"
             title="Limpar busca"
@@ -246,6 +261,48 @@ export default function BibleLayout() {
         )
       })}
 
+      <div className={cn("flex flex-col gap-8 mt-4")}>
+        <div className="flex flex-col gap-2">
+          <p className="font-bold">Antigo Testamento</p>
+          <div className={cn("grid grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 2xl:grid-cols-7 gap-2")}>
+            {bibleBooksList.length && bibleBooksList.map((book, index) => book.testament === "old" && (
+              <button
+                key={index} 
+                aria-label={`Buscar em ${book.book_name}`}
+                title={`Buscar em ${book.book_name}`}
+                type="button"
+                className={cn("flex text-[0.65rem] cursor-pointer px-3 py-1 justify-center items-center hover:bg-zinc-200 dark:hover:bg-input/30",
+                  "border border-zinc-300 dark:border-muted-foreground/50 rounded-lg transition-all text-secondary dark:text-zinc-300"
+                )}
+                onClick={() => handleChooseBookAndChapterModalOpen(book.book_name)}
+              >
+                {book.book_name}
+              </button>
+            ))}
+          </div>
+        </div>
+
+        <div className="flex flex-col gap-2">
+          <p className="font-bold">Novo Testamento</p>
+          <div className={cn("grid grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 2xl:grid-cols-7 gap-2")}>
+            {bibleBooksList.length && bibleBooksList.map((book, index) => book.testament === "new" && (
+              <button
+                key={index} 
+                aria-label={`Buscar em ${book.book_name}`}
+                title={`Buscar em ${book.book_name}`}
+                type="button"
+                className={cn("flex text-[0.65rem] cursor-pointer px-3 py-1 justify-center items-center hover:bg-zinc-200 dark:hover:bg-input/30",
+                  "border border-zinc-300 dark:border-muted-foreground/50 rounded-lg transition-all text-secondary dark:text-zinc-300"
+                )}
+                onClick={() => handleChooseBookAndChapterModalOpen(book.book_name)}
+              >
+                {book.book_name}
+              </button>
+            ))}
+          </div>
+        </div>
+      </div>
+
       <CustomModal
         modalOpen={isModalOpen}
         onClose={() => setIsModalOpen(false)}
@@ -264,6 +321,36 @@ export default function BibleLayout() {
                 </p>
               </div>
             )
+          })}
+        </div>
+      </CustomModal>
+
+      <CustomModal
+        modalOpen={isChooseBookAndChapterModalOpen}
+        onClose={() => setIsChooseBookAndChapterModalOpen(false)}
+        title={`Capítulos do Livro de ${searchText}`}
+        className="max-h-[80vh]"
+      >
+        <div className="grid grid-cols-4 md:grid-cols-5 lg:grid-cols-6 xl:grid-cols-7 2xl:grid-cols-8 gap-2 overflow-y-auto md:scrollbar-thin md:pr-2">
+          {bibleBooksList.length && bibleBooksList.filter((book) => book.book_name === searchText).map((book) => {
+            const chapterList = [];
+
+            for (let i = 0; i < book.chapters; i++) {
+              chapterList.push(i + 1)
+            }
+
+            return chapterList.map((chapter, index) => (
+              <button
+                key={index}
+                type="button"
+                className={cn("flex text-[0.65rem] cursor-pointer px-3 py-1 justify-center items-center hover:bg-zinc-200 dark:hover:bg-input/30",
+                  "border border-zinc-300 dark:border-muted-foreground/50 rounded-lg transition-all text-secondary dark:text-zinc-300"
+                )}
+                onClick={() => handleChooseChapter(chapter)}
+              >
+                {chapter}
+              </button>
+            ))
           })}
         </div>
       </CustomModal>

@@ -6,6 +6,7 @@ import OrdersAdminLayout from "@/components/admin/OrdersAdminLayout";
 import ProductModel from "@/data/models/Product.model";
 import OrderModel from "@/data/models/Orders.model";
 import DynamicBreadcrumb from "@/components/DynamicBreadcrumb";
+import { getUserByIdAction } from "@/app/actions/users.action";
 
 export default async function OrdersPage() {
   const { user } = await getCachedAdminInfoAction();
@@ -13,15 +14,17 @@ export default async function OrdersPage() {
   const orders = await getAllOrdersAdminAction();
 
   const ordersRemapped: OrderModel[] = [];
-  orders.forEach((order: OrderModel) => {
+  for (const order of orders) {
     const product = products.find((product: ProductModel) => product.id === order.product_id);
+    const user = await getUserByIdAction(order.user_id);
     if (product) {
       ordersRemapped.push({
         ...order,
         product: product,
+        user: user,
       });
     }
-  });
+  }
 
   return (
     <div className="flex flex-col h-dvh overflow-y-auto bg-background-alternative dark:bg-background-dark">

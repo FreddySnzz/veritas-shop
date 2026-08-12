@@ -12,8 +12,6 @@ export function decodeJWT(token: string): User | null {
     const decoded = atob(payload.replace(/-/g, "+").replace(/_/g, "/"));
     const data = JSON.parse(decoded);
 
-    console.log('data', data);
-
     return {
       id: data.user?.id || data.id || data.sub,
       name: data.user?.name || data.name,

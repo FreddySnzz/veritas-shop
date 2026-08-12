@@ -79,7 +79,7 @@ export function ManageCustomizationItemCategory({ categories }: ManageCustomizat
 
   return (
     <div className="flex flex-col font-sans h-full overflow-hidden">
-      <div className="flex overflow-y-auto font-sans scrollbar-hide">
+      <div className="flex overflow-y-auto font-sans scrollbar-hide md:scrollbar-thin">
         <div className="flex w-full items-center justify-center md:gap-3 mb-2 md:mb-4">
           <div className="relative flex items-center grow">
             <CustomInput
@@ -97,7 +97,7 @@ export function ManageCustomizationItemCategory({ categories }: ManageCustomizat
           <div>
             <CustomButton 
               onClick={(e: React.MouseEvent) => handleOpenCategoryModal(e)}
-              className={`hidden md:flex lg:flex-row py-2 lg:px-8 rounded-lg shadow-xs
+              className={`hidden md:flex lg:flex-row py-1.5 lg:px-8 rounded-lg shadow-xs
                 bg-primary text-white hover:bg-primary/90 font-bold text-base
                 dark:bg-details dark:hover:bg-details/80
               `}
@@ -136,7 +136,7 @@ export function ManageCustomizationItemCategory({ categories }: ManageCustomizat
         </div>
       ) : (
         <>
-          <div className="flex-1 flex flex-col gap-2 overflow-y-auto scrollbar-hide">
+          <div className="flex-1 flex flex-col gap-2 overflow-y-auto scrollbar-hide md:scrollbar-thin md:pr-2">
             <div className={`flex flex-col md:grid md:grid-cols-2 xl:grid-cols-3 gap-2`}>
               {filteredData.map((category: CustomizationItemsCategoryModel) => (
                 <div 
@@ -168,9 +168,9 @@ export function ManageCustomizationItemCategory({ categories }: ManageCustomizat
                         rounded-lg bg-gray-200 dark:bg-input/50 md:w-25 md:h-25
                       `}
                     >
-                      <span className="text-[0.6rem] text-secondary px-2 text-center font-medium">
+                      <p className="text-[0.6rem] text-muted-foreground dark:text-zinc-500 px-2 text-center font-medium">
                         Sem Imagem
-                      </span>
+                      </p>
                     </div>
                   )}
                   
