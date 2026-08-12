@@ -105,9 +105,6 @@ export async function updateCoupon(
   id: string, 
   data: CouponModel
 ): Promise<CouponModel> {
-  console.log("id =========", id);
-  console.log("data =========", data);
-
   const docRef = doc(db, Collections.COUPONS_COLLECTION, id);
   const docSnap = await getDoc(docRef);
   

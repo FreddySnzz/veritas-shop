@@ -32,6 +32,7 @@ export function CustomInput({
   disabled,
   max,
   className,
+  ...props
 }: CustomInputProps) {
   const [showPassword, setShowPassword] = useState(PasswordMode);
   const toggleShowPassword = () => setShowPassword(!showPassword);
@@ -55,6 +56,7 @@ export function CustomInput({
         maxLength={max}
         onKeyDown={onKeyDown}
         disabled={disabled}
+        {...props}
       />
 
       {withClearButton && value && value.length > 0 && (

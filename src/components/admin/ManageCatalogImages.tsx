@@ -159,8 +159,8 @@ export default function ManageCatalogImages({ images, className }: ManageCatalog
         </div>
       ) : (
         <>
-          <div className={`flex-1 flex flex-col min-h-0 overflow-y-auto content-start 
-            gap-4 scrollbar-hide lg:grid lg:grid-cols-2 xl:grid-cols-3 lg:gap-4`}
+          <div className={`flex-1 flex flex-col min-h-0 overflow-y-auto content-start mt-4 lg:mt-0
+            gap-4 scrollbar-hide md:scrollbar-thin md:pr-2 lg:grid lg:grid-cols-2 xl:grid-cols-3 lg:gap-4`}
           >
             {images?.map((image) => {
               const changes = pendingChanges[image.id];

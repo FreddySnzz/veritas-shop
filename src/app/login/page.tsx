@@ -24,6 +24,7 @@ import { signInWithPopup } from 'firebase/auth';
 import { auth, googleProvider } from '@/data/firebase/config';
 import { RolesEnum } from '@/data/types/enums/roles.enum';
 import validate from '@/data/schemas/validate-forms';
+import { getUserByEmailAction } from "../actions/users.action";
 
 export default function Login() {
   const searchParams = useSearchParams();
@@ -93,29 +94,29 @@ export default function Login() {
       const result = await signInWithPopup(auth, googleProvider);
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
       const parseUser = result.user as any;
+      const user = await getUserByEmailAction(parseUser.email);
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
       const safeUserData: any = {
-        uid: result.user.uid,
-        email: result.user.email,
-        phone: result.user?.phoneNumber,
-        displayName: result.user.displayName,
+        uid: user ? user[0].id : result.user.uid,
+        email: user ? user[0].email : result.user.email,
+        phone: user ? user[0].phone : result.user?.phoneNumber,
+        displayName: user ? user[0].name : result.user.displayName,
         accessToken: parseUser.accessToken,
         role: RolesEnum.USER,
       };
 
       await registerWithGoogleAction(safeUserData);
-
       login({
         id: safeUserData.uid,
         name: safeUserData.displayName,
         email: safeUserData.email,
-        phone: safeUserData.phone,
+        phone: safeUserData.phone.slice(2, safeUserData.phone.length),
         role: safeUserData.role,
       });
+
       toast.success("Login realizado com sucesso");
       router.push(redirectUrl);
       router.refresh();
-
       setTimeout(() => {
         router.push(redirectUrl);
       }, 100);
@@ -223,12 +224,12 @@ export default function Login() {
           <button 
             type="submit" 
             className={`flex w-full px-4 py-3 rounded-lg text-white items-center justify-center
-              bg-primary dark:bg-details dark:hover:bg-details/80 hover:bg-primary/90 cursor-pointer
+              bg-primary dark:bg-details dark:hover:bg-details/80 hover:bg-primary/90 cursor-pointer disabled:cursor-not-allowed
             `} 
             disabled={isLoading}
           >
             {isLoading ? 
-              <div className="flex justify-center items-center gap-2"> 
+              <div className="flex justify-center items-center gap-2 disabled:cursor-not-allowed"> 
                 <Loader2 className="animate-spin h-4 w-4" />
                 <span>Entrando...</span>
               </div> : 
@@ -347,7 +348,7 @@ export default function Login() {
             disabled={isLoading}
           >
             {isLoading ? 
-              <div className="flex justify-center items-center gap-2"> 
+              <div className="flex justify-center items-center gap-2 disabled:cursor-not-allowed"> 
                 <Loader2 className="animate-spin h-4 w-4" />
                 <span>Criando sua conta...</span>
               </div> : 
@@ -364,7 +365,8 @@ export default function Login() {
             title="Entrar com uma conta Google"
             aria-label="Entrar com uma conta Google"
             onClick={handleGoogleLogin}
-            className="flex items-center justify-center gap-4 text-secondary hover:text-blue-400 cursor-pointer"
+            className="flex items-center justify-center gap-4 text-secondary hover:text-blue-400 cursor-pointer disabled:cursor-not-allowed"
+            disabled={isLoading}
           >
             <FaGoogle className="w-6 h-6" />
             <p className="text-center hover:underline">
@@ -375,14 +377,17 @@ export default function Login() {
 
         <div className="flex w-full justify-center">
           <div className="flex flex-col mt-8 justify-center w-fit">
-            <button className={`text-sm text-secondary cursor-pointer`}>
+            <button 
+              className={`text-sm text-secondary cursor-pointer disabled:cursor-not-allowed`}
+              disabled={isLoading}
+            >
               {mode === 'login' ? "Ainda não possui uma conta?" : "Já possui uma conta?" }
             </button>
             <button
               type="button"
               title={mode === "login" ? "Criar uma conta" : "Entrar com uma conta existente"}
               aria-label={mode === "login" ? "Criar uma conta" : "Entrar com uma conta existente"}
-              className={`text-sm text-secondary dark:text-details font-bold cursor-pointer hover:underline`}
+              className={`text-sm text-secondary dark:text-details font-bold cursor-pointer hover:underline disabled:cursor-not-allowed`}
               onClick={() => {
                 setMode((prev) => (prev === 'login' ? 'register' : 'login'))
                 setForm({
@@ -392,6 +397,7 @@ export default function Login() {
                   password: '',
                 })
               }}
+              disabled={isLoading}
             >
               {mode === 'login' ? "Criar uma conta agora" : "Entrar com uma conta existente" }
             </button>
@@ -401,7 +407,7 @@ export default function Login() {
         <div className="mt-8 flex items-center justify-center">
           <Link
             href="/"
-            className={`inline-flex items-center justify-center text-xs text-secondary underline cursor-pointer`}
+            className={`inline-flex items-center justify-center text-xs text-secondary underline cursor-pointer disabled:cursor-not-allowed`}
           >
             Voltar para Página Inicial
           </Link>

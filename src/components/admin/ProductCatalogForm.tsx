@@ -46,9 +46,7 @@ export function ProductForm({
   productCategories,
 }: ProductFormProps) {
   const [name, setName] = useState<string>(initialData?.name || "");
-  const [category, setCategory] = useState<string>(
-    productCategories.find((category) => category.id === initialData?.category_id)?.name || ""
-  );
+  const [category, setCategory] = useState<string>(initialData?.category_id || '');
   const [desc, setDesc] = useState<string>(initialData?.desc || "");
   const [initialPrice, setInitialPrice] = useState<string>(centsToPriceString(initialData?.initial_price || 0));
   const [available, setAvailable] = useState<boolean>(initialData?.available || false);
@@ -138,17 +136,17 @@ export function ProductForm({
       
       if (fileInputRef.current) fileInputRef.current.value = "";
     };
-  };
+  }
 
   const handleRemoveExistingImage = (urlToRemove: string) => {
     setExistingImages(prev => prev.filter(url => url !== urlToRemove));
-  };
+  }
 
   const handleRemoveNewFile = (indexToRemove: number) => {
     URL.revokeObjectURL(newFilesPreviews[indexToRemove]);
     setNewFiles(prev => prev.filter((_, index) => index !== indexToRemove));
     setNewFilesPreviews(prev => prev.filter((_, index) => index !== indexToRemove));
-  };
+  }
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -223,18 +221,18 @@ export function ProductForm({
     } finally {
       setIsLoading(false);
     };
-  };
+  }
 
   const handleButtonClick = () => {
     fileInputRef.current?.click();
-  };
+  }
 
   const handleMainSwitchChange = (checked: boolean) => {
     setCustomizable(checked);
     if (!checked) {
       setCustomizationItems([]); 
     };
-  };
+  }
   
   const toggleCustomizationCategory = (
     categoryName: string, 
@@ -253,7 +251,7 @@ export function ProductForm({
         return prev.filter((item) => item.category !== category);
       };
     });
-  };
+  }
 
   const toggleRequiredStatus = (
     categoryName: string, 
@@ -263,16 +261,16 @@ export function ProductForm({
     setCustomizationItems((prev) => prev.map(item => 
       item.category === category ? { ...item, required: isRequired } : item
     ));
-  };
+  }
    
   return (
     <div className="flex-1 flex flex-col w-full min-h-0 overflow-hidden font-sans">
       <form 
         id="product-catalog-form"
         onSubmit={handleSubmit} 
-        className="flex-1 flex flex-col gap-4 overflow-y-auto scrollbar-hide"
+        className="flex-1 flex flex-col gap-4 overflow-y-auto scrollbar-hide md:scrollbar-thin"
       >
-        <div className="flex flex-col w-full md:flex-row gap-4 lg:gap-8">
+        <div className="flex flex-col w-full md:flex-row gap-4 lg:gap-8 md:pr-2">
           <div className="flex flex-col gap-2 w-full">
             <Label htmlFor="name" className="text-sm dark:text-zinc-50">
               Nome *
@@ -293,6 +291,7 @@ export function ProductForm({
               Categoria *
             </Label>
             <Select 
+              value={category}
               onValueChange={(value) => setCategory(value)}
               disabled={isLoading}
             >
@@ -344,7 +343,7 @@ export function ProductForm({
           </div>
         </div>
 
-        <div className="flex flex-col w-full lg:flex-row gap-4 lg:gap-8">
+        <div className="flex flex-col w-full lg:flex-row gap-4 lg:gap-8 md:pr-2">
           <div className="flex flex-col gap-2 w-full">
             <div className="flex flex-col items-baseline">
               <Label htmlFor="description" className="text-sm dark:text-zinc-50">
@@ -400,7 +399,7 @@ export function ProductForm({
           </div>
         </div>
 
-        <div className="flex flex-col w-full">
+        <div className="flex flex-col w-full md:pr-2">
           <div className="flex items-center justify-between">
             <Label htmlFor="image" className="text-sm dark:text-zinc-50">
               Galeria de Imagens (Opcional)
@@ -513,7 +512,7 @@ export function ProductForm({
           )}
         </div>
 
-        <div className="flex flex-col gap-4">
+        <div className="flex flex-col gap-4 md:pr-2">
           <div className="flex flex-col w-full lg:flex-row gap-4 lg:gap-8">
             <div className="flex items-center w-full justify-between px-4 py-3 bg-white dark:bg-input/30 rounded-lg border">
               <Label htmlFor="available">Produto Disponível no Estoque?</Label>

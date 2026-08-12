@@ -179,6 +179,18 @@ export async function updateUser(
     throw new UserServiceError("User not exists", 404);
   };
 
+  if (data.phone) {
+    const verifyDuplicatedPhone = await getUserByPhone("55" + data.phone);
+    if (verifyDuplicatedPhone?.length && id !== verifyDuplicatedPhone[0].id) {
+      throw new UserServiceError("Phone isn't possible to update", 400);
+    };
+  } else if (data.email) {
+    const verifyDuplicatedEmail = await getUserByEmail(data.email);
+    if (verifyDuplicatedEmail?.length && id !== verifyDuplicatedEmail[0].id) {
+      throw new UserServiceError("Email isn't possible to update", 400);
+    };
+  };
+
   const updatedData = {
     ...docSnap.data(),
     ...data,

@@ -19,10 +19,10 @@ export default function CatalogLayout({
         >
           <FaRegFaceSadTear className="w-12 h-12 opacity-40" />
           <div className="flex flex-col items-center justify-center">
-            <span>Nenhum produto encontrado.</span>
-            <span className="font-bold text-sm">
+            <p>Nenhum produto encontrado.</p>
+            <p className="font-bold text-sm">
               Entre em contato com o suporte.
-            </span>
+            </p>
           </div>
         </div>
       ) : (
@@ -30,7 +30,7 @@ export default function CatalogLayout({
           <p className={`font-bold text-center text-secondary dark:text-zinc-200 
             md:text-start md:uppercase my-4`}
           >
-            Confira nossos produtos
+            Destaques
           </p>
           <div className={`grid grid-cols-2 gap-4
             sm:grid-cols-3 md:grid-cols-4 xl:grid-cols-5`}

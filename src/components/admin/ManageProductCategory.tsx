@@ -75,7 +75,7 @@ export function ManageProductCategoryLayout({ categories }: ManageProductCategor
 
   return (
     <div className="flex flex-col font-sans h-full overflow-hidden">
-      <div className="flex overflow-y-auto font-sans scrollbar-hide">
+      <div className="flex overflow-y-auto font-sans scrollbar-hide md:scrollbar-thin">
         <div className="flex w-full items-center justify-center md:gap-3 mb-2 md:mb-4">
           <div className="relative flex items-center grow">
             <CustomInput
@@ -93,7 +93,7 @@ export function ManageProductCategoryLayout({ categories }: ManageProductCategor
           <div>
             <CustomButton 
               onClick={(e: React.MouseEvent) => handleOpenCategoryModal(e)}
-              className={`hidden md:flex lg:flex-row py-2 lg:px-8 rounded-lg shadow-xs
+              className={`hidden md:flex lg:flex-row py-1.5 lg:px-8 rounded-lg shadow-xs
                 bg-primary text-white hover:bg-primary/90 font-bold text-base
                 dark:bg-details dark:hover:bg-details/80
               `}
@@ -132,8 +132,8 @@ export function ManageProductCategoryLayout({ categories }: ManageProductCategor
         </div>
       ) : (
         <>
-          <div className="flex-1 flex flex-col gap-2 overflow-y-auto scrollbar-hide">
-            <div className={`flex flex-col md:grid md:grid-cols-2 xl:grid-cols-3 gap-2`}>
+          <div className="flex-1 flex flex-col gap-2 overflow-y-auto scrollbar-hide md:scrollbar-thin md:pr-2">
+            <div className={`flex flex-col md:grid md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 gap-2`}>
               {filteredData.map((category: ProductCategoryModel) => (
                 <div 
                   key={category.id} 

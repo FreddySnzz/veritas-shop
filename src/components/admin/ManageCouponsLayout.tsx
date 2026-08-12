@@ -162,8 +162,8 @@ export default function ManageCouponsLayout({
         </div>
       </div>
       
-      <div className="flex-1 overflow-y-auto scrollbar-hide mt-4">
-        <div className="flex flex-col space-y-4">
+      <div className="flex-1 overflow-y-auto scrollbar-hide md:scrollbar-thin mt-4">
+        <div className="flex flex-col space-y-4 md:mr-2">
           {filteredData.length === 0 ? (
             <div className="flex flex-col items-center justify-center py-12 text-center">
               <BadgePercent className="w-16 h-16 text-muted-foreground/50 mb-4" />
@@ -182,7 +182,7 @@ export default function ManageCouponsLayout({
                   `}
                 >
                   <div className="grow">
-                    <div className={`flex ${coupon.code.length > 15 ? 'flex-col text-sm' : 'flex-row gap-1'}`}>
+                    <div className={`flex ${coupon.code.length > 15 ? 'flex-col text-sm' : 'flex-row gap-1'} dark:text-zinc-50`}>
                       <p className="font-black">{coupon.code}</p>
                       <p>{`${coupon.code.length <= 15 ? '• ' : ''}`} 
                         {coupon.type === 'percentage' ? `${coupon.percentage}% de desconto` : 
@@ -194,9 +194,11 @@ export default function ManageCouponsLayout({
                       <p className={`text-sm font-medium ${coupon.status === 'active' ? 'text-green-600' : 'text-red-500 dark:text-red-400'}`}>
                         {coupon.status === 'active' ? 'Ativo' : 'Expirado'}
                       </p>
-                      <p className="text-sm font-medium">• {coupon.quantity} {coupon.quantity === 1 ? 'cupom disponível' : 'cupons disponíveis'}</p>
+                      <p className="text-sm font-medium dark:text-zinc-200">
+                        • {coupon.quantity} {coupon.quantity === 1 ? 'cupom disponível' : 'cupons disponíveis'}
+                      </p>
                     </div>
-                    <div className="flex flex-col mt-1 text-xs">
+                    <div className="flex flex-col mt-1 text-xs dark:text-zinc-400">
                       <p>• Aplicável à <span className="font-bold">
                           {coupon.product_id === null || coupon.product_id === undefined ? 'Todos os produtos' : `${products.find((product) => product.id === coupon.product_id)?.name}`}
                         </span>
@@ -205,7 +207,7 @@ export default function ManageCouponsLayout({
                         • {coupon.apply_to_category ? 'Aplicável à categoria relacionada' : 'Não aplicável à categoria'}
                       </p>
                     </div>
-                    <div className="flex gap-1 mt-2">
+                    <div className="flex gap-1 mt-2 dark:text-zinc-200">
                       <p className="text-sm font-bold">Válido até:</p>
                       <p className="text-sm">{formatDateWithTime(coupon.valid_until)}</p>
                     </div>
@@ -217,7 +219,7 @@ export default function ManageCouponsLayout({
                       aria-label="Excluir Cupom"
                       title="Excluir Cupom"
                       onClick={(e) => handleOpenDeleteModalCoupon(coupon, e)}
-                      className="absolute cursor-pointer"
+                      className="absolute cursor-pointer dark:text-zinc-500"
                     >
                       <Trash2 className="w-5 h-5 hover:text-red-500 transition-colors" />
                     </button>

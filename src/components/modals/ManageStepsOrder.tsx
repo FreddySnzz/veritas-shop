@@ -166,7 +166,7 @@ export default function ManageStepsOrderModal({
     >
       <div className="shrink-0 flex w-full flex-col justify-center">
         <div className="flex items-center justify-between border-b border-gray-100 dark:border-zinc-700 pb-2">
-          <h2 className="text-lg font-bold text-gray-800 dark:text-zinc-50">
+          <h2 className="text-lg font-bold text-secondary dark:text-zinc-50">
             Ordenar Passos na Personalização de Produtos
           </h2>
           <button
@@ -181,12 +181,12 @@ export default function ManageStepsOrderModal({
           </button>
         </div>
 
-        <span className="mt-2 text-xs text-gray-400 dark:text-zinc-500">
+        <p className="mt-2 text-xs text-gray-400 dark:text-zinc-500">
           Arraste os passos de personalização para definir a ordem exibida.
-        </span>
+        </p>
       </div>
 
-      <div className="w-full overflow-y-auto overflow-x-hidden pr-2">
+      <div className="w-full overflow-y-auto overflow-x-hidden pr-2 scrollbar-thin">
         <DndContext
           sensors={sensors}
           collisionDetection={closestCenter}

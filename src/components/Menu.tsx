@@ -14,7 +14,6 @@ import {
 } from "lucide-react";
 import { PiHandsPrayingFill } from "react-icons/pi";
 import { RosaryIcon } from "./icons/RosaryIcon";
-import { toast } from "sonner";
 import { ThemeToggleSwitch } from "./buttons/ThemeToggleSwitch";
 import { useAuth } from "@/data/context/AuthContext";
 import { FaBookBible } from "react-icons/fa6";
@@ -22,6 +21,7 @@ import { FaBookBible } from "react-icons/fa6";
 export default function Menu() {
   const { isMenuOpen, closeMenu } = useApp();
   const { user, logout } = useAuth();
+  const userName = user?.name.split(' ');
   const router = useRouter();
   useLockBodyScroll(isMenuOpen);
 
@@ -71,17 +71,16 @@ export default function Menu() {
               <Home className="w-5 h-5" />
               <p>Página Inicial</p>
             </Link>
-            <button
+            <Link
               title="Ir para a página de produtos"
               aria-label="Ir para a página de produtos"
-              // href="/produtos"
-              // onClick={closeMenu}
-              onClick={() => toast.warning("Em breve!")}
+              href="/produtos"
+              onClick={closeMenu}
               className="flex items-center w-fit gap-2 cursor-pointer transition-colors hover:text-primary dark:hover:text-details"
             >
-              <RosaryIcon  className="w-5 h-5" />
+              <RosaryIcon className="w-5 h-5" />
               <p>Produtos</p>
-            </button>
+            </Link>
             <Link 
               title="Ir para a página de pedidos"
               aria-label="Ir para a página de pedidos"
@@ -145,8 +144,8 @@ export default function Menu() {
                 title={user ? "" : "Entrar na minha conta"}
                 className={"flex items-center gap-4 transition-colors cursor-pointer hover:text-primary dark:hover:text-details"}
               >
-                { !user ? <User className="w-5 h-5" /> : "" }
-                <p>{user ? `Olá, ${user.name}!` : 'Entrar na minha conta'}</p>
+                {!user ? <User className="w-5 h-5" /> : "" }
+                <p>{userName ? `Olá, ${userName[0]} ${userName[userName.length - 1]}!` : 'Entrar na minha conta'}</p>
               </button>
               { user && (
                 <button 

@@ -225,7 +225,7 @@ export default function Footer({
           <div className="text-xs font-semibold text-muted-foreground dark:text-zinc-600">
             <div className="flex items-center justify-center">
               <span className="mr-1">
-                &copy; 2025 |
+                &copy; {new Date().getFullYear()} |
               </span>
               <span>
                 {`Veritas Ateliê — Todos os direitos reservados.`}

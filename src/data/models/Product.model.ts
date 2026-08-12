@@ -9,6 +9,7 @@ export default interface ProductModel {
   images_url?: string[];
   available: boolean;
   customizable: boolean;
+  featured: boolean;
   customization_items?: CustomizationItemConfig[];
   updated_at: Date;
 };

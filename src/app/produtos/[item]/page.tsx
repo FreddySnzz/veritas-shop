@@ -5,7 +5,7 @@ import ProductPageLayout from "@/components/ProductPageLayout";
 import { 
   getCachedAdminInfoAction, 
   getCachedProductsAction 
-} from "../actions/cache.actions";
+} from "../../actions/cache.actions";
 import { mountProductUrl } from "@/data/functions/removeAccentsAndSpaces";
 import Footer from "@/components/Footer";
 
@@ -15,7 +15,7 @@ interface PageProps {
   }>;
 }
 
-export default async function AddProductCatalogPage({ params }: PageProps) {
+export default async function ProductCatalogPage({ params }: PageProps) {
   const { user } = await getCachedAdminInfoAction();
   const { item } = await params;
   const getProducts = await getCachedProductsAction();

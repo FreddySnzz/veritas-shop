@@ -26,24 +26,25 @@ interface OrdersAdminLayoutProps extends React.HTMLAttributes<HTMLElement> {
   orders: OrderModel[];
 };
 
-export default function OrdersAdminLayout({ 
-  orders,
-}: OrdersAdminLayoutProps) {
+export default function OrdersAdminLayout({ orders }: OrdersAdminLayoutProps) {
   const [searchText, setSearchText] = useState<string>('');
   const [selectedStatus, setSelectedStatus] = useState<string>('ALL');
   const [isOpenFilterModal, setIsOpenFilterModal] = useState(false);
   const [sortField, setSortField] = useState<SortField>('updated_at');
-  const [sortOrder, setSortOrder] = useState<SortOrder>('asc');
+  const [sortOrder, setSortOrder] = useState<SortOrder>('desc');
   
   const filteredAndSortedOrders = useMemo(() => {
-    const filtered = orders.filter((order) => {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const filtered = orders.filter((order: any) => {
       const uppercaseSearch = searchText.trim().toUpperCase();
       const orderNumber = order.order_number.trim().toUpperCase();
       const orderProductName = order.product?.name.trim().toUpperCase() || '';
+      const orderUserName = order.user?.name.trim().toUpperCase() || '';
       
       const matchesSearch = searchText.length === 0 || 
         orderNumber.includes(uppercaseSearch) || 
-        orderProductName.includes(uppercaseSearch);
+        orderProductName.includes(uppercaseSearch) ||
+        orderUserName.includes(uppercaseSearch);
 
       const matchesStatus = selectedStatus === 'ALL' || order.status === selectedStatus;
       
@@ -74,7 +75,7 @@ export default function OrdersAdminLayout({
     <div className="flex flex-col font-sans h-full overflow-hidden">
       <div className="relative flex w-full items-center justify-center mb-4 gap-2">
         <CustomInput
-          searchbarPlaceholder="Busque pelo nome do produto, número do pedido..."
+          searchbarPlaceholder="Busque pelo nome do produto, número do pedido, cliente..."
           value={searchText}
           onChange={(e) => setSearchText(e.target.value)}
           className="bg-white dark:bg-input/30 shadow-xs"
@@ -89,19 +90,21 @@ export default function OrdersAdminLayout({
           onClick={() => setIsOpenFilterModal(true)}
           className={`bg-white hover:bg-gray-50 dark:bg-input/50 dark:hover:bg-input/70 
             rounded-lg shadow-xs cursor-pointer h-9 w-12 flex items-center justify-center transition-all
+            lg:w-auto lg:px-4 lg:gap-2
           `}
         >
+          <p className={"hidden lg:block font-medium text-secondary"}>Filtros</p>
           <ListFilter className="w-6 h-6 text-secondary" />
         </button>
       </div>
       
-      <div className="flex-1 overflow-y-auto scrollbar-hide">
+      <div className="flex-1 overflow-y-auto scrollbar-hide md:scrollbar-thin md:pr-2">
         <div className="flex flex-col h-full">
           {filteredAndSortedOrders.length === 0 ? (
             <div className="flex flex-col h-full items-center justify-center py-12 text-center">
-              <LucidePackageOpen className="w-16 h-16 text-secondary dark:text-muted-foreground mb-4" />
-              <p className="text-secondary dark:text-muted-foreground font-bold">
-                Nenhum pedido encontrado
+              <LucidePackageOpen className="w-16 h-16 text-zinc-400 dark:text-muted-foreground mb-4" />
+              <p className="text-zinc-400 dark:text-muted-foreground font-bold">
+                Nenhum pedido encontrado com os filtros atuais.
               </p>
             </div>
           ) : (

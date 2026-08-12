@@ -190,7 +190,7 @@ export function CustomizationItemForm({
       <form 
         id="customization-form"
         onSubmit={handleSubmit} 
-        className={`flex-1 flex flex-col gap-4 overflow-y-auto scrollbar-hide`}
+        className={`flex-1 flex flex-col gap-4 overflow-y-auto scrollbar-hide md:scrollbar-thin md:pr-2`}
       >
         <div className="flex flex-col w-full lg:flex-row gap-4 lg:gap-8">
           <div className="flex flex-col gap-2 w-full">

@@ -10,9 +10,9 @@ export function CustomLink({ children, className, ...props }: CustomLinkProps) {
   return (
     <Link 
       className={cn(
-        "flex lg:flex-col items-center justify-center w-full lg:max-h-1/2 xl:max-h-1/3 py-4 px-5",
-        "bg-white hover:bg-gray-50 dark:bg-background-dark dark:hover:bg-zinc-900/70 text-secondary dark:text-zinc-200",
-        "rounded-xl font-sans font-bold gap-2 transition-all cursor-pointer",
+        "flex items-center justify-center py-1.5 px-5 gap-2 transition-all cursor-pointer",
+        "bg-white hover:bg-gray-50 dark:bg-background-dark dark:hover:bg-input/30 text-secondary dark:text-zinc-200",
+        "rounded-xl font-sans font-bold transition-all",
         className
       )}
       {...props}
