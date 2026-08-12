@@ -199,6 +199,7 @@ export function ProductForm({
         desc,
         available,
         customizable,
+        featured: false,
         customization_items: customizationItems,
         initial_price: priceStringToCents(initialPrice),
         images_url: finalImagesUrl,
