@@ -8,7 +8,7 @@ import {
 import ProductModel from "@/data/models/Product.model";
 
 export default async function CartPage() {
-  const { user } = await getCachedAdminInfoAction();
+  const user = await getCachedAdminInfoAction();
   const products = await getCachedProductsAction();
   const availableProducts = products?.filter((product: ProductModel) => product.available);
 
@@ -22,9 +22,7 @@ export default async function CartPage() {
         />
       </main>
       <div className="hidden md:block">
-        <Footer 
-        whatsappNumber={ user?.role === 'admin' ? user?.phone || '5586994379414' : '5586994379414'}
-      />
+        <Footer />
       </div>
     </div>
   );

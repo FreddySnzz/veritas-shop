@@ -1,12 +1,11 @@
 import { Header } from "@/components/Header";
 import Footer from "@/components/Footer";
-import { getCachedAdminInfoAction, getCachedProductsAction } from "@/app/actions/cache.actions";
+import { getCachedProductsAction } from "@/app/actions/cache.actions";
 import DynamicBreadcrumb from "@/components/DynamicBreadcrumb";
 import ManageCouponsLayout from "@/components/admin/ManageCouponsLayout";
 import { getAllCouponsAction } from "@/app/actions/coupons.action";
 
 export default async function CouponsPage() {
-  const { user } = await getCachedAdminInfoAction();
   const coupons = await getAllCouponsAction();
   const products = await getCachedProductsAction();
 
@@ -28,9 +27,7 @@ export default async function CouponsPage() {
         </main>
       </div>
       <div className="hidden lg:block shrink-0">
-        <Footer 
-          whatsappNumber={ user?.role === 'admin' ? user?.phone || '5586994379414' : '5586994379414'}
-        />
+        <Footer />
       </div>
     </div>
   );

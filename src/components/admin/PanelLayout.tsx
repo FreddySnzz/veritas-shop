@@ -95,7 +95,7 @@ export default function PanelLayout({ categories, className }: PanelLayoutProps)
       key: 'users',
       title: 'Gerenciar Usuários',
       icon: <ShieldUser className="h-6 w-6" />,
-      onClick: () => toast.error("Em breve!"),
+      onClick: () => router.push('/admin/usuarios'),
     },
     {
       key: 'coupons',

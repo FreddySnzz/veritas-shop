@@ -2,10 +2,7 @@ import { notFound } from "next/navigation";
 import { Header } from "@/components/Header";
 import ProductModel from "@/data/models/Product.model";
 import ProductPageLayout from "@/components/ProductPageLayout";
-import { 
-  getCachedAdminInfoAction, 
-  getCachedProductsAction 
-} from "../../actions/cache.actions";
+import { getCachedProductsAction } from "../../actions/cache.actions";
 import { mountProductUrl } from "@/data/functions/removeAccentsAndSpaces";
 import Footer from "@/components/Footer";
 
@@ -16,7 +13,6 @@ interface PageProps {
 }
 
 export default async function ProductCatalogPage({ params }: PageProps) {
-  const { user } = await getCachedAdminInfoAction();
   const { item } = await params;
   const getProducts = await getCachedProductsAction();
   const availableProducts = getProducts?.filter((product: ProductModel) => product.available);
@@ -41,9 +37,7 @@ export default async function ProductCatalogPage({ params }: PageProps) {
           cachedProducts={getProducts}
         />
       </main>
-      <Footer 
-        whatsappNumber={ user?.role === 'admin' ? user?.phone || '5586994379414' : '5586994379414'}
-      />
+      <Footer />
     </div>
   )
 }

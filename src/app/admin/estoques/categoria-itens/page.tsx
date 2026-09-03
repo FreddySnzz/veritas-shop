@@ -1,15 +1,11 @@
 import { Header } from "@/components/Header";
 import DynamicBreadcrumb from "@/components/DynamicBreadcrumb";
 import { ManageCustomizationItemCategory } from "@/components/admin/ManageCustomizationItemCategory";
-import { 
-  getCachedAdminInfoAction, 
-  getCachedCustomizationItemsCategoriesAction 
-} from "@/app/actions/cache.actions";
+import { getCachedCustomizationItemsCategoriesAction } from "@/app/actions/cache.actions";
 import { CustomizationItemsCategoryModel } from "@/data/models/CustomizationItemsCategory.model";
 import Footer from "@/components/Footer";
 
 export default async function ManageCategoryItemsPage() {
-  const { user } = await getCachedAdminInfoAction();
   const categories = await getCachedCustomizationItemsCategoriesAction();
   categories.map((category: CustomizationItemsCategoryModel) => category);
 
@@ -28,9 +24,7 @@ export default async function ManageCategoryItemsPage() {
         </main>
       </div>
       <div className="hidden lg:block shrink-0">
-        <Footer 
-          whatsappNumber={ user?.role === 'admin' ? user?.phone || '5586994379414' : '5586994379414'}
-        />
+        <Footer />
       </div>
     </div>
   )

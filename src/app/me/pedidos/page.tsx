@@ -8,7 +8,7 @@ import ProductModel from "@/data/models/Product.model";
 import OrdersLayout from "@/components/OrdersLayout";
 
 export default async function OrdersPage() {
-  const { user } = await getCachedAdminInfoAction();
+  const user = await getCachedAdminInfoAction();
   const products = await getCachedProductsAction();
   const availableProducts = products?.filter((product: ProductModel) => product.available);
 
@@ -21,9 +21,7 @@ export default async function OrdersPage() {
           adminInfo={user}
         />
       </main>
-      <Footer 
-        whatsappNumber={ user?.role === 'admin' ? user?.phone || '5586994379414' : '5586994379414'}
-      />
+      <Footer />
     </div>
   );
 };

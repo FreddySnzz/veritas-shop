@@ -3,7 +3,6 @@ import { Header } from "@/components/Header";
 import ProductCustomizerWizard from "@/components/ProductCustomizationWizard";
 import ProductModel from "@/data/models/Product.model";
 import { 
-  getCachedAdminInfoAction,
   getCachedCustomizationItemsCategoriesAction, 
   getCachedProductsAction 
 } from "@/app/actions/cache.actions";
@@ -23,12 +22,10 @@ export default async function Customization({ params }: PageProps) {
   const { item } = await params;
 
   const [
-    { user },
     products,
     customizationItems,
     categories
   ] = await Promise.all([
-    getCachedAdminInfoAction(),
     getCachedProductsAction(),
     getAllCustomizationItemsAction(),
     getCachedCustomizationItemsCategoriesAction(),
@@ -57,9 +54,7 @@ export default async function Customization({ params }: PageProps) {
         </main>
       </div>
       <div className="hidden md:block shrink-0">
-        <Footer 
-          whatsappNumber={ user?.role === 'admin' ? user?.phone || '5586994379414' : '5586994379414'}
-        />
+        <Footer />
       </div>
     </div>
   );

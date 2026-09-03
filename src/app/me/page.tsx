@@ -1,12 +1,9 @@
 import { Header } from "@/components/Header";
 import Footer from "@/components/Footer";
-import { getCachedAdminInfoAction } from "../actions/cache.actions";
 import UserLayout from "@/components/UserLayout";
 import DynamicBreadcrumb from "@/components/DynamicBreadcrumb";
 
 export default async function UserPage() {
-  const { user } = await getCachedAdminInfoAction();
-
   return (
     <div className="flex flex-col h-dvh overflow-y-auto bg-background-alternative dark:bg-background-dark">
       <Header mode="user" />
@@ -17,9 +14,7 @@ export default async function UserPage() {
         </div>
         <UserLayout />
       </main>
-      <Footer 
-        whatsappNumber={ user?.role === 'admin' ? user?.phone || '5586994379414' : '5586994379414'}
-      />
+      <Footer />
     </div>
   );
 };

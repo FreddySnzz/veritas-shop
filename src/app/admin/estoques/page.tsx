@@ -2,11 +2,8 @@ import DynamicBreadcrumb from "@/components/DynamicBreadcrumb";
 import Footer from "@/components/Footer";
 import { Header } from "@/components/Header";
 import AdminInventoryLayout from "@/components/admin/AdminInventoryLayout";
-import { getCachedAdminInfoAction } from "@/app/actions/cache.actions";
 
 export default async function AdminInvetoryPage() {
-  const { user } = await getCachedAdminInfoAction();
-
   return (
     <div className="flex flex-col h-dvh overflow-y-auto bg-background-alternative dark:bg-background-dark">
       <div className="flex flex-col shrink-0 h-dvh">
@@ -21,9 +18,7 @@ export default async function AdminInvetoryPage() {
         </main>
       </div>
       <div className="hidden lg:block shrink-0">
-        <Footer 
-          whatsappNumber={ user?.role === 'admin' ? user?.phone || '5586994379414' : '5586994379414'}
-        />
+        <Footer />
       </div>
     </div>
   )

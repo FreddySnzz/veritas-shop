@@ -37,7 +37,7 @@ export async function getCachedAdminInfoAction() {
     return null;
   }
 
-  return serializeFirestoreData(admin);
+  return serializeFirestoreData(admin[0]);
 }
 
 export async function getCachedCatalogImagesAction() {

@@ -1,5 +1,4 @@
 import { 
-  getCachedAdminInfoAction, 
   getCachedProductCategoriesAction, 
   getCachedProductsAction 
 } from "@/app/actions/cache.actions";
@@ -9,7 +8,6 @@ import { Header } from "@/components/Header";
 import ManageCatalogInventory from "@/components/admin/CatalogInventory";
 
 export default async function ManageInvertoryCatalogPage() {
-  const { user } = await getCachedAdminInfoAction();
   const products = await getCachedProductsAction();
   const categories = await getCachedProductCategoriesAction();
 
@@ -31,9 +29,7 @@ export default async function ManageInvertoryCatalogPage() {
         </main>
       </div>
       <div className="hidden lg:block shrink-0">
-        <Footer 
-          whatsappNumber={ user?.role === 'admin' ? user?.phone || '5586994379414' : '5586994379414'}
-        />
+        <Footer />
       </div>
     </div>
   )

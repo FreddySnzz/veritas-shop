@@ -5,7 +5,7 @@ import DynamicBreadcrumb from "@/components/DynamicBreadcrumb";
 import { getCachedAdminInfoAction } from "../actions/cache.actions";
 
 export default async function HelpPage() {
-  const { user } = await getCachedAdminInfoAction();
+  const user = await getCachedAdminInfoAction();
 
   return (
     <div className="flex flex-col h-dvh overflow-y-auto bg-background-alternative dark:bg-background-dark">
@@ -15,13 +15,9 @@ export default async function HelpPage() {
           <DynamicBreadcrumb className="mt-14 py-4 md:mt-16 md:py-6" />
           <hr className="border-muted-foreground/50" />
         </div>
-        <HelpLayout 
-          whatsappNumber={ user?.role === 'admin' ? user?.phone || '5586994379414' : '5586994379414'}
-        />
+        <HelpLayout whatsappNumber={ user?.role === 'admin' ? user?.phone || '5586994379414' : '5586994379414'} />
       </main>
-      <Footer 
-        whatsappNumber={ user?.role === 'admin' ? user?.phone || '5586994379414' : '5586994379414'}
-      />
+      <Footer />
     </div>
   );
 };

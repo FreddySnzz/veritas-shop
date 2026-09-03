@@ -1,14 +1,10 @@
 import { Header } from "@/components/Header";
 import DynamicBreadcrumb from "@/components/DynamicBreadcrumb";
 import ManageCatalogImages from "@/components/admin/ManageCatalogImages";
-import { 
-  getCachedAdminInfoAction, 
-  getCachedCatalogImagesAction 
-} from "@/app/actions/cache.actions";
+import { getCachedCatalogImagesAction } from "@/app/actions/cache.actions";
 import Footer from "@/components/Footer";
 
 export default async function ManageCatalogImagesPage() {
-  const { user } = await getCachedAdminInfoAction();
   const images = await getCachedCatalogImagesAction();
 
   return (
@@ -29,9 +25,7 @@ export default async function ManageCatalogImagesPage() {
         </main>
       </div>
       <div className="hidden lg:block shrink-0">
-        <Footer 
-          whatsappNumber={ user?.role === 'admin' ? user?.phone || '5586994379414' : '5586994379414'}
-        />
+        <Footer />
       </div>
     </div>
   )

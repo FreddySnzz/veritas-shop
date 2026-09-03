@@ -4,7 +4,6 @@ import DynamicBreadcrumb from "@/components/DynamicBreadcrumb";
 import { ProductForm } from "@/components/admin/ProductCatalogForm";
 import { getProductByIdAction } from "@/app/actions/products.action";
 import { 
-  getCachedAdminInfoAction, 
   getCachedCustomizationItemsCategoriesAction, 
   getCachedProductCategoriesAction
 } from "@/app/actions/cache.actions";
@@ -13,7 +12,6 @@ import Footer from "@/components/Footer";
 export default async function AddProductCatalogPage({ params }: {
   params: Promise<{ id: string }> 
 }) {
-  const { user } = await getCachedAdminInfoAction();
   const { id } = await params;
   const product = await getProductByIdAction(id);
   const customizationItemscategories = await getCachedCustomizationItemsCategoriesAction();
@@ -42,9 +40,7 @@ export default async function AddProductCatalogPage({ params }: {
         </main>
       </div>
       <div className="hidden lg:block shrink-0">
-        <Footer 
-          whatsappNumber={ user?.role === 'admin' ? user?.phone || '5586994379414' : '5586994379414'}
-        />
+        <Footer />
       </div>
     </div>
   )
