@@ -271,7 +271,7 @@ export default function BibleLayout() {
                 aria-label={`Buscar em ${book.book_name}`}
                 title={`Buscar em ${book.book_name}`}
                 type="button"
-                className={cn("flex text-[0.65rem] cursor-pointer px-3 py-1 justify-center items-center hover:bg-zinc-200 dark:hover:bg-input/30",
+                className={cn("flex text-[0.65rem] font-medium cursor-pointer px-3 py-1 justify-center items-center hover:bg-zinc-200 dark:hover:bg-input/30",
                   "border border-zinc-300 dark:border-muted-foreground/50 rounded-lg transition-all text-secondary dark:text-zinc-300"
                 )}
                 onClick={() => handleChooseBookAndChapterModalOpen(book.book_name)}
@@ -291,7 +291,7 @@ export default function BibleLayout() {
                 aria-label={`Buscar em ${book.book_name}`}
                 title={`Buscar em ${book.book_name}`}
                 type="button"
-                className={cn("flex text-[0.65rem] cursor-pointer px-3 py-1 justify-center items-center hover:bg-zinc-200 dark:hover:bg-input/30",
+                className={cn("flex text-[0.65rem] font-medium cursor-pointer px-3 py-1 justify-center items-center hover:bg-zinc-200 dark:hover:bg-input/30",
                   "border border-zinc-300 dark:border-muted-foreground/50 rounded-lg transition-all text-secondary dark:text-zinc-300"
                 )}
                 onClick={() => handleChooseBookAndChapterModalOpen(book.book_name)}
@@ -313,7 +313,7 @@ export default function BibleLayout() {
           {searchChapter?.map((result, index) => {
             return (
               <div key={index} className="flex gap-1">
-                <p className={"text-[0.65rem]"}> 
+                <p className={"text-[0.65rem] font-medium"}> 
                   {result.number}
                 </p>
                 <p>
@@ -343,7 +343,7 @@ export default function BibleLayout() {
               <button
                 key={index}
                 type="button"
-                className={cn("flex text-[0.65rem] cursor-pointer px-3 py-1 justify-center items-center hover:bg-zinc-200 dark:hover:bg-input/30",
+                className={cn("flex text-[0.65rem] font-medium cursor-pointer px-3 py-1 justify-center items-center hover:bg-zinc-200 dark:hover:bg-input/30",
                   "border border-zinc-300 dark:border-muted-foreground/50 rounded-lg transition-all text-secondary dark:text-zinc-300"
                 )}
                 onClick={() => handleChooseChapter(chapter)}

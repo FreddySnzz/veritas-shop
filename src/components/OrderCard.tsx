@@ -185,7 +185,7 @@ export default function OrderCard({
         <div className="flex gap-4 p-4 w-full">
           {order?.product?.images_url ? (
             <Link 
-              href={`/${mountProductUrl(order?.product?.name, order?.product?.id)}`}
+              href={`/produtos/${mountProductUrl(order?.product?.name, order?.product?.id)}`}
               aria-label={`Ver ${order?.product?.name}`}
               title={`Ver ${order?.product?.name}`}
               className={cn("relative shrink-0 w-25 h-25")}

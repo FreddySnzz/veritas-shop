@@ -10,10 +10,11 @@ import { PhraseSloganAlternative } from "./Phrases";
 import { useMediaQuery } from "@/data/hook/useMediaQuery";
 import { toast } from "sonner";
 import { cn } from "@/lib/utils";
+import { useAuth } from "@/data/context/AuthContext";
+import { RolesEnum } from "@/data/types/enums/roles.enum";
 
 interface FooterProps extends React.HTMLAttributes<HTMLDivElement> {
   className?: string;
-  whatsappNumber?: string;
 }
 
 interface BeforeInstallPromptEvent extends Event {
@@ -25,13 +26,13 @@ interface BeforeInstallPromptEvent extends Event {
   prompt(): Promise<void>;
 }
 
-export default function Footer({ 
-  className,
-  whatsappNumber
-}: FooterProps) {
+export default function Footer({ className }: FooterProps) {
   const [deferredPrompt, setDeferredPrompt] = useState<BeforeInstallPromptEvent | null>(null);
   const isSmUp = useMediaQuery("(min-width: 540px)");
   const isMdUp = useMediaQuery("(min-width: 768px)");
+  const { user } = useAuth();
+
+  const whatsappNumber = user?.role === RolesEnum.ADMIN ? user?.phone : '5586994379414';
 
   useEffect(() => {
     const handleBeforeInstallPrompt = (e: Event) => {

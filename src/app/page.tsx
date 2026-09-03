@@ -16,7 +16,7 @@ import CatalogRosaryReconstructionCard from "@/components/CatalogRosaryReconstru
 import CatalogBibleCard from "@/components/CatalogBibleCard";
 
 export default async function Home() {
-  const { user } = await getCachedAdminInfoAction();
+  const user = await getCachedAdminInfoAction();
   const products = await getCachedProductsAction();
   const availableProducts = products?.filter((product: ProductModel) => product.available);
   const catalogProducts = availableProducts
@@ -60,10 +60,7 @@ export default async function Home() {
           '5586994379414'}?text=${encodeURIComponent('Olá, gostaria de fazer um orçamento detalhado 😄!')}`
         } 
       />
-      <Footer 
-        className="mt-4"
-        whatsappNumber={ user?.role === 'admin' ? user?.phone || '5586994379414' : '5586994379414'}
-      />
+      <Footer />
     </div>
   )
 }

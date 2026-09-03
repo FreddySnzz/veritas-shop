@@ -1,6 +1,5 @@
 import { Suspense } from "react";
 import { 
-  getCachedAdminInfoAction,
   getCachedProductCategoriesAction,
   getCachedProductsAction,
 } from "@/app/actions/cache.actions";
@@ -11,7 +10,6 @@ import ProductsPageLayout from "@/components/ProductsLayout";
 import ProductModel from "@/data/models/Product.model";
 
 export default async function ProductsPage() {
-  const { user } = await getCachedAdminInfoAction();
   const products = await getCachedProductsAction();
   const availableProducts = products?.filter((product: ProductModel) => product.available);
   const categories = await getCachedProductCategoriesAction();
@@ -38,9 +36,7 @@ export default async function ProductsPage() {
         </main>
       </div>
       <div className="hidden lg:block shrink-0">
-        <Footer 
-          whatsappNumber={ user?.role === 'admin' ? user?.phone || '5586994379414' : '5586994379414'}
-        />
+        <Footer />
       </div>
     </div>
   )

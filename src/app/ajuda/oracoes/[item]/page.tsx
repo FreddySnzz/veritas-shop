@@ -1,7 +1,6 @@
 import { notFound } from "next/navigation";
 import { Header } from "@/components/Header";
 import Footer from "@/components/Footer";
-import { getCachedAdminInfoAction } from "@/app/actions/cache.actions";
 import { 
   commonPrayers, 
   various, 
@@ -17,7 +16,6 @@ interface PageProps {
 };
 
 export default async function PrayPage({ params }: PageProps) {
-  const { user } = await getCachedAdminInfoAction();
   const { item } = await params;
   const allPrayers = [...commonPrayers, ...specificPrayers, ...various];
   const pray = allPrayers.find(
@@ -38,9 +36,7 @@ export default async function PrayPage({ params }: PageProps) {
         </div>
         <PrayContent pray={pray} />
       </main>
-      <Footer 
-        whatsappNumber={ user?.role === 'admin' ? user?.phone || '5586994379414' : '5586994379414'}
-      />
+      <Footer />
     </div>
   );
 };

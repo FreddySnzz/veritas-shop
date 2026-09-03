@@ -1,12 +1,9 @@
 import { Header } from "@/components/Header";
 import Footer from "@/components/Footer";
 import DynamicBreadcrumb from "@/components/DynamicBreadcrumb";
-import { getCachedAdminInfoAction } from "@/app/actions/cache.actions";
 import PrayersLayout from "@/components/PrayersLayout";
 
 export default async function PrayPage() {
-  const { user } = await getCachedAdminInfoAction();
-
   return (
     <div className="flex flex-col h-dvh overflow-y-auto bg-background-alternative dark:bg-background-dark">
       <Header mode="user" />
@@ -17,9 +14,7 @@ export default async function PrayPage() {
         </div>
         <PrayersLayout />
       </main>
-      <Footer 
-        whatsappNumber={ user?.role === 'admin' ? user?.phone || '5586994379414' : '5586994379414'}
-      />
+      <Footer />
     </div>
   );
 };

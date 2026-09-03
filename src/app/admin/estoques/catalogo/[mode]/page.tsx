@@ -1,5 +1,4 @@
 import { 
-  getCachedAdminInfoAction, 
   getCachedCustomizationItemsCategoriesAction, 
   getCachedProductCategoriesAction
 } from "@/app/actions/cache.actions";
@@ -18,7 +17,6 @@ export function generateStaticParams() {
 export default async function AddProductCatalogPage({ params }: { 
   params: Promise<{ mode: string }> 
 }) {
-  const { user } = await getCachedAdminInfoAction();
   const { mode } = await params;
   const categories = await getCachedCustomizationItemsCategoriesAction();
   const productCategories = await getCachedProductCategoriesAction();
@@ -46,9 +44,7 @@ export default async function AddProductCatalogPage({ params }: {
         </main>
       </div>
       <div className="hidden lg:block shrink-0">
-        <Footer 
-          whatsappNumber={ user?.role === 'admin' ? user?.phone || '5586994379414' : '5586994379414'}
-        />
+        <Footer />
       </div>
     </div>
   )

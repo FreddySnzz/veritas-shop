@@ -1,6 +1,5 @@
 import { notFound } from "next/navigation";
 import { 
-  getCachedAdminInfoAction,
   getCachedCustomizationItemsAction, 
   getCachedCustomizationItemsCategoriesAction 
 } from "@/app/actions/cache.actions";
@@ -17,7 +16,6 @@ interface PageProps {
 }
 
 export default async function AddProductCatalogPage({ params }: PageProps) {
-  const { user } = await getCachedAdminInfoAction();
   const { mode } = await params;
   const items = await getCachedCustomizationItemsAction();
   const cachedCategories = await getCachedCustomizationItemsCategoriesAction();
@@ -47,9 +45,7 @@ export default async function AddProductCatalogPage({ params }: PageProps) {
         </main>
       </div>
       <div className="hidden lg:block shrink-0">
-        <Footer 
-          whatsappNumber={ user?.role === 'admin' ? user?.phone || '5586994379414' : '5586994379414'}
-        />
+        <Footer />
       </div>
     </div>
   );

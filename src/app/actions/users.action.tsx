@@ -3,6 +3,7 @@
 import { 
   getUserByEmail, 
   getUserById, 
+  getUsersForAdmin, 
   updateUser 
 } from "@/data/services/user.service";
 import { serializeFirestoreData } from "@/data/functions/firebaseSerialize";
@@ -25,6 +26,16 @@ export async function getUserByIdAction(id: string) {
     return serializeFirestoreData(user);
   } catch (error) {
     console.error("Erro ao carregar informações do usuário:", error);
+    throw error;
+  }
+}
+
+export async function getUsersForAdminAction(adminId: string) {
+  try {
+    const users = await getUsersForAdmin(adminId);
+    return serializeFirestoreData(users);
+  } catch (error) {
+    console.error("Erro ao buscar usuários:", error);
     throw error;
   }
 }

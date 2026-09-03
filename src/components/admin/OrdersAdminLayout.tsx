@@ -18,6 +18,7 @@ import {
 import { cn } from "@/lib/utils";
 import CustomModal from "../modals/CustomModal";
 import { Label } from "../ui/label";
+import { useRouter, useSearchParams } from "next/navigation";
 
 type SortField = 'created_at' | 'updated_at' | 'final_price';
 type SortOrder = 'asc' | 'desc';
@@ -27,11 +28,14 @@ interface OrdersAdminLayoutProps extends React.HTMLAttributes<HTMLElement> {
 };
 
 export default function OrdersAdminLayout({ orders }: OrdersAdminLayoutProps) {
-  const [searchText, setSearchText] = useState<string>('');
+  const searchParams = useSearchParams();
+  const search = searchParams.get('search');
+  const [searchText, setSearchText] = useState<string>(search || '');
   const [selectedStatus, setSelectedStatus] = useState<string>('ALL');
   const [isOpenFilterModal, setIsOpenFilterModal] = useState(false);
   const [sortField, setSortField] = useState<SortField>('updated_at');
   const [sortOrder, setSortOrder] = useState<SortOrder>('desc');
+  const router = useRouter();
   
   const filteredAndSortedOrders = useMemo(() => {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -80,7 +84,10 @@ export default function OrdersAdminLayout({ orders }: OrdersAdminLayoutProps) {
           onChange={(e) => setSearchText(e.target.value)}
           className="bg-white dark:bg-input/30 shadow-xs"
           withClearButton
-          clearButtonAction={() => setSearchText('')}
+          clearButtonAction={() => {
+            setSearchText('');
+            router.replace('/admin/pedidos');
+          }}
         />
 
         <button

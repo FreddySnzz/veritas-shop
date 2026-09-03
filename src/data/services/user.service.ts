@@ -27,7 +27,7 @@ export class UserServiceError extends Error {
     super(message);
     this.status = status;
   };
-};
+}
 
 async function userExists(
   email?: string,
@@ -61,7 +61,7 @@ async function userExists(
   const results = await Promise.all(queriesToRun);
 
   return results.some(exists => exists === true);
-};
+}
 
 export async function createUser(
   data: CreateUserRequest
@@ -87,7 +87,7 @@ export async function createUser(
     id: docRef.id,
     role: RolesEnum.USER,
   };
-};
+}
 
 export async function createUserWithGoogle(
   data: CreateUserWithGoogleRequest
@@ -112,7 +112,7 @@ export async function createUserWithGoogle(
   }, { merge: true });
   
   return data;
-};
+}
 
 export async function getUserByEmail(
   email: string
@@ -130,7 +130,7 @@ export async function getUserByEmail(
       ...doc.data() 
     } as UserModel)
   );
-};
+}
 
 export async function getUserById(
   id: string
@@ -148,7 +148,7 @@ export async function getUserById(
   );
 
   return data;
-};
+}
 
 export async function getUserByPhone(
   phone: string
@@ -166,7 +166,30 @@ export async function getUserByPhone(
       ...doc.data() 
     } as UserModel)
   );
-};
+}
+
+export async function getUsersForAdmin(
+  adminId: string
+): Promise<UserModel[] | null> {
+  const verifyAdmin = await getUserById(adminId);
+
+  if (!verifyAdmin) throw new UserServiceError("Admin not exists", 404);
+  if (verifyAdmin.role !== RolesEnum.ADMIN) throw new UserServiceError("Admin not found", 404);
+
+  const q = query(collection(
+    db, 
+    Collections.USERS_COLLECTION
+  ), where("role", "==", RolesEnum.USER));
+
+  const snapshot = await getDocs(q);
+
+  return snapshot.docs.map(
+    (doc) => ({ 
+      id: doc.id, 
+      ...doc.data() 
+    } as UserModel)
+  )
+}
 
 export async function updateUser(
   id: string, 
@@ -208,13 +231,13 @@ export async function updateUser(
   await updateDoc(docRef, updatedData);
 
   return updatedData;
-};
+}
 
 export const getCachedAdminInfo = unstable_cache(
   async () => getUserByEmail('root.admin@veritasatelie.com'),
-  ['admin_info'],
+  ['veritas_admin_info'],
   {
     revalidate: 86400,
-    tags: ['admin_info'],
+    tags: ['veritas_admin_info'],
   }
-);
+)

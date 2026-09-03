@@ -2,13 +2,9 @@ import { Header } from "@/components/Header";
 import DynamicBreadcrumb from "@/components/DynamicBreadcrumb";
 import PanelLayout from "@/components/admin/PanelLayout";
 import Footer from "@/components/Footer";
-import { 
-  getCachedAdminInfoAction, 
-  getCachedCustomizationItemsCategoriesAction 
-} from "../actions/cache.actions";
+import { getCachedCustomizationItemsCategoriesAction } from "../actions/cache.actions";
 
 export default async function AdminPanel() {
-  const user  = await getCachedAdminInfoAction();
   const categories = await getCachedCustomizationItemsCategoriesAction();
 
   return (
@@ -29,9 +25,7 @@ export default async function AdminPanel() {
         </main>
       </div>
       <div className="hidden lg:block shrink-0">
-        <Footer 
-          whatsappNumber={ user?.role === 'admin' ? user?.phone || '5586994379414' : '5586994379414'}
-        />
+        <Footer />
       </div>
     </div>
   )

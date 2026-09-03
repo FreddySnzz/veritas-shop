@@ -1,15 +1,11 @@
 import { Suspense } from "react";
-import { 
-  getCachedAdminInfoAction,
-  getCachedCustomizationItemsAction,
-} from "@/app/actions/cache.actions";
+import { getCachedCustomizationItemsAction } from "@/app/actions/cache.actions";
 import { Header } from "@/components/Header";
 import DynamicBreadcrumb from "@/components/DynamicBreadcrumb";
 import ManageCustomizationItemsInventoryLayout from "@/components/admin/ManageCustomizationItemsLayout";
 import Footer from "@/components/Footer";
 
 export default async function ManageInvertoryCatalogPage() {
-  const { user } = await getCachedAdminInfoAction();
   const items = await getCachedCustomizationItemsAction();
 
   return (
@@ -31,9 +27,7 @@ export default async function ManageInvertoryCatalogPage() {
         </main>
       </div>
       <div className="hidden lg:block shrink-0">
-        <Footer 
-          whatsappNumber={ user?.role === 'admin' ? user?.phone || '5586994379414' : '5586994379414'}
-        />
+        <Footer />
       </div>
     </div>
   )

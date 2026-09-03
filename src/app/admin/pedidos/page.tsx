@@ -1,6 +1,6 @@
 import { Header } from "@/components/Header";
 import Footer from "@/components/Footer";
-import { getCachedAdminInfoAction, getCachedProductsAction } from "@/app/actions/cache.actions";
+import { getCachedProductsAction } from "@/app/actions/cache.actions";
 import { getAllOrdersAdminAction } from "@/app/actions/orders.action";
 import OrdersAdminLayout from "@/components/admin/OrdersAdminLayout";
 import ProductModel from "@/data/models/Product.model";
@@ -9,7 +9,6 @@ import DynamicBreadcrumb from "@/components/DynamicBreadcrumb";
 import { getUserByIdAction } from "@/app/actions/users.action";
 
 export default async function OrdersPage() {
-  const { user } = await getCachedAdminInfoAction();
   const products = await getCachedProductsAction();
   const orders = await getAllOrdersAdminAction();
 
@@ -41,9 +40,7 @@ export default async function OrdersPage() {
         </main>
       </div>
       <div className="hidden lg:block shrink-0">
-        <Footer 
-          whatsappNumber={ user?.role === 'admin' ? user?.phone || '5586994379414' : '5586994379414'}
-        />
+        <Footer />
       </div>
     </div>
   );
