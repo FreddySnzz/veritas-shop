@@ -216,7 +216,7 @@ export default function PanelLayout({ categories, className }: PanelLayoutProps)
       <div className="shrink-0 mt-auto bg-background-alternative dark:bg-input/0 md:hidden">
         <hr className="border-muted-foreground/50 my-2" />
         <div className="flex flex-col">
-          <BackButton pushRoute="/" />
+          <BackButton backRoute />
         </div>
       </div>
     </div>

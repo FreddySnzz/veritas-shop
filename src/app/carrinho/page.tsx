@@ -6,6 +6,7 @@ import {
   getCachedProductsAction 
 } from "../actions/cache.actions";
 import ProductModel from "@/data/models/Product.model";
+import { RolesEnum } from "@/data/types/enums/roles.enum";
 
 export default async function CartPage() {
   const user = await getCachedAdminInfoAction();
@@ -17,7 +18,7 @@ export default async function CartPage() {
       <Header mode="cart" />
       <main className="flex-1 flex flex-col px-6 mt-20 md:mt-24 sm:px-14 lg:px-16">
         <Cart 
-          whatsappNumber={ user?.role === 'admin' ? user?.phone || '5586994379414' : '5586994379414'}
+          whatsappNumber={ user?.role === RolesEnum.ADMIN ? user?.phone || '5586994379414' : '5586994379414'}
           catalogProducts={availableProducts} 
         />
       </main>

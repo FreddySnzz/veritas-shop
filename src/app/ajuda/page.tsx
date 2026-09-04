@@ -3,6 +3,7 @@ import Footer from "@/components/Footer";
 import HelpLayout from "@/components/HelpLayout";
 import DynamicBreadcrumb from "@/components/DynamicBreadcrumb";
 import { getCachedAdminInfoAction } from "../actions/cache.actions";
+import { RolesEnum } from "@/data/types/enums/roles.enum";
 
 export default async function HelpPage() {
   const user = await getCachedAdminInfoAction();
@@ -15,7 +16,7 @@ export default async function HelpPage() {
           <DynamicBreadcrumb className="mt-14 py-4 md:mt-16 md:py-6" />
           <hr className="border-muted-foreground/50" />
         </div>
-        <HelpLayout whatsappNumber={ user?.role === 'admin' ? user?.phone || '5586994379414' : '5586994379414'} />
+        <HelpLayout whatsappNumber={ user?.role === RolesEnum.ADMIN ? user?.phone || '5586994379414' : '5586994379414'} />
       </main>
       <Footer />
     </div>

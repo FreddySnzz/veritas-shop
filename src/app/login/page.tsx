@@ -71,7 +71,7 @@ export default function Login() {
 
       login(response.user);
       toast.success("Login realizado com sucesso");
-      if (response.user.role === 'admin') newRedirectUrl = '/admin';
+      if (response.user.role === RolesEnum.ADMIN) newRedirectUrl = '/admin';
       router.push(newRedirectUrl);
       router.refresh();
 

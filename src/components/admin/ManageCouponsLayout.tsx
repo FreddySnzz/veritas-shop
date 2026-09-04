@@ -283,7 +283,7 @@ export default function ManageCouponsLayout({
       <div className="md:hidden shrink-0 mt-auto bg-background-alternative dark:bg-input/0 z-10">
         <hr className="border-muted-foreground/50 my-2" />
         <div className="flex flex-col gap-4">
-          <BackButton pushRoute="/admin" />
+          <BackButton backRoute />
         </div>
       </div>
     </div>
