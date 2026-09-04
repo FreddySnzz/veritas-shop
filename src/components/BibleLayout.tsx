@@ -263,7 +263,7 @@ export default function BibleLayout() {
 
       <div className={cn("flex flex-col gap-8 mt-4")}>
         <div className="flex flex-col gap-2">
-          <p className="font-bold">Antigo Testamento</p>
+          <p className="font-bold text-lg">Antigo Testamento</p>
           <div className={cn("grid grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 2xl:grid-cols-7 gap-2")}>
             {bibleBooksList.length && bibleBooksList.map((book, index) => book.testament === "old" && (
               <button
@@ -283,7 +283,7 @@ export default function BibleLayout() {
         </div>
 
         <div className="flex flex-col gap-2">
-          <p className="font-bold">Novo Testamento</p>
+          <p className="font-bold text-lg">Novo Testamento</p>
           <div className={cn("grid grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 2xl:grid-cols-7 gap-2")}>
             {bibleBooksList.length && bibleBooksList.map((book, index) => book.testament === "new" && (
               <button

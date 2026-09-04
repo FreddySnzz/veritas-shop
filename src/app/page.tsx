@@ -14,6 +14,7 @@ import Footer from "../components/Footer";
 import CatalogPrayerCard from "@/components/CatalogPrayerCard";
 import CatalogRosaryReconstructionCard from "@/components/CatalogRosaryReconstructionCard";
 import CatalogBibleCard from "@/components/CatalogBibleCard";
+import { RolesEnum } from "@/data/types/enums/roles.enum";
 
 export default async function Home() {
   const user = await getCachedAdminInfoAction();
@@ -44,7 +45,7 @@ export default async function Home() {
           </div>
           <div className="mt-8">
             <CatalogRosaryReconstructionCard 
-              whatsappNumber={ user?.role === 'admin' ? user?.phone || '5586994379414' : '5586994379414'}
+              whatsappNumber={ user?.role === RolesEnum.ADMIN ? user?.phone || '5586994379414' : '5586994379414'}
             />
           </div>
           <div className="mt-4">

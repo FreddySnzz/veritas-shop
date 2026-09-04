@@ -30,6 +30,7 @@ import { statusMap } from "@/data/types/orders-status.type";
 import { formatCurrency } from "@/data/functions/formatAndCapitalize";
 import Link from "next/link";
 import { updateUserAction } from "@/app/actions/users.action";
+import { RolesEnum } from "@/data/types/enums/roles.enum";
 
 type UserModelWithOrders = UserModel & { orders: OrderModel[] };
 
@@ -195,7 +196,7 @@ export default function ManageUsersLayout({ users }: ManageUsersLayoutProps) {
                       <p className="flex font-black dark:text-details mb-1 gap-1">
                         <span className="text-nowrap">{user.name}</span>
                         <span>-</span>
-                        <span>{user.role === 'admin' ? 'Admin' : 'Cliente'}</span>
+                        <span>{user.role === RolesEnum.ADMIN ? 'Admin' : 'Cliente'}</span>
                       </p>
                       {!verifyFirebaseId(user.id) && (
                         <div className="flex items-center gap-1 text-xs font-bold mb-1 text-blue-500">
@@ -342,7 +343,7 @@ export default function ManageUsersLayout({ users }: ManageUsersLayoutProps) {
                 title="Ir para pedido"
                 aria-label="Ir para pedido"
                 href={`/admin/pedidos?search=${selectedUser.orders[0].order_number}`}
-                className="text-nowrap text-zinc-300 hover:italic hover:underline cursor-pointer"
+                className="text-nowrap dark:text-zinc-300 hover:italic underline cursor-pointer"
               >
                 {selectedUser.orders[0].order_number}
               </Link>
@@ -350,12 +351,12 @@ export default function ManageUsersLayout({ users }: ManageUsersLayoutProps) {
             <div className="flex text-sm items-baseline gap-1">
               <p className="font-bold text-nowrap">Valor</p>
               <hr className="border-muted-foreground/50 border-dashed w-full" />
-              <p className="text-nowrap text-zinc-300">{formatCurrency(selectedUser.orders[0].final_price)}</p>
+              <p className="text-nowrap dark:text-zinc-300">{formatCurrency(selectedUser.orders[0].final_price)}</p>
             </div>
             <div className="flex text-sm items-baseline gap-1">
               <p className="font-bold text-nowrap">Status</p>
               <hr className="border-muted-foreground/50 border-dashed w-full" />
-              <p className="text-nowrap text-zinc-300">{statusMap[selectedUser.orders[0].status]}</p>
+              <p className="text-nowrap dark:text-zinc-300">{statusMap[selectedUser.orders[0].status]}</p>
             </div>
           </div>
         )}
@@ -393,7 +394,7 @@ export default function ManageUsersLayout({ users }: ManageUsersLayoutProps) {
       <div className="md:hidden shrink-0 mt-auto bg-background-alternative dark:bg-input/0 z-10">
         <hr className="border-muted-foreground/50 my-2" />
         <div className="flex flex-col gap-4">
-          <BackButton />
+          <BackButton backRoute />
         </div>
       </div>
     </div>

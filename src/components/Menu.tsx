@@ -17,6 +17,7 @@ import { RosaryIcon } from "./icons/RosaryIcon";
 import { ThemeToggleSwitch } from "./buttons/ThemeToggleSwitch";
 import { useAuth } from "@/data/context/AuthContext";
 import { FaBookBible } from "react-icons/fa6";
+import { RolesEnum } from "@/data/types/enums/roles.enum";
 
 export default function Menu() {
   const { isMenuOpen, closeMenu } = useApp();
@@ -31,10 +32,10 @@ export default function Menu() {
       closeMenu();
     };
 
-    if (user?.role === 'user') {
+    if (user?.role === RolesEnum.USER) {
       router.push('/me');
       closeMenu();
-    } else if (user?.role === 'admin') {
+    } else if (user?.role === RolesEnum.ADMIN) {
       router.push('/admin');
       closeMenu();
     };

@@ -11,6 +11,7 @@ import UserModel from "@/data/models/User.model";
 import { getCachedAdminInfoAction } from "@/app/actions/cache.actions";
 import Image from "next/image";
 import { useTheme } from "next-themes";
+import { RolesEnum } from "@/data/types/enums/roles.enum";
 
 export default function Apresentation() {
   const [user, setUser] = useState<UserModel>();
@@ -86,7 +87,7 @@ export default function Apresentation() {
       </section>
 
       <WhatsAppButtonFixed 
-        message={`https://wa.me/${user?.role === 'admin' ? user?.phone 
+        message={`https://wa.me/${user?.role === RolesEnum.ADMIN ? user?.phone 
           || '5586994379414' : "5586994379414"}?text=${encodeURIComponent('Olá, gostaria de fazer um pedido de Terço Personalizado!')}`} 
       />
     </section>
