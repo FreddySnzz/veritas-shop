@@ -1,5 +1,7 @@
+import Link from "next/link";
 import ProductCard from "./ProductCard";
 import ProductModel from "@/data/models/Product.model";
+import { ChevronRight } from "lucide-react";
 import { FaRegFaceSadTear } from "react-icons/fa6";
 
 interface CatalogLayoutProps {
@@ -42,6 +44,22 @@ export default function CatalogLayout({
                 mode="catalog"
               />
             ))}
+          </div>
+          <div className="flex items-center justify-center gap-2 w-full mt-4">
+            <Link
+              title="Ver todos os produtos"
+              aria-label="Ver todos os produtos"
+              rel="noreferrer"
+              href="/produtos"
+              className={`flex group items-center justify-center py-2 px-4 
+                border border-muted-foreground/20 dark:border-muted-foreground/50 
+                rounded-lg hover:bg-muted-foreground/10 transition-all text-xs
+                text-secondary dark:text-zinc-200 cursor-pointer font-medium
+              `}
+            >
+              Conferir todos os produtos
+              <ChevronRight className="w-5 h-5 group-hover:text-primary dark:group-hover:text-details transition-all" />
+            </Link>
           </div>
         </>
       )}
