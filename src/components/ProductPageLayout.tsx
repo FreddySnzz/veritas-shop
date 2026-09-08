@@ -54,18 +54,24 @@ export default function ProductPageLayout({
   };
 
   const handleAddToCart = () => {
-    addItem({
-      id: product.id,
-      name: product.name,
-      category_id: product.category_id,
-      price: product.initial_price,
-      image: product?.images_url?.[0] || "",
-      customizable: false,
-      customizationPrice: 0,
-    });
-    
-    toast.success("Produto adicionado ao carrinho!", { duration: 1500 });
-  };
+    try {
+      addItem({
+        id: product.id,
+        name: product.name,
+        category_id: product.category_id,
+        price: product.initial_price,
+        image: product?.images_url?.[0] || "",
+        customizable: false,
+        customizationPrice: 0,
+      });
+      
+      toast.success("Produto adicionado ao carrinho!");
+    } catch (error) {
+      if (error instanceof Error) {
+        toast.error(error.message);
+      }
+    } 
+  }
 
   const renderProductImages = () => {
     if (product.images_url) {

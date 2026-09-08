@@ -49,7 +49,7 @@ export default function ManageCatalogInventory({
     try {
       const payload = {
         featured: !products.find((product) => product.id === id)?.featured
-      };
+      }
 
       await updateProductAction(id, payload);
       toast.success("Produto colocado como destaque com sucesso!");
@@ -58,14 +58,39 @@ export default function ManageCatalogInventory({
       toast.error("Houve um erro ao atualizar destaque do produto");
     } finally {
       setLoading(false);
-    };
+    }
+  }
+
+  const handleUpdateAvailableProduct = async (id: string) => {
+    if (!id) return;
+    setLoading(true);
+
+    try {
+      const payload = {
+        available: !products.find((product) => product.id === id)?.available
+      }
+
+      await updateProductAction(id, payload);
+      toast.success("Disponibilidade do Produto atualizada com sucesso!");
+    } catch (error) {
+      console.error(error);
+      toast.error("Houve um erro ao atualizar destaque do produto");
+    } finally {
+      setLoading(false);
+    }
   }
 
   const handleToggleFeatured = (id: string, e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();  
     e.stopPropagation(); 
     handleUpdateFeaturedProduct(id);
-  };
+  }
+
+  const handleToggleAvailable = (id: string, e: React.MouseEvent<HTMLButtonElement>) => {
+    e.preventDefault();  
+    e.stopPropagation(); 
+    handleUpdateAvailableProduct(id);
+  }
 
   const normalizedProducts = useMemo(() => {
     return products.map((product) => {
@@ -196,7 +221,7 @@ export default function ManageCatalogInventory({
         </CustomLink>
       </div>
 
-      <div className={`flex-1 min-h-0 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4
+      <div className={`flex-1 min-h-0 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4
         gap-2 overflow-y-auto content-start scrollbar-hide md:scrollbar-thin md:pr-2 ${products?.length === 0 && 'xl:block'}`}
       >
         <div className="fixed md:hidden bottom-25 right-7 md:bottom-10 z-15">
@@ -265,8 +290,8 @@ export default function ManageCatalogInventory({
                     {formatCurrency(product.initial_price)}
                   </p>
                   <div className="flex flex-col">
-                    <div className="flex items-center gap-2 mb-1">
-                      <p className={`text-xs font-medium ${product.featured ? 'text-green-600' : 'text-red-500 dark:text-red-400'}`}>
+                    <div className="flex items-center gap-1 mb-1">
+                      <p className={`text-xs font-bold ${product.featured ? 'text-green-600' : 'text-red-500 dark:text-red-400'}`}>
                         Destaque:
                       </p>
                       <Switch
@@ -276,9 +301,17 @@ export default function ManageCatalogInventory({
                         disabled={loading}
                       />
                     </div>
-                    <p className={`text-xs font-medium ${product.available ? 'text-green-600' : 'text-red-500 dark:text-red-400'}`}>
-                      Disponível: {product.available ? 'Sim' : 'Não'}
-                    </p>
+                    <div className="flex items-center gap-1 mb-1">
+                      <p className={`text-xs font-bold ${product.available ? 'text-green-600' : 'text-red-500 dark:text-red-400'}`}>
+                        Disponível:
+                      </p>
+                      <Switch
+                        checked={product.available || false}
+                        onClick={(e) => handleToggleAvailable(product.id, e)}
+                        className="cursor-pointer disabled:cursor-not-allowed"
+                        disabled={loading}
+                      />
+                    </div>
                     <p className={`text-xs font-medium ${product.customizable ? 'text-green-600' : 'text-red-500 dark:text-red-400'}`}>
                       Customizável: {product.customizable ? 'Sim' : 'Não'}
                     </p>
