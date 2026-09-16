@@ -223,7 +223,23 @@ export default function OrderCard({
     return (
       <div className={cn("relative flex flex-col rounded-lg w-full bg-white dark:bg-input/30", className)}>
         <div className="flex gap-4 p-4 w-full">
-          {order?.product?.images_url ? (
+          {order?.product?.images_url ? mode === "admin" ? (
+            <div className={cn("relative shrink-0 w-25 h-25")}>
+              <Image
+                src={order?.product?.images_url[0]}
+                alt="preview"
+                draggable="false"
+                fill
+                loading="eager"
+                className={cn("aspect-square rounded-lg object-cover shadow-sm",
+                  "transition-opacity duration-500 ease-in-out",
+                  isLoaded ? "opacity-100" : "opacity-0",
+                )}
+                onLoad={() => setIsLoaded(true)}
+                sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+              />
+            </div>
+          ) : (
             <Link 
               href={`/produtos/${mountProductUrl(order?.product?.name, order?.product?.id)}`}
               aria-label={`Ver ${order?.product?.name}`}
