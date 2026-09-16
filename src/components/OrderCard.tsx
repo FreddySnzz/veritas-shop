@@ -34,6 +34,7 @@ import { PayButton } from "./buttons/PayButton";
 import { getCouponByIdAction, updateCouponAction } from "@/app/actions/coupons.action";
 import { Skeleton } from "./ui/skeleton";
 import CouponModel from "@/data/models/Coupon.model";
+import { getCustomizationItemByRefAction } from "@/app/actions/customizationItems.action";
 
 interface OrderCardProps extends React.HTMLAttributes<HTMLElement> {
   mode?: "user" | "admin";
@@ -55,6 +56,8 @@ export default function OrderCard({
   const [newStatus, setNewStatus] = useState<OrderStatusType>(OrderStatus.AWAITING_CONFIRMATION);
   const [expandedCard, setExpandedCard] = useState(false);
   const [deleteModalOpen, setDeleteModalOpen] = useState(false);
+  const [customizationItemModalOpen, setCustomizationItemModalOpen] = useState(false);
+  const [customizationItemImageUrl, setCustomizationItemImageUrl] = useState<string>('');
   const [sendMessageToClient, setSendMessageToClient] = useState(false);
   const [loading, setLoading] = useState(true);
   const [isLoaded, setIsLoaded] = useState(false);
@@ -115,6 +118,30 @@ export default function OrderCard({
     toast.success("Número do pedido copiado");
   };
 
+  const handleOpenCustomizationItemModal = async (e: React.MouseEvent, ref: string) => {
+    e.stopPropagation();
+    e.preventDefault();
+    
+    setCustomizationItemModalOpen(true);
+    
+    if (!ref) return;
+
+    try {
+      const customizationItem = await getCustomizationItemByRefAction(ref);
+
+      if (!customizationItem) return;
+      if (customizationItem.length === 0) return;
+      
+      setCustomizationItemImageUrl(customizationItem[0].image_url);
+    } catch (error) {
+      if (error instanceof Error) {
+        toast.error(error.message);
+      }
+    } finally {
+      setLoading(false);
+    }
+  }
+
   const renderCustomizationDesc = (
     key: string, 
     value: string | string[] | undefined
@@ -122,12 +149,25 @@ export default function OrderCard({
     if (!key || !value) return null;
     key = formatAndCapitalize(key);
 
-    if (key.includes('Letras') || key.includes('Frase')) {
+    if (key.includes('Frase')) {
       const formattedValue = Array.isArray(value) ? value.join(', ') : value;
-      return `• ${key}: ${formattedValue}\n`;
+      return `• ${key}: ${formattedValue};\n`;
     };
 
-    return `• ${key}: ${value}\n`;
+    return (
+      <>
+        <p>• {key}:</p>
+        <button
+          type="button"
+          aria-label="Ver item de personalização"
+          title="Ver item de personalização"
+          onClick={(e) => handleOpenCustomizationItemModal(e, value as string)}
+          className="cursor-pointer hover:italic dark:text-zinc-400 hover:underline"
+        >
+          {value}
+        </button>
+      </>
+    )
   };
 
   const handleOpenDeleteModal = (e: React.MouseEvent) => {
@@ -616,6 +656,42 @@ export default function OrderCard({
             </CustomModal>
           </>
         )}
+
+        <CustomModal
+          title={`Visualização do item de personalização`}
+          modalOpen={customizationItemModalOpen}
+          onClose={() => {
+            setCustomizationItemModalOpen(false);
+            setCustomizationItemImageUrl('');
+          }}
+        >
+          <div className="flex w-full items-center justify-center">
+            {customizationItemImageUrl ? (
+              <Image
+                src={customizationItemImageUrl}
+                alt="preview"
+                draggable="false"
+                width={300}
+                height={300}
+                loading="eager"
+                className={cn("aspect-square rounded-lg object-cover shadow-sm",
+                  "transition-opacity duration-1000 ease-in-out",
+                  isLoaded ? "opacity-100" : "opacity-0",
+                )}
+                onLoad={() => setIsLoaded(true)}
+                sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+              />
+            ) : (
+              <div className={`shrink-0 flex items-center justify-center 
+                w-70 h-70 md:w-75 md:h-75 duration-500 ease-in-out`}
+              >
+                <p className="text-secondary px-2 text-center font-medium">
+                  Carregando...
+                </p>
+              </div>
+            )}
+          </div>
+        </CustomModal>
       </div>
     )
   }
