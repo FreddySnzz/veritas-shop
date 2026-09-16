@@ -476,10 +476,10 @@ export default function OrderCard({
   
                     <div className="flex flex-col items-end w-full text-secondary dark:text-zinc-200">
                       <div className="flex flex-col grow">
-                        <p className="text-nowrap font-bold dark:font-normal">
+                        <p className="text-end font-bold dark:font-normal">
                           {order?.product?.name}
                         </p>
-                        <p className="text-nowrap text-end">
+                        <p className="text-end">
                           {order?.quantity} {order?.quantity > 1 ? 'itens' : 'item'}
                         </p>
                       </div>
